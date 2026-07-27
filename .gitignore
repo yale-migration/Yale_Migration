@@ -1,0 +1,5 @@
+assets/samples/*
+!assets/samples/.gitkeep
+.DS_Store
+*.key
+*.env
