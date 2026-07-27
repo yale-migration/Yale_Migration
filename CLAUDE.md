@@ -7,8 +7,13 @@ to Proposal v3 (19 Jul 2026) — see `../PROJECT-STATE.md` for full history.
 ## Session ritual (EVERY session in this folder)
 1. START: read `ROADMAP.md` (current module + status) and the last 10 lines of `CLIENT-LOG.md`.
 2. WORK: one module at a time, per `ARCHITECTURE.md` conventions.
-3. END: update `ROADMAP.md` statuses, append decisions to `CLIENT-LOG.md`/`DECISIONS.md`, commit:
-   `git add -A && git commit -m "<module>: <what changed>"`.
+3. END: update `ROADMAP.md` statuses, append decisions to `CLIENT-LOG.md`/`DECISIONS.md`, commit AND push:
+   `git add -A && git commit -m "<module>: <what changed>" && git push`.
+
+## Remote
+PRIVATE repo: https://github.com/m-sharjeel-saleem/Yale_Migration (origin/main, gh auth active).
+docs/ is CURATED — never add: client PII files, third-party materials (Apex/Zap It samples),
+archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 
 ## Hard rules (never break)
 - **NO SECRETS in this repo** — no API keys, no passwords, no client PII. The Claude key lives ONLY in
