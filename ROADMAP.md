@@ -1,6 +1,6 @@
 # ROADMAP — MVP (48h) · Status legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked
 
-Last updated: 2026-07-26
+Last updated: 2026-07-26 (post final pre-build audit — 5 gaps found & absorbed: D-11..D-15)
 
 ## M1 — Discovery, access & security (3h) — 🟡 90%
 - ✅ Kick-off meeting done (2026-07-25); SOPs confirmed against live practice
@@ -16,6 +16,7 @@ Last updated: 2026-07-26
 ## M2 — Master data layer (3h) — 🟡 40%
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
   dropdowns, YM-code formula, sample rows)
+- ⬜ Restructure MASTER to one-row-per-MATTER incl. Party-2 columns (per D-11)
 - ⬜ Import real client list from client's sheet → assign codes from YM-2026-00001
 - ⬜ Auto-code Apps Script for NEW clients (onEdit/onForm trigger)
 - ⬜ Column validation + protect header rows
@@ -25,11 +26,13 @@ Last updated: 2026-07-26
 - ⬜ Intake trigger (new MASTER row / form) in Make
 - ⬜ Make scenario: create OneDrive folder "CODE – FULL NAME" + 10 sub-folders (01 Enquiry…10 Visa
   Outcome, per SOP; replicate model folder)
+- ⬜ Name sanitization (per ARCHITECTURE folder rules); existing folders linked, never renamed (D-12)
 - ⬜ Write folder URL back to MASTER row; error alert on failure
 - ⬜ Test ×5 real cases · client 👍
 
 ## M4 — Checklist selector & document request (3h) — ⬜
 - ⬜ Checklist map table (visa × onshore/offshore × dependents → template file)
+- ⬜ CLIENT ASK: OAuth project1@ into Make's Gmail connection (D-13 — needed to SEND)
 - ⬜ Email template w/ upload link (needs client's sent-email samples for tone)
 - ⬜ Make scenario: selection → email + log · test · client 👍
 
@@ -56,6 +59,10 @@ Last updated: 2026-07-26
 
 ## M10 — End-to-end testing with live files (2h) — ⬜ (client to nominate 2–3 test cases)
 ## M11 — Training & handover (2h) — ⬜ (guides + walkthrough; transfer everything)
+
+## Go-live gates
+- ⬜ Make paid plan active (D-15, pass-through) BEFORE live schedules
+- ⬜ Every scenario passed the ladder: dry-run → 5 real cases → client 👍 (D-14)
 
 ## Payments
 - ✅ Commencement 50% ($840) — sent by client (SWIFT, confirm landed)

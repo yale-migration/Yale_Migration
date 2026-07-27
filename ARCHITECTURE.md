@@ -13,6 +13,10 @@ Gmail project1@ ──► Claude API (classify) ──► label + assign + draft
 All scenarios live in the CLIENT's Make.com org (we are Admin). All data stays in client accounts.
 
 ## Data contract — MASTER tab (source of truth)
+**GRAIN: one row per MATTER (visa case), not per person.** A returning client gets a NEW row + new code
+(old row stays Closed). Dual-party matters (482 employer+employee, Partner applicant+sponsor) = ONE
+matter row; party details in columns (Party 2 Name/Phone/Email where applicable).
+
 | Column | Rule |
 |---|---|
 | Client Code | `YM-2026-#####`, starts 00001, unique, never reused; auto for new rows (Apps Script) |
@@ -44,9 +48,28 @@ ENQUIRIES tab: Date · Name · Phone · Channel · Visa Interest · Assigned To 
 Business hours only (default Brisbane 08:00–20:00, confirm with client) · stop-on-reply for all
 sequences · every outbound logged to the sheet · client-approved wording only (👍 in CLIENT-LOG).
 
+## Folder rules (additions from final audit)
+- **Existing client folders are NEVER renamed/moved** — link their URL into MASTER; new convention
+  applies to NEW matters only.
+- **Name sanitization** before folder creation: uppercase; strip characters illegal in OneDrive
+  (`" * : < > ? / \ |`), collapse double spaces, trim trailing dots/spaces; ñ→N etc. via
+  transliteration; max 100 chars.
+
+## Sending mechanism (critical distinction)
+- Gmail DELEGATION (sharry00010) = HUMAN access to read/manage the inbox.
+- AUTOMATED sending (checklists, reminders) = **Make↔Gmail connection where the client OAuths
+  project1@ once** (same one-time-login pattern as the OneDrive connection). Required before M4/M5 go
+  live — on the client-ask list.
+
 ## Error handling standard (every Make scenario)
 Error route → WhatsApp/email alert to Sharjeel · no silent failures · scenarios idempotent (re-run
-safe: check-before-create for folders, dedupe keys for rows) · run log kept in Make history.
+safe: check-before-create for folders, dedupe keys for rows) · run log kept in Make history ·
+**every scenario ships through: test rows first (dry-run) → 5 real cases → client 👍 → live schedule**.
+
+## Capacity note
+Make FREE plan = 1,000 ops/month — sufficient for build/testing only. At live volume (60–70
+enquiries/wk + chasing + folders) a paid plan (Core, ~US$10–20/mo, pass-through) is REQUIRED at
+go-live. Flag to client BEFORE launch — never let it silently stop.
 
 ## Naming
 Make scenarios: `YM-M3-folder-create`, `YM-M5-doc-chase`, `YM-M6-enquiry-fb`… (module-prefixed).

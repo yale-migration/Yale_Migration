@@ -19,3 +19,13 @@ D-09 | Build order M2→M3→M4/M5→M6→M9 | Data layer first (everything read
 visible win (client priority #1); WhatsApp channel deferred inside M6 until Meta verification.
 D-10 | Workspace tracking: this repo + PROJECT-STATE.md + auto-memory | Session ritual in CLAUDE.md;
 survives long chats/device switches; git history = audit trail.
+D-11 | MASTER grain = one row per MATTER, not per person | Real clients run multiple visas over time
+(485→190); 482/Partner have two parties. Returning client = new row + new code; old row Closed.
+D-12 | Existing client folders NEVER renamed/moved | 150 live folders their team navigates daily;
+we link URLs in MASTER; new convention for new matters only.
+D-13 | Automated sending via Make↔Gmail connection (client OAuths project1@ once) | Delegation covers
+human access only; Make needs its own OAuth to send as project1@. Same pattern as OneDrive connection.
+D-14 | Every scenario ships: dry-run → 5 real cases → client 👍 → live | Client files hold passports;
+no scenario touches production data without the ladder.
+D-15 | Make paid plan (Core) required at go-live | Free tier 1,000 ops/mo < live volume; pass-through
+cost, flag to client before launch.
