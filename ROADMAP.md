@@ -1,22 +1,26 @@
 # ROADMAP — MVP (48h) · Status legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked
 
-Last updated: 2026-07-26 (post final pre-build audit — 5 gaps found & absorbed: D-11..D-15)
+Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first task = M2-D inventory)
 
 ## M1 — Discovery, access & security (3h) — 🟡 90%
 - ✅ Kick-off meeting done (2026-07-25); SOPs confirmed against live practice
 - ✅ Access: Sheets ✓ ops workbook "YALE BRISBANE OFFICE WORK" ✓ walk-in sheet (via OneDrive) ✓
   Meta BM ✓ Make (Admin) ✓ OneDrive connection (My Drive, tested) ✓ Claude API key ✓
 - 🟡 Gmail delegation on project1@ (user doing self, password held meanwhile)
-- 🟡 OneDrive browse access — waiting on client's share LINK (Make connection already works for build)
+- ✅ OneDrive share link received — "YALE MIGRATION - ONE SYSTEM" (BNE 63.5GB / PH / TSV / WorkVisa)
 - ⬜ 2FA on project1@ + password rotation (client, non-blocking)
 - 🟡 WhatsApp Business verification — CHECK in Meta Security Centre (don't ask client)
-- 🔒 Client materials pending: team roster · samples bundle (sent+received emails incl. S56,
-  Inquiry/Detail forms, follow-up templates, WhatsApp screenshots) · model-folder pointer
+- ✅ Team roster received (routing = team × visa × office, per D-16) · ✅ model folder received (D-18)
+- ✅ ONE email sample received (SBS thread — tone/CC conventions) · 🔒 still pending: S56 letter
+  example, Inquiry/Detail forms, follow-up templates, WhatsApp screenshots; roster gaps (Nisha,
+  workvisa.bne@); which OneDrive sheet holds onsite/walk-in clients
 
-## M2 — Master data layer (3h) — 🟡 40%
+## M2 — Master data layer (3h) — 🟡 40% · FIRST TASK: M2-D folder inventory (D-17)
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
   dropdowns, YM-code formula, sample rows)
-- ⬜ Restructure MASTER to one-row-per-MATTER incl. Party-2 columns (per D-11)
+- ⬜ M2-D: Make one-time scenario — export ENGAGED CLIENTS folder tree (all offices/teams) into
+  FOLDER INVENTORY tab (name, path, office, team, link) — THIS is the client-list source (D-17)
+- ⬜ Restructure MASTER to one-row-per-MATTER incl. Party-2 + Office + Team columns (D-11, D-16)
 - ⬜ Import real client list from client's sheet → assign codes from YM-2026-00001
 - ⬜ Auto-code Apps Script for NEW clients (onEdit/onForm trigger)
 - ⬜ Column validation + protect header rows

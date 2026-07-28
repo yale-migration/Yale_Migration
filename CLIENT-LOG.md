@@ -37,3 +37,14 @@ folders + walk-in sheet | WAITING
 - [ ] WhatsApp verification → check ourselves in Meta Security Centre
 - [ ] (non-blocking) 2FA + password rotation on project1@
 - [ ] Confirm commencement payment landed in bank
+2026-07-26 | files | RECEIVED: Team roster (routing = Indian/Filipino team × visa × office; 12 staff
+emails incl. Townsville Cristelle + marketing Manali) · Model folder pointer (BRISBANE OFFICE/CLIENT
+FILES/ENGAGED CLIENTS/CLIENT FILES- FILIPINO TEAM; examples "Aaron Jean Desepida-SVEA", "ADRIENNE JANN
+PEPITO-485 DEPENDENT") · ONE full email sample (SBS thread: request→invoice→payment→ack→approval→
+"for posting" to marketing; tone + CC conventions visible; Robinder = Director MARN 1573959) |
+Roster/model → repo docs; email PDF → local samples (PII, git-ignored)
+2026-07-26 | link | OneDrive share received: "YALE MIGRATION - ONE SYSTEM" = BRISBANE OFFICE (63.5GB!),
+PHILIPPINES, TOWNSVILLE, Work visa BNE AND TSV — multi-office confirmed | Audit via Make inventory,
+not manual browsing
+2026-07-26 | ss | Ops workbook full tab list seen (~27 tabs) incl. "eca password" tab (⚠️ credentials
+in sheet — raise gently later), "Nisha's TASKS", hidden "withdrawal" | Phase-2 blueprint material

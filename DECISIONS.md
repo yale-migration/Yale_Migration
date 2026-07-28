@@ -29,3 +29,14 @@ D-14 | Every scenario ships: dry-run → 5 real cases → client 👍 → live |
 no scenario touches production data without the ladder.
 D-15 | Make paid plan (Core) required at go-live | Free tier 1,000 ops/mo < live volume; pass-through
 cost, flag to client before launch.
+D-16 | Routing matrix = TEAM (Indian/Filipino) × VISA TYPE × OFFICE (BNE/TSV/PH) | Team roster
+(2026-07-26) revealed nationality-based teams; MASTER gets Office + Team columns; auto-assignment
+resolves against the roster table. Roster gaps to confirm: Nisha (has a tab in ops workbook, not in
+roster), workvisa.bne@ (in email CCs, not in roster).
+D-17 | MASTER import source = OneDrive folder inventory (via Make), cross-checked with ops workbook
+tabs | No single client-list sheet exists; the real client register is the ENGAGED CLIENTS folder
+tree (naming "NAME-VISATYPE") + per-process workbook tabs. One-time Make scenario exports the tree
+into a FOLDER INVENTORY tab; matters + YM codes generated from it.
+D-18 | Existing folder tree is deep: ONE SYSTEM → OFFICE → CLIENT FILES → ENGAGED CLIENTS → TEAM →
+client | New folders created INSIDE the matching office+team branch; naming for NEW: "YM-2026-#####
+– FULL NAME" (old folders untouched per D-12).
