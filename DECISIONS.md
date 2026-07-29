@@ -56,3 +56,15 @@ scenarios: driveId = A0BABA3C2640082C · "YALE MIGRATION - ONE SYSTEM" itemId =
 A0BABA3C2640082C!sb56138531b714289a454795636c629f5. Traversal pattern:
 /v1.0/drives/A0BABA3C2640082C/items/<itemId>/children  (Make module route also works now:
 location = "Shared with me" + Item Type = folder). Keep these IDs in the scenario, never the picker.
+D-22 | CREDIT BUDGET is a first-class design constraint | Make FREE = 1,000 ops/month; every API call
+and every single Sheets row = 1 op. Full folder inventory (hundreds of clients × 4 offices) would burn
+the entire month for zero client-visible value. Therefore: (a) always use ?$select=name,id&$top=999
+(one call per branch); (b) write rows in BULK or fan out via Apps Script (free/unmetered); (c) DEFER
+full inventory — it is internal convenience, not a feature. Folder-creation flow ≈12 ops/client (~75
+clients/month on free) which is acceptable until the paid plan at go-live (D-15).
+D-23 | DEMO-FIRST sequencing: M3 folder creation is the first shipped deliverable, not M2-D inventory |
+Client has seen zero working output after heavy access-gathering. Folder auto-creation is their stated
+priority #1, visually dramatic, cheap in credits. Deliverable = 90-second screen recording. Inventory
+and existing-client import happen after the demo lands.
+D-24 | WRITE access must be proven before any M3 work | Read is proven (200s); "can edit" share implies
+write but is unverified. Gate: POST create ZZZ-AUTOMATION-TEST at ONE SYSTEM root → expect 201 → DELETE.

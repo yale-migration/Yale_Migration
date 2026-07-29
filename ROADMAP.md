@@ -1,6 +1,6 @@
 # ROADMAP — MVP (48h) · Status legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked
 
-Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first task = M2-D inventory)
+Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: M3 folder-creation demo.
 
 ## M1 — Discovery, access & security (3h) — 🟡 90%
 - ✅ Kick-off meeting done (2026-07-25); SOPs confirmed against live practice
@@ -18,8 +18,8 @@ Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first t
 ## M2 — Master data layer (3h) — 🟡 45% · NOW: structure+codes (M2-D inventory 🔒 on client share)
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
   dropdowns, YM-code formula, sample rows)
-- 🟡 M2-D: folder-inventory scenario — UNBLOCKED ✅ (direct share landed 2026-07-29; anchor IDs in
-  D-21). Next: walk BNE → CLIENT FILES → ENGAGED CLIENTS → team, then write rows to FOLDER INVENTORY.
+- ⏸️ M2-D: folder inventory — DEFERRED until after the M3 demo (credit budget, D-22/D-23). Anchor IDs
+  ready (ONEDRIVE-IDS.md); when run, use ?$select=name,id&$top=999 + bulk write.
 - ⬜ M2-A: restructure MASTER (matter grain, Party-2, Office, Team) — DO NOW, no OneDrive needed
 - ⬜ M2-B: YM-2026 auto-code Apps Script + validation/protection — DO NOW
 - ⬜ M2-C: intake fields mapped from the client's own "Client Inquiry Form.xlsx" (already shared ✓)
@@ -29,7 +29,14 @@ Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first t
 - ⬜ Column validation + protect header rows
 - ⬜ Client walkthrough + 👍
 
-## M3 — Client intake & auto folder creation (4h) — ⬜
+## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY (demo-first, D-23)
+- ⬜ STEP 1 (gate): prove WRITE access — POST ZZZ-AUTOMATION-TEST at ONE SYSTEM root → 201 → DELETE (D-24)
+- ⬜ STEP 2: finish MASTER columns + dropdowns (matter grain, Office, Team, Party 2, Folder URL)
+- ⬜ STEP 3: Apps Script onEdit → assign next YM-2026-##### (free/unmetered, D-22)
+- ⬜ STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
+  "YM-2026-##### – FULL NAME" → 10 sub-folders → write Folder URL back to row → error alert (~12 ops)
+- ⬜ STEP 5: test 2 fake clients (TEST prefix), verify in OneDrive, delete tests
+- ⬜ STEP 6: record 90-sec screen video → send to client (FIRST SHIPPED DELIVERABLE)
 - ⬜ Intake trigger (new MASTER row / form) in Make
 - ⬜ Make scenario: create OneDrive folder "CODE – FULL NAME" + 10 sub-folders (01 Enquiry…10 Visa
   Outcome, per SOP; replicate model folder)
