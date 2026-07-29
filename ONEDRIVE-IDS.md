@@ -20,6 +20,9 @@ NEVER the folder picker (it only shows the connection's own drive — see D-19/D
 | BNE → INQUIRY | `A0BABA3C2640082C!se4c3fed3c2f64a0c94ba085145d4903e` | ✅ T1.1 — 🔍 check for walk-in/enquiry records |
 | BNE → PARTNER SCHOOL | `A0BABA3C2640082C!sa3369935a9da43559d44a751a0ec2435` | ✅ T1.1 — education partners (M4 later) |
 | BNE → Service Agreement 189 and 190 | `A0BABA3C2640082C!sfd29f35375c4437684f89c19823e4461` | ✅ T1.1 — item seen in sharedWithMe |
-| … → ENGAGED CLIENTS | TBC (T1.2) | routing + inventory anchor |
+| CLIENT FILES → **ENGAGED CLIENTS** | `A0BABA3C2640082C!s29890e4b48cc4ea4bbf4e92eb73689a7` | ✅ T1.2 — active clients |
+| CLIENT FILES → **GRANTED** | `A0BABA3C2640082C!s985f1ffb73a34d45ac271d4354d18df5` | ✅ T1.2 — lifecycle: folders MOVED here on grant |
+| CLIENT FILES → **REFUSED OR WITHDRAWN** | `A0BABA3C2640082C!s456e3bcd584843898ebfb052d68a9057` | ✅ T1.2 — lifecycle |
+| CLIENT FILES → **Engaged Client Tracker.xlsx** | `A0BABA3C2640082C!s991d8bd1da0b40b0a4e477e47864ebbc` | ✅ T1.2 — 🚨 live register, 208 revisions — read via workbook API |
 | … → team folders (Filipino / Indian) | TBC (T1.3) | router targets |
 | … → one real client folder | TBC (T1.4) | verify ACTUAL sub-folder names |

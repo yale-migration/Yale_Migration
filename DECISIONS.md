@@ -154,3 +154,14 @@ they're on a paid plan; the real issue is governance not capacity). New structur
 (T1 tree-walk, T2 sheet, T3 scenario, T4 demo) each with owner, duration and expected output, then module
 status, go-live gates, open client asks, and issues to raise at the demo. Rule going forward: every task
 assigned to Sharjeel states purpose, numbered steps, expected output, and the decision rule for surprises.
+D-41 | The FOLDER TREE encodes the client lifecycle — Stage must map to folder location | T1.2 found
+CLIENT FILES → {ENGAGED CLIENTS, GRANTED, REFUSED OR WITHDRAWN}. Staff physically MOVE a client folder
+when the outcome lands. Consequences: (a) the folder inventory must scan ALL THREE branches, not just
+ENGAGED — otherwise granted/refused clients look "missing"; (b) MASTER's Stage column and the folder's
+parent must stay consistent; (c) Phase 2 opportunity: auto-move the folder when Stage flips to
+Granted/Refused (do NOT build in MVP — moving live client folders is high-risk, needs explicit 👍).
+D-42 | "Engaged Client Tracker.xlsx" is a live client register (208 revisions) — candidate source of
+truth for the M2 import | Found in CLIENT FILES at T1.2. Read via Graph workbook API (worksheets, then
+header row, then usedRange) before deciding the import path. If it holds a maintained client list, prefer
+it over parsing folder names (folder names are inconsistent: "Aaron Jean Desepida-SVEA" vs "ADRIENNE JANN
+PEPITO-485 DEPENDENT"). Cross-check both, reconcile differences, never silently overwrite their data.
