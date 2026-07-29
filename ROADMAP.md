@@ -11,9 +11,9 @@ Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cle
 - ⬜ 2FA on project1@ + password rotation (client, non-blocking)
 - 🟡 WhatsApp Business verification — CHECK in Meta Security Centre (don't ask client)
 - ✅ Team roster received (routing = team × visa × office, per D-16) · ✅ model folder received (D-18)
-- ✅ ONE email sample received (SBS thread — tone/CC conventions) · 🔒 still pending: S56 letter
-  example, Inquiry/Detail forms, follow-up templates, WhatsApp screenshots; roster gaps (Nisha,
-  workvisa.bne@); which OneDrive sheet holds onsite/walk-in clients
+- ✅ FULL samples bundle received 29 Jul (S56 letter + requests + email template, student & 485 threads,
+  WhatsApp screenshots) — see ACCESS.md materials table. Remaining minor gaps: Detail/Consultation
+  forms, roster gaps (Nisha, workvisa.bne@), walk-in sheet location
 
 ## M2 — Master data layer (3h) — 🟡 45% · NOW: structure+codes (M2-D inventory 🔒 on client share)
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
@@ -69,9 +69,10 @@ Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cle
 ## M8 — Lead follow-up sequences (2h) — ⬜
 - ⬜ 7-day + 30-day lost-lead nudges, stop-on-reply (needs client's follow-up templates)
 
-## M9 — Gmail triage & team delegation (5h) — 🔒 needs delegation + samples + roster
+## M9 — Gmail triage & team delegation (5h) — 🟡 SAMPLES RECEIVED (29 Jul) — needs only Gmail delegation
 - ⬜ Claude classification (categories: enquiry/documents/Home Affairs/accounts) — Haiku, tool-use JSON
-- ⬜ S56 urgent flag · auto-assignment by roster rules · draft replies (needs samples) · Needs-Review path
+- ⬜ S56 urgent flag (real S56 letter + requests + reply template now in hand) · auto-assignment by
+  roster · draft replies grounded in their student/485/482 threads · Needs-Review path
 
 ## M10 — End-to-end testing with live files (2h) — ⬜ (client to nominate 2–3 test cases)
 ## M11 — Training & handover (2h) — ⬜ (guides + walkthrough; transfer everything)

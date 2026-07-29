@@ -69,3 +69,8 @@ proper OneDrive connection under his own account (D-30).
 fine, issue was our permission settings, now resolved." No further access asks outstanding for M3.
 STILL PENDING (non-blocking): S56 letter sample, follow-up templates, WhatsApp screenshots, student/485
 email thread; Nisha + workvisa.bne@ roster gaps; Gmail delegation; WhatsApp Business verification status.
+2026-07-29 | files | ✅ CLIENT DELIVERED THE FULL SAMPLES BUNDLE (6 docs): SAMPLE-S56 LETTER.pdf,
+SAMPLE-S56 REQUESTS.pdf, EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx, SAMPLE-STUDENT VISA EMAIL
+THREAD.pdf, SAMPLE-485 VISA EMAIL THREAD.pdf, SAMPLE-WhatsAPP inquiry Screenshot.pdf. Staged in
+assets/samples/ (git-ignored, PII). M9 (AI email triage) + M6 (auto-reply wording) now have real
+training material — no longer blocked on samples. Deep audits of each document in progress.
