@@ -36,7 +36,8 @@ written (D-32..D-38). Build order now: M2 sheet → M3-B folder scenario → dem
 - 🟡 M3-A STEP 2: MASTER columns + dropdowns — SPEC WRITTEN (docs/MASTER-SHEET-SPEC.md); apply in sheet
 - 🟡 STEP 3: code engine WRITTEN (scripts/master_codes.gs — onEdit + 5-min timer so API-created rows
   also get codes); paste into Apps Script + create trigger
-- ⬜ M3-B (now UNBLOCKED) STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
+- ✅ M3-B SPEC WRITTEN: scenarios/M3-folder-create.md (6 modules, sanitizer, error handling, ship ladder)
+- ⬜ M3-B STEP 4 BUILD: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
   "YM-2026-##### – FULL NAME" → 10 sub-folders → write Folder URL back to row → error alert (~12 ops)
 - ⬜ STEP 5: test 2 fake clients (TEST prefix), verify in OneDrive, delete tests
 - ⬜ STEP 6: record 90-sec screen video → send to client (FIRST SHIPPED DELIVERABLE)

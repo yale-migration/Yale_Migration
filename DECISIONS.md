@@ -140,3 +140,10 @@ D-38 | Client-supplied "EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx" is MI
 text is only "WhatsApp Inquiry screenshots" + 5 images (duplicate of the WhatsApp PDF); 11 words total,
 assembled 18 min before handover. Yale's actual S56 client-email wording and reminder cadence are still
 outstanding. Treat like the earlier empty-docx case: flag, don't guess.
+D-39 | M3 folder scenario design decisions | (a) Trigger = scheduled Sheets "Search Rows" (Client Code
+present + Folder URL empty) rather than onEdit — catches automation-created rows too and is inherently
+idempotent; (b) conflictBehavior "fail" not "rename" — a name clash must alert, never silently duplicate
+(existing folders untouched, D-12); (c) Router resolves the target branch from Office+Team per the roster
+matrix (D-16); (d) each API module gets an error handler set to Resume + alert + a Notes write-back so
+failures are visible where staff actually work; (e) the 10 sub-folder names come from the SOPs and MUST be
+verified against one real client folder before go-live — live structure wins over SOP if they differ.
