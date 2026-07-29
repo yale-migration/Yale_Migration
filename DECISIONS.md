@@ -51,3 +51,8 @@ were shared TO the account and appear in /me/drive/sharedWithMe.
 D-20 | Build order adjusted: M2 structure + code engine BEFORE folder automation | OneDrive blocked
 on client action; nothing else depends on it. Never let a client-side blocker idle the build (D-09
 sequencing principle).
+D-21 | OneDrive UNBLOCKED 2026-07-29 — direct share worked (confirms D-19) | Anchor IDs for all
+scenarios: driveId = A0BABA3C2640082C · "YALE MIGRATION - ONE SYSTEM" itemId =
+A0BABA3C2640082C!sb56138531b714289a454795636c629f5. Traversal pattern:
+/v1.0/drives/A0BABA3C2640082C/items/<itemId>/children  (Make module route also works now:
+location = "Shared with me" + Item Type = folder). Keep these IDs in the scenario, never the picker.

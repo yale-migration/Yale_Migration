@@ -7,7 +7,7 @@ Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first t
 - ✅ Access: Sheets ✓ ops workbook "YALE BRISBANE OFFICE WORK" ✓ walk-in sheet (via OneDrive) ✓
   Meta BM ✓ Make (Admin) ✓ OneDrive connection (My Drive, tested) ✓ Claude API key ✓
 - 🟡 Gmail delegation on project1@ (user doing self, password held meanwhile)
-- ✅ OneDrive share link received — "YALE MIGRATION - ONE SYSTEM" (BNE 63.5GB / PH / TSV / WorkVisa)
+- ✅ OneDrive ACCESS CONFIRMED via direct share (D-21) — folder + IDs verified through Graph API
 - ⬜ 2FA on project1@ + password rotation (client, non-blocking)
 - 🟡 WhatsApp Business verification — CHECK in Meta Security Centre (don't ask client)
 - ✅ Team roster received (routing = team × visa × office, per D-16) · ✅ model folder received (D-18)
@@ -18,8 +18,8 @@ Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first t
 ## M2 — Master data layer (3h) — 🟡 45% · NOW: structure+codes (M2-D inventory 🔒 on client share)
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
   dropdowns, YM-code formula, sample rows)
-- 🔒 M2-D: folder-inventory scenario — BLOCKED: needs direct share to sharry00010@gmail.com (D-19).
-  Scenario logic ready; runs the moment the share lands.
+- 🟡 M2-D: folder-inventory scenario — UNBLOCKED ✅ (direct share landed 2026-07-29; anchor IDs in
+  D-21). Next: walk BNE → CLIENT FILES → ENGAGED CLIENTS → team, then write rows to FOLDER INVENTORY.
 - ⬜ M2-A: restructure MASTER (matter grain, Party-2, Office, Team) — DO NOW, no OneDrive needed
 - ⬜ M2-B: YM-2026 auto-code Apps Script + validation/protection — DO NOW
 - ⬜ M2-C: intake fields mapped from the client's own "Client Inquiry Form.xlsx" (already shared ✓)

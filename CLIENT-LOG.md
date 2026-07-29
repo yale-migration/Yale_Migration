@@ -53,3 +53,5 @@ share "YALE MIGRATION - ONE SYSTEM" DIRECTLY to sharry00010@gmail.com with Can e
 2026-07-29 | discovery | Already shared to us (usable now): "Yale Migration - Client Inquiry Form.xlsx"
 (= one of the internal forms we requested!) + "Service Agreement 189 and 190" folder | Use Inquiry Form
 for intake-field design (M2/M6)
+2026-07-29 | Make/API | ✅ Client completed the direct share — "YALE MIGRATION - ONE SYSTEM" now visible
+via sharedWithMe with item ID captured (D-21). OneDrive fully unblocked for M2-D + M3.
