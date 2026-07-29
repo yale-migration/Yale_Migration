@@ -24,5 +24,6 @@ NEVER the folder picker (it only shows the connection's own drive — see D-19/D
 | CLIENT FILES → **GRANTED** | `A0BABA3C2640082C!s985f1ffb73a34d45ac271d4354d18df5` | ✅ T1.2 — lifecycle: folders MOVED here on grant |
 | CLIENT FILES → **REFUSED OR WITHDRAWN** | `A0BABA3C2640082C!s456e3bcd584843898ebfb052d68a9057` | ✅ T1.2 — lifecycle |
 | CLIENT FILES → **Engaged Client Tracker.xlsx** | `A0BABA3C2640082C!s991d8bd1da0b40b0a4e477e47864ebbc` | ✅ T1.2 — 🚨 live register, 208 revisions — read via workbook API |
-| … → team folders (Filipino / Indian) | TBC (T1.3) | router targets |
+| ENGAGED CLIENTS → **CLIENT FILES** (main/Indian?) | `A0BABA3C2640082C!529` | ✅ T1.3 — rev 239 = heavily used; legacy short ID |
+| ENGAGED CLIENTS → **CLIENT FILES- FILIPINO TEAM** | `A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f` | ✅ T1.3 — rev 1 |
 | … → one real client folder | TBC (T1.4) | verify ACTUAL sub-folder names |

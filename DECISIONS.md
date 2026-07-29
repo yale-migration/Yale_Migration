@@ -165,3 +165,8 @@ truth for the M2 import | Found in CLIENT FILES at T1.2. Read via Graph workbook
 header row, then usedRange) before deciding the import path. If it holds a maintained client list, prefer
 it over parsing folder names (folder names are inconsistent: "Aaron Jean Desepida-SVEA" vs "ADRIENNE JANN
 PEPITO-485 DEPENDENT"). Cross-check both, reconcile differences, never silently overwrite their data.
+D-43 | Team branches are ASYMMETRIC: "CLIENT FILES" (main, rev 239, legacy short id !529) +
+"CLIENT FILES- FILIPINO TEAM" (rev 1) | Only two branches exist under ENGAGED CLIENTS — there is no
+folder literally named for the Indian team. Router rule: Team = FILIPINO → Filipino folder; anything else
+→ the main CLIENT FILES folder. MUST verify by inspecting client names in each branch (Indian-market
+surnames vs Filipino) before wiring the router — assumption, not fact, until checked.
