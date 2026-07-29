@@ -15,11 +15,14 @@ Last updated: 2026-07-26 v2 (roster+model+OneDrive received; D-16..D-18; first t
   example, Inquiry/Detail forms, follow-up templates, WhatsApp screenshots; roster gaps (Nisha,
   workvisa.bne@); which OneDrive sheet holds onsite/walk-in clients
 
-## M2 — Master data layer (3h) — 🟡 40% · FIRST TASK: M2-D folder inventory (D-17)
+## M2 — Master data layer (3h) — 🟡 45% · NOW: structure+codes (M2-D inventory 🔒 on client share)
 - ✅ MASTER DATABASE sheet created in automation account (MASTER + ENQUIRIES tabs, Stage/Source
   dropdowns, YM-code formula, sample rows)
-- ⬜ M2-D: Make one-time scenario — export ENGAGED CLIENTS folder tree (all offices/teams) into
-  FOLDER INVENTORY tab (name, path, office, team, link) — THIS is the client-list source (D-17)
+- 🔒 M2-D: folder-inventory scenario — BLOCKED: needs direct share to sharry00010@gmail.com (D-19).
+  Scenario logic ready; runs the moment the share lands.
+- ⬜ M2-A: restructure MASTER (matter grain, Party-2, Office, Team) — DO NOW, no OneDrive needed
+- ⬜ M2-B: YM-2026 auto-code Apps Script + validation/protection — DO NOW
+- ⬜ M2-C: intake fields mapped from the client's own "Client Inquiry Form.xlsx" (already shared ✓)
 - ⬜ Restructure MASTER to one-row-per-MATTER incl. Party-2 + Office + Team columns (D-11, D-16)
 - ⬜ Import real client list from client's sheet → assign codes from YM-2026-00001
 - ⬜ Auto-code Apps Script for NEW clients (onEdit/onForm trigger)

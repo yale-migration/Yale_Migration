@@ -40,3 +40,14 @@ into a FOLDER INVENTORY tab; matters + YM codes generated from it.
 D-18 | Existing folder tree is deep: ONE SYSTEM → OFFICE → CLIENT FILES → ENGAGED CLIENTS → TEAM →
 client | New folders created INSIDE the matching office+team branch; naming for NEW: "YM-2026-#####
 – FULL NAME" (old folders untouched per D-12).
+D-19 | OneDrive access requires DIRECT share to sharry00010@gmail.com (not a link) | Diagnosed
+2026-07-29 by API: (a) Make's "Yale's Microsoft connection" is actually authenticated as
+sharry00010@gmail.com / drive A6A69145EC56CDEC (client's OAuth reused our browser session in the
+kick-off meeting — connection label is misleading, rename it); (b) /shares/u!<link> → 403; (c)
+/drives/A0BABA3C2640082C/root/children → 200 but EMPTY = item-level permission only, no folder
+listing. Link-based shares are unusable by API tokens. Proof it works when done right: "Yale
+Migration - Client Inquiry Form.xlsx" (drive 25A20422A9E0CB73) and "Service Agreement 189 and 190"
+were shared TO the account and appear in /me/drive/sharedWithMe.
+D-20 | Build order adjusted: M2 structure + code engine BEFORE folder automation | OneDrive blocked
+on client action; nothing else depends on it. Never let a client-side blocker idle the build (D-09
+sequencing principle).

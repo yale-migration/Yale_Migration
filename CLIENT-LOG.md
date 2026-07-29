@@ -48,3 +48,8 @@ PHILIPPINES, TOWNSVILLE, Work visa BNE AND TSV — multi-office confirmed | Audi
 not manual browsing
 2026-07-26 | ss | Ops workbook full tab list seen (~27 tabs) incl. "eca password" tab (⚠️ credentials
 in sheet — raise gently later), "Nisha's TASKS", hidden "withdrawal" | Phase-2 blueprint material
+2026-07-29 | Make/API | OneDrive access diagnosed (see D-19): link share unusable; asked Robinder to
+share "YALE MIGRATION - ONE SYSTEM" DIRECTLY to sharry00010@gmail.com with Can edit | WAITING
+2026-07-29 | discovery | Already shared to us (usable now): "Yale Migration - Client Inquiry Form.xlsx"
+(= one of the internal forms we requested!) + "Service Agreement 189 and 190" folder | Use Inquiry Form
+for intake-field design (M2/M6)
