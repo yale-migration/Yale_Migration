@@ -30,10 +30,12 @@ Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: 
 - ⬜ Client walkthrough + 👍
 
 ## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY (demo-first, D-23)
-- ⬜ STEP 1 (gate): prove WRITE access — POST ZZZ-AUTOMATION-TEST at ONE SYSTEM root → 201 → DELETE (D-24)
-- ⬜ STEP 2: finish MASTER columns + dropdowns (matter grain, Office, Team, Party 2, Folder URL)
+- 🔒 STEP 1 (gate): WRITE access FAILED — 403, share is "Can view" (D-25). Client asked to switch to
+  "Can edit"; fallback = reauthorize Make OneDrive connection as owner. READ fully works.
+- 🟡 M3-A (build NOW, no write needed): STEP 2 MASTER columns + dropdowns (matter grain, Office, Team,
+  Party 2, Folder URL)
 - ⬜ STEP 3: Apps Script onEdit → assign next YM-2026-##### (free/unmetered, D-22)
-- ⬜ STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
+- 🔒 M3-B (needs write) STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
   "YM-2026-##### – FULL NAME" → 10 sub-folders → write Folder URL back to row → error alert (~12 ops)
 - ⬜ STEP 5: test 2 fake clients (TEST prefix), verify in OneDrive, delete tests
 - ⬜ STEP 6: record 90-sec screen video → send to client (FIRST SHIPPED DELIVERABLE)

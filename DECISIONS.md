@@ -68,3 +68,12 @@ priority #1, visually dramatic, cheap in credits. Deliverable = 90-second screen
 and existing-client import happen after the demo lands.
 D-24 | WRITE access must be proven before any M3 work | Read is proven (200s); "can edit" share implies
 write but is unverified. Gate: POST create ZZZ-AUTOMATION-TEST at ONE SYSTEM root → expect 201 → DELETE.
+D-25 | WRITE access test FAILED 2026-07-29: POST create folder → [403] Access denied | Config verified
+correct (POST, Content-Type: application/json, valid body, valid parent itemId). Conclusion: folder was
+shared as "Can view". Client asked to change to "Can edit" (Manage access → sharry00010@gmail.com).
+PREFERRED long-term alternative if fragility persists: re-authorize Make's OneDrive connection as the
+OWNER (robin_multani007@hotmail.com) — full rights, no share dependency, and matches the proposal's
+"runs inside your own accounts" promise. Read access is unaffected (all GETs 200).
+D-26 | M3 split into 3A (no-write) and 3B (needs write) so a client-side permission never idles the build
+| 3A = MASTER structure + YM code Apps Script + intake field map (buildable now). 3B = folder-creation
+scenario + demo video (unblocks the moment "Can edit" lands).

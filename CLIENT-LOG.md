@@ -55,3 +55,7 @@ share "YALE MIGRATION - ONE SYSTEM" DIRECTLY to sharry00010@gmail.com with Can e
 for intake-field design (M2/M6)
 2026-07-29 | Make/API | ✅ Client completed the direct share — "YALE MIGRATION - ONE SYSTEM" now visible
 via sharedWithMe with item ID captured (D-21). OneDrive fully unblocked for M2-D + M3.
+2026-07-29 | WhatsApp | New team member confirmed INFORMATION HUB = skills-assessment/visa reference
+info; told them to KEEP it (treated as reference library, excluded from client-file automation).
+2026-07-29 | ask | Write test 403 → asked client to change share from "Can view" to "Can edit" (D-25).
+Build continues on M3-A (sheet + code engine) meanwhile (D-26).
