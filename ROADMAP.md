@@ -7,14 +7,21 @@ T4 DEMO → then M4/M5 → M6/M9.**
 ---
 ## 🎯 ACTIVE TASKS (the only things being worked on right now)
 
-### T1 — Map the client-folder tree (SHARJEEL · 10 min · 4 credits)
-Purpose: capture the last unknown IDs + verify the real sub-folder structure before building.
-- ⬜ T1.1 GET children of BRISBANE OFFICE → record **CLIENT FILES** id
-- ⬜ T1.2 GET children of CLIENT FILES → record **ENGAGED CLIENTS** id (note any sibling e.g. PROSPECTIVE)
-- ⬜ T1.3 GET children of ENGAGED CLIENTS → record **team folder** ids (Filipino + Indian)
-- ⬜ T1.4 GET children of ONE real client folder → **record the ACTUAL sub-folder names**
-Expected output: 4 ids written into `ONEDRIVE-IDS.md` + a verified sub-folder list.
-Decision rule: if live sub-folders ≠ our SOP list of 10, **live wins** (D-39e).
+### T1 — Map the client-folder tree — ✅ COMPLETE (7 credits used)
+- ✅ T1.1 BRISBANE OFFICE → CLIENT FILES · INQUIRY · PARTNER SCHOOL · Service Agreement · APPLICATION FORMS
+- ✅ T1.2 CLIENT FILES → ENGAGED CLIENTS · GRANTED · REFUSED OR WITHDRAWN · **Engaged Client Tracker.xlsx**
+      (lifecycle folders = their status system, D-41)
+- ✅ T1.3 ENGAGED CLIENTS → `CLIENT FILES` (Indian, rev 239) + `CLIENT FILES- FILIPINO TEAM` (D-43/D-46)
+- ✅ T1.4a/b 698 + 738 = **~1,436 client folders**; naming chaotic; team routing confirmed (D-44..D-46)
+- ✅ T1.4c **Client folders are FLAT — no sub-folders exist** (D-47) → our structure is an improvement,
+      needs client 👍 before build
+- ✅ T1.5 Tracker readable via workbook API: `Client Tracker` + `Admissions Tracker ` (D-48)
+
+### T1b — Read the client tracker (SHARJEEL · 3 calls · next)
+- ⬜ T1b.1 usedRange dimensions ONLY (no values) → how many rows/columns
+- ⬜ T1b.2 header rows (A1:AZ3) → what they actually track
+- ⬜ T1b.3 decide M2 import source: tracker (preferred, D-42/D-45) vs folder names
+Expected output: column list + row count recorded; import path decided.
 
 ### T2 — Build the MASTER sheet (SHARJEEL · 30 min · no dependencies)
 - ⬜ T2.1 14 headers in row 1, bold, freeze row 1 (`docs/MASTER-SHEET-SPEC.md`)

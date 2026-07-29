@@ -83,3 +83,10 @@ docs/M6-AUTOREPLY-SPEC.md.
 TO ASK CLIENT (batched, low-friction): (1) real S56 client-email + follow-up wording + reminder cadence;
 (2) 2–3 raw .eml S56 emails with headers (all samples are image-only scans — no sender/subject available);
 (3) who is the supervising RMA/MARN for AI-assisted drafts; (4) optional: S56 samples for 500/485/820.
+2026-07-29 | WhatsApp (sent) | Asked client whether the ~1,400 folders in ENGAGED CLIENTS are all active
+matters or historical with only ~150 live — determines M2 import scope (D-44). AWAITING REPLY.
+2026-07-29 | discovery | T1.4c: client folders are FLAT (10 loose files, no sub-folders) — the SOP's
+10-sub-folder structure was never implemented (D-47). T1.5: the client tracker is readable via workbook
+API, 2 sheets: "Client Tracker" + "Admissions Tracker " (D-48).
+NEW ASK TO BATCH: confirm they want the 10 sub-folders for NEW clients (their SOP says so, but current
+practice is flat) — or a lighter 4–5 folder structure. Needs 👍 before T3 build.

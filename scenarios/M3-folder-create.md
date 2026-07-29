@@ -67,9 +67,16 @@ error (and an alert), not a silent duplicate or a rename. Existing client folder
    - URL `/v1.0/drives/A0BABA3C2640082C/items/{{3.body.id}}/children` ← parent = the folder just created
    - Body `{"name":"{{iterator.value}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}`
 
-⚠️ **Verify the sub-folder list against a real client folder before going live.** Our list comes from
-their SOPs; the live tree may differ. One read call on a real client folder settles it — if they differ,
-the live structure wins (we mirror reality, not the SOP).
+⚠️ **VERIFIED 2026-07-29 (T1.4c): live client folders are FLAT — zero sub-folders (D-47).** The SOP's
+10-folder structure was never implemented; staff dump loose files (e.g. `Aadhar front and back.PDF`,
+`AFP_repaired (10).pdf`, `Trascript.PDF`).
+Therefore this module DELIVERS A NEW STRUCTURE rather than mirroring one. Two consequences:
+1. **Client 👍 REQUIRED on the folder list before build** — creating 10 folders staff then ignore is worse
+   than none. Offer a lighter alternative (e.g. `01 Identity · 02 Education/Employment · 03 Financial ·
+   04 Forms & Lodgement · 05 Correspondence`) and let them choose.
+2. **Framing to the client:** "your SOP specifies this structure; in practice files sit loose — the
+   automation makes the SOP real from now on, without touching existing folders."
+Existing 1,436 folders are never restructured or renamed (D-12/D-45).
 
 ## Module 5 — Write the folder link back (Google Sheets → Update a Row)
 | Field | Value |

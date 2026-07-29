@@ -188,3 +188,20 @@ Indian-market vs 15 Filipino → CLIENT FILES = Indian/Brisbane team, CLIENT FIL
 Filipino team. D-43's assumption is now verified. Volume by visa line (folder-name tokens): 485=165,
 500=17, 491=15, 482=13, 191=9, 407=8, 189=8 — 485 is their dominant service, consistent with the email
 samples.
+D-47 | 🚨 T1.4c: CLIENT FOLDERS ARE FLAT — no sub-folders exist in practice | Real folder "485 Akshay"
+contains 10 LOOSE FILES and zero sub-folders: Aadhar front and back.PDF · AFP.pdf · AFP_repaired (10).pdf
+· AKSHAY_KUMAR_520852388.pdf · client Info sheet.pdf · Completion letter (1).PDF · detail form.pdf ·
+Passport front and back.PDF · Policy_Statement (16).pdf · Trascript.PDF (sic).
+So the SOP's "10 sub-folders (01 Enquiry … 10 Visa Outcome)" is ASPIRATIONAL, never implemented.
+Consequences: (a) our sub-folder creation is a genuine IMPROVEMENT, not a replication — frame it that way
+to the client, never claim we're copying their structure; (b) ADOPTION RISK: staff currently dump files
+flat; creating 10 folders they ignore is worse than useless → require explicit client 👍 on the structure
+and offer a lighter variant (e.g. 4–5 folders) if they prefer; (c) their file-naming SOP
+("JUAN DELA CRUZ - PASSPORT") is also not followed — real names are ad hoc with download cruft
+("(10)", "(16)", "(1)"), mixed-case extensions (.PDF/.pdf) and typos ("Trascript") → justifies the
+Phase 2 auto-rename feature with real evidence.
+D-48 | T1.5: "Engaged Client Tracker.xlsx" is readable via the Graph workbook API — 2 worksheets |
+`Client Tracker` (id {00000000-0001-0000-0000-000000000000}) and `Admissions Tracker ` (id
+{03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — note the TRAILING SPACE in "Admissions Tracker " (automation
+trap: address the sheet by ID, never by name). Next: read usedRange dimensions WITHOUT values (cheap) to
+size the register, then the header rows, before deciding the M2 import path (D-42/D-45).
