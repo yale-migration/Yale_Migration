@@ -147,3 +147,10 @@ idempotent; (b) conflictBehavior "fail" not "rename" — a name clash must alert
 matrix (D-16); (d) each API module gets an error handler set to Resume + alert + a Notes write-back so
 failures are visible where staff actually work; (e) the 10 sub-folder names come from the SOPs and MUST be
 verified against one real client folder before go-live — live structure wins over SOP if they differ.
+D-40 | Roadmap rewritten v6 with TASK IDs + expected outputs | v5 had accumulated drift: duplicated M2/M3
+lines, a stale M2 header ("blocked on client share" after the share had landed), a contradiction about the
+walk-in sheet, and my outdated "5GB" storage note (corrected in CR-003 — Brisbane alone is 68.2 GB, so
+they're on a paid plan; the real issue is governance not capacity). New structure: an ACTIVE TASKS block
+(T1 tree-walk, T2 sheet, T3 scenario, T4 demo) each with owner, duration and expected output, then module
+status, go-live gates, open client asks, and issues to raise at the demo. Rule going forward: every task
+assigned to Sharjeel states purpose, numbered steps, expected output, and the decision rule for surprises.
