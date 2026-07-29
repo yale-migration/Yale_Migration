@@ -16,5 +16,10 @@ NEVER the folder picker (it only shows the connection's own drive — see D-19/D
 | TOWNSVILLE | `A0BABA3C2640082C!s35a05b1d476a452ea47170ba470e6034` | 46 MB |
 | Work visa BNE AND TSV | `A0BABA3C2640082C!s125354abdab141af87f47d49394feec3` | 82 MB |
 | BNE → APPLICATION FORMS | `A0BABA3C2640082C!sc9b3012895a745e0a295c9967ba32c1f` | 199 MB (templates, not clients) |
-| BNE → CLIENT FILES | TBC | next read |
-| BNE → CLIENT FILES → ENGAGED CLIENTS → team → client | TBC | need real sub-folder structure |
+| BNE → CLIENT FILES | `A0BABA3C2640082C!s3b01f26d7900497a81693f9f7bff7681` | ✅ T1.1 — path to clients |
+| BNE → INQUIRY | `A0BABA3C2640082C!se4c3fed3c2f64a0c94ba085145d4903e` | ✅ T1.1 — 🔍 check for walk-in/enquiry records |
+| BNE → PARTNER SCHOOL | `A0BABA3C2640082C!sa3369935a9da43559d44a751a0ec2435` | ✅ T1.1 — education partners (M4 later) |
+| BNE → Service Agreement 189 and 190 | `A0BABA3C2640082C!sfd29f35375c4437684f89c19823e4461` | ✅ T1.1 — item seen in sharedWithMe |
+| … → ENGAGED CLIENTS | TBC (T1.2) | routing + inventory anchor |
+| … → team folders (Filipino / Indian) | TBC (T1.3) | router targets |
+| … → one real client folder | TBC (T1.4) | verify ACTUAL sub-folder names |
