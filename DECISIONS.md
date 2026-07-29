@@ -89,3 +89,14 @@ Verification after reconnect: GET /v1.0/me must return robin_multani007@hotmail.
 D-28 | Code engine uses onEdit AND a 5-minute time trigger | Apps Script onEdit does not fire for rows
 written via API (Make/Sheets API). The timer catches automation-created rows so every matter always gets
 a code. Codes never reuse numbers (max+1), so deletions can't cause collisions.
+D-29 | CORRECTS D-27 — the real root cause of write 403 is READ-ONLY OAUTH SCOPES | Make's connection
+"Yale's Microsoft connection" (Outlook icon = generic Microsoft app, not the OneDrive app) was granted:
+User.Read, Files.Read.All, Offline access, Group.Read.All, Sites.Read.All — NO Files.ReadWrite.All.
+The token cannot create anything in ANY drive, so identity was only half the story. FIX: create a new
+connection using Make's **OneDrive** app (which requests read+write scopes) AND authenticate it as the
+owner (robin_multani007@hotmail.com).
+D-30 | Use Make "Credential requests" to get the client-authenticated connection | Credentials →
+Credential requests → new request for the OneDrive app → send the generated link to the client. He signs
+in with his Microsoft account on HIS machine (no Make login, no incognito trap, no screen share). The
+connection then exists in the client's Make org, owner-authenticated, with write scopes. Verify after:
+GET /v1.0/me → robin_multani007@hotmail.com, then POST folder test → 201.

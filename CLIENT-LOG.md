@@ -62,3 +62,6 @@ Build continues on M3-A (sheet + code engine) meanwhile (D-26).
 2026-07-29 | ss | Client confirmed share = "Can edit" for sharry00010@gmail.com (also Cristelle Dumlao
 = Can edit, YALE MIGRATION = Owner, 1 link). Write still 403 → root cause is connection identity (D-27).
 Asked client for a 2-min screen share to reauthorize Make's OneDrive connection as owner (incognito).
+2026-07-29 | Make | Discovered existing Microsoft connection has READ-ONLY scopes (no Files.ReadWrite.All)
+— corrects earlier identity-only diagnosis (D-29). Sending client a Make "Credential request" link for a
+proper OneDrive connection under his own account (D-30).

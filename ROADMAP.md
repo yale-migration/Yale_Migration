@@ -31,9 +31,10 @@ Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: 
 
 ## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY (demo-first, D-23)
 - 🔒 STEP 1 (gate): WRITE 403 — NOT a permission issue (share = "Can edit" confirmed). Root cause =
-  connection identity: token is Sharjeel's account; consumer OneDrive blocks app writes into another
-  user's drive (D-27). FIX: client reauthorizes Make OneDrive connection as owner, in an INCOGNITO
-  window. Verify with GET /v1.0/me then POST test → 201.
+  TWO faults (D-29): (1) connection scopes are READ-ONLY (no Files.ReadWrite.All — it's a generic
+  Microsoft/Outlook connection, not the OneDrive app); (2) it is authenticated as Sharjeel, not the owner.
+  FIX: Make → Credentials → Credential requests → new request for the OneDrive app → send link to client
+  → he authorizes on his machine (D-30). Verify: GET /v1.0/me = robin_multani007@…, then POST test → 201.
 - 🟡 M3-A STEP 2: MASTER columns + dropdowns — SPEC WRITTEN (docs/MASTER-SHEET-SPEC.md); apply in sheet
 - 🟡 STEP 3: code engine WRITTEN (scripts/master_codes.gs — onEdit + 5-min timer so API-created rows
   also get codes); paste into Apps Script + create trigger
