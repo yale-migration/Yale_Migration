@@ -74,3 +74,12 @@ SAMPLE-S56 REQUESTS.pdf, EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx, SAMP
 THREAD.pdf, SAMPLE-485 VISA EMAIL THREAD.pdf, SAMPLE-WhatsAPP inquiry Screenshot.pdf. Staged in
 assets/samples/ (git-ignored, PII). M9 (AI email triage) + M6 (auto-reply wording) now have real
 training material — no longer blocked on samples. Deep audits of each document in progress.
+2026-07-29 | audit | ALL 6 SAMPLES AUDITED. Key outcomes: S56 detection redesigned (D-32 — Department
+never writes "Section 56"), deadline computation rule set (D-33), dormancy identified as the real pain
+(D-34, gaps of 16 and 71 days with no chase), attachment-driven + quote-stripped classification (D-35),
+Taglish language policy (D-36), MARN/compliance flag raised (D-37), and the "S56 email template" file is
+actually WhatsApp screenshots (D-38 — wording still owed). Specs written: docs/M9-EMAIL-AI-SPEC.md and
+docs/M6-AUTOREPLY-SPEC.md.
+TO ASK CLIENT (batched, low-friction): (1) real S56 client-email + follow-up wording + reminder cadence;
+(2) 2–3 raw .eml S56 emails with headers (all samples are image-only scans — no sender/subject available);
+(3) who is the supervising RMA/MARN for AI-assisted drafts; (4) optional: S56 samples for 500/485/820.

@@ -1,6 +1,7 @@
 # ROADMAP — MVP (48h) · Status legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked
 
-Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cleared; building the demo.
+Last updated: 2026-07-29 v5 — write access working (D-31); all 6 client samples audited → M9 + M6 specs
+written (D-32..D-38). Build order now: M2 sheet → M3-B folder scenario → demo video → M9/M6.
 
 ## M1 — Discovery, access & security (3h) — 🟡 90%
 - ✅ Kick-off meeting done (2026-07-25); SOPs confirmed against live practice
@@ -57,7 +58,10 @@ Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cle
 - ⬜ Third-party (school/insurer/embassy) responsible-party field · stop-on-complete · client 👍
 
 ## M6 — Enquiry capture hub (8h) — 🔒 partially (WhatsApp waits on Meta verification)
-- ⬜ FB/IG messaging → Make → ENQUIRIES tab + auto-reply w/ qualifying questions (wording 👍 needed)
+- ✅ Spec written (docs/M6-AUTOREPLY-SPEC.md): 4 qualifying questions designed from scratch (staff ask
+  none today), their real holding-reply wording reused, hard-block list for refusal/ART/AAT/cancellation,
+  language policy. Evidence: 2 of 3 paid-ad enquiries NEVER answered — the demo argument.
+- ⬜ Build FB/IG → Make → ENQUIRIES + auto-reply (wording 👍 needed before live)
 - 🔒 WhatsApp Business API channel (blocked until Meta verification = Verified)
 - ⬜ Website-form emails (arrive at client's Microsoft email) → capture rule
 - ⬜ Walk-in: fold client's walk-in sheet into ENQUIRIES (or replace w/ form)
@@ -69,8 +73,10 @@ Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cle
 ## M8 — Lead follow-up sequences (2h) — ⬜
 - ⬜ 7-day + 30-day lost-lead nudges, stop-on-reply (needs client's follow-up templates)
 
-## M9 — Gmail triage & team delegation (5h) — 🟡 SAMPLES RECEIVED (29 Jul) — needs only Gmail delegation
-- ⬜ Claude classification (categories: enquiry/documents/Home Affairs/accounts) — Haiku, tool-use JSON
+## M9 — Gmail triage & team delegation (5h) — 🟡 SPEC COMPLETE (docs/M9-EMAIL-AI-SPEC.md, D-32..D-38)
+- ✅ Spec: categories+volumes, S56 phrase set (NOT "s56" — D-32), identifier regexes, deadline math
+  (D-33), tone/signature block, safety rules, model plan
+- ⬜ Build: Haiku classifier w/ tool-use schema · quote-stripper · Mailsuite suppression · draft-only output
 - ⬜ S56 urgent flag (real S56 letter + requests + reply template now in hand) · auto-assignment by
   roster · draft replies grounded in their student/485/482 threads · Needs-Review path
 

@@ -109,3 +109,34 @@ Files.ReadWrite.All on a consumer account covers all files the user has access t
 "Can edit" shared folder. No owner re-auth needed (D-27/D-30 no longer required).
 LESSON for future modules: any new Graph call needs its scope added here first (Make hint says exactly
 this) — e.g. Mail.Send would be needed if we ever send via Outlook.
+D-32 | 🚨 S56 DETECTION MUST NOT KEY ON "Section 56"/"s56" | The Department's real letter never uses the
+term (verified against SAMPLE-S56 LETTER.pdf). It says "Request for more information for a <visa>
+(subclass NNN) visa application" and "We need more information to help us assess your application."
+Only Act cited is Privacy Act 1988. "Section 56" is YALE's internal shorthand (their SOPs). A classifier
+built on the obvious keyword would have missed 100% of real requests. Full phrase set + regexes in
+docs/M9-EMAIL-AI-SPEC.md. Keep "s56" only as a signal for STAFF-written internal email.
+D-33 | S56 deadline must be COMPUTED, not read | Letters print no due date: "You have 28 days starting
+on the day after we emailed this request". Rule: due = letter_date + 1 day + parsed days_allowed; always
+store the verbatim sentence + letter_date for human verification; never hardcode 28; attachment carries a
+second differently-anchored 28-day line (letter is authoritative); deadlines are extendable so a passed
+date must never auto-close a matter.
+D-34 | Dormancy — not reply speed — is the real pain | Measured: replies 4–58 min when engaged, but file
+gaps of 16 days (student) and 71 days (485) with NO chase; only Mailsuite read-receipts were watching.
+Therefore the dormant-file detector + templated nudge is the highest-value item in M5/M9, ranked above
+draft-reply polish.
+D-35 | Classification must be attachment-driven and quote-stripped | ~45% of thread messages are
+attachment-only with ZERO body text; every reply carries [Quoted text hidden] (9 in one thread) so an
+unstripped body classifies the PREVIOUS message. Also: suppress Mailsuite/system notifications from the
+reply path entirely; subject lines are unreliable after msg 1 (one sample misspells the client's own name).
+D-36 | Language policy: mixed Taglish/Tagalog/Ilocano is NORMAL, do not normalise | Real message mixes
+three languages in one sentence; "ate"/"po" are honorifics, not typos ("Received ate." is correct).
+Auto-replies: English default, light-"po" variant only when the thread is already Taglish (one enquirer
+had a Swedish number). Never quote fees on chat channels — money lives on email only (their own split).
+D-37 | ⚠️ COMPLIANCE FLAG raised: no MARN in any outbound email | Both sample threads are signed
+"Reyward Jake Gamol, Consultant" with no MARN, while Robinder is the RMA (MARN 1573959). Before any
+AI-assisted drafting goes live, confirm with the client: who is the supervising registered agent for
+drafts, and should the MARN appear in the signature? AI must never produce advice-shaped content (D-06).
+D-38 | Client-supplied "EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx" is MISLABELLED/EMPTY | Body
+text is only "WhatsApp Inquiry screenshots" + 5 images (duplicate of the WhatsApp PDF); 11 words total,
+assembled 18 min before handover. Yale's actual S56 client-email wording and reminder cadence are still
+outstanding. Treat like the earlier empty-docx case: flag, don't guess.
