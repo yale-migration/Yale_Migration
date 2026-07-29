@@ -30,8 +30,10 @@ Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: 
 - ⬜ Client walkthrough + 👍
 
 ## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY (demo-first, D-23)
-- 🔒 STEP 1 (gate): WRITE access FAILED — 403, share is "Can view" (D-25). Client asked to switch to
-  "Can edit"; fallback = reauthorize Make OneDrive connection as owner. READ fully works.
+- 🔒 STEP 1 (gate): WRITE 403 — NOT a permission issue (share = "Can edit" confirmed). Root cause =
+  connection identity: token is Sharjeel's account; consumer OneDrive blocks app writes into another
+  user's drive (D-27). FIX: client reauthorizes Make OneDrive connection as owner, in an INCOGNITO
+  window. Verify with GET /v1.0/me then POST test → 201.
 - 🟡 M3-A (build NOW, no write needed): STEP 2 MASTER columns + dropdowns (matter grain, Office, Team,
   Party 2, Folder URL)
 - ⬜ STEP 3: Apps Script onEdit → assign next YM-2026-##### (free/unmetered, D-22)

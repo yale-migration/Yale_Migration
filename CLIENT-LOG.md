@@ -59,3 +59,6 @@ via sharedWithMe with item ID captured (D-21). OneDrive fully unblocked for M2-D
 info; told them to KEEP it (treated as reference library, excluded from client-file automation).
 2026-07-29 | ask | Write test 403 → asked client to change share from "Can view" to "Can edit" (D-25).
 Build continues on M3-A (sheet + code engine) meanwhile (D-26).
+2026-07-29 | ss | Client confirmed share = "Can edit" for sharry00010@gmail.com (also Cristelle Dumlao
+= Can edit, YALE MIGRATION = Owner, 1 link). Write still 403 → root cause is connection identity (D-27).
+Asked client for a 2-min screen share to reauthorize Make's OneDrive connection as owner (incognito).

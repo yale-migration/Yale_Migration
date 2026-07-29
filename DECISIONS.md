@@ -77,3 +77,12 @@ OWNER (robin_multani007@hotmail.com) — full rights, no share dependency, and m
 D-26 | M3 split into 3A (no-write) and 3B (needs write) so a client-side permission never idles the build
 | 3A = MASTER structure + YM code Apps Script + intake field map (buildable now). 3B = folder-creation
 scenario + demo video (unblocks the moment "Can edit" lands).
+D-27 | ROOT CAUSE of write 403 is CONNECTION IDENTITY, not permission | Evidence 2026-07-29: Manage
+Access shows sharry00010@gmail.com = "Can edit" (plus Cristelle = Can edit, YALE MIGRATION = Owner),
+yet POST create-folder still 403. On consumer OneDrive an app token can READ shared items but cannot
+WRITE into another user's personal drive regardless of share role — the token's write scope covers only
+its own drive. FIX (also better architecture, matches proposal's "runs inside your own accounts"):
+reauthorize Make's OneDrive connection as the OWNER robin_multani007@hotmail.com.
+⚠️ MUST be done in a private/incognito window — during kick-off the OAuth silently reused Sharjeel's
+Microsoft session, which is how the wrong identity got attached in the first place (D-19).
+Verification after reconnect: GET /v1.0/me must return robin_multani007@hotmail.com, then POST test → 201.
