@@ -1,6 +1,6 @@
 /**
  * Yale Migration — MASTER DATABASE: client-code engine
- * Sheet: "MASTER"  | Columns: A Client Code, B Full Name, ... K Date Added
+ * Sheet: "MASTER" | A Client Code · B Their Client ID · C Full Name · … · T Date Added
  *
  * Why two triggers:
  *  - onEdit fires when a HUMAN types (instant feedback)
@@ -16,9 +16,10 @@
 
 var SHEET_NAME   = 'MASTER';
 var CODE_PREFIX  = 'YM-2026-';
-var COL_CODE     = 1;  // A
-var COL_NAME     = 2;  // B
-var COL_DATE     = 11; // K
+// Column positions follow MASTER-SHEET-SPEC v2 (reconciled with the client's tracker, 29 Jul 2026)
+var COL_CODE     = 1;  // A  Client Code
+var COL_NAME     = 3;  // C  Full Name  (B = their CL-### id)
+var COL_DATE     = 20; // T  Date Added
 var FIRST_ROW    = 2;  // row 1 = headers
 
 /** Fires when someone types in the sheet. */

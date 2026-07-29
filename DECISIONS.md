@@ -218,3 +218,27 @@ Row 3 blank. Implications: (a) any import must skip the title band — never ass
 (b) the "Last Updated" timestamp is MANUAL (F9) — our automation makes it live for free, a nice small win
 to show the client; (c) "(SOP Compliant)" in the subtitle means they built it to match their SOPs, so our
 MASTER columns should reconcile with theirs rather than replace them.
+D-51 | Keep BOTH ids: our `YM-2026-#####` (canonical) AND their `CL-###` (cross-reference column B) |
+Their live tracker already uses CL-001, CL-002… while the client explicitly instructed "you can assign
+code with ym-2026". Dropping their id would break every mental/paper reference their staff already has;
+dropping ours would ignore an explicit client instruction. So we carry both — ours drives automation,
+theirs stays searchable.
+D-52 | ADD the `Location` (Onshore/Offshore) column — we had missed it | Their tracker tracks it and it is
+the axis that decides which checklist to send (M4). Our earlier design only had Office+Team, which is a
+different dimension entirely.
+D-53 | Split their free-text Visa Type into `Visa Type` + `Visa Variant` | Their real values mix subclass
+with role: "485 visa dependent", "500-Subsequent Entrant". Two clean columns make the checklist selector
+and reporting possible without losing their meaning.
+D-54 | Email — not phone — is the identity/dedupe key | Contact Number is blank in ~half their live rows.
+M6's dedupe and any client matching must key on email (trimmed), with phone as a secondary signal only.
+D-55 | Their `48hr Alert` column contains a #REF! error — the alerting they wanted is BROKEN | Replaced in
+MASTER by `Next Follow-up Due` driven by automation (D-34 dormancy detector). This is the strongest single
+demo line available: they already tried to build alerting, the formula broke, and nobody noticed. Frame it
+as "the alert you already wanted, working" — never as criticism.
+D-56 | Import policy: FLAG contradictions, never silently fix them | Real example CL-002: Processing Stage
+"Documents Pending" while Visa Outcome "Granted" (impossible). The importer writes a note in Notes (col W)
+and leaves the data as-is for a human. Also: import is ONE-WAY (their tracker → MASTER) until they approve
+write-back; never touch their columns P+ manual dashboard.
+D-57 | `Admissions Tracker ` = 15 cols × 50 rows (their enrolment pipeline) | Phase 2 material for the
+enrolment tracker (LOO → deposit → CoE). Note the TRAILING SPACE in the sheet name — always address by ID
+`{03EB648D-4D8D-45EC-9A2D-89DF01C493FB}`.

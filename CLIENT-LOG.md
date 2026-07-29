@@ -94,3 +94,9 @@ practice is flat) — or a lighter 4–5 folder structure. Needs 👍 before T3 
 active-vs-historical folders question). AWAITING REPLY on both.
 2026-07-29 | discovery | T1b: tracker = 49 rows × 18 cols = ACTIVE case list, not the full register
 (D-49). Title band occupies rows 1-3; headers at row 4/5 (D-50). Last updated manually via F9, 28 Jul.
+2026-07-29 | discovery (major) | Read their live Client Tracker: 14 real columns incl. Location
+(Onshore/Offshore), Processing Stage vocabulary (Documents Pending / Documents Complete / Ready for
+Lodgement / Lodged), Visa Outcome, Grant Date, Visa Expiry, Refusal Reason, Last Contact, and a BROKEN
+"48hr Alert" (#REF!). Their client ids are CL-###. Manual dashboard block in cols P–Q counts by stage.
+MASTER spec rewritten to v2 adopting their fields + vocabulary (D-51..D-56). Admissions Tracker = 15×50,
+Phase 2 enrolment material (D-57).
