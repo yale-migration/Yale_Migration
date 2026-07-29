@@ -65,3 +65,7 @@ Asked client for a 2-min screen share to reauthorize Make's OneDrive connection 
 2026-07-29 | Make | Discovered existing Microsoft connection has READ-ONLY scopes (no Files.ReadWrite.All)
 — corrects earlier identity-only diagnosis (D-29). Sending client a Make "Credential request" link for a
 proper OneDrive connection under his own account (D-30).
+2026-07-29 | ✅ | WRITE ACCESS SOLVED entirely on our side (scope fix, D-31). Told client: "edit access was
+fine, issue was our permission settings, now resolved." No further access asks outstanding for M3.
+STILL PENDING (non-blocking): S56 letter sample, follow-up templates, WhatsApp screenshots, student/485
+email thread; Nisha + workvisa.bne@ roster gaps; Gmail delegation; WhatsApp Business verification status.

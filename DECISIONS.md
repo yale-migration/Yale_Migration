@@ -100,3 +100,12 @@ Credential requests → new request for the OneDrive app → send the generated 
 in with his Microsoft account on HIS machine (no Make login, no incognito trap, no screen share). The
 connection then exists in the client's Make org, owner-authenticated, with write scopes. Verify after:
 GET /v1.0/me → robin_multani007@hotmail.com, then POST folder test → 201.
+D-31 | ✅ WRITE ACCESS ACHIEVED 2026-07-29 07:28Z — confirms D-29 (scopes were the fault, not identity)
+| Fix applied: Make connection "Yale's Microsoft connection" scopes edited to User.Read +
+**Files.ReadWrite.All** + Group.Read.All + offline_access, then Reauthorize + Accept. POST create-folder
+returned the new item (ZZZ-AUTOMATION-TEST, id A0BABA3C2640082C!sa0345ef0e3774f79ba4c15337e31d509).
+NOTE: the connection stays authenticated as sharry00010@gmail.com — that is FINE because
+Files.ReadWrite.All on a consumer account covers all files the user has access to, including the
+"Can edit" shared folder. No owner re-auth needed (D-27/D-30 no longer required).
+LESSON for future modules: any new Graph call needs its scope added here first (Make hint says exactly
+this) — e.g. Mail.Send would be needed if we ever send via Outlook.

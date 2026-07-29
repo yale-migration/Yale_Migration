@@ -1,6 +1,6 @@
 # ROADMAP — MVP (48h) · Status legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked
 
-Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: M3 folder-creation demo.
+Last updated: 2026-07-29 v4 — WRITE ACCESS WORKING (D-31). All M3 blockers cleared; building the demo.
 
 ## M1 — Discovery, access & security (3h) — 🟡 90%
 - ✅ Kick-off meeting done (2026-07-25); SOPs confirmed against live practice
@@ -29,16 +29,13 @@ Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: 
 - ⬜ Column validation + protect header rows
 - ⬜ Client walkthrough + 👍
 
-## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY (demo-first, D-23)
-- 🔒 STEP 1 (gate): WRITE 403 — NOT a permission issue (share = "Can edit" confirmed). Root cause =
-  TWO faults (D-29): (1) connection scopes are READ-ONLY (no Files.ReadWrite.All — it's a generic
-  Microsoft/Outlook connection, not the OneDrive app); (2) it is authenticated as Sharjeel, not the owner.
-  FIX: Make → Credentials → Credential requests → new request for the OneDrive app → send link to client
-  → he authorizes on his machine (D-30). Verify: GET /v1.0/me = robin_multani007@…, then POST test → 201.
+## M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT PRIORITY · UNBLOCKED END-TO-END (D-31)
+- ✅ STEP 1 (gate): WRITE ACCESS WORKING (D-31) — fixed by adding Files.ReadWrite.All scope +
+  Reauthorize. Test folder created in client's drive, then deleted. No client action was needed.
 - 🟡 M3-A STEP 2: MASTER columns + dropdowns — SPEC WRITTEN (docs/MASTER-SHEET-SPEC.md); apply in sheet
 - 🟡 STEP 3: code engine WRITTEN (scripts/master_codes.gs — onEdit + 5-min timer so API-created rows
   also get codes); paste into Apps Script + create trigger
-- 🔒 M3-B (needs write) STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
+- ⬜ M3-B (now UNBLOCKED) STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
   "YM-2026-##### – FULL NAME" → 10 sub-folders → write Folder URL back to row → error alert (~12 ops)
 - ⬜ STEP 5: test 2 fake clients (TEST prefix), verify in OneDrive, delete tests
 - ⬜ STEP 6: record 90-sec screen video → send to client (FIRST SHIPPED DELIVERABLE)
