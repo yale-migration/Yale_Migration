@@ -86,3 +86,6 @@ reauthorize Make's OneDrive connection as the OWNER robin_multani007@hotmail.com
 ⚠️ MUST be done in a private/incognito window — during kick-off the OAuth silently reused Sharjeel's
 Microsoft session, which is how the wrong identity got attached in the first place (D-19).
 Verification after reconnect: GET /v1.0/me must return robin_multani007@hotmail.com, then POST test → 201.
+D-28 | Code engine uses onEdit AND a 5-minute time trigger | Apps Script onEdit does not fire for rows
+written via API (Make/Sheets API). The timer catches automation-created rows so every matter always gets
+a code. Codes never reuse numbers (max+1), so deletions can't cause collisions.

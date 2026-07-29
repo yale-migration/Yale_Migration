@@ -34,9 +34,9 @@ Last updated: 2026-07-29 v3 — DEMO-FIRST plan (D-22..D-24). Current priority: 
   connection identity: token is Sharjeel's account; consumer OneDrive blocks app writes into another
   user's drive (D-27). FIX: client reauthorizes Make OneDrive connection as owner, in an INCOGNITO
   window. Verify with GET /v1.0/me then POST test → 201.
-- 🟡 M3-A (build NOW, no write needed): STEP 2 MASTER columns + dropdowns (matter grain, Office, Team,
-  Party 2, Folder URL)
-- ⬜ STEP 3: Apps Script onEdit → assign next YM-2026-##### (free/unmetered, D-22)
+- 🟡 M3-A STEP 2: MASTER columns + dropdowns — SPEC WRITTEN (docs/MASTER-SHEET-SPEC.md); apply in sheet
+- 🟡 STEP 3: code engine WRITTEN (scripts/master_codes.gs — onEdit + 5-min timer so API-created rows
+  also get codes); paste into Apps Script + create trigger
 - 🔒 M3-B (needs write) STEP 4: Make scenario YM-M3-folder-create — resolve branch from Office+Team → create
   "YM-2026-##### – FULL NAME" → 10 sub-folders → write Folder URL back to row → error alert (~12 ops)
 - ⬜ STEP 5: test 2 fake clients (TEST prefix), verify in OneDrive, delete tests
