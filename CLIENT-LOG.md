@@ -90,3 +90,7 @@ matters or historical with only ~150 live — determines M2 import scope (D-44).
 API, 2 sheets: "Client Tracker" + "Admissions Tracker " (D-48).
 NEW ASK TO BATCH: confirm they want the 10 sub-folders for NEW clients (their SOP says so, but current
 practice is flat) — or a lighter 4–5 folder structure. Needs 👍 before T3 build.
+2026-07-29 | WhatsApp (sent) | Second message sent to Robinder (10-sub-folder vs lighter structure +
+active-vs-historical folders question). AWAITING REPLY on both.
+2026-07-29 | discovery | T1b: tracker = 49 rows × 18 cols = ACTIVE case list, not the full register
+(D-49). Title band occupies rows 1-3; headers at row 4/5 (D-50). Last updated manually via F9, 28 Jul.

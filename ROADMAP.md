@@ -17,11 +17,17 @@ T4 DEMO → then M4/M5 → M6/M9.**
       needs client 👍 before build
 - ✅ T1.5 Tracker readable via workbook API: `Client Tracker` + `Admissions Tracker ` (D-48)
 
-### T1b — Read the client tracker (SHARJEEL · 3 calls · next)
-- ⬜ T1b.1 usedRange dimensions ONLY (no values) → how many rows/columns
-- ⬜ T1b.2 header rows (A1:AZ3) → what they actually track
-- ⬜ T1b.3 decide M2 import source: tracker (preferred, D-42/D-45) vs folder names
-Expected output: column list + row count recorded; import path decided.
+### T1b — Read the client tracker — 🟡 2 of 3 done
+- ✅ T1b.1 usedRange = `'Client Tracker'!A1:R49` → 18 cols × 49 rows = **ACTIVE case list, not the full
+      register** (D-49). Folder tree (~1,436) = archive.
+- ✅ T1b.2 rows 1–3 are TITLE rows (headers at row 4/5; manual F9 timestamp) (D-50)
+- ⬜ T1b.3 read `A4:R10` → capture real column headers + 5 sample data rows
+- ⬜ T1b.4 map tracker columns → MASTER columns; decide reconciliation rules
+Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
+
+### T1c — Also check the second sheet (1 call)
+- ⬜ usedRange of `Admissions Tracker ` (id {03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — enrolment pipeline?
+      Relevant to Phase 2 enrolment tracker; note the TRAILING SPACE in the name (address by ID).
 
 ### T2 — Build the MASTER sheet (SHARJEEL · 30 min · no dependencies)
 - ⬜ T2.1 14 headers in row 1, bold, freeze row 1 (`docs/MASTER-SHEET-SPEC.md`)
@@ -60,7 +66,7 @@ Expected output: client sees working automation for the first time.
 - ✅ Spec written: `docs/MASTER-SHEET-SPEC.md` (matter grain D-11, Office+Team D-16)
 - ✅ Code engine written: `scripts/master_codes.gs` (onEdit + 5-min timer, D-28)
 - ⬜ Apply spec + install script (**= T2**)
-- ⬜ Import existing clients + assign codes from YM-2026-00001
+- ⬜ Import the ~48 ACTIVE matters from their tracker + assign codes from YM-2026-00001 (D-49)
 - ⬜ Protect header row · client walkthrough 👍
 - ⏸️ M2-D folder inventory — deferred until after the demo (credit budget D-22/D-23)
 

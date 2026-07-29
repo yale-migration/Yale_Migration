@@ -205,3 +205,16 @@ D-48 | T1.5: "Engaged Client Tracker.xlsx" is readable via the Graph workbook AP
 {03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — note the TRAILING SPACE in "Admissions Tracker " (automation
 trap: address the sheet by ID, never by name). Next: read usedRange dimensions WITHOUT values (cheap) to
 size the register, then the header rows, before deciding the M2 import path (D-42/D-45).
+D-49 | 🎯 M2 IMPORT SCOPE RESOLVED: the tracker is the ACTIVE work list (49 rows), the folder tree is the
+ARCHIVE (~1,436) | T1b.1: 'Client Tracker'!A1:R49 = 18 columns, 49 rows (≤48 data rows). So the tracker is
+NOT a full register — it tracks current cases only. Import plan: MVP imports the ~48 ACTIVE matters from
+the tracker (cheap, high-value, matches how staff actually work); the 1,436 historical folders remain
+archived and untouched (D-12/D-45); the full folder inventory stays deferred (D-22/D-23). This also
+partially answers the question sent to the client — but still confirm which set they consider "active".
+D-50 | Tracker structure: rows 1–3 are TITLE rows, headers start at row 4/5 | Row 1 "CLIENT PROCESSING &
+ENGAGEMENT TRACKER" + "Last Updated:" + Excel serial 46232.2069 (≈28 Jul 2026); Row 2 "Visa Case
+Processing, Client Communications & Status Tracking (SOP Compliant)" + "Press F9 to update timestamp";
+Row 3 blank. Implications: (a) any import must skip the title band — never assume row 1 = headers;
+(b) the "Last Updated" timestamp is MANUAL (F9) — our automation makes it live for free, a nice small win
+to show the client; (c) "(SOP Compliant)" in the subtitle means they built it to match their SOPs, so our
+MASTER columns should reconcile with theirs rather than replace them.
