@@ -170,3 +170,21 @@ D-43 | Team branches are ASYMMETRIC: "CLIENT FILES" (main, rev 239, legacy short
 folder literally named for the Indian team. Router rule: Team = FILIPINO → Filipino folder; anything else
 → the main CLIENT FILES folder. MUST verify by inspecting client names in each branch (Indian-market
 surnames vs Filipino) before wiring the router — assumption, not fact, until checked.
+D-44 | SCALE REALITY: ~1,436 client folders in ENGAGED CLIENTS (698 main + 738 Filipino), not the
+"100–150 active files" the client stated | Plus GRANTED and REFUSED OR WITHDRAWN branches on top.
+ENGAGED CLIENTS is evidently an accumulation of everything ever engaged, not a live-work list.
+Consequences: (a) full folder inventory would consume the entire free-tier credit budget for zero
+client-visible value → deferral (D-22/D-23) confirmed correct; (b) M2 import scope must be agreed with
+the client: all 1,436 or only genuinely active matters?; (c) any future inventory must use bulk writes.
+D-45 | Existing folder naming is CHAOTIC → the tracker file becomes the primary import source | Evidence
+from 698 real names: Title Case 282 / ALL CAPS 138 / " - " 77 / "-" 59; visa number present in only 248
+(36%); duplicates ("485 Dixit (1)"), non-client folders ("Yhardlyn docs"), family entries ("Winsley's
+Wife"), mixed prefixes ("001 Rey (SOP)", "wanero 407"). Therefore: parse-from-folder-name is unreliable;
+prefer "Engaged Client Tracker.xlsx" (D-42) as the client register and use folder names only for
+reconciliation. Reinforces D-12 (never auto-rename existing folders) — the mess is theirs to keep until
+they ask otherwise, and our new convention will visibly stand apart.
+D-46 | Team routing CONFIRMED by evidence | Surname markers in the main CLIENT FILES branch: 150
+Indian-market vs 15 Filipino → CLIENT FILES = Indian/Brisbane team, CLIENT FILES- FILIPINO TEAM =
+Filipino team. D-43's assumption is now verified. Volume by visa line (folder-name tokens): 485=165,
+500=17, 491=15, 482=13, 191=9, 407=8, 189=8 — 485 is their dominant service, consistent with the email
+samples.
