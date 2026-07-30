@@ -335,3 +335,10 @@ id A0BABA3C2640082C!sc9b3012895a745e0a295c9967ba32c1f) is that library. → HIGH
 when the S56 checklist requests an item, the automation attaches the matching form from their own folder
 (Form 80 → character/Form 80 items; QLD stat dec → cohabitation evidence; Form 1229 → child consent).
 Map requested-item → form file once, reuse forever. Note the stat dec is QLD-specific (they are Brisbane).
+D-74 | Attachment→email attribution (per Sharjeel's note "3 from 1 mail, 1 from another") | **482 Sevial
+S56 email** (Fwd: s56 request, 2 Jun 2026, CC info@) carried 3 attachments: the covering letter
+("application - 2026-06-02T111103.903.pdf"), the Request Checklist and Details, and blank **Form 80**
+(saved under the wrong name "CoE Certificate (10F566341).pdf", D-72). **485 Ronaya S56 email** (Fwd: s56
+Request for More Information - BCC2026/1472133, 17 Apr → 7 May 2026) carried 1 attachment: the **Queensland
+Statutory Declaration** template, used for the cohabitation evidence RJ requested. Confirms D-73: the form
+attached is chosen per requested item (Form 80 → character; QLD stat dec → living-together evidence).
