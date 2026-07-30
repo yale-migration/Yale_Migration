@@ -128,12 +128,14 @@ Expected output: client sees working automation for the first time.
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
 ## OPEN CLIENT ASKS
-🔴 **BLOCKING M9:** access/delegation to **`visa.lodgement@yalemigration.com.au`** — Department S56 emails
-   arrive there, not at project1@ or info@ (D-64). Without it the S56 detector can never fire.
+🔴 **BLOCKING M9 — ASKED 30 Jul, awaiting reply:** delegation on **`visa.lodgement@yalemigration.com.au`**
+   (Department S56 emails arrive there, not project1@/info@ — D-64). S56 detection cannot fire without it.
 1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
    1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
-2. ⬜ 👍 on the 5 sub-folder NAMES (proposed set in D-62)
-3. ⬜ 👍 on the drafted S56 client-email template + the 7/14/21/26 ladder wording
+2. 🟡 ASKED 30 Jul — 👍 on the 5 sub-folder NAMES (proposed set in D-62); building against the proposed
+   names in the meantime (they are a variable in the scenario, renaming later costs 2 minutes)
+3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
+   send for 👍 rather than waiting for them to author one
 4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner (now also `visa.lodgement@` — whose is it?)
 5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
 6. ⬜ 2–3 test client files for M10

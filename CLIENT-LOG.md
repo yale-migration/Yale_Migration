@@ -112,3 +112,9 @@ staged in assets/samples/ (git-ignored, PII).
 (same 482 case) · "CoE Certificate" that is actually blank Form 80 (D-72 — third mislabelling) · QLD
 Statutory Declaration template. New feature identified: auto-attach the right blank form from their own
 APPLICATION FORMS folder when an S56 requests it (D-73).
+2026-07-30 | WhatsApp (SENT) | Consolidated message sent to client covering: (a) confirmation back of the
+s56 rules we implemented (28-day legal / 26-day internal / follow-ups at 7-14-21-26, stop-on-reply);
+(b) 🔴 REQUEST: delegated access to visa.lodgement@yalemigration.com.au (blocks M9 s56 detection, D-64);
+(c) confirm the 5 sub-folder names (D-62); (d) the s56 email screenshot they offered — we will draft the
+template from their real wording (D-59/D-70); (e) flagged that "CoE Certificate (10F566341)" is actually
+blank Form 80 (D-72). AWAITING REPLY on (b), (c), (d).
