@@ -113,7 +113,9 @@ Expected output: client sees working automation for the first time.
   attachment-driven classification · draft-only output · Needs-Review path
 - ⬜ S56 urgent flag + deadline write-back to MASTER
 - ⬜ Auto-assignment by roster
-- ⚠️ **Gate before live: the MARN/supervising-RMA question (D-37) must be answered by the client**
+- ✅ MARN gate RESOLVED: supervising RMA = Robinder Pal Singh, MARN 1573959, shown in signature (D-60)
+- 🔴 **NEW BLOCKER: needs `visa.lodgement@` mailbox access — S56 emails land there (D-64)**
+- ⬜ S56 escalation ladder 7/14/21/26 days, internal due date = day 26, legal = day 28 (D-58)
 
 ### M10 — End-to-end testing with live files (2h) — ⬜ client to nominate 2–3 real cases
 ### M11 — Training, docs & handover (2h) — ⬜ guides + walkthrough + access transfer
@@ -125,14 +127,18 @@ Expected output: client sees working automation for the first time.
 - ⬜ Error handler + alert on every scenario (no silent failures)
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
-## OPEN CLIENT ASKS (batched — none block T1–T4)
-1. Their real **S56 client-email wording + reminder cadence** (file supplied was mislabelled, D-38)
-2. **2–3 raw `.eml` S56 emails** with headers (all samples are image-only scans — no sender/subject)
-3. **MARN / supervising RMA** for AI-assisted drafts (D-37, compliance)
-4. Roster gaps: **Nisha**, **workvisa.bne@** owner
-5. 👍 on M6 auto-reply questions + block-list wording (before M6 live)
-6. 2–3 test client files for M10
-7. Where the **walk-in/onsite client sheet** lives
+## OPEN CLIENT ASKS
+🔴 **BLOCKING M9:** access/delegation to **`visa.lodgement@yalemigration.com.au`** — Department S56 emails
+   arrive there, not at project1@ or info@ (D-64). Without it the S56 detector can never fire.
+1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
+   1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
+2. ⬜ 👍 on the 5 sub-folder NAMES (proposed set in D-62)
+3. ⬜ 👍 on the drafted S56 client-email template + the 7/14/21/26 ladder wording
+4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner (now also `visa.lodgement@` — whose is it?)
+5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
+6. ⬜ 2–3 test client files for M10
+7. ⬜ Where the **walk-in/onsite client sheet** lives (candidate: BNE → INQUIRY folder, id in ONEDRIVE-IDS)
+8. ⬜ Screenshot of their common S56 client email (client offered to send)
 
 ## KNOWN ISSUES TO RAISE AT THE DEMO (not blockers)
 - **`info@` drops out of threads after message 1** — the shared inbox never sees the documents or later

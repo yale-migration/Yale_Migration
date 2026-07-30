@@ -269,3 +269,50 @@ sub-folders then it is better." + "We can do it in 5 sub-folders sir." → M3 bu
 set (needs 👍 on the names): `01 Identity & Personal · 02 Education & Employment · 03 Financial &
 Sponsorship · 04 Forms & Lodgement · 05 Correspondence & Outcome`. Reduces per-client ops from ~13 to ~8
 (credit saving) and matches how staff actually work (flat today → 5 is adoptable, 10 was not).
+D-63 | 🚨 CORRECTS/REFINES D-32 — the EMAIL SUBJECT *does* say "s56" | The letter PDF never says Section 56
+(D-32 still true), BUT the Department's email subject literally begins with it:
+`s56 Request for More Information - BCC2026/1472133 - 365718045 - RONAYA, IANBER TEOGALBO
+[SEC=OFFICIAL:Sensitive, ACCESS=Personal-Privacy]`
+Pattern: `s56 Request for More Information - <FileNo> - <ApplicationID> - <SURNAME, FIRSTNAMES>
+[SEC=OFFICIAL:Sensitive, ACCESS=Personal-Privacy]`
+→ Detection is FAR more reliable than feared: subject-line match is now the PRIMARY signal, with the
+PDF phrase set (D-32) as the secondary/confirming layer. Both are needed: the subject catches the email,
+the letter yields the deadline.
+D-64 | 🚨 NEW MAILBOX DISCOVERED: Department S56 emails arrive at `visa.lodgement@yalemigration.com.au` |
+Sender: `noreply.temporary.graduate@homeaffairs.gov.au` → To: `ROBINDER PAL SINGH
+<visa.lodgement@yalemigration.com.au>`. NOT info@, NOT project1@. If M9 monitors only project1@ we would
+MISS EVERY S56 — the single highest-risk feature would silently never fire. MUST get access/delegation to
+visa.lodgement@ before M9 build. Added to open client asks as BLOCKING for M9.
+D-65 | Department sender addresses are VISA-LINE SPECIFIC | `noreply.temporary.graduate@homeaffairs.gov.au`
+(= subclass 485 Temporary Graduate). Expect siblings such as noreply.skilled@ / noreply.partner@ /
+noreply.employer@. Detection rule: match on the domain `@homeaffairs.gov.au` + subject pattern, NOT on one
+exact address, otherwise other visa lines slip through.
+D-66 | Machine-parseable metadata footer in Department emails — use it for routing | Verbatim:
+`Subclass:485; Stream:Post-Vocational Education Work; Citizenship:PHILIPPINES; State:QLD`
+Gives subclass, stream, citizenship and state in one line → auto-populates Visa Type, and citizenship
+implies the likely team (PHILIPPINES → Filipino team). Cheapest, most reliable routing signal available.
+D-67 | Internal routing chain is 3 hops — the classifier must handle forwarded chains | Department →
+visa.lodgement@ (Robinder, authorised recipient) → forwarded to philippines@ (RJ, consultant) → forwarded
+to the client. Consequences: (a) the same S56 appears in several mailboxes — dedupe by File number +
+Application ID, never by message id; (b) quote-stripping must survive nested `---------- Forwarded message
+---------` blocks; (c) "who owns this" = the consultant on the 2nd hop, not the recipient of hop 1.
+D-68 | Identifier regexes CORRECTED | File number: `BCC<YYYY>/<7 digits>` (BCC2026/1472133, BCC2025/7294045)
+✓ as before. **Application ID is 9–10 digits, not always 10** (365718045 = 9, 1540713558 = 10) → earlier
+`\b\d{10}\b` was too strict; use `\b\d{9,11}\b` with label context. Position Number varies per officer
+(60093715, 60168462) → not an identifier for matching, ignore.
+D-69 | NEVER auto-reply to Department emails | Verbatim: "This email is automatically generated. As this
+email is an automated notification we are unable to receive replies. Do not respond to this email address."
+Hard rule in the classifier: category = Department correspondence → create task + draft to CLIENT, never a
+reply to the sender.
+D-70 | Their real S56 client-email wording captured (3 examples) — template can now be drafted (closes D-59)
+| (a) "Please find attached s56 request for your application. The request concerns your skills assessment
+and completion letter. Once you receive the outcome of your skills assessment, Just forward it to me asap.
+**But for now nothing to worry about.**" (b) "Please find the attached s56 request for your compliance.
+Form 80 is also attached, kindly fill it out." (c) follow-up asking for more evidence: "As part of your s56
+request can you also share the following 1. Updated Photos together 2. Updated Joint Bank Account
+statement 3. Statutory declaration stating that you are living together — signed by the house owner or
+registered tenant (form attached) 4. Updated conversation and call logs 5. Relationship statement from your
+parent and friend (1 each) with ID'S attached."
+Tone notes: salutation is `Sir,` for male clients (vs `Hi Ma'am,` seen earlier) → gender-aware salutation;
+reassurance line "nothing to worry about" is their empathy signature — keep it; CC `info@` on client-facing
+S56 emails.
