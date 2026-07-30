@@ -342,3 +342,21 @@ S56 email** (Fwd: s56 request, 2 Jun 2026, CC info@) carried 3 attachments: the 
 Request for More Information - BCC2026/1472133, 17 Apr → 7 May 2026) carried 1 attachment: the **Queensland
 Statutory Declaration** template, used for the cohabitation evidence RJ requested. Confirms D-73: the form
 attached is chosen per requested item (Form 80 → character; QLD stat dec → living-together evidence).
+D-75 | Two newly-identified M9 unknowns are DEFERRED, not asked now — logged as an M9 START GATE |
+Raised 31 Jul while confirming which mailbox the 30 Jul delegation request referred to. Answer: it referred
+to `visa.lodgement@yalemigration.com.au` — a COMPANY-DOMAIN mailbox, distinct from both `project1@` (the
+shared Gmail we already hold, delegation is Sharjeel's own task) and the personal Microsoft account that
+holds OneDrive documents. Two gaps surfaced that the sent message does NOT cover:
+  (1) **Platform unknown** — is `yalemigration.com.au` mail on Google Workspace or Microsoft 365? This
+      decides the entire M9 connector path (Gmail modules vs Outlook/Graph). It CANNOT be inferred from the
+      OneDrive account: that is a separate personal Microsoft account and says nothing about their mail.
+  (2) **Owner unknown** — whose mailbox is `visa.lodgement@`? Delegation must be granted by the owner.
+      Same class of gap as `workvisa.bne@` (roster gap #4).
+Plus a third point the sent message omits: per D-13, human delegation does NOT let Make read a mailbox —
+Make needs its own OAuth. Ask all of it in one breath so it is one approval, not two round-trips.
+**DECISION: do not send a fourth ask now.** Rationale: (a) the client already has three unanswered items
+from 30 Jul, and a fourth dilutes all of them; (b) none of it blocks the current build — T2 (MASTER sheet),
+T3 (folder scenario) and T4 (demo) are Sheets + OneDrive only. **CONDITION: these are a hard gate on M9,
+answered BEFORE the first M9 module is built, never during.** Building a Gmail-based classifier and then
+discovering the mailbox is Microsoft-hosted would waste hours of the 48h budget. Recorded in ROADMAP under
+M9 as the "M9 START GATE".

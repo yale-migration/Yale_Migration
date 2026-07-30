@@ -118,3 +118,8 @@ s56 rules we implemented (28-day legal / 26-day internal / follow-ups at 7-14-21
 (c) confirm the 5 sub-folder names (D-62); (d) the s56 email screenshot they offered — we will draft the
 template from their real wording (D-59/D-70); (e) flagged that "CoE Certificate (10F566341)" is actually
 blank Form 80 (D-72). AWAITING REPLY on (b), (c), (d).
+2026-07-31 | internal | Clarified which mailbox the 30 Jul delegation ask covered: `visa.lodgement@
+yalemigration.com.au` (company domain) — NOT project1@, NOT the personal Microsoft account holding OneDrive.
+Two further M9 unknowns identified (mail platform Google vs Microsoft; mailbox owner) plus the Make-OAuth
+point from D-13. DECIDED NOT to ask now — client already has 3 items pending from 30 Jul and none of this
+blocks T2/T3/T4. Deferred to a single "M9 start gate" message sent the day M9 begins (D-75).

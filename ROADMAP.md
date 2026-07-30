@@ -116,6 +116,17 @@ Expected output: client sees working automation for the first time.
 - ✅ MARN gate RESOLVED: supervising RMA = Robinder Pal Singh, MARN 1573959, shown in signature (D-60)
 - 🔴 **NEW BLOCKER: needs `visa.lodgement@` mailbox access — S56 emails land there (D-64)**
 - ⬜ S56 escalation ladder 7/14/21/26 days, internal due date = day 26, legal = day 28 (D-58)
+- 🔴 **M9 START GATE — all three must be answered BEFORE the first M9 module is built (D-75).**
+  Deliberately NOT asked yet (deferred 31 Jul) so the three items already pending with the client
+  aren't diluted. Ask as one message the day M9 starts:
+  - a) delegation on `visa.lodgement@yalemigration.com.au` (already asked 30 Jul, no reply)
+  - b) **is `yalemigration.com.au` mail on Google Workspace or Microsoft 365?** Determines the whole
+       M9 connector path — Gmail modules vs Outlook/Graph. Do NOT infer from the OneDrive account
+       (that is a separate personal Microsoft account and proves nothing about their mail).
+  - c) **whose mailbox is `visa.lodgement@`?** (roster gap — same unknown as `workvisa.bne@`).
+       Needed because delegation must be granted BY the owner.
+  - d) Make needs its OWN OAuth on that mailbox, not just human delegation (D-13 pattern) — say this
+       in the same breath so it is one approval, not two round-trips.
 
 ### M10 — End-to-end testing with live files (2h) — ⬜ client to nominate 2–3 real cases
 ### M11 — Training, docs & handover (2h) — ⬜ guides + walkthrough + access transfer
@@ -137,6 +148,9 @@ Expected output: client sees working automation for the first time.
 3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
    send for 👍 rather than waiting for them to author one
 4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner (now also `visa.lodgement@` — whose is it?)
+   ⏸️ DEFERRED 31 Jul — bundled into the M9 start gate above, not asked as a separate message (D-75)
+4b. ⏸️ **Is their domain mail Google Workspace or Microsoft 365?** Deferred to the M9 start gate (D-75).
+   Blocks nothing in T2/T3/T4 — those are Sheets + OneDrive only.
 5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
 6. ⬜ 2–3 test client files for M10
 7. ⬜ Where the **walk-in/onsite client sheet** lives (candidate: BNE → INQUIRY folder, id in ONEDRIVE-IDS)
