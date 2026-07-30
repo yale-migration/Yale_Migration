@@ -242,3 +242,30 @@ write-back; never touch their columns P+ manual dashboard.
 D-57 | `Admissions Tracker ` = 15 cols × 50 rows (their enrolment pipeline) | Phase 2 material for the
 enrolment tracker (LOO → deposit → CoE). Note the TRAILING SPACE in the sheet name — always address by ID
 `{03EB648D-4D8D-45EC-9A2D-89DF01C493FB}`.
+D-58 | ✅ CLIENT ANSWERED — S56 TIMING RULES (authoritative) | Department gives 28 days; **Yale works to a
+26-day internal deadline** (2-day buffer to finish uploading). Their current practice: one follow-up at
+day 10 if the client hasn't confirmed receipt. **Client then UPGRADED the request (WhatsApp 30 Jul):
+follow up at DAY 7, 14, 21 and 26.** So the S56 escalation ladder = 7 / 14 / 21 / 26 days, with the
+internal due date at 26 (not 28), and only the Department's 28-day date recorded as the hard legal limit.
+Stop-on-reply applies: the ladder halts as soon as the client confirms receipt / sends documents.
+Post-receipt flow: documents → Migration Agent checks → MA uploads to ImmiAccount (never the consultant).
+D-59 | ✅ CLIENT ANSWERED — no S56 email template exists | They write it ad hoc. Two REAL examples now in
+hand (from the forwarded threads): "Please find attached s56 request for your application. The request
+concerns your skills assessment and completion letter…" and "Please find the attached s56 request for your
+compliance. Form 80 is also attached, kindly fill it out." → We DRAFT a template from their real wording
+and get 👍 rather than asking them to invent one. They will also send a screenshot of their common email.
+D-60 | ✅ CLIENT ANSWERED — MARN: Robinder Pal Singh is the supervising RMA and **the MARN SHOULD appear**
+in the signature | Resolves the D-37 compliance flag. Implication for M9: AI-drafted replies carry the
+consultant's name + the supervising RMA context; any content that constitutes migration advice must be
+attributable to MARN 1573959 and reviewed by Robinder before sending. Draft-only remains mandatory.
+D-61 | ✅ CLIENT ANSWERED — all ~1,400 folders are LIVE clients, retained deliberately | "Those clients are
+still active and have already been provided with our services. We retain their files because they may
+apply for another visa in the future (e.g. a Student visa client later applying for 485)." → This VALIDATES
+the matter-grain design (D-11): one person, multiple visas over time. It also means the archive is a
+returning-client asset, not dead weight → Phase 2 opportunity: renewal/next-visa prompts off Visa Expiry.
+MVP import scope stays the ~48 ACTIVE matters from their tracker (D-49); the 1,436 stay linked, untouched.
+D-62 | ✅ CLIENT ANSWERED — 5 SUB-FOLDERS, not 10 | "If there is a chance we can compress it into 5
+sub-folders then it is better." + "We can do it in 5 sub-folders sir." → M3 builds 5 sub-folders. Proposed
+set (needs 👍 on the names): `01 Identity & Personal · 02 Education & Employment · 03 Financial &
+Sponsorship · 04 Forms & Lodgement · 05 Correspondence & Outcome`. Reduces per-client ops from ~13 to ~8
+(credit saving) and matches how staff actually work (flat today → 5 is adoptable, 10 was not).

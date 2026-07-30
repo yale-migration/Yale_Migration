@@ -100,3 +100,11 @@ Lodgement / Lodged), Visa Outcome, Grant Date, Visa Expiry, Refusal Reason, Last
 "48hr Alert" (#REF!). Their client ids are CL-###. Manual dashboard block in cols P–Q counts by stage.
 MASTER spec rewritten to v2 adopting their fields + vocabulary (D-51..D-56). Admissions Tracker = 15×50,
 Phase 2 enrolment material (D-57).
+2026-07-30 | docx + WhatsApp | ✅ CLIENT ANSWERED ALL FOUR OPEN QUESTIONS ("Answer to the questions..docx"
++ WhatsApp): (1) no S56 template exists → we draft from their real emails (D-59); (2) S56 timing = 28-day
+legal / 26-day internal, follow-ups upgraded by client to 7/14/21/26 days (D-58); (3) supervising RMA =
+Robinder Pal Singh, MARN SHOULD appear (D-60 — resolves the compliance gate); (4) all ~1,400 folders are
+live retained clients for future visas (D-61); (5) 5 sub-folders not 10 (D-62).
+2026-07-30 | email | Client forwarded 2 REAL s56 email threads (485 Ronaya + 482 Sevial) with attachments
+→ gives us the Department ENVELOPE we were missing (sender, subject format, routing mailbox). 4 new PDFs
+staged in assets/samples/ (git-ignored, PII).
