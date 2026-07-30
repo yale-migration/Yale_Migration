@@ -108,3 +108,7 @@ live retained clients for future visas (D-61); (5) 5 sub-folders not 10 (D-62).
 2026-07-30 | email | Client forwarded 2 REAL s56 email threads (485 Ronaya + 482 Sevial) with attachments
 → gives us the Department ENVELOPE we were missing (sender, subject format, routing mailbox). 4 new PDFs
 staged in assets/samples/ (git-ignored, PII).
+2026-07-30 | files | 4 new PDFs audited: S56 covering letter (ImmiAccount naming, D-71) · S56 checklist
+(same 482 case) · "CoE Certificate" that is actually blank Form 80 (D-72 — third mislabelling) · QLD
+Statutory Declaration template. New feature identified: auto-attach the right blank form from their own
+APPLICATION FORMS folder when an S56 requests it (D-73).

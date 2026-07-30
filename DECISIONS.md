@@ -316,3 +316,22 @@ parent and friend (1 each) with ID'S attached."
 Tone notes: salutation is `Sir,` for male clients (vs `Hi Ma'am,` seen earlier) → gender-aware salutation;
 reassurance line "nothing to worry about" is their empathy signature — keep it; CC `info@` on client-facing
 S56 emails.
+D-71 | Department letter attachments follow ImmiAccount naming: `application - YYYY-MM-DDTHHMMSS.mmm.pdf` |
+Verified: "application - 2026-06-02T111103.903.pdf" IS the S56 covering letter (Date 01 June 2026, TRN
+EGP9XF6H64, App ID 1540713558 — the Lester Sevial 482 case). The checklist attachment instead carries the
+subject text in its filename ("s56 Request for More Information - BCC2025_7294045 - 1540713558 -Request
+Checklist and Details.pdf"). → Two usable attachment-name signals for the classifier; note the letter's
+generic name means we must open it, not trust the name.
+D-72 | 🚨 THIRD mislabelling instance: "CoE Certificate (10F566341).pdf" is actually blank **Form 80** |
+Previous instances: "Subclass 190" file containing 191 content; "EMAIL TEMPLATE FOR S56" containing
+WhatsApp screenshots. Pattern is now established and evidence-backed: **this client's filenames are
+unreliable ~consistently**. Consequences: (a) the document classifier must read CONTENT, never trust the
+filename (already in the QC gate design); (b) any import/mapping keyed on filenames needs a verification
+pass; (c) worth raising gently at the demo as a problem the automation solves for them.
+D-73 | Their S56 workflow ATTACHES standard blank forms to the client — and they already own the library |
+Evidence: Form 80 (character assessment) attached to the 482 S56; Queensland Statutory Declaration (Oaths
+Act 1867) attached for 485 relationship evidence. Their `APPLICATION FORMS` folder (BRISBANE OFFICE, 199 MB,
+id A0BABA3C2640082C!sc9b3012895a745e0a295c9967ba32c1f) is that library. → HIGH-VALUE, LOW-COST feature:
+when the S56 checklist requests an item, the automation attaches the matching form from their own folder
+(Form 80 → character/Form 80 items; QLD stat dec → cohabitation evidence; Form 1229 → child consent).
+Map requested-item → form file once, reuse forever. Note the stat dec is QLD-specific (they are Brisbane).
