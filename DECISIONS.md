@@ -503,3 +503,23 @@ CHANGE-REQUESTS.md alongside CR-003 (personal-account governance). If it lists R
 is merely default-named and ACCESS.md stands. Do NOT send the "log into Make" instruction until resolved:
 telling the Director to log into an account he has no access to is precisely the kind of avoidable error
 D-81 exists to prevent.
+D-86 | Client authorizes on HIS OWN machine — our screen-share proposal was wrong | Sharjeel challenged the
+"I share my screen, you type the password" instruction. He is right and it is withdrawn. If the client types
+the mailbox password into OUR browser, the credential passes through our machine and may be stored by our
+browser — that breaks the no-shared-credentials principle as badly as sending it over WhatsApp, and gives him
+no way to see what he authorized. **Correct arrangement: Robinder drives, on his own device, in his own
+browser.** We stay on a call to guide verbally if he wants; the keyboard is his.
+D-87 | Make **Credential requests** is the ideal feature but NOT available on our plan | Visible in the
+sidebar of the client screenshot, so worth ruling out explicitly. Purpose-built for this exact case: send a
+secure link, the third party authorizes in their own browser, the requester never sees the credential, the
+connection lands in our org. BUT **creating** requests is limited to Make **partners and enterprise
+customers** and requires an approval form (`f.make.com/r/credential-requests`); receiving/authorizing is open
+to all. We are on the **FREE** plan → cannot send. Consequences: (a) do not build the flow around it now;
+(b) it is a genuine argument for Make partner status later, and would make every future client onboarding
+cleaner — parked in CHANGE-REQUESTS as an internal capability item, not client scope.
+D-88 | Therefore Robinder needs a Make LOGIN — this is the real prerequisite, not delegation | Every viable
+arrangement has him authorizing on his own machine, which requires him signed into the Make org that holds
+our scenarios. Order of operations now: (1) verify Make → Org → Team/Users (also settles D-85 ownership);
+(2) if he is absent, invite him (Org → Team → Invite a new user, role Admin); (3) then the 5-click connection
+steps. If the Free plan blocks extra users, either bring the paid plan forward (D-15 needs it at go-live
+regardless) or use contingency C6. **The METHOD is unchanged and frozen — this is logistics, not a re-scope.**
