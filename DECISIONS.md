@@ -395,3 +395,18 @@ best first:
      client-owns-access principle, and forces a password rotation at handover.
 Prefer (a) now, offer (b) as the tidy long-term option at the demo. Do NOT ask for both permissions in one
 message (D-75 rationale: two asks = neither gets done).
+D-79 | Delegation would NOT have unblocked M9 even if it were possible — the Gmail API ignores delegated
+mailboxes | Important follow-on to D-78. Gmail delegation is a **web-UI feature only**: the Gmail API (and
+therefore Make's Gmail modules) can only access the mailbox of the account that actually authorized the
+connection. A delegate's OAuth token does NOT expose the mailboxes delegated to it. Consequences:
+  - Option (b) of D-78 (a `automation@yalemigration.com.au` seat + delegation of visa.lodgement@ to it)
+    **does not work for M9** — Make would authorize as automation@ and see only automation@'s own mail.
+    Downgrade (b) to "convenient human access + handover account", never the automation path.
+  - **The only reliable path is D-78 option (a): Make's Gmail connection authorized AS
+    `visa.lodgement@yalemigration.com.au` itself.** This is now the single blocking ask for M9.
+  - Fallback if the client resists (or nobody can sign in as that mailbox): a Gmail **forwarding rule**
+    `visa.lodgement@` → `project1@`, and M9 reads it through project1@'s existing OAuth. Acceptable for
+    classification (subject + body + attachments survive forwarding) and they already forward these
+    manually today (D-64/D-65 chain). Cost: the original envelope sender becomes the forwarder, so
+    sender-based rules must key on the ORIGINAL sender inside the forwarded body, not the From header.
+    Keep as Plan B — do not lead with it, it adds a moving part they must not later delete.
