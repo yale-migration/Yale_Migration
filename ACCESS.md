@@ -30,8 +30,31 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 | **29 Jul** | **SAMPLE-485 VISA EMAIL THREAD.pdf** | M9 classifier (2nd-highest line) |
 | **29 Jul** | **SAMPLE-WhatsAPP inquiry Screenshot.pdf** | M6 auto-reply + qualifying questions |
 
-**Materials still open:** Inquiry/Detail/Consultation forms beyond the CIS · roster gaps (Nisha,
-workvisa.bne@) · 2–3 test client files for M10.
+**Materials still open:** Inquiry/Detail/Consultation forms beyond the CIS · roster gap: **Nisha** only
+(`workvisa.bne@` closed 31 Jul = Robinder Singh, D-94) · 2–3 test client files for M10.
+
+## 📁 FILENAME → RECORD MAP (added 31 Jul — required, G2)
+The table above names materials **descriptively**; the client's folder uses **filenames**. Without this map a
+grep by filename returns nothing and the file looks un-audited (this happened 31 Jul: I declared
+`Yale MIgration Mail - email.pdf` never audited when it was logged as "SBS (482) email thread"). All 14 files
+from `access/` are staged in `assets/samples/` (git-ignored, PII). **Add a row whenever a file arrives.**
+
+| Actual filename (in `access/` + `assets/samples/`) | Recorded as | Audited |
+|---|---|---|
+| `Yale MIgration Mail - email.pdf` | SBS (482) email thread → D-94/D-95/D-96 | ✅ 26 Jul, re-audited 31 Jul |
+| `Team roster.docx` | Team roster (12 staff) → D-16 | ✅ 26 Jul |
+| `Model folder.docx` | Model folder pointer → D-18 | ✅ 26 Jul |
+| `SAMPLE-S56 LETTER.pdf` | S56 letter → D-32/D-33/D-63 | ✅ 29 Jul |
+| `SAMPLE-S56 REQUESTS.pdf` | S56 requests → D-58/D-68 | ✅ 29 Jul |
+| `EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx` | S56 reply/chase wording → D-59/D-70 | ✅ 29 Jul |
+| `SAMPLE-STUDENT VISA EMAIL THREAD.pdf` | Student (500) thread → M9 classifier | ✅ 29 Jul |
+| `SAMPLE-485 VISA EMAIL THREAD.pdf` | 485 thread → M9 classifier | ✅ 29 Jul |
+| `SAMPLE-WhatsAPP inquiry Screenshot.pdf` | WhatsApp enquiry → M6 spec | ✅ 29 Jul |
+| `Answer to the questions..docx` | Client's answers to our 4 questions → D-58..D-62 | ✅ 30 Jul |
+| `application - 2026-06-02T111103.903.pdf` | S56 covering letter (482 case) → D-71 | ✅ 30 Jul |
+| `s56 Request for More Information - BCC2025_7294045 …Request Checklist and Details.pdf (1).pdf` | S56 checklist, same 482 case → D-68 | ✅ 30 Jul |
+| `CoE Certificate (10F566341) (1).pdf` | ⚠️ MISLABELLED — actually a blank **Form 80** → D-72 | ✅ 30 Jul |
+| `form-1-version-3-statutory-declaration-form-pdf-version (6).pdf` | QLD Statutory Declaration template → D-73/D-74 | ✅ 30 Jul |
 
 ## Established working method with this client (D-90)
 **Robinder shares HIS screen and types his own passwords, on his own machine.** This is how the Make account

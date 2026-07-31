@@ -145,3 +145,11 @@ own evidence — D-64's header reads `To: ROBINDER PAL SINGH <visa.lodgement@yal
 own address, so there is no third party to chase and nothing to ask. Requirement FROZEN. Process rule added
 (D-81): verify platform capability against vendor docs BEFORE any client-facing instruction, and re-read our
 own evidence before asking the client anything.
+2026-07-31 | audit | COMPLETENESS AUDIT of everything the client has given us. Result: all 14 files from
+`access/` are staged in `assets/samples/` — nothing lost. Two gaps found and fixed: (1) filenames were never
+mapped to their descriptive records, so a grep by filename returned nothing and a file looked un-audited —
+added a FILENAME → RECORD MAP to ACCESS.md; (2) re-auditing the SBS thread closed the `workvisa.bne@` roster
+gap (= Robinder Singh, D-94) that had sat in OPEN CLIENT ASKS for 5 days with the answer in our own folder.
+New findings recorded: sponsorship is a 3-stage chain SBS → nomination → visa and payment gates progress
+(D-95, affects M4/M5); approvals are forwarded info@ → manali@ "for posting" for marketing (D-96, Phase 2).
+Remaining roster gap: Nisha only.
