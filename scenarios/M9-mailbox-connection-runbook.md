@@ -71,12 +71,23 @@ real connection is authorized by `sharry00010@gmail.com` — so `ACCESS.md` #6 (
 level during scenario building, not as a standalone action in the Credentials menu."* Confirmed by screenshot
 (D-84): the `Credentials → Connections` page has **no Add button at all** — only Search, Reauthorize, Verify.
 
-### Prep — Sharjeel, alone, before involving the client (2 min)
-1. Create a scenario named **`YM-M9 SETUP — connect mailbox`**
-2. Add one module: **Gmail → Watch emails**
-3. Save. **Do not** create the connection — that is Robinder's click.
+### Prep — Sharjeel, alone, before involving the client (~3 min, exact clicks)
+1. Left sidebar → **Scenarios** → button top-right **+ Create scenario**
+2. On the blank canvas click the big **+** circle
+3. In the app search box type **Gmail** → click the **Gmail** app
+4. In the module list choose the trigger **Watch emails** (has a clock/lightning icon — it is a trigger, so
+   it takes the first position automatically)
+5. The module settings panel opens showing a **Connection** field with **Create a connection**.
+   **DO NOT click it** — that click belongs to Robinder. Close the panel with the **X** / click outside.
+   The module will show a warning triangle. That is expected and correct.
+6. Rename the scenario: click the scenario name at the **top-left** (default "New scenario") → type exactly
+   **`YM-M9 SETUP — connect mailbox`** → Enter
+7. **Save** — the floppy-disk icon at the bottom-left of the canvas (or Cmd+S)
+8. **Leave the scenario OFF** (the toggle stays inactive). An inactive scenario does not count toward the
+   Free plan's 2-active-scenario limit, so this costs nothing.
+9. Confirm it is listed under **Scenarios** by that exact name — Robinder must be able to find it by name.
 
-This reduces his job to five clicks in a screen he cannot get lost in.
+This reduces his job to four clicks plus a Google sign-in, in a screen he cannot get lost in.
 
 ### Robinder — on his own machine (~2 min)
 4. **make.com → Sign in** with his own email. Confirm the workspace at top-left is the one with our scenarios.
