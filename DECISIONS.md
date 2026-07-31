@@ -374,3 +374,24 @@ delegation**. Robinder was not overlooking the option — it was absent from his
 and can enable it himself. Delegation also propagates slowly (up to ~24h, usually minutes), so a "still not
 there" report right after enabling is expected, not a failure. NOTE: delegation lets a HUMAN read/send; Make
 still needs its own one-time OAuth on the mailbox to draft automatically (D-13).
+D-78 | ⚠️ CORRECTS D-77's Part 2 — Gmail delegation to an EXTERNAL personal Gmail is NOT POSSIBLE |
+Surfaced 31 Jul when Sharjeel hit the admin.google.com account chooser with only `sharry00010@gmail.com`
+listed and clicking it went nowhere (expected: a consumer Gmail is not a Workspace account, so
+admin.google.com has nothing to render — Part 1 is ROBINDER's step, not ours). Re-checking the delegation
+path revealed the real constraint: **Google Workspace Gmail delegation only works between accounts in the
+SAME Workspace domain** (or an admin-configured trusted domain). `visa.lodgement@yalemigration.com.au`
+therefore CANNOT be delegated to `sharry00010@gmail.com` — the address is rejected regardless of the admin
+Mail-delegation switch. The instructions issued earlier that day would have dead-ended and, worse, looked
+like client error. Logged openly.
+**REVISED PATH — M9 does not need delegation at all.** What the automation actually requires is D-13's
+Make↔Gmail OAuth on the mailbox. Delegation was only ever for human inspection while building. Options,
+best first:
+  a) **Make OAuth only** (minimum viable): Robinder signs Make's Gmail connection in once as
+     `visa.lodgement@` (or any Workspace user with access to it). Unblocks M9 completely. ONE action.
+  b) **+ a Workspace account for us** if we also need to read real emails during the build:
+     `automation@yalemigration.com.au` — then delegation to THAT works (same domain), and it doubles as the
+     account the client keeps after handover. Costs them one Workspace seat.
+  c) Sharing `visa.lodgement@` credentials directly — REJECTED: no per-user audit trail, breaks the
+     client-owns-access principle, and forces a password rotation at handover.
+Prefer (a) now, offer (b) as the tidy long-term option at the demo. Do NOT ask for both permissions in one
+message (D-75 rationale: two asks = neither gets done).

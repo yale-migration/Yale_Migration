@@ -128,3 +128,11 @@ disabled by default on Google Workspace, so the option was absent from his scree
 Also confirmed by public DNS that their mail is Google Workspace (MX aspmx.l.google.com, D-76) — closes one
 of the two D-75 unknowns without a client round-trip. Step-by-step delegation instructions prepared (admin
 switch first, then grant access), plus reminder of the 2 small pending items and the owner question.
+2026-07-31 | internal (CORRECTION) | The delegation steps issued earlier today were partly wrong. Part 1
+(admin Mail-delegation switch) is valid but is ROBINDER's step — admin.google.com cannot open for
+sharry00010@gmail.com (a personal Gmail is not a Workspace account). Part 2 was unworkable: Gmail delegation
+only functions between accounts in the SAME Workspace domain, so visa.lodgement@ can never be delegated to
+an external personal Gmail (D-78). Revised ask is SIMPLER: M9 needs only the Make↔Gmail OAuth (D-13), which
+requires no delegation at all. Optional tidy alternative to offer at the demo: a
+automation@yalemigration.com.au Workspace seat. Nothing incorrect was sent to the client beyond the
+delegation steps; corrected message prepared before any further client contact.
