@@ -123,3 +123,8 @@ yalemigration.com.au` (company domain) — NOT project1@, NOT the personal Micro
 Two further M9 unknowns identified (mail platform Google vs Microsoft; mailbox owner) plus the Make-OAuth
 point from D-13. DECIDED NOT to ask now — client already has 3 items pending from 30 Jul and none of this
 blocks T2/T3/T4. Deferred to a single "M9 start gate" message sent the day M9 begins (D-75).
+2026-07-31 | WhatsApp (IN) | Robinder: cannot find the delegation step. Diagnosed: Gmail delegation is
+disabled by default on Google Workspace, so the option was absent from his screen, not overlooked (D-77).
+Also confirmed by public DNS that their mail is Google Workspace (MX aspmx.l.google.com, D-76) — closes one
+of the two D-75 unknowns without a client round-trip. Step-by-step delegation instructions prepared (admin
+switch first, then grant access), plus reminder of the 2 small pending items and the owner question.

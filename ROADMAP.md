@@ -120,9 +120,8 @@ Expected output: client sees working automation for the first time.
   Deliberately NOT asked yet (deferred 31 Jul) so the three items already pending with the client
   aren't diluted. Ask as one message the day M9 starts:
   - a) delegation on `visa.lodgement@yalemigration.com.au` (already asked 30 Jul, no reply)
-  - b) **is `yalemigration.com.au` mail on Google Workspace or Microsoft 365?** Determines the whole
-       M9 connector path — Gmail modules vs Outlook/Graph. Do NOT infer from the OneDrive account
-       (that is a separate personal Microsoft account and proves nothing about their mail).
+  - b) ✅ **RESOLVED 31 Jul without asking — mail is GOOGLE WORKSPACE** (MX = `aspmx.l.google.com`, D-76).
+       M9 uses Make's **Gmail** connector. Files on Microsoft, mail on Google — the two are unrelated.
   - c) **whose mailbox is `visa.lodgement@`?** (roster gap — same unknown as `workvisa.bne@`).
        Needed because delegation must be granted BY the owner.
   - d) Make needs its OWN OAuth on that mailbox, not just human delegation (D-13 pattern) — say this
@@ -139,8 +138,11 @@ Expected output: client sees working automation for the first time.
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
 ## OPEN CLIENT ASKS
-🔴 **BLOCKING M9 — ASKED 30 Jul, awaiting reply:** delegation on **`visa.lodgement@yalemigration.com.au`**
-   (Department S56 emails arrive there, not project1@/info@ — D-64). S56 detection cannot fire without it.
+🔴 **BLOCKING M9 — ASKED 30 Jul; client replied 31 Jul "can't find the delegation step":** delegation on
+   **`visa.lodgement@yalemigration.com.au`** (Department S56 emails arrive there, not project1@/info@ — D-64).
+   ROOT CAUSE FOUND (D-77): Gmail delegation is **off by default** on Google Workspace, so the option was
+   genuinely absent from his screen. Admin must enable Apps → Google Workspace → Gmail → User settings →
+   Mail delegation FIRST. Step-by-step instructions sent 31 Jul.
 1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
    1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
 2. 🟡 ASKED 30 Jul — 👍 on the 5 sub-folder NAMES (proposed set in D-62); building against the proposed

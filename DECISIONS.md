@@ -360,3 +360,17 @@ T3 (folder scenario) and T4 (demo) are Sheets + OneDrive only. **CONDITION: thes
 answered BEFORE the first M9 module is built, never during.** Building a Gmail-based classifier and then
 discovering the mailbox is Microsoft-hosted would waste hours of the 48h budget. Recorded in ROADMAP under
 M9 as the "M9 START GATE".
+D-76 | `yalemigration.com.au` mail = **GOOGLE WORKSPACE** — resolved by public DNS, not by asking the client |
+Question (1) of D-75 is CLOSED without spending a client round-trip. `dig MX yalemigration.com.au` returns
+`aspmx.l.google.com` + alt1-4 — the canonical Google Workspace MX set. Consequences: M9 uses Make's **Gmail**
+connector (not Outlook/Graph); Gmail delegation is the correct sharing mechanism; the M9 spec needs no
+rework. Confirms that the personal Microsoft account holding OneDrive documents is unrelated to their mail —
+files on Microsoft, mail on Google. **Method worth reusing: check public DNS before asking a client what
+platform they are on.**
+D-77 | ROOT CAUSE of "I can't find the delegation step" | On Google Workspace, Gmail delegation is
+**disabled by default at the domain level**. The "Grant access to your account" block does not render in
+Gmail → Settings → Accounts until an admin enables Apps → Google Workspace → Gmail → User settings → **Mail
+delegation**. Robinder was not overlooking the option — it was absent from his screen. He is the Director
+and can enable it himself. Delegation also propagates slowly (up to ~24h, usually minutes), so a "still not
+there" report right after enabling is expected, not a failure. NOTE: delegation lets a HUMAN read/send; Make
+still needs its own one-time OAuth on the mailbox to draft automatically (D-13).
