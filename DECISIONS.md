@@ -1,5 +1,27 @@
 # DECISIONS — append-only. Why things are the way they are (so we never relitigate).
 
+## ⚠️ SUPERSEDED INDEX — read this BEFORE trusting any single entry
+Append-only means corrections sit BELOW the things they correct. A future session reading an old entry in
+isolation can follow withdrawn advice. **These entries are no longer current — always read the superseding
+entry instead.** Update this index whenever a decision is corrected or withdrawn.
+
+| Superseded | Status | Read instead | What actually changed |
+|---|---|---|---|
+| D-27, D-29 | ❌ wrong diagnosis | **D-31** | OneDrive write-403 was read-only OAuth **scopes**, not connection identity |
+| D-32 | ⚠️ partly wrong | **D-63** | The S56 letter PDF never says "s56", but the email **subject does** — subject match is the primary signal |
+| D-68 (earlier regex) | ❌ too strict | **D-68 final** | Application ID is **9–11 digits**, not exactly 10 |
+| D-77 (Part 2) | ❌ unworkable | **D-78** | Gmail delegation cannot target an external personal Gmail at all |
+| D-78 (option b) | ❌ doesn't work | **D-79** | The Gmail **API cannot read delegated mailboxes** — a Workspace seat + delegation does not help M9 |
+| D-85 | ✅ withdrawn | **D-89** | Make org ownership was fine; "My Organization/My Team" is just Make's default naming |
+| D-88 (invite branch) | ❌ unnecessary | **D-89, D-90** | Robinder already holds the `info@` Make login — he set it up himself |
+| D-89 (password-reset caveat) | ❌ unnecessary | **D-90** | He typed that password himself during the joint setup; no reset needed |
+| D-75 (item b) | ✅ resolved | **D-76** | Mail platform answered by public DNS/MX — no client round-trip needed |
+
+**Current truth on the M9 mailbox (the most-churned topic):** see **D-80** (frozen requirement), **D-82**
+(alternatives ruled out), **D-83/D-84** (correct UI path), **D-90** (client works by sharing HIS screen),
+**D-91** (verification field labels + the "Choose where to start" zero-bundle trap).
+Do not reconstruct this from earlier entries.
+
 D-01 | Google Sheet = database (not SQL/Airtable) | Client already lives in Sheets; zero learning curve;
 full client visibility; AppSheet-ready for Phase 3 CRM face.
 D-02 | Personal OneDrive handled via Make connection (client OAuth'd once) | No M365 tenant exists; no
@@ -578,3 +600,23 @@ that framing is what keeps priorities straight. Standing rule added: **a spec is
 Correcting one thing for the record: we are NOT at step 0 — requirements gathering, access, discovery of
 their real system, five specs and two verified scripts are done, roughly the front half of the MVP. But they
 are all inputs. The gate that matters is T4.
+D-93 | Root-cause of the 31 Jul failures: the setup was WRITE-optimised, not READ-optimised | Sharjeel asked
+whether the earlier Claude setup was flawed or whether memory/CLAUDE.md simply were not being updated. Honest
+answer, recorded so it is not re-argued: **the setup was good but incomplete.** It solved *"never lose what we
+learn"* — 92 decisions preserved across chats and devices, which genuinely worked. It did NOT solve two other
+things, and the failures split cleanly into two types:
+  - **Type A — facts we HAD but did not retrieve** (mailbox owner sat in D-64; the screen-share history was
+    never logged). This IS a setup gap: everything was built to WRITE, nothing forced a READ before asking.
+    Storage is not retrieval. Fixed by **G2** (grep before asking) and **G3** (log operational facts too).
+  - **Type B — facts we NEVER had and I asserted anyway** (Gmail delegation limits, Make UI paths). Memory
+    and CLAUDE.md could NOT have prevented these — nothing was recorded either way. The failure was filling a
+    gap with confident recall instead of a lookup. Fixed ONLY by **G1** (verify against a primary source this
+    session). Evidence it is cheap: every search run on 31 Jul found the answer in one query.
+  - **Structural weakness found and fixed:** append-only means corrections sit BELOW what they correct, so a
+    future session reading an old entry in isolation follows withdrawn advice (D-77's Part 2, D-78's option b,
+    D-85, D-88's invite branch). Added a **SUPERSEDED INDEX at the top of this file** listing every withdrawn
+    entry and what to read instead, plus a "current truth" pointer for the most-churned topic. Maintain it
+    whenever a decision is corrected — it is now part of the END-of-session ritual.
+  - **Also:** ROADMAP drift (a stale T2 block still describing the superseded v1 sheet spec) survived because
+    updates were appended rather than reconciled. Append-only is right for DECISIONS; ROADMAP needs
+    RECONCILING. Caught by the new gates before it caused a wrong build.
