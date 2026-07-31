@@ -552,3 +552,15 @@ where **Robinder shared his screen** and the setup was done on **his machine** �
 mailbox-access plan got re-derived from scratch three times and the client's own established working method
 was queried back to him. **Rule: operational facts (who set up what, on whose machine, who holds which
 credential) go into `ACCESS.md` the day they happen — not just the technical decision.** Extends D-81.
+D-91 | Verification step corrected against Make's Gmail module docs — plus the "Choose where to start" trap |
+Field labels I had used were wrong and would have caused confusion on a live client call. Actual labels
+(apps.make.com/gmail-modules): **Filter type** (Simple filter / Gmail filter) · **Folder** · **Label** ·
+**Criteria** (All emails / Only read / Only unread) · **Mark email message(s) as read when fetched** ·
+**Limit** (max 500 — NOT "Maximum results") · Sender email address · Subject · Has the words · Doesn't have ·
+Email size · Only emails with attachments/media · **Content format** (full / raw / metadata / minimal).
+🔴 **THE REAL TRAP: Make polling triggers show a "Choose where to start" dialog on first Run once.** If
+"From now on" is selected the run returns **ZERO bundles** — which on a client call reads as "the connection
+is broken" when it is fine. Must choose **All emails** (or pick one manually) for the verification run.
+Also fixed: **Criteria = All emails** (not unread — a read mailbox would return nothing) and **Mark as read =
+NO** (never mutate the client's live mailbox during a test). **Content format = Full content** because M9
+needs message bodies, so the test should prove bodies are actually readable, not just headers.

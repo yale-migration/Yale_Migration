@@ -98,11 +98,28 @@ This reduces his job to four clicks plus a Google sign-in, in a screen he cannot
 9. Consent screen → **tick EVERY requested permission** → **Continue / Allow**
    - Partial ticks are the #1 cause of a connection that saves but fails at runtime.
 
-### Verify — do not skip
-10. Same module: Folder `INBOX`, **Mark as read: NO**, Maximum results `1`
-11. **Run once** → a real recent email must come back
-12. Connection now appears under **Credentials → Connections** as verified
-13. Rename the scenario **`YM-M9-email-triage`** — it becomes the M9 scenario. Nothing wasted.
+### Verify — do not skip. EXACT field labels (from Make's Gmail module docs)
+10. Still in the **Watch emails** module, set:
+    - **Filter type** → `Simple filter`
+    - **Folder** → `INBOX`
+    - **Criteria** → `All emails`  ← NOT "Only unread", or a read mailbox returns nothing
+    - **Mark email message(s) as read when fetched** → **NO** ← never alter the client's real mailbox
+    - **Limit** → `1`   *(the field is labelled "Limit", not "Maximum results")*
+    - Leave Sender / Subject / Has the words / attachments **empty** for the test
+    - **Content format** → `Full content` (proves bodies are readable, which M9 needs)
+11. Click **OK**
+12. Bottom-left → **Run once**
+13. 🔴 **"Choose where to start" dialog appears** — this is a polling trigger, so Make asks which email to
+    begin from. **Choose `All emails` (or pick one manually). DO NOT choose "From now on"** — that returns
+    **zero** bundles and looks like a broken connection when it is working perfectly. This is the single
+    most likely false alarm in the whole procedure.
+14. A bubble with a number appears on the module → click it → **Output** should show a real email:
+    `subject`, `from`, `text`/`html`. That is the proof.
+15. Connection now appears under **Credentials → Connections** → click **Verify** → should return green
+16. Rename the scenario **`YM-M9-email-triage`** — it becomes the M9 scenario. Nothing wasted.
+17. Leave the scenario **OFF** until M9 is actually built.
+
+**Credit cost:** 1 operation per email returned. Budget is 1,000/month on Free (D-22) — negligible.
 
 **Expected output:** a verified Gmail connection `YM Gmail — visa.lodgement` returning live messages. That
 single artifact unblocks all of M9.
