@@ -620,3 +620,27 @@ things, and the failures split cleanly into two types:
   - **Also:** ROADMAP drift (a stale T2 block still describing the superseded v1 sheet spec) survived because
     updates were appended rather than reconciled. Append-only is right for DECISIONS; ROADMAP needs
     RECONCILING. Caught by the new gates before it caused a wrong build.
+D-94 | ✅ ROSTER GAP CLOSED from a document we already held: `workvisa.bne@` = **Robinder Singh** | Found
+31 Jul by re-auditing `Yale MIgration Mail - email.pdf` (= the "SBS (482) email thread" logged 26 Jul). Every
+message in the thread CCs `Robinder Singh <workvisa.bne@yalemigration.com.au>` with his name attached. This
+was listed as an OPEN CLIENT ASK for five days while the answer sat in our own samples folder — a third
+instance of the G2 failure class (D-93 Type A). **Removed from OPEN CLIENT ASKS; only "who is Nisha" remains.**
+Also confirms Robinder runs multiple addresses: `info@` (general), `workvisa.bne@` (work-visa line, CC'd on
+482/SBS), `visa.lodgement@` (Department correspondence, D-64). M9 must treat all three as HIM, not as three
+different people, when assigning ownership.
+D-95 | SBS / employer-sponsorship pipeline observed end-to-end — feeds M4/M5 | Same thread, Jun 24 → Jul 24
+2026 (≈1 month): consultant requests outstanding docs (Trust Deed, updated menu) + issues invoice → sponsor
+pays → consultant confirms "ready for processing" → lodgement → **IMMI Acknowledgement of Application
+Received** PDF → **SBS-APPROVAL** → consultant advises the NEXT stage is the **employee nomination
+application**, required before the visa application can proceed. Consequences:
+  (a) sponsorship is a **3-stage chain** (SBS → nomination → visa) — the MASTER `Processing Stage` dropdown
+      covers single-visa flow only; sponsor matters need their own stage vocabulary (Phase 2, log as CR).
+  (b) **payment gates progress** ("once we receive the payment, we will begin finalizing") — a document-chase
+      automation must not chase docs when the real blocker is an unpaid invoice. Relevant to M5.
+  (c) Multiple third parties are CC'd on one matter (sponsor contact, a second payer, an adviser) — supports
+      the M5 **responsible-party** field: chase the right person, not always "the client".
+  (d) IMMI acknowledgement + approval PDFs are the machine-readable milestones to detect in M9.
+D-96 | Internal workflow: approvals are forwarded `info@` → `manali@` with the body "for posting" | Same
+thread, 27 Jul. Marketing (Manali, already known from the 26 Jul roster audit) posts wins to social media.
+So an approval email triggers a MARKETING action, not only a client action — a cheap, high-goodwill Phase 2
+automation (approval detected → draft post → Manali reviews). Log as a change request, not MVP scope.

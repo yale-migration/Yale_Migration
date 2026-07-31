@@ -162,7 +162,9 @@ Expected output: client sees working automation for the first time.
    names in the meantime (they are a variable in the scenario, renaming later costs 2 minutes)
 3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
    send for 👍 rather than waiting for them to author one
-4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner. NOTE: `visa.lodgement@` is NO LONGER a gap —
+4. ⬜ Roster gap: **who is Nisha?** (has a tab in the ops workbook, absent from the roster).
+   ✅ `workvisa.bne@` CLOSED 31 Jul = **Robinder Singh** (D-94, from the SBS thread we already held).
+   NOTE: `visa.lodgement@` is NO LONGER a gap —
    it is Robinder's own address per the D-64 header (D-80). Mail platform question also closed (D-76).
    Remaining roster items are low priority and block nothing.
 5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
