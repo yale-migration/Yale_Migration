@@ -8,7 +8,7 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 | 3 | "YALE BRISBANE OFFICE WORK" workbook | Shared | ✅ | S56 7/14/28-day tabs, EOI/JRP/lodgements — Phase 2 blueprint |
 | 4 | Walk-in sheet | Via OneDrive share | 🟡 | Waiting on link-share to open |
 | 5 | OneDrive (client folders) | Make connection (client OAuth) | ✅ build / 🟡 browse | Connection tested (List Drives, personal); browse waits on link |
-| 6 | Make.com | Team member, Admin | ✅ | **VERIFIED 31 Jul (D-89):** Owner = `info@yalemigration.com.au` ("Yale Migration"); us = member/Admin. Only 2 users. Plan = FREE → paid at go-live |
+| 6 | Make.com | Team member, Admin | ✅ | **VERIFIED 31 Jul (D-89/D-90):** Owner = `info@yalemigration.com.au` ("Yale Migration") — created JOINTLY on a screen-share with **Robinder sharing his screen, on his machine**, so HE holds and knows this login. Us = member/Admin, Make access ONLY (no info@ inbox, no info@ password). 2 users. Plan = FREE → paid at go-live |
 | 7 | Meta Business Manager | Employee access + assets | ✅ | Page + IG + WhatsApp assigned |
 | 8 | WhatsApp Business API | Meta verification | 🟡 | CHECK status in Security Centre ourselves |
 | 9 | project1@ Gmail | Password held → delegation in progress | 🟡 | Finish delegation; then client rotates password + 2FA |
@@ -32,6 +32,12 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 
 **Materials still open:** Inquiry/Detail/Consultation forms beyond the CIS · roster gaps (Nisha,
 workvisa.bne@) · 2–3 test client files for M10.
+
+## Established working method with this client (D-90)
+**Robinder shares HIS screen and types his own passwords, on his own machine.** This is how the Make account
+was set up and it is the pattern for every credential step. Never ask him to type a password into our
+browser, and never ask us to hold his passwords. Also record, the same day: who set up what, on whose
+machine, and who holds which credential.
 
 Revocation map (client can cut us off anytime): unshare sheets · remove Make member · remove Meta
 person · remove Gmail delegate · rotate Claude key. This is by design — say it proudly if asked.

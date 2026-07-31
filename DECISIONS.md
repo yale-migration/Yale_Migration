@@ -536,3 +536,19 @@ raised does not apply to Make. Plan confirmed **Free** in the sidebar (consisten
   - The TWO logins for the client message are now concrete: (1) Make = `info@yalemigration.com.au`;
     (2) Google, inside Make = `visa.lodgement@yalemigration.com.au`. State both addresses explicitly so
     there is no ambiguity to guess at.
+D-90 | ✅ ESTABLISHED WORKING METHOD WITH THIS CLIENT: screen-share where ROBINDER shares HIS screen and types |
+Confirmed by Sharjeel 31 Jul: the Make organization was created by the two of them together on a screen-share
+where **Robinder shared his screen** and the setup was done on **his machine** — which is why the Owner is
+`info@yalemigration.com.au`. Direct consequences:
+  - **Robinder HAS the info@ Make login and knows its password — he typed it himself.** No invite, no reset,
+    no "he may not have access" caveat. D-88's invite branch and D-89's password-reset caveat are both dead.
+  - Sharjeel has the **Make access only** — not the info@ inbox, not the info@ password. So Sharjeel cannot
+    and should not attempt the client-side login himself.
+  - **This is the proven pattern for every future client-credential step: Robinder shares HIS screen, works
+    on HIS machine, types his own passwords.** It satisfies the no-shared-credentials rule automatically and
+    the client is already comfortable with it. Do not propose "I share my screen" again (D-86).
+  - It also fully explains the "My Organization / My Team" default naming — nobody renamed the org.
+**PROCESS FAILURE TO NOT REPEAT:** this was already project history and was never written down, so the
+mailbox-access plan got re-derived from scratch three times and the client's own established working method
+was queried back to him. **Rule: operational facts (who set up what, on whose machine, who holds which
+credential) go into `ACCESS.md` the day they happen — not just the technical decision.** Extends D-81.
