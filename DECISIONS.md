@@ -481,3 +481,25 @@ the Owner. No invite required.
 Make with that address creates a NEW EMPTY Make account holding none of our scenarios — a confusing dead end.
 There are TWO logins: (1) into Make = the existing account, his own owner email; (2) into Google as
 visa.lodgement@ = inside Make, in the popup. The runbook now states this as a table before the steps.
+D-84 | ✅ CONFIRMED by screenshot: the Connections page has NO "Add" button | Client screenshot 31 Jul of
+Credentials → Connections shows only Search, "All connections", Reauthorize and Verify. No create/add
+control exists on that page. Independently confirms D-83: connections are created ONLY from inside a module
+("Create a connection" at the module's Connection field). The original runbook step was unusable, not merely
+sub-optimal. Two connections currently exist: "Make's AI Provider (default)" and "Yale's Microsoft
+connection" (authorized by Muhammad Sharjeel <sharry00010@gmail.com>, 5 shares / 6 scenarios).
+D-85 | 🔴 GOVERNANCE DISCREPANCY — the Make org may be OURS, not the client's | The same screenshot shows the
+org/team as **"My Organization / My Team"** — Make's DEFAULT naming for a personal account — and the only
+real connection is authorized by `sharry00010@gmail.com`. This contradicts `ACCESS.md` #6 which records
+"Make.com | Team member, Admin | Client = Owner", and contradicts the CLAUDE.md hard rule "Everything is
+built in CLIENT-owned accounts". Consequences if the org is in fact ours:
+  (a) **Robinder has NO login to this Make account**, so the runbook's "Robinder logs into Make" step is
+      impossible as written — the connection must instead be created by us with him typing only the Google
+      password (screen-share), or he must first be invited as a user;
+  (b) handover requires migrating every scenario + connection out of our org — expensive and error-prone;
+  (c) the client's ability to revoke us (ACCESS.md revocation map) does not actually hold for Make.
+**ACTION: verify before any further client instruction** — Make → Org → Team/Users. If it lists only
+Sharjeel → ACCESS.md #6 is WRONG and must be corrected, and the handover/ownership question goes to
+CHANGE-REQUESTS.md alongside CR-003 (personal-account governance). If it lists Robinder as Owner → the org
+is merely default-named and ACCESS.md stands. Do NOT send the "log into Make" instruction until resolved:
+telling the Director to log into an account he has no access to is precisely the kind of avoidable error
+D-81 exists to prevent.
