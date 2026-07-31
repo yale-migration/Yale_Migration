@@ -523,3 +523,16 @@ our scenarios. Order of operations now: (1) verify Make → Org → Team/Users (
 (2) if he is absent, invite him (Org → Team → Invite a new user, role Admin); (3) then the 5-click connection
 steps. If the Free plan blocks extra users, either bring the paid plan forward (D-15 needs it at go-live
 regardless) or use contingency C6. **The METHOD is unchanged and frozen — this is logistics, not a re-scope.**
+D-89 | ✅ RESOLVED — D-85 ownership worry was UNFOUNDED; no Make invite is needed | Users screenshot 31 Jul
+shows exactly 2 users: **"Yale Migration" <info@yalemigration.com.au>** (no "Leave" action → the OWNER) and
+"Muhammad Sharjeel" <sharry00010@gmail.com> (has "Leave" → member). `ACCESS.md` #6 is CORRECT: client = Owner,
+we are Team member/Admin. The "My Organization / My Team" label is merely Make's DEFAULT org/team naming and
+is NOT evidence of a personal account — D-85's concern is withdrawn, and the handover/governance worry it
+raised does not apply to Make. Plan confirmed **Free** in the sidebar (consistent with D-15: paid at go-live).
+**CONSEQUENCES — final, no further variants:**
+  - **Do NOT invite anyone.** Close the Invite-user dialog. D-88's "invite him" branch is dead.
+  - Robinder's Make login is **`info@yalemigration.com.au`** — it already exists. If he lacks the password,
+    Forgot-password sends a reset to that inbox, which he controls.
+  - The TWO logins for the client message are now concrete: (1) Make = `info@yalemigration.com.au`;
+    (2) Google, inside Make = `visa.lodgement@yalemigration.com.au`. State both addresses explicitly so
+    there is no ambiguity to guess at.

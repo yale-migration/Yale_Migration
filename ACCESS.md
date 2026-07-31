@@ -8,7 +8,7 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 | 3 | "YALE BRISBANE OFFICE WORK" workbook | Shared | ✅ | S56 7/14/28-day tabs, EOI/JRP/lodgements — Phase 2 blueprint |
 | 4 | Walk-in sheet | Via OneDrive share | 🟡 | Waiting on link-share to open |
 | 5 | OneDrive (client folders) | Make connection (client OAuth) | ✅ build / 🟡 browse | Connection tested (List Drives, personal); browse waits on link |
-| 6 | Make.com | Team member, Admin | ✅ | Client = Owner; FREE plan → paid at go-live (pass-through) |
+| 6 | Make.com | Team member, Admin | ✅ | **VERIFIED 31 Jul (D-89):** Owner = `info@yalemigration.com.au` ("Yale Migration"); us = member/Admin. Only 2 users. Plan = FREE → paid at go-live |
 | 7 | Meta Business Manager | Employee access + assets | ✅ | Page + IG + WhatsApp assigned |
 | 8 | WhatsApp Business API | Meta verification | 🟡 | CHECK status in Security Centre ourselves |
 | 9 | project1@ Gmail | Password held → delegation in progress | 🟡 | Finish delegation; then client rotates password + 2FA |
