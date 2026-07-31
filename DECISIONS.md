@@ -444,3 +444,26 @@ delay — it burns client patience and makes correct instructions look unreliabl
 would have caught all of this: public DNS/MX for the platform (D-76), vendor docs for the permission model,
 the connector's own docs for what it supports. Also: **re-read our OWN evidence before asking the client
 anything** — finding #5 above was sitting in D-64 the whole time.
+D-82 | Method CONFIRMED after second deep audit — plus a favourable finding and 5 pre-loaded contingencies |
+Second audit round (31 Jul) checked the two alternatives that could have justified another change, so that
+none is ever proposed again:
+  1. **Service account + domain-wide delegation** — Google supports it, but **Make's Gmail app exposes no
+     service-account connection type**; it would need a custom Google Cloud project + JWT through the HTTP
+     module. More moving parts, worse handover story. REJECTED on complexity, not capability.
+  2. **IMAP + app password** — basic auth was permanently disabled May 2025; app passwords survive but need
+     2SV + admin-enabled IMAP. Plan C at best.
+  → OAuth-the-mailbox-into-Make remains the only correct method. NO further alternatives exist to evaluate.
+**FAVOURABLE FINDING:** Make's Gmail connection requires Google **restricted** scopes (message bodies).
+Google blocks restricted scopes for personal @gmail.com accounts — but visa.lodgement@ is a **Workspace**
+account (D-76), so Make's standard connection works with NO custom Google Cloud OAuth client. Had the target
+been a personal Gmail, a custom OAuth client would have been mandatory. Our path is the simple one.
+**"We already have Make" — answered:** yes, and that is why this is a 2-minute job. The connection is created
+inside the client's existing Make account; nothing new is bought or installed. The one thing Make cannot
+supply is the mailbox's own sign-in — Google requires that once, from the mailbox.
+**Contingencies C1–C5 pre-documented in `scenarios/M9-mailbox-connection-runbook.md`** so that a failure at
+any step is handled INSIDE this method rather than triggering a fourth requirement change: C1 admin App
+Access Control → mark Make **Trusted** (Security → Access and data control → API controls → Manage App
+Access; verified path) · C2 2FA prompt is expected · C3 admin can reset the password · C4 if it is an ALIAS,
+authorize his primary account instead (same method) · C5 forwarding rule to project1@ as last resort.
+Runbook includes an immediate in-call verification (Watch emails, max 1, mark-as-read OFF) so the connection
+is PROVEN before the client leaves the call — no "it saved but doesn't work" follow-up.
