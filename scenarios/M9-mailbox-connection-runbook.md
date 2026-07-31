@@ -26,28 +26,60 @@ sign-in — Google requires that to come from the mailbox once.
 
 ---
 
-## Steps (screen-share, ~2 minutes)
+## 🔴 Two DIFFERENT logins — never conflate them
 
-Sharjeel drives Make; **Robinder types the password himself** — credentials are never shared, which also
-keeps us clean on the no-shared-credentials rule.
+| | Which account | Purpose |
+|---|---|---|
+| **Login 1 — into Make** | the **existing client Make account** we already build in | so the connection lands in OUR workspace |
+| **Login 2 — into Google, inside Make** | `visa.lodgement@yalemigration.com.au` | this IS the connection |
 
-1. Sharjeel: open the client's **Make** account → left nav **Credentials → Connections → + Add**
-2. Search **Gmail** → select it
-3. Name it exactly: **`YM Gmail — visa.lodgement`** (naming convention: `YM <service> — <account>`)
-4. Click **Sign in with Google** → a Google window opens
-5. **Robinder** enters `visa.lodgement@yalemigration.com.au` + password, approves 2FA on his phone
-6. On the consent screen: **tick every requested permission**, then **Continue / Allow**
+**Never tell the client to "log into Make with visa.lodgement@".** Signing up to Make with that address
+creates a NEW EMPTY Make account containing none of our scenarios — a confusing dead end. Login 1 uses the
+Make account credentials; Login 2 happens in the Google popup afterwards.
+
+## Steps — CORRECTED per Make's own docs
+
+⚠️ **Connections are created from INSIDE a module, not from the Credentials area.** Make's documentation:
+*"connections are created at the module level during scenario building, not as a standalone action in the
+Credentials menu"* — `Credentials → Connections` only *manages* existing ones. An earlier version of this
+runbook started there; that was wrong.
+
+### Prep — Sharjeel does this FIRST, alone (2 min, before involving the client)
+1. In the client's Make account, create a scenario named **`YM-M9 SETUP — connect mailbox`**
+2. Add one module: **Gmail → Watch emails**
+3. Leave it unconfigured and save. **Do not** create the connection yet.
+
+This reduces the client's job to five clicks inside a screen he cannot get lost in.
+
+### How Robinder logs into Make — he already has this
+Per `ACCESS.md` #6: **the client is the OWNER of the Make account**; we are a Team member with Admin. So
+Robinder needs no invite and no new credentials.
+- Go to **make.com → Sign in** → his own email address + his password
+- Forgot it? **Forgot password** on that screen → reset link to his own inbox. He is the Owner, so this
+  always works and needs nobody's help.
+- After signing in, confirm the org name at top-left is the Yale workspace (the one with our scenarios).
+  If it shows an empty workspace, he is in the wrong account — sign out and use his owner email.
+
+### Client step — Robinder (~2 min)
+4. Robinder logs into **Make** (the existing account — Login 1 above)
+5. Opens the scenario **`YM-M9 SETUP — connect mailbox`** → clicks the Gmail module
+6. At the Connection field clicks **Create a connection**
+7. Connection name: **`YM Gmail — visa.lodgement`** (convention `YM <service> — <account>`) → **Save**
+8. A Google window opens → he signs in as **`visa.lodgement@yalemigration.com.au`** + 2FA
+9. Consent screen → **tick EVERY requested permission** → **Continue / Allow**
    - Partial ticks are the #1 cause of a connection that saves but then fails at runtime.
-7. Connection shows as verified in the Connections list → **done, permanently**
 
-### Verify immediately (do not skip — proves it before the client leaves the call)
-8. New scenario → module **Gmail → Watch emails** → pick the new connection
-9. Folder `INBOX`, **Mark as read: NO**, Maximum results `1`
-10. **Run once** → confirm a real recent email is returned
-11. Delete the throwaway scenario. Connection stays.
+Either do 4–9 on a 2-minute screen-share (Sharjeel navigates, Robinder types the password — nothing shared),
+or send him steps 4–9 to do alone. Screen-share has the higher success rate; solo is fine if he prefers.
 
-**Expected output:** a Gmail connection named `YM Gmail — visa.lodgement` that returns live messages.
-That single artifact unblocks all of M9.
+### Verify immediately — do not skip
+10. Same module: Folder `INBOX`, **Mark as read: NO**, Maximum results `1`
+11. **Run once** → a real recent email must come back
+12. Connection now appears under **Credentials → Connections** as verified
+13. Keep the scenario (rename to `YM-M9-email-triage`) — it becomes the M9 scenario, so nothing is wasted
+
+**Expected output:** a verified Gmail connection named `YM Gmail — visa.lodgement` that returns live
+messages. That single artifact unblocks all of M9.
 
 ---
 

@@ -467,3 +467,17 @@ Access; verified path) · C2 2FA prompt is expected · C3 admin can reset the pa
 authorize his primary account instead (same method) · C5 forwarding rule to project1@ as last resort.
 Runbook includes an immediate in-call verification (Watch emails, max 1, mark-as-read OFF) so the connection
 is PROVEN before the client leaves the call — no "it saved but doesn't work" follow-up.
+D-83 | CORRECTION to the runbook steps + Robinder's Make login is already in place |
+Verified against help.make.com/connect-an-application: **connections are created from INSIDE a module**
+("Create a connection" at the module's Connection field), and `Credentials → Connections` only MANAGES
+existing connections. The first version of the runbook started at Credentials → Connections → Add — wrong
+starting point, corrected. Prep step added: Sharjeel pre-builds a scenario `YM-M9 SETUP — connect mailbox`
+containing one Gmail → Watch emails module, so the client's job is five clicks in a screen he cannot get
+lost in. That scenario is then RENAMED to `YM-M9-email-triage` and becomes the real M9 scenario — no waste.
+**Robinder needs no new Make credentials:** ACCESS.md #6 records **client = Owner** of the Make account, we
+are Team member/Admin. He signs in at make.com with his own email; Forgot-password self-serves because he is
+the Owner. No invite required.
+🔴 **NAMING TRAP to avoid in client comms:** never say "log into Make with visa.lodgement@". Signing up to
+Make with that address creates a NEW EMPTY Make account holding none of our scenarios — a confusing dead end.
+There are TWO logins: (1) into Make = the existing account, his own owner email; (2) into Google as
+visa.lodgement@ = inside Make, in the popup. The runbook now states this as a table before the steps.
