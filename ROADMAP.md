@@ -1,8 +1,8 @@
 # ROADMAP — Yale Migration MVP (48h)
 Legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked · ⏸️ deferred by decision
-**v6 — 2026-07-29** (rewritten clean: removed duplicated lines, fixed stale statuses, added task IDs +
-expected outputs, corrected storage note). Build order: **T1 tree-walk → T2 sheet → T3 folder scenario →
-T4 DEMO → then M4/M5 → M6/M9.**
+**v7 — 2026-07-31** (added FOCUS LOCK per PROCESS.md G4; corrected stale T2 detail that still described the
+superseded v1 sheet spec; single 🎯 marker so "current" is unambiguous). Build order: **T2 sheet → T3 folder
+scenario → T4 DEMO → then M4/M5 → M6/M9.** Read `STATUS.md` first.
 
 ---
 ## 🔴 FOCUS LOCK (G4, PROCESS.md) — ONE active task at a time
@@ -39,12 +39,15 @@ Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 - ⬜ usedRange of `Admissions Tracker ` (id {03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — enrolment pipeline?
       Relevant to Phase 2 enrolment tracker; note the TRAILING SPACE in the name (address by ID).
 
-### T2 — Build the MASTER sheet (SHARJEEL · 30 min · no dependencies)
-- ⬜ T2.1 14 headers in row 1, bold, freeze row 1 (`docs/MASTER-SHEET-SPEC.md`)
-- ⬜ T2.2 6 dropdowns (Visa Type, Office, Team, Stage, Assigned Consultant, Source)
-- ⬜ T2.3 Paste `scripts/master_codes.gs` → Save → Run → Allow permissions
-- ⬜ T2.4 Add time-driven trigger: `assignMissingCodes`, every 5 minutes
-- ⬜ T2.5 Test: type a name in B2 → code + date appear
+### 🎯 T2 — Build the MASTER sheet (SHARJEEL · **10 min** · no dependencies) — ACTIVE
+*(Corrected 31 Jul: previously said "14 headers / 6 dropdowns / type in B2" from the superseded v1 spec —
+stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)*
+- ⬜ T2.1 Extensions → Apps Script → paste `scripts/setup_master_sheet.gs` → Save → Run `setupEverything`
+      → Allow permissions *(builds 23 headers, 9 dropdowns, date formats, widths, header protection,
+      + the ENQUIRIES tab — replaces all the old manual steps)*
+- ⬜ T2.2 Paste `scripts/master_codes.gs` → Save → Run `assignMissingCodes` → Allow
+- ⬜ T2.3 Triggers (⏰) → Add trigger → `assignMissingCodes` → Time-driven → Minutes → **every 5 minutes**
+- ⬜ T2.4 Test: type a name in **C2** (Full Name) → code appears in **A2**, date in **T2**
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
 ### T3 — Build the folder scenario (JOINT · ~90 min · after T1+T2)
@@ -80,7 +83,7 @@ Expected output: client sees working automation for the first time.
 - ⬜ Protect header row · client walkthrough 👍
 - ⏸️ M2-D folder inventory — deferred until after the demo (credit budget D-22/D-23)
 
-### M3 — Client intake & auto folder creation (4h) — 🎯 CURRENT · unblocked end-to-end
+### M3 — Client intake & auto folder creation (4h) — next after T2 · unblocked end-to-end
 - ✅ Write-access gate passed (D-31)
 - ✅ Scenario spec written: `scenarios/M3-folder-create.md` (router, sanitizer, error handling, ladder)
 - ⬜ Build + dry-run + 5 real cases + 👍 (**= T3**) · ⬜ Demo video (**= T4**)
