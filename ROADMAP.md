@@ -5,7 +5,17 @@ expected outputs, corrected storage note). Build order: **T1 tree-walk → T2 sh
 T4 DEMO → then M4/M5 → M6/M9.**
 
 ---
-## 🎯 ACTIVE TASKS (the only things being worked on right now)
+## 🔴 FOCUS LOCK (G4, PROCESS.md) — ONE active task at a time
+
+**🎯 ACTIVE NOW: T2 — build the MASTER sheet.** Both scripts written + verified. ~10 min, no dependencies.
+**Then T3 → T4 (demo) in strict order. Nothing else.**
+
+**PARKED until T4 has shipped:** M9 mailbox connection (runbook frozen, execute at M9 start) · the Gmail
+connection video · M4–M8 build work · tracker import of the ~48 rows (after T3).
+Anything new that arrives gets ONE LINE in the right file and is dropped. See `STATUS.md`.
+
+---
+## ACTIVE TASKS
 
 ### T1 — Map the client-folder tree — ✅ COMPLETE (7 credits used)
 - ✅ T1.1 BRISBANE OFFICE → CLIENT FILES · INQUIRY · PARTNER SCHOOL · Service Agreement · APPLICATION FORMS

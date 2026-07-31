@@ -564,3 +564,17 @@ is broken" when it is fine. Must choose **All emails** (or pick one manually) fo
 Also fixed: **Criteria = All emails** (not unread — a read mailbox would return nothing) and **Mark as read =
 NO** (never mutate the client's live mailbox during a test). **Content format = Full content** because M9
 needs message bodies, so the test should prove bodies are actually readable, not just headers.
+D-92 | PROCESS OVERHAUL — 5 mandatory gates, a focus lock, and STATUS.md | Raised by Sharjeel 31 Jul: the
+build has strong architecture and memory continuity, yet the same classes of mistake recurred and nothing has
+shipped. Root-caused all five failures of 31 Jul in `PROCESS.md` — **none was a hard technical problem, all
+five were process gaps**: (1) capabilities asserted from memory before verification; (2) asking the client
+what our own D-64 evidence already answered; (3) operational facts (screen-share history, who holds which
+credential) never written down; (4) **no focus lock — a day spent on an M9 permission that is days off the
+critical path while T2/T3/T4, the client's first visible demo, sat untouched**; (5) no pre-send check, so
+instructions that dead-ended reached the client. Gates G1–G5 created and wired into `CLAUDE.md` so they load
+every session. New `STATUS.md` is now the single source of "where are we" and separates **shipped** from
+**specced** — because the honest answer to "what can the client see working?" is currently *nothing*, and
+that framing is what keeps priorities straight. Standing rule added: **a spec is not a deliverable.**
+Correcting one thing for the record: we are NOT at step 0 — requirements gathering, access, discovery of
+their real system, five specs and two verified scripts are done, roughly the front half of the MVP. But they
+are all inputs. The gate that matters is T4.
