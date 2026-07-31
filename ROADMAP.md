@@ -114,18 +114,17 @@ Expected output: client sees working automation for the first time.
 - ⬜ S56 urgent flag + deadline write-back to MASTER
 - ⬜ Auto-assignment by roster
 - ✅ MARN gate RESOLVED: supervising RMA = Robinder Pal Singh, MARN 1573959, shown in signature (D-60)
-- 🔴 **NEW BLOCKER: needs `visa.lodgement@` mailbox access — S56 emails land there (D-64)**
 - ⬜ S56 escalation ladder 7/14/21/26 days, internal due date = day 26, legal = day 28 (D-58)
-- 🔴 **M9 START GATE — all three must be answered BEFORE the first M9 module is built (D-75).**
-  Deliberately NOT asked yet (deferred 31 Jul) so the three items already pending with the client
-  aren't diluted. Ask as one message the day M9 starts:
-  - a) delegation on `visa.lodgement@yalemigration.com.au` (already asked 30 Jul, no reply)
-  - b) ✅ **RESOLVED 31 Jul without asking — mail is GOOGLE WORKSPACE** (MX = `aspmx.l.google.com`, D-76).
-       M9 uses Make's **Gmail** connector. Files on Microsoft, mail on Google — the two are unrelated.
-  - c) **whose mailbox is `visa.lodgement@`?** (roster gap — same unknown as `workvisa.bne@`).
-       Needed because delegation must be granted BY the owner.
-  - d) Make needs its OWN OAuth on that mailbox, not just human delegation (D-13 pattern) — say this
-       in the same breath so it is one approval, not two round-trips.
+- 🔴 **M9 GATE — ONE ACTION, FROZEN (D-80). Do not re-scope this again.**
+  **Robinder authorizes Make's Gmail connection once, signed in as the mailbox that receives the
+  Department emails.** That is the entire requirement. Verified against Google + Make primary docs.
+  - ✅ Platform: **Google Workspace** (MX `aspmx.l.google.com`, D-76) → Make's **Gmail** connector.
+  - ✅ Owner: **Robinder himself** — D-64 header reads `To: ROBINDER PAL SINGH <visa.lodgement@…>`.
+       No third party, no roster gap. (Alias vs separate account: he knows; either way he signs in.)
+  - ❌ NOT needed: Gmail delegation (web-UI only, invisible to the API — D-79/D-80) · the admin
+       Mail-delegation switch · admin.google.com access for us · shared credentials · a new Workspace seat.
+  - Plan C only if he refuses to authorize that mailbox: forwarding rule → project1@, or IMAP + app
+       password (needs 2SV + admin IMAP; basic auth died May 2025). Degraded — do not lead with either.
 
 ### M10 — End-to-end testing with live files (2h) — ⬜ client to nominate 2–3 real cases
 ### M11 — Training, docs & handover (2h) — ⬜ guides + walkthrough + access transfer
@@ -138,21 +137,21 @@ Expected output: client sees working automation for the first time.
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
 ## OPEN CLIENT ASKS
-🔴 **BLOCKING M9 — ASKED 30 Jul; client replied 31 Jul "can't find the delegation step":** delegation on
-   **`visa.lodgement@yalemigration.com.au`** (Department S56 emails arrive there, not project1@/info@ — D-64).
-   ROOT CAUSE FOUND (D-77): Gmail delegation is **off by default** on Google Workspace, so the option was
-   genuinely absent from his screen. Admin must enable Apps → Google Workspace → Gmail → User settings →
-   Mail delegation FIRST. Step-by-step instructions sent 31 Jul.
+🔴 **BLOCKING M9 — FROZEN WORDING (D-80), one action only.** Robinder authorizes **Make's Gmail connection**
+   once, signed in as the mailbox receiving the Department emails (`visa.lodgement@yalemigration.com.au`,
+   his own address per D-64). Delegation is NOT part of this and never was viable — it is web-UI only and
+   invisible to the Gmail API (D-79/D-80), and cannot reach an external Gmail at all (D-78).
+   History (do not repeat): asked as "delegation" 30 Jul → he could not find the option → superseded 31 Jul.
+   **This ask is now final. If it changes again, something is wrong with our verification, not the client.**
 1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
    1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
 2. 🟡 ASKED 30 Jul — 👍 on the 5 sub-folder NAMES (proposed set in D-62); building against the proposed
    names in the meantime (they are a variable in the scenario, renaming later costs 2 minutes)
 3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
    send for 👍 rather than waiting for them to author one
-4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner (now also `visa.lodgement@` — whose is it?)
-   ⏸️ DEFERRED 31 Jul — bundled into the M9 start gate above, not asked as a separate message (D-75)
-4b. ⏸️ **Is their domain mail Google Workspace or Microsoft 365?** Deferred to the M9 start gate (D-75).
-   Blocks nothing in T2/T3/T4 — those are Sheets + OneDrive only.
+4. ⬜ Roster gaps: **Nisha**, **workvisa.bne@** owner. NOTE: `visa.lodgement@` is NO LONGER a gap —
+   it is Robinder's own address per the D-64 header (D-80). Mail platform question also closed (D-76).
+   Remaining roster items are low priority and block nothing.
 5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
 6. ⬜ 2–3 test client files for M10
 7. ⬜ Where the **walk-in/onsite client sheet** lives (candidate: BNE → INQUIRY folder, id in ONEDRIVE-IDS)

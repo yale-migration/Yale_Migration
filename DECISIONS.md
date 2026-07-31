@@ -410,3 +410,37 @@ connection. A delegate's OAuth token does NOT expose the mailboxes delegated to 
     manually today (D-64/D-65 chain). Cost: the original envelope sender becomes the forwarder, so
     sender-based rules must key on the ORIGINAL sender inside the forwarded body, not the From header.
     Keep as Plan B — do not lead with it, it adds a moving part they must not later delete.
+D-80 | ✅ FINAL, VERIFIED, FROZEN: the M9 mailbox requirement is ONE action — and we already knew the owner |
+Full audit 31 Jul against primary sources (Google Workspace Admin Help, Gmail API developer docs, Make apps
+docs) after the ask shifted three times in one day. Verified findings:
+  1. **External Gmail cannot be a Gmail delegate.** Delegates must be in the SAME Workspace organization;
+     an outside consumer Gmail is rejected. (support.google.com/a/answer/7223765) → visa.lodgement@ could
+     never have been delegated to sharry00010@gmail.com. CONFIRMS D-78.
+  2. **Delegation is web-UI only — invisible to the Gmail API and to mail apps.** A delegate's OAuth token
+     does NOT expose mailboxes delegated to it; the API only ever reaches the authenticated account's own
+     mailbox. (support.google.com/mail/answer/138350, developers.google.com Gmail API delegate_settings)
+     → delegation was NEVER a viable automation path, only a human-viewing convenience. CONFIRMS D-79.
+  3. **Make's Gmail connection must be authorized by signing in AS the mailbox owner.** (apps.make.com/gmail-modules)
+     No service-account or impersonation option exists in Make's Gmail app. → OAuth as visa.lodgement@ is
+     the only first-class path.
+  4. **Basic auth (plain password) for IMAP died May 2025**; app passwords survive but need 2SV + admin
+     IMAP enabled. → IMAP is a degraded Plan C, not an alternative worth offering.
+  5. 🔴 **WE ALREADY KNEW THE OWNER.** D-64 records the header verbatim: `To: ROBINDER PAL SINGH
+     <visa.lodgement@yalemigration.com.au>`. It is ROBINDER'S OWN address — no third party to chase, no
+     roster gap. Asking "whose mailbox is it?" was asking the client something our own evidence answered.
+     It may be a separate account OR an alias on his primary account; if an alias, mail lands in his primary
+     mailbox and authorizing THAT catches it. Robinder knows which — he does not need to be asked, he just
+     signs in to the one that receives the Department emails. Either way: ONE person, ONE action.
+  6. Catching S56 at hop 1 remains correct: D-67's forward chain (visa.lodgement@ → philippines@ → client)
+     depends on a human forwarding, which is the very delay we are removing. Do not build on hop 2.
+**FROZEN ASK — do not restate, reopen or re-scope this again:** *Robinder authorizes Make's Gmail connection
+once, signed in as the mailbox that receives the Department emails.* Nothing else. No admin switch, no
+delegation, no credentials shared, no new Workspace seat, no forwarding rule.
+D-81 | PROCESS RULE (self-imposed, from the D-77→D-80 churn) | The ask to the client changed three times in
+one day (delegate→admin switch+delegate→OAuth→final) because platform constraints were asserted from memory
+and verified only afterwards. **Rule: verify every platform capability against primary vendor documentation
+BEFORE it reaches a client-facing message, never after.** A wrong instruction costs far more than a day's
+delay — it burns client patience and makes correct instructions look unreliable too. Cheap pre-checks that
+would have caught all of this: public DNS/MX for the platform (D-76), vendor docs for the permission model,
+the connector's own docs for what it supports. Also: **re-read our OWN evidence before asking the client
+anything** — finding #5 above was sitting in D-64 the whole time.

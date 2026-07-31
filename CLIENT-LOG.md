@@ -136,3 +136,12 @@ an external personal Gmail (D-78). Revised ask is SIMPLER: M9 needs only the Mak
 requires no delegation at all. Optional tidy alternative to offer at the demo: a
 automation@yalemigration.com.au Workspace seat. Nothing incorrect was sent to the client beyond the
 delegation steps; corrected message prepared before any further client contact.
+2026-07-31 | audit | DEEP AUDIT of the mailbox-access requirement against primary vendor docs (Google
+Workspace Admin Help, Gmail API docs, apps.make.com) after the ask shifted three times in one day. Outcome
+(D-80): the requirement is ONE action — Robinder authorizes Make's Gmail connection signed in as the mailbox
+that receives the Department emails. Delegation is web-UI only and invisible to the Gmail API, and cannot
+reach an external Gmail, so it was never a viable path. ALSO: the owner question was already answered by our
+own evidence — D-64's header reads `To: ROBINDER PAL SINGH <visa.lodgement@yalemigration.com.au>`, i.e. his
+own address, so there is no third party to chase and nothing to ask. Requirement FROZEN. Process rule added
+(D-81): verify platform capability against vendor docs BEFORE any client-facing instruction, and re-read our
+own evidence before asking the client anything.
