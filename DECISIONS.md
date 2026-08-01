@@ -722,3 +722,22 @@ assembles these.** Default if he has no preference: (a), for consistency.
 duplication come from ONE thing — a person-centric flat folder set does not model MULTI-PARTY matters
 (employer + workers; two partners). Disclose both together to the client; both are Phase 2 territory, and
 neither justifies complicating the MVP.
+D-101 | ❌ DROP both proposed client questions (partner folder · sponsor naming) — audited, neither qualifies |
+Applying G5 ("one ask") and G4 ("park anything non-blocking") to the two questions I had drafted for Robinder.
+Audit result: **do not ask either.**
+  **Q2 sponsor folder naming — SELF-RESOLVING, no question exists.** M3 names the folder from whatever is in
+  MASTER col C (Full Name). If a sponsorship matter is entered with the company as Full Name, the folder is
+  automatically `YM-2026-##### – THE NINES TRUST PTY LTD`. The automation needs no configuration and no client
+  decision — it is data-entry guidance for whoever types the row, which belongs in the M11 training doc, not
+  in a client message. Asking would have been asking permission for something that already works.
+  **Q1 partner relationship folder — LOW IMPACT + CHEAPLY REVERSIBLE.** Partner (820/801/300) is a minority
+  line for them (dominant volume is 500/485/482). The relationship-evidence split across 01/03/04 is a mild
+  workflow annoyance, not a blocker, and adding a 6th folder later is a **~2-minute change** (the folder list
+  is a single variable in the scenario, D-62). Better decided from real use than in the abstract — revisit at
+  M10/M11 once staff have actually filed a partner case.
+  **Employer-document duplication (D-99/CR-004): disclose LATER, not now.** It is a Phase 2 improvement, not
+  a defect, and it only becomes visible when they run a sponsorship matter. Raise it at the demo or when the
+  first sponsor matter appears. Logged, not hidden.
+**Net effect: the message to Robinder carries ONE ask — 👍 on the 5 folder names.** He already has 3 items
+pending (Gmail reauthorize, folder names, s56 screenshot); adding two more would dilute all of them, which is
+exactly the 30 Jul failure. Restraint here is the process working, not detail being lost.
