@@ -70,7 +70,8 @@ Expected output: client sees working automation for the first time.
   Claude API key · OneDrive **read + WRITE** proven (D-31), anchor IDs saved
 - ✅ Materials: team roster (D-16) · model folder (D-18) · Client Inquiry Form · full samples bundle
   29 Jul (S56 letter + requests, student & 485 threads, WhatsApp screenshots) → `ACCESS.md`
-- 🟡 Gmail delegation on project1@ (Sharjeel's own task; needed for M9 only)
+- 🟡 `project1@` needs its own Make↔Gmail OAuth to SEND (D-13) — needed for **M4**, not M9. Delegation is
+  NOT the mechanism (D-79/D-80). Ask at M4 build time.
 - 🟡 WhatsApp Business verification — check ourselves in Meta Security Centre (M6 only)
 - ⬜ 2FA + password rotation on project1@ (client, non-blocking)
 
@@ -150,18 +151,19 @@ Expected output: client sees working automation for the first time.
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
 ## OPEN CLIENT ASKS
-🔴 **BLOCKING M9 — FROZEN WORDING (D-80), one action only.** Robinder authorizes **Make's Gmail connection**
-   once, signed in as the mailbox receiving the Department emails (`visa.lodgement@yalemigration.com.au`,
-   his own address per D-64). Delegation is NOT part of this and never was viable — it is web-UI only and
-   invisible to the Gmail API (D-79/D-80), and cannot reach an external Gmail at all (D-78).
-   History (do not repeat): asked as "delegation" 30 Jul → he could not find the option → superseded 31 Jul.
-   **This ask is now final. If it changes again, something is wrong with our verification, not the client.**
+🟢 **M9 MAILBOX CONNECTION — DONE 31 Jul, pending our test.** Robinder authorized Make's Gmail connection
+   as `visa.lodgement@yalemigration.com.au` (his own address, D-64). First attempt returned `[403] insufficient
+   authentication scopes` (D-97 — consent boxes not all ticked); reauthorized. **NEXT: we run the Run-once test
+   per D-91 to prove it reads real mail. Green connection alone is NOT proof.** If 403 persists → admin marks
+   Make **Trusted** (Security → Access and data control → API controls → Manage App Access).
+   Method was frozen at D-80 and did not change again.
 1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
    1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
 2. 🟡 ASKED 30 Jul — 👍 on the 5 sub-folder NAMES (proposed set in D-62); building against the proposed
    names in the meantime (they are a variable in the scenario, renaming later costs 2 minutes)
-3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
-   send for 👍 rather than waiting for them to author one
+3. 🟡 ASKED (re-asked 31 Jul) — their s56 CLIENT email screenshot. We DRAFT the template from their real
+   wording (D-70) and send for 👍 rather than waiting for them to author one. **Not blocking** — draftable now.
+   *(Merged with former item 8, which was the same ask duplicated.)*
 4. ⬜ Roster gap: **who is Nisha?** (has a tab in the ops workbook, absent from the roster).
    ✅ `workvisa.bne@` CLOSED 31 Jul = **Robinder Singh** (D-94, from the SBS thread we already held).
    NOTE: `visa.lodgement@` is NO LONGER a gap —
@@ -170,7 +172,6 @@ Expected output: client sees working automation for the first time.
 5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
 6. ⬜ 2–3 test client files for M10
 7. ⬜ Where the **walk-in/onsite client sheet** lives (candidate: BNE → INQUIRY folder, id in ONEDRIVE-IDS)
-8. ⬜ Screenshot of their common S56 client email (client offered to send)
 
 ## KNOWN ISSUES TO RAISE AT THE DEMO (not blockers)
 - **`info@` drops out of threads after message 1** — the shared inbox never sees the documents or later

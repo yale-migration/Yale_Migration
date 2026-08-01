@@ -761,3 +761,22 @@ Doubles as **M11 staff training material** — the one-line disambiguation rule 
 takeaway: **"if it came FROM the Department it is 05; if we sent it TO the Department it is 04."**
 Send the chart to the client only if he asks for detail — the folder-names message needs one ask (👍), and a
 9-table chart would bury it (G5).
+D-104 | ✅ CLIENT WANTED DIFFERENT FOLDER NAMES PER VISA TYPE — Sharjeel argued for consistency and was RIGHT |
+New client position learned 31 Jul: **Robinder asked for different sub-folder NAMES for different visa types.**
+Sharjeel pushed back and proposed **one consistent folder-name set for every visa, with different CONTENTS
+inside**, and the client accepted. **This was the correct call** and independently matches D-100:
+  1. **Adoption is the binding constraint.** Staff dump files flat today (D-47) — the SOP's 10-folder structure
+     was never implemented. Per-visa NAMES force staff to recall which naming scheme applies before every save;
+     the predictable result is abandonment, and folders staff ignore are worse than none.
+  2. **Training and handover.** One set can be taught once (M11) and applies to a new hire on day one. N sets
+     means N things to learn and N ways to file wrongly.
+  3. **Automation simplicity.** Per-visa names = a router with a branch per subclass, more Make ops (credit
+     budget, D-22), more failure paths, and a rename request touching N places instead of one variable.
+  4. **Cross-matter navigation.** A returning client with 500 → 485 → 190 (D-11: one row per matter) would get
+     three differently-named structures for the same human. Consistency means muscle memory works everywhere.
+  5. **The real requirement was never the names.** What Robinder actually needs is that a 482 file holds
+     employer documents and a 500 file holds a CoE — that is CONTENTS, delivered by the checklist layer (M4)
+     and documented in `docs/FOLDER-CONTENTS-CHART.md`. His need is fully met without varying the names.
+**Recorded because it is a client-preference decision that could be reopened later:** if he raises it again,
+the answer is the chart, not a new folder scheme. Sharjeel's instinct here was better than the client's
+original request — note it as a precedent for pushing back with reasoning rather than complying by default.
