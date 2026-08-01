@@ -831,3 +831,24 @@ checklist layer and to file naming. **Do not encode 7 checklist variants into fo
 **STATUS: folder structure is now an OPEN DESIGN QUESTION to settle WITH Robinder using this evidence — not to
 be decided unilaterally a fourth time.** D-105's 5-category model is the starting proposal but must be
 adjusted for findings 1, 3 and 4 before it goes to him.
+D-107 | Folder structure DRAFTED as 3 sets — `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` | SET 1 Standard
+(500/485/skilled/visitor, 7 folders) · SET 2 Work-Employer (482/407/SBS/Nomination, 7 folders, incl. the
+`04 Business & Sponsorship` folder Robinder asked for — P&L, licensing, ABN/ACN, Trust Deed) · SET 3
+Partner-Family (820/801/300/101/802, **5 folders, PARTY-based**: Applicant / Sponsor / Relationship Evidence /
+Forms / Correspondence, mirroring their own checklist headings). Every folder's contents trace to a heading or
+line item in Yale's own checklists. Last two folder positions are identical in all three sets so staff muscle
+memory survives. Implementation = one Set-variable lookup, 3 cases, ~1 extra Make op.
+Three genuine open questions for the client (and only three): 👍 on names · how the 801 second evidence round
+is stored (sub-folder vs new matter row) · whether 7 folders is acceptable or he wants Health & Character
+merged back into Identity to compress.
+D-108 | Nisha — what we actually know, and it is NOT a blocker | Evidence: the ops workbook "YALE BRISBANE
+OFFICE WORK" contains a tab named **"Nisha's TASKS"** (seen in the 26 Jul tab audit, ~27 tabs), but **Nisha
+does not appear in the 12-person team roster** the client supplied. So she is someone with an assigned task
+list who is not on the roster — likely admin/support staff, a former staff member, or a contractor. **Impact:
+M9/M6 auto-assignment resolves against the roster table; an unknown name cannot receive an assignment.** If
+she is active, she needs a roster row (name + team + visa lines + office). If she is not, her tab is stale
+Phase-2 material. **Not a blocker** — assignment falls back to Unassigned, and it affects no MVP build step.
+Ask casually at the demo, not as a standalone message.
+⚠️ Related finding from the same tab audit, still unactioned: the workbook has an **"eca password" tab holding
+credentials in a spreadsheet**, plus a hidden "withdrawal" tab. The password tab is a real security issue to
+raise gently at handover (M11) — logged here so it is not lost again.
