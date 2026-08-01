@@ -694,3 +694,31 @@ company**, Variant = Sponsor, Party 2 = the sponsored worker.
 financials) belong to the EMPLOYER, who may sponsor several workers — filing them inside each worker's folder
 duplicates them. MVP accepts the duplication (simple, one structure, no staff decisions); Phase 2 should give
 employers their own folder with worker matters linked to it. Do NOT solve this in MVP.
+D-100 | ✅ ONE folder set for ALL visa types — folders = WHERE documents go, checklists = WHAT is required |
+Question raised 31 Jul: do partner / skilled / work visas each need their own sub-folder set? **No — same 5
+for every matter type.** Reasoning:
+  1. **Adoption is the binding constraint.** Staff dump files flat today (D-47). One structure learned once
+     is adoptable; a per-visa-type structure forces a decision before every save and will be ignored — and
+     folders staff ignore are worse than no folders (D-47c).
+  2. **The categories are functional, not visa-specific.** Every matter has identity, forms and
+     correspondence regardless of subclass.
+  3. **Automation cost.** Per-type structures mean a router with N branches, more Make ops, more failure
+     modes, more to maintain — for zero user benefit.
+  4. **Evidence:** two maximally different matter types both map with nothing left over — a 485 (10 real
+     loose files, D-47) and an employer SBS (Trust Deed, menu, invoice, payment, IMMI ack, approval, D-95).
+**The thing that DOES vary per visa type is the CHECKLIST — which documents are required.** That lives in the
+sheet and in M4 (checklist selector: visa × onshore/offshore × dependents), never in the folder tree. Keeping
+these two concepts separate is what allows one folder set to serve every subclass.
+Spot-checks: **Skilled (189/190/491)** — skills assessment → 02, EOI/forms → 04, state nomination
+correspondence → 05. ✅ **Work/482** — employer docs → 03, nomination → 03, LMT evidence → 03. ✅
+⚠️ **PARTNER (820/801/300) IS THE ONE GENUINE STRAIN.** The Department assesses relationship evidence under
+four pillars (financial, social, household, commitment), and that bundle splits across our folders: Form 888
+stat decs → 04, joint accounts/bills/lease → 03, photos/travel/communication → 01. Staff assembling a partner
+case think in terms of ONE relationship-evidence bundle, so the split may annoy them. Options: (a) keep 5 and
+accept the split; (b) rename 01 → "01 Identity & Relationship"; (c) allow a 6th folder for partner matters
+only. **Do not decide for the client — ask Robinder, it is a workflow-preference call, and he is the RMA who
+assembles these.** Default if he has no preference: (a), for consistency.
+**LINKED LIMITATION (same root cause, D-99/CR-004):** both the partner strain and the employer-document
+duplication come from ONE thing — a person-centric flat folder set does not model MULTI-PARTY matters
+(employer + workers; two partners). Disclose both together to the client; both are Phase 2 territory, and
+neither justifies complicating the MVP.
