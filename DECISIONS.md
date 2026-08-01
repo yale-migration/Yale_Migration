@@ -741,3 +741,13 @@ Audit result: **do not ask either.**
 **Net effect: the message to Robinder carries ONE ask — 👍 on the 5 folder names.** He already has 3 items
 pending (Gmail reauthorize, folder names, s56 screenshot); adding two more would dilute all of them, which is
 exactly the 30 Jul failure. Restraint here is the process working, not detail being lost.
+D-102 | "02 Education & Employment" for NON-students — holds up; empty folders are acceptable by design |
+Question 31 Jul: does that folder make sense for someone not studying? Yes — it is two halves, and non-students
+use the EMPLOYMENT half: 482 (employment references, contracts, qualifications, skills assessment) · 189/190/491
+(skills assessment, degrees, references, English test) · 186/494 (work history) · 407 (qualifications). Across
+their 20 dropdown visa types, only ~4–5 would leave it empty or near-empty: 600 visitor, 101/802 child, and
+sometimes 820/801 partner and 300. **The majority of their non-student book actively uses it.**
+**Empty folders are an accepted trade-off, not a flaw.** The alternative — conditional folder sets per visa
+type — reintroduces exactly what D-100 rejected: staff must decide which structure applies before every save,
+which is what drives them back to dumping files flat (D-47). An unused folder costs nothing; an inconsistent
+structure costs adoption. No change to the 5-folder set.
