@@ -796,3 +796,38 @@ the company-name convention (D-99).
 **Process note (G1/G5):** this is a case where the client's domain expertise beat our design reasoning. When an
 RMA objects on substance, treat it as evidence, not preference — but still engineer the answer rather than
 accepting "different folders for everything" literally.
+D-106 | 🚨 DEEP AUDIT OF THEIR OWN CHECKLISTS — the document world is MULTI-DIMENSIONAL; my folder designs were
+built from principle instead of from their source documents | ROOT CAUSE of the D-100/D-104/D-105 churn: the
+per-visa checklists in `docs/02-client-facing/` state exactly which documents each visa needs, and I never
+opened them before designing the folder structure. Same G2 failure class as the mailbox owner (D-93 Type A) —
+the source of truth was in our own repo. Read 31 Jul; findings:
+**1. PARTNER 820/801 is organised by PARTY, not by document type.** Their headings: `FORMS REQUIRED` ·
+`DOCUMENTS REQUIRED FROM APPLICANT (PARTNER)` · `DOCUMENTS REQUIRED FROM SPONSOR (AUSTRALIAN PR/CITIZEN)` ·
+`ADDITIONAL SUPPORTING EVIDENCE`. The applicant and sponsor lists are NEARLY IDENTICAL (passport, police
+check, tax returns, superannuation beneficiary letter, joint lease, shared assets, joint travel, photos).
+**Filing by document type would put two passports in 01 and two sets of tax returns in 03 with no way to tell
+whose is whose.** This is a correctness problem, not an aesthetic one.
+**2. 820/801 is TWO STAGES.** 801 is lodged ~2 years after the 820 with UPDATED relationship documents.
+Structure must accommodate a second evidence round years later — and it questions D-11's grain (is 820+801 one
+matter or two?). **Flag for the data model, do not assume.**
+**3. RELATIONSHIP EVIDENCE IS NOT PARTNER-ONLY.** The `485 WITH DEPENDENT` checklist requires married/de-facto
+evidence identical to a partner case: marriage certificate, superannuation beneficiary, joint bank account,
+joint lease, shared expenses, call logs, relationship story, statement from a friend, photos. So a 485 needs
+relationship documents too — which breaks any design that assigns relationship evidence to one category.
+**4. THEY SEPARATE HEALTH AND CHARACTER FROM IDENTITY.** 407 headings: `1. Identity` · `2. Qualification` ·
+`3. Employment/Background` · `4. GTE/Statement` · `5. English Language` · `6. Health` · `7. Character
+(MANDATORY)` · `8. Family/Dependent`. I had merged identity+health+character into one folder.
+**5. AFP CHECK IS ITS OWN SUB-APPLICATION** with a POINTS-BASED document set (passport 70 · driver licence 40 ·
+bank statement 25 · bank card 25 · tax notice 25 · utility bills 20 + a 10-year residence history form).
+Not one document — a mini-process with its own bundle.
+**6. JRP / PSA (Provisional Skills Assessment) is a separate pathway** with its own checklist, upstream of a
+485-TRA. Also 407 and SBS are 3-STEP (sponsorship → nomination → visa), matching D-95.
+**7. CHECKLIST VARIANTS ARE THE M4 DIMENSIONS, CONFIRMED FROM SOURCE:** 485 alone has 7 variants —
+individual vs with-dependent × skills authority (ACECQA / TRA / VETASSESS / Masters-Bachelors). 500 has
+onshore / offshore / with-dependent / adding-a-dependent.
+**CONSEQUENCE: the folder axis and the checklist axis are DIFFERENT AXES.** Folders must hold the coarse,
+stable structure (party + broad category); the fine detail (which documents, which variant) belongs to the M4
+checklist layer and to file naming. **Do not encode 7 checklist variants into folder names.**
+**STATUS: folder structure is now an OPEN DESIGN QUESTION to settle WITH Robinder using this evidence — not to
+be decided unilaterally a fourth time.** D-105's 5-category model is the starting proposal but must be
+adjusted for findings 1, 3 and 4 before it goes to him.
