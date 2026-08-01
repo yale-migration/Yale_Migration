@@ -664,3 +664,33 @@ Distinguishing test: if he confirms he ticked every box and it still 403s, it is
 Scope requirement for M9: read message bodies **and** create drafts → `gmail.modify` class access, not
 `gmail.readonly` alone. A readonly-only grant would pass the folder test later but fail at draft creation —
 so verify with a real Run once (D-91), never by the connection turning green alone.
+D-98 | Contents mapping for the 5 sub-folders — validated against REAL client files (D-47) | Every one of the
+10 loose files in "485 Akshay" maps cleanly, which is the proof the 5-folder set is sufficient:
+  **01 Identity & Personal** — passport · national ID (Aadhar) · birth/marriage certificates · photos ·
+     **AFP/police checks** · medicals · **health insurance/OSHC policy** · change-of-name.
+     (Akshay: Passport front and back · Aadhar front and back · AFP.pdf · AFP_repaired · Policy_Statement)
+  **02 Education & Employment** — transcripts · completion letters · degree certificates · **CoE/enrolment** ·
+     English test (IELTS/PTE) · skills assessment · employment references · payslips · CV · contracts.
+     (Akshay: Trascript.PDF · Completion letter)
+  **03 Financial & Sponsorship** — bank statements · financial-capacity evidence · **employer/sponsor docs
+     (Trust Deed, business registration, financials, menu/offerings)** · SAF levy · invoices & payment
+     receipts · nomination documents. (SBS thread: Trust Deed, updated menu, INVOICE-SBS, PaymentSubmission)
+  **04 Forms & Lodgement** — **Form 80** · Form 1229 · statutory declarations (e.g. QLD stat dec) · signed
+     application forms · ImmiAccount receipts · TRN/Application ID confirmations · s56 response bundles.
+     (Akshay: client Info sheet · detail form · AKSHAY_KUMAR_520852388.pdf)
+  **05 Correspondence & Outcome** — Department letters incl. **s56 requests** · email threads · **IMMI
+     Acknowledgement** · grant notice · refusal letter · withdrawal. (SBS thread: IMMI Acknowledgement,
+     SBS-APPROVAL)
+**All 10 real files map with none left over → 5 folders are sufficient; no 6th needed.**
+D-99 | Folder NAMING for employer/sponsorship matters — the convention had a gap | D-18 defines
+`YM-2026-##### – FULL NAME`, which assumes the matter belongs to a PERSON. An SBS/nomination matter belongs to
+the **employer** (e.g. a Pty Ltd trust), not the worker. Rule added:
+  - Person matters (500/485/482 visa stage/189/190/…): `YM-2026-##### – FULL NAME`
+  - **Employer/sponsorship matters (SBS, nomination):** `YM-2026-##### – COMPANY NAME (SPONSOR)`
+Already supported by the data model with no schema change: MASTER col **I Visa Variant** has `Sponsor` /
+`Employer`, and col **D Party 2 Name** holds the counterparty. So for a sponsor matter, **C Full Name = the
+company**, Variant = Sponsor, Party 2 = the sponsored worker.
+⚠️ **Known limitation, Phase 2 (feeds CR-004):** employer documents (Trust Deed, business registration,
+financials) belong to the EMPLOYER, who may sponsor several workers — filing them inside each worker's folder
+duplicates them. MVP accepts the duplication (simple, one structure, no staff decisions); Phase 2 should give
+employers their own folder with worker matters linked to it. Do NOT solve this in MVP.
