@@ -761,22 +761,38 @@ Doubles as **M11 staff training material** — the one-line disambiguation rule 
 takeaway: **"if it came FROM the Department it is 05; if we sent it TO the Department it is 04."**
 Send the chart to the client only if he asks for detail — the folder-names message needs one ask (👍), and a
 9-table chart would bury it (G5).
-D-104 | ✅ CLIENT WANTED DIFFERENT FOLDER NAMES PER VISA TYPE — Sharjeel argued for consistency and was RIGHT |
-New client position learned 31 Jul: **Robinder asked for different sub-folder NAMES for different visa types.**
-Sharjeel pushed back and proposed **one consistent folder-name set for every visa, with different CONTENTS
-inside**, and the client accepted. **This was the correct call** and independently matches D-100:
-  1. **Adoption is the binding constraint.** Staff dump files flat today (D-47) — the SOP's 10-folder structure
-     was never implemented. Per-visa NAMES force staff to recall which naming scheme applies before every save;
-     the predictable result is abandonment, and folders staff ignore are worse than none.
-  2. **Training and handover.** One set can be taught once (M11) and applies to a new hire on day one. N sets
-     means N things to learn and N ways to file wrongly.
-  3. **Automation simplicity.** Per-visa names = a router with a branch per subclass, more Make ops (credit
-     budget, D-22), more failure paths, and a rename request touching N places instead of one variable.
-  4. **Cross-matter navigation.** A returning client with 500 → 485 → 190 (D-11: one row per matter) would get
-     three differently-named structures for the same human. Consistency means muscle memory works everywhere.
-  5. **The real requirement was never the names.** What Robinder actually needs is that a 482 file holds
-     employer documents and a 500 file holds a CoE — that is CONTENTS, delivered by the checklist layer (M4)
-     and documented in `docs/FOLDER-CONTENTS-CHART.md`. His need is fully met without varying the names.
-**Recorded because it is a client-preference decision that could be reopened later:** if he raises it again,
-the answer is the chart, not a new folder scheme. Sharjeel's instinct here was better than the client's
-original request — note it as a precedent for pushing back with reasoning rather than complying by default.
+D-105 | ⚠️ SUPERSEDES D-100 AND D-104 — client is RIGHT; folders vary by VISA CATEGORY (5 categories, not 20
+subclasses) | Robinder's counter-argument, 31 Jul: (a) a **work visa** carries company details, **profit &
+loss, licensing** — business documents with no home in our set; (b) a **partner visa** (Australian PR/citizen
+sponsoring a spouse from India/Pakistan) needs **no employment documents at all**, it needs relationship
+evidence. He is the RMA and he is correct on the substance. Note we had ALREADY identified the partner strain
+ourselves (D-100) and then resolved it the wrong way — preferring tidiness over how the work is actually done.
+His independent identification of the same weak point confirms it was real.
+**BUT the adoption risk from D-100 is also real** — 20 subclass-specific structures would be unlearnable.
+**DESIGN THAT SATISFIES BOTH: 3 fixed folders + 2 that vary, across 5 visa CATEGORIES.**
+Folders **01, 04, 05 are IDENTICAL for every matter** (identity/character/health · anything signed or lodged ·
+anything received from the Department). Only **02 and 03** change:
+
+| Category | Visa types | 02 | 03 |
+|---|---|---|---|
+| **A Study** | 500 | `02 Education & Enrolment` | `03 Financial Capacity` |
+| **B Skilled / Graduate** | 485, 189, 190, 191, 491, 494, 186, Skills Assessment, EOI | `02 Education & Skills Assessment` | `03 Financial & Employment` |
+| **C Work / Employer** | 482, 407, SBS, Nomination | `02 Employment & Position` | `03 Business & Sponsorship` |
+| **D Partner / Family** | 820/801, 300, 101, 802 | `02 Relationship Evidence` | `03 Sponsor & Financial` |
+| **E Visitor / Other** | 600, 417, Bridging, ART, Other | `02 Ties to Home Country` | `03 Financial & Invitation` |
+
+Rationale per category:
+- **C** directly answers Robinder: company details, **P&L, licensing**, ASIC, trust deed, SAF levy all sit in
+  `03 Business & Sponsorship` — a named home instead of being smuggled into "Financial".
+- **D** keeps the Department's four relationship pillars in ONE bundle (`02 Relationship Evidence`, including
+  joint finances), fixing the 01/03/04 split that D-100 flagged and could not solve. The sponsor's own
+  eligibility and income go to `03 Sponsor & Financial`. No employment folder is created at all.
+- Staff learn **one shape** (01/04/05 always identical, 02/03 named for the case type) — the muscle memory
+  D-100 wanted is preserved, because the POSITIONS never move.
+**Implementation cost is trivial:** the sub-folder list is already a single variable in `M3-folder-create.md`.
+Add ONE "Set variable" module mapping MASTER col **H Visa Type** → category → folder list. Not a 20-branch
+router: 5 cases in one switch, ~1 extra Make op (credit budget safe, D-22). Sponsor matters additionally use
+the company-name convention (D-99).
+**Process note (G1/G5):** this is a case where the client's domain expertise beat our design reasoning. When an
+RMA objects on substance, treat it as evidence, not preference — but still engineer the answer rather than
+accepting "different folders for everything" literally.
