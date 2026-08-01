@@ -751,3 +751,13 @@ sometimes 820/801 partner and 300. **The majority of their non-student book acti
 type — reintroduces exactly what D-100 rejected: staff must decide which structure applies before every save,
 which is what drives them back to dumping files flat (D-47). An unused folder costs nothing; an inconsistent
 structure costs adoption. No change to the 5-folder set.
+D-103 | Folder-contents chart written per visa type — `docs/FOLDER-CONTENTS-CHART.md` | Covers 500 · 485 · 482 ·
+SBS/nomination (employer) · 189/190/491 · 820/801 & 300 · 600 · 101/802 · 407, plus a fallback rule for
+unlisted subclasses. Purpose: answers "the education folder feels study-oriented — what about other visas?"
+by showing each folder's contents CHANGE per visa while the folder NAMES stay fixed (D-100/D-102). The 485 row
+is validated against the real "485 Akshay" folder (D-47) and the SBS row against their real SBS email thread
+(D-95), so the chart is grounded in their own files rather than generic advice.
+Doubles as **M11 staff training material** — the one-line disambiguation rule at the end is the operational
+takeaway: **"if it came FROM the Department it is 05; if we sent it TO the Department it is 04."**
+Send the chart to the client only if he asks for detail — the folder-names message needs one ask (👍), and a
+9-table chart would bury it (G5).
