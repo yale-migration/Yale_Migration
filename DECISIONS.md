@@ -644,3 +644,23 @@ D-96 | Internal workflow: approvals are forwarded `info@` → `manali@` with the
 thread, 27 Jul. Marketing (Manali, already known from the 26 Jul roster audit) posts wins to social media.
 So an approval email triggers a MARKETING action, not only a client action — a cheap, high-goodwill Phase 2
 automation (approval detected → draft post → Manali reviews). Log as a change request, not MVP scope.
+D-97 | Gmail connection created OK but returns `[403] insufficient authentication scopes` — SAME failure class
+as D-29/D-31 | Client screenshot 31 Jul: connection `Yale's Gmail connection (visa.l…)` EXISTS (so Robinder
+completed the sign-in as visa.lodgement@ — his part is done), but every field errors with 403 insufficient
+scopes and Folder/Label show "Failed to load data!". **Folder/Label failures are downstream symptoms, not
+separate faults** — Make cannot enumerate folders without read scope; they self-resolve once scopes are right.
+This is the third scope-related 403 on this project (OneDrive twice, D-29/D-31) — **scopes, not identity, are
+this project's recurring failure mode. Check scopes FIRST on any 403.**
+Cause ranking + fix:
+  1. **Consent checkboxes not all ticked** (most likely — Google shows per-scope checkboxes and Continue is
+     clickable with them unticked). FIX: Credentials → Connections → the Gmail connection → **Reauthorize** →
+     sign in as visa.lodgement@ → **tick EVERY box** → Allow → **Verify** (expect green). Robinder must do
+     this — he holds the password (D-90).
+  2. **Workspace App Access Control restricting Make** (contingency C1 firing for real). Gmail read scopes are
+     Google-"restricted", and an admin policy can grant a SUBSET silently, producing exactly this error even
+     when the user ticks everything. FIX: admin → Security → Access and data control → API controls → Manage
+     App Access → **Make** → **Trusted** → Save → then redo (1).
+Distinguishing test: if he confirms he ticked every box and it still 403s, it is cause 2.
+Scope requirement for M9: read message bodies **and** create drafts → `gmail.modify` class access, not
+`gmail.readonly` alone. A readonly-only grant would pass the folder test later but fail at draft creation —
+so verify with a real Run once (D-91), never by the connection turning green alone.

@@ -134,6 +134,14 @@ Access** → find **Make** → **Trusted** → Save → retry step 8. *(Verified
 
 **C2 — 2FA code prompt.** Expected, not an error. He approves on his phone.
 
+**C1b — 🔴 HAPPENED 31 Jul: `[403] Request had insufficient authentication scopes`** (connection exists but
+every field errors; Folder/Label show "Failed to load data!"). Those field errors are SYMPTOMS, not separate
+faults. Cause is almost always that not every checkbox on Google's consent screen was ticked. FIX:
+Credentials → Connections → the Gmail connection → **Reauthorize** → sign in as visa.lodgement@ → **tick
+EVERY box** → Allow → **Verify** (green). If he confirms he ticked all and it still 403s, it is C1 (admin App
+Access Control) — mark Make **Trusted**, then reauthorize again. See D-97. **Third scope-related 403 on this
+project — always check scopes first on a 403 (D-29/D-31).**
+
 **C3 — He doesn't hold the mailbox password.** He is Workspace admin and the address is his own (D-64 header)
 — he can reset it in the admin console.
 

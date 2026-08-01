@@ -153,3 +153,7 @@ gap (= Robinder Singh, D-94) that had sat in OPEN CLIENT ASKS for 5 days with th
 New findings recorded: sponsorship is a 3-stage chain SBS → nomination → visa and payment gates progress
 (D-95, affects M4/M5); approvals are forwarded info@ → manali@ "for posting" for marketing (D-96, Phase 2).
 Remaining roster gap: Nisha only.
+2026-07-31 | ss (IN) | Robinder CREATED the Gmail connection as visa.lodgement@ successfully — his part done.
+But the module returns [403] insufficient authentication scopes on every field (Folder/Label "Failed to load
+data!"). Diagnosed as the same scope-grant failure class as the OneDrive 403s (D-29/D-31): consent checkboxes
+not all ticked, or Workspace App Access Control restricting Make. Reauthorize instructions sent (D-97).
