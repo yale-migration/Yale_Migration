@@ -157,3 +157,9 @@ Remaining roster gap: Nisha only.
 But the module returns [403] insufficient authentication scopes on every field (Folder/Label "Failed to load
 data!"). Diagnosed as the same scope-grant failure class as the OneDrive 403s (D-29/D-31): consent checkboxes
 not all ticked, or Workspace App Access Control restricting Make. Reauthorize instructions sent (D-97).
+2026-07-31 | WhatsApp | ✅ FOLDER NAMES SETTLED. Client originally wanted DIFFERENT sub-folder names per visa
+type; Sharjeel proposed one consistent 5-folder name set with different contents inside, and the client
+accepted (D-104). Correct call — per-visa naming would break adoption (staff file flat today), complicate the
+Make router, and give a returning client three structures for 500→485→190. His real need was CONTENTS, met by
+docs/FOLDER-CONTENTS-CHART.md. ✅ Gmail connection on visa.lodgement@ authorized after reauthorize (D-97);
+our Run-once test still pending. Re-asked for the s56 client-email screenshot.
