@@ -49,19 +49,12 @@ Make account with none of our scenarios — a confusing dead end.
 
 ---
 
-## PREREQUISITE — Robinder needs a Make login (do this first)
+## PREREQUISITE — ✅ ALREADY SATISFIED (resolved 31 Jul, D-89/D-90)
 
-⚠️ Per D-85 the org shows as **"My Organization / My Team"** (Make's default personal naming) and the only
-real connection is authorized by `sharry00010@gmail.com` — so `ACCESS.md` #6 ("client = Owner") is in doubt.
-**Verify first:** Make → **Org** → **Team / Users**.
-
-- **If Robinder is already listed** → skip to Step 1; he signs in at make.com with his own email
-  (Forgot-password self-serves).
-- **If only Sharjeel is listed** → invite him: Make → **Org → Team → Invite a new user** → his email →
-  role **Admin** (he is the client; Member also works) → he accepts by email and sets his own password.
-  - If the invite screen shows an upgrade prompt, the Free plan is blocking extra users. Then either bring
-    the paid plan forward (D-15 requires it at go-live anyway) or fall back to CONTINGENCY C6 below.
-  - Log the outcome — it also settles the D-85 ownership question either way.
+Robinder's Make login **exists and he knows it**: the org's Owner is **`info@yalemigration.com.au`**, and the
+account was created jointly on a screen-share where he typed the password himself.
+**No invite. No password reset. No plan upgrade.** (D-85's ownership doubt was withdrawn — "My Organization /
+My Team" is only Make's default naming.)
 
 ---
 
