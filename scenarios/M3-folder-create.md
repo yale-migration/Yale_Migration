@@ -1,6 +1,7 @@
 # Scenario: `YM-M3-folder-create` — auto client folder + client-approved sub-folders
-**v2 — 2026-08-02.** v1 specified 10 sub-folders; the client approved THREE sets routed by visa type
-(D-126). Authoritative structure: **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`** (G6 single authority).
+**v3 — 2026-08-03.** v1 = 10 sub-folders (wrong). v2 = 3 client-approved sets but built on a **Router**,
+which in Make cannot reconverge and would have meant 16 modules. **v3 is linear: 7 modules, one Set-variables
+module doing both lookups.** Authoritative structure: **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`** (G6).
 
 **Trigger:** new row in MASTER with a Client Code and no Folder URL.
 **Cost:** ≈9 Make operations per client (SET 1/2 ≈9 · SET 3 ≈10 with the two nested folders). Well inside the
@@ -23,38 +24,56 @@ never the folder picker (D-19/D-21). Write scope confirmed working (D-31).
 scheduled search catches every case. Idempotent by design — a row with a Folder URL is never picked up
 twice (D-14 safety).*
 
-## Module 2 — Router: resolve the PARENT folder from Office + Team
+## Module 2 — Set variables (NOT a Router) — resolve parent folder + sub-folder set in ONE module
 
-Add a **Router**, one route per branch, filtering on `Office` (col J) and `Team` (col K):
+🔴 **v3 CHANGE (D-165): the Router design in v2 was wrong for Make.** In Make, a Router splits the flow into
+routes that **never reconverge**. A router here would force Modules 3–6 to be **duplicated on every route**
+(4 routes × 4 modules = 16 modules to build and maintain, and every future fix applied four times). Replaced
+with a single **Tools → Set multiple variables** module and a linear flow. Fewer modules, one place to edit.
 
-| Route | Filter | Parent itemId | Status |
-|---|---|---|---|
-| BNE Filipino | Office=BRISBANE AND Team=FILIPINO | `A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f` | ✅ verified (T1.3) |
-| BNE Indian | Office=BRISBANE AND Team=INDIAN | `A0BABA3C2640082C!529` | 🟡 **id verified, LABEL not**: ONEDRIVE-IDS records it as `CLIENT FILES (main/Indian?)` — confirm it is the Indian-team folder during the dry-run before any live row uses it |
-| Townsville | Office=TOWNSVILLE | `A0BABA3C2640082C!s35a05b1d476a452ea47170ba470e6034` **← branch ROOT, not the client folder** | 🔴 **UNMAPPED INSIDE** |
-| Philippines | Office=PHILIPPINES | `A0BABA3C2640082C!scad8a318943846ca8a81513279e9ea6e` **← branch ROOT** | 🔴 **UNMAPPED INSIDE** |
-| Fallback | (no filter — last route) | — | alert only, create nothing |
+**Module: Tools → Set multiple variables** — two variables:
 
-### 🔴 TWO GAPS THAT MUST CLOSE BEFORE THESE ROUTES GO LIVE (D-136)
-1. **TOWNSVILLE and PHILIPPINES internals are not mapped.** We hold only their top-level ids. Brisbane nests
-   `CLIENT FILES → ENGAGED CLIENTS → <team>`; if those branches nest the same way, creating a client folder at
-   the branch ROOT would drop it in the wrong place, in the client's live drive. **Two API calls close this:**
+**`parentId`** — maps Office+Team to the destination folder:
+```
+switch(1.Office & "|" & 1.Team;
+  "BRISBANE|FILIPINO"; "A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f";
+  "BRISBANE|INDIAN";   "A0BABA3C2640082C!529";
+  "")
+```
+Anything else (Townsville, Philippines, blanks) returns **empty** → the next module stops it safely.
+
+**`subfolders`** — picks the client-approved set from Visa Type. Comma-wrapped so `300` cannot match inside
+another value:
+```
+if(contains(",482,407,SBS,Nomination,"; "," & 1.`Visa Type` & ",");
+   "01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome";
+if(contains(",820/801,300,101,802,"; "," & 1.`Visa Type` & ",");
+   "01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome";
+   "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome"))
+```
+Default (no match) = **SET 1 STANDARD**, which is correct for every remaining visa type including `Other`.
+
+## Module 2b — Filter: "parent is known"
+On the link between Module 2 and Module 3 set a filter: **`parentId` Exists / is not empty**.
+This is the safety gate that replaces the router's Fallback route — a Townsville, Philippines or
+blank-Office row simply stops here. **Nothing is created in the wrong place, ever.**
+
+### 🔴 TWO PLACEMENT GAPS STILL OPEN (D-136) — the filter above is what makes them safe
+1. **TOWNSVILLE and PHILIPPINES internals are unmapped.** We hold only their top-level ids; Brisbane nests
+   `CLIENT FILES → ENGAGED CLIENTS → <team>`. Creating at a branch ROOT would misfile in live data. They are
+   deliberately absent from `parentId`, so those rows stop at Module 2b. Close later with:
    `GET /v1.0/drives/A0BABA3C2640082C/items/<branchId>/children?$select=name,id&$top=999`
-   Until mapped, **restrict the live schedule to the two Brisbane routes**; Townsville/Philippines rows fall to
-   the Fallback route and only raise an alert. Costs nothing and cannot misfile.
-2. **`Work visa BNE AND TSV` (82 MB, `A0BABA3C2640082C!s125354abdab141af87f47d49394feec3`) may be where
-   482/407 matters actually live** — separate from ENGAGED CLIENTS. If so, **SET 2 (Work/Employer) folders
-   belong there, not under the team folders.** Unverified. Ask at the demo, or map it with one API call.
-   This is exactly the kind of placement question the ship ladder's "client 👍 on placement" gate exists for.
-
-*Both gaps are cheap to close (≈3 API calls) and neither blocks the Brisbane build, which is where the demo
-comes from.*
+2. **`Work visa BNE AND TSV`** (`A0BABA3C2640082C!s125354abdab141af87f47d49394feec3`, 82 MB) may be where
+   482/407 matters actually live. Unverified — ask at the demo, or map with one API call.
+3. **`!529` label unconfirmed** — `ONEDRIVE-IDS.md` records it as `CLIENT FILES (main/Indian?)`. Confirm it
+   is the Indian-team folder during the dry-run **before any real Indian-team row uses it.**
+   *(Demo path uses BRISBANE + FILIPINO, which is fully verified — so none of this blocks T4.)*
 
 ## Module 3 — Create the client folder (OneDrive → Make an API Call)
 | Field | Value |
 |---|---|
 | Method | `POST` |
-| URL | `/v1.0/drives/A0BABA3C2640082C/items/{{parentItemId}}/children` |
+| URL | `/v1.0/drives/A0BABA3C2640082C/items/{{2.parentId}}/children` |
 | Header | `Content-Type: application/json` |
 | Body | `{"name":"{{folderName}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}` |
 
@@ -75,22 +94,18 @@ rules).
 **`conflictBehavior: "fail"`** is deliberate — if a folder with that name already exists we want the
 error (and an alert), not a silent duplicate or a rename. Existing client folders are never touched (D-12).
 
-## Module 4 — Create the sub-folders (Router on Visa Type → Set variable → Iterator → API call)
+## Module 4 — Create the sub-folders (Iterator → API call) — set already chosen in Module 2
 
 **Three sets, chosen automatically from `Visa Type` (col H). Staff never choose.** Full definitions and
 rationale: `ARCHITECTURE.md` v2 §Folder convention.
 
-1. **Switch / Set variable** on `{{1.Visa Type}}` → `subfolders` (three cases, not a 20-branch router):
-   | Set | Visa Types | `subfolders` value |
-   |---|---|---|
-   | **1 STANDARD** *(default)* | 500 · 485 · 189 · 190 · 191 · 491 · 494 · 186 · 600 · 417 · Skills Assessment · EOI · Bridging · ART · Other | `01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome` |
-   | **2 WORK / EMPLOYER** | 482 · 407 · SBS · Nomination | `01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome` |
-   | **3 PARTNER / FAMILY** | 820/801 · 300 · 101 · 802 | `01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome` |
-
+1. `subfolders` was already resolved in **Module 2** — no second switch. Definitions live in
+   `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` (G6 single authority).
 2. **Tools → Iterator**: `split(subfolders; ";")`
 3. **OneDrive → Make an API Call** (inside the iterator):
    - `POST /v1.0/drives/A0BABA3C2640082C/items/{{3.body.id}}/children`
    - Body `{"name":"{{iterator.value}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}`
+   - Iterator source: `split(2.subfolders; ";")`
 4. **PARTNER ONLY — one nested level.** After `03 Relationship Evidence` is created, POST two children into
    it: `820` and `801`. Reason (client's own): the 801 documents arrive ~2 years later and must not mix with
    the 820 bundle. Cost: +2 ops on partner matters only.
@@ -133,7 +148,7 @@ so the failure is visible where staff work, not only in Make's history.
 5. **Go live**: set the trigger to every 15 minutes.
 
 ## Demo capture (the deliverable that matters)
-Record 60–90 seconds, no narration needed:
-type a name in MASTER → code appears (Apps Script) → cut to OneDrive → folder with its sub-folders exists
-→ cut back to sheet → Folder URL populated. Send with one line:
+Record 60–90 seconds, no narration needed. **Four fields get typed** (D-166) — do not imply fewer:
+fill **Full Name · Office · Team · Visa Type** → `YM-2026-#####` appears on its own → cut to OneDrive →
+the client folder with its correct sub-folder set exists → cut back to the sheet → Folder URL populated. Send with one line:
 *"First piece is live — new clients now get their folder and code automatically."*

@@ -1359,3 +1359,24 @@ organization's **Region is `EU`** (greyed out, fixed at signup), so Australian c
 servers. Not a compliance failure and not changeable without recreating the org — but Robinder should be told
 where his data physically lives, at handover. Also the org is still called **"My Organization"** — rename to
 `Yale Migration` so the client's own account reads professionally. Both added to M11.
+D-165 | 🔴 M3 REDESIGNED BEFORE BUILD — the Router approach was wrong for Make | Caught by re-reading the spec
+before issuing build steps rather than trusting it. **In Make, a Router splits flow into routes that never
+reconverge.** The v2 spec put a Router at Module 2 to pick the parent folder, which would have forced Modules
+3–6 (create folder · iterator · sub-folders · write-back · error handling) to be **duplicated on all four
+routes — 16 modules**, with every future fix applied four times and four times the chance of drift.
+**v3 is linear, 7 modules:** Search Rows → **Set multiple variables** (`parentId` via `switch()` on
+Office+Team, `subfolders` via nested `if(contains(...))` on Visa Type) → **filter "parentId is not empty"** →
+create folder → iterator → sub-folders → write link back. One place to edit each mapping.
+Two details that matter: (a) the Visa Type test wraps both the list and the value in commas
+(`",482,407,…," contains "," & VisaType & ","`) so `300` cannot match inside another value; (b) the default
+branch is SET 1 STANDARD, correct for every remaining type including `Other`.
+**The filter replaces the Router's Fallback and is the real safety gate:** Townsville, Philippines and
+blank-Office rows produce an empty `parentId` and stop dead. The unmapped-branch risk (D-136) is now
+structurally impossible to trigger rather than merely documented.
+D-166 | ⚠️ The demo needs FOUR fields typed, not one — fix the demo script now | The M3 trigger filters on
+Client Code present + Folder URL empty, but Module 2 resolves `parentId` from **Office + Team** and
+`subfolders` from **Visa Type**. A row with only a Full Name yields an empty `parentId` and correctly stops at
+the filter. So the demo capture line "type a name → folder appears" is **not accurate**: the operator types
+**Full Name · Office · Team · Visa Type** (4 fields, ~10 seconds). Still a strong demo — code auto-appears
+from the name alone, then the folder tree builds itself — but the script must show what is actually typed.
+Do not record a demo that implies less input than the system needs; the client will try it and it will fail.
