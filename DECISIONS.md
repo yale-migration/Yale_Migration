@@ -16,6 +16,11 @@ entry instead.** Update this index whenever a decision is corrected or withdrawn
 | D-88 (invite branch) | ❌ unnecessary | **D-89, D-90** | Robinder already holds the `info@` Make login — he set it up himself |
 | D-89 (password-reset caveat) | ❌ unnecessary | **D-90** | He typed that password himself during the joint setup; no reset needed |
 | D-75 (item b) | ✅ resolved | **D-76** | Mail platform answered by public DNS/MX — no client round-trip needed |
+| D-100, D-102 | ❌ overturned | **D-132** + `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` | Folders are NOT one set for all visas — THREE checklist-derived sets (Standard / Work / Partner) |
+| D-103 | ❌ file deleted | **D-132** | `FOLDER-CONTENTS-CHART.md` duplicated the folder authority and held the superseded single-set structure |
+| D-126 (its reconstructed sets) | ⚠️ partly wrong | **D-132** | The client's three INSTRUCTIONS in D-126 are correct; the folder sets I reconstructed there were not |
+| D-128 | ⚠️ superseded | **D-132** | "Do not ask" still right, but the partner folder IS justified |
+| D-101, D-105–D-108, D-113 (2 Aug versions) | 🔢 renumbered | **D-117–D-130** | Duplicate IDs repaired (D-131). Earlier session keeps the original numbers |
 
 **Current truth on the M9 mailbox (the most-churned topic):** see **D-80** (frozen requirement), **D-82**
 (alternatives ruled out), **D-83/D-84** (correct UI path), **D-90** (client works by sharing HIS screen),
@@ -751,7 +756,7 @@ sometimes 820/801 partner and 300. **The majority of their non-student book acti
 type — reintroduces exactly what D-100 rejected: staff must decide which structure applies before every save,
 which is what drives them back to dumping files flat (D-47). An unused folder costs nothing; an inconsistent
 structure costs adoption. No change to the 5-folder set.
-D-103 | Folder-contents chart written per visa type — `docs/FOLDER-CONTENTS-CHART.md` | Covers 500 · 485 · 482 ·
+D-103 | ⚠️ SUPERSEDED by D-132 — file DELETED 2 Aug as a conflicting duplicate (G6). Folder-contents chart written per visa type — `docs/FOLDER-CONTENTS-CHART.md` | Covers 500 · 485 · 482 ·
 SBS/nomination (employer) · 189/190/491 · 820/801 & 300 · 600 · 101/802 · 407, plus a fallback rule for
 unlisted subclasses. Purpose: answers "the education folder feels study-oriented — what about other visas?"
 by showing each folder's contents CHANGE per visa while the folder NAMES stay fixed (D-100/D-102). The 485 row

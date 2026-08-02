@@ -157,12 +157,13 @@ Remaining roster gap: Nisha only.
 But the module returns [403] insufficient authentication scopes on every field (Folder/Label "Failed to load
 data!"). Diagnosed as the same scope-grant failure class as the OneDrive 403s (D-29/D-31): consent checkboxes
 not all ticked, or Workspace App Access Control restricting Make. Reauthorize instructions sent (D-97).
-2026-07-31 | WhatsApp | ✅ FOLDER NAMES SETTLED. Client originally wanted DIFFERENT sub-folder names per visa
-type; Sharjeel proposed one consistent 5-folder name set with different contents inside, and the client
-accepted (D-117). Correct call — per-visa naming would break adoption (staff file flat today), complicate the
-Make router, and give a returning client three structures for 500→485→190. His real need was CONTENTS, met by
-docs/FOLDER-CONTENTS-CHART.md. ✅ Gmail connection on visa.lodgement@ authorized after reauthorize (D-97);
-our Run-once test still pending. Re-asked for the s56 client-email screenshot.
+2026-07-31 | WhatsApp | Folder names discussed: Sharjeel proposed one consistent 5-folder set with different
+contents inside, and the client accepted at the time. ⚠️ **SUPERSEDED 2 Aug (D-126/D-132)** — the client then
+asked for work/employer folders by STEP and 820/801 sub-folders, so the final design is THREE sets
+(`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`). *(The former `docs/FOLDER-CONTENTS-CHART.md` referenced here was
+deleted 2 Aug as a conflicting duplicate — G6.)*
+✅ **Gmail connection on visa.lodgement@ AUTHORIZED after reauthorize (D-97)** — client side complete; only
+OUR Run-once verification remains. Re-asked for the s56 client-email screenshot (received 2 Aug).
 2026-08-02 | WhatsApp + files | 🎉 CLIENT DELIVERED EVERYTHING OUTSTANDING. (a) **s56 client template** sent as
 a screenshot — closes the ask open since 30 Jul (D-117). (b) **Full 482 Sevial s56 thread, 25 messages** —
 first complete client-facing chase we have seen: 16-day silence after the s56, documents complete only on day

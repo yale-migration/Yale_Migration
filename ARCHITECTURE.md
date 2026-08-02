@@ -80,7 +80,7 @@ nearly identical (both submit passport, police check, tax returns, super letter)
 put two passports together **with no way to tell whose is whose.** No employment folder — partner applicants
 submit none.
 
-Contents per visa type: `docs/FOLDER-CONTENTS-CHART.md`.
+**Contents of every folder, per set: `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` — the single authority (G6).**
 Disambiguation rule for staff: **from the Department → 05. Sent to the Department → 04.**
 
 **Name sanitization** before creation: uppercase · strip `" * : < > ? / \ |` · collapse double spaces ·
