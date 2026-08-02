@@ -1252,3 +1252,28 @@ but they are clutter in the client's account — delete before handover. (b) The
 **"Untitled project"** and one file is saved as **`etup_master_sheet.gs`** (leading `s` lost in the paste).
 Neither affects execution — Apps Script resolves functions across files regardless of filename — but both
 should be renamed for a professional handover: project → `YM MASTER automation`, file → `setup_master_sheet`.
+D-155 | 🐛 SHIPPED BUG — `setupEverything` crashed on the live sheet: validation cleared AFTER the header write |
+Real failure 3 Aug, first run: `Exception: The data you entered in cell F1 violates the data validation rules
+set on this cell. Please enter one of the following values: Stage, Enquiry, Engaged, Documents, Ready to
+Lodge, Lodged, Outcome, Closed.` at `buildSheet_` → the `setValues([headers])` line.
+**Root cause (mine):** the 25 Jul v1 build left a **list-restricted dropdown on ROW 1 itself** (cell F1 held
+the old "Stage" header WITH its validation attached). My `buildSheet_` wrote the new headers at step 1 and only
+cleared stale validation at step 2b — **too late**. Google rejects any `setValues` into a validated cell whose
+value is not in the list, so the very first write threw and `setupEverything` aborted.
+**What I got wrong conceptually:** D-145 correctly identified that stale v1 validation had to be cleared, but I
+assumed it sat only on DATA rows. It was on the HEADER row too — and that is the first thing the script writes.
+**Fix:** `clearDataValidations()` over the whole sheet moved to **step 0**, before any write; the duplicate
+step-2b call removed. Verified by character position that the clear now precedes the header write, and only one
+clear call remains. `node --check` passes.
+**No damage:** the exception aborted at the first write, so nothing was modified — Apps Script had not yet
+touched headers, dropdowns, formats or columns. The sheet is exactly as it was before the run.
+**Lesson: an ordering bug is invisible to syntax checks, spec review and even a line-by-line read that isn't
+simulating the target's actual state.** The readiness audit found five real defects in these scripts and still
+missed this one, because it reasoned about an empty sheet and a sheet with legacy DATA — not a sheet with
+legacy VALIDATION ON THE HEADER ROW. Only running it against the real sheet surfaced it. This is the argument
+for the preflight-then-run sequence, and for running on a backed-up sheet first.
+D-156 | ✅ The 2 legacy MASTER rows were confirmed FAKE test data | Sharjeel: they were the placeholder client
+names set up in an earlier session for testing. Safe to delete, no migration needed. ENQUIRIES had only a
+header row. Live v1 header layout observed before the rebuild: `Client Code · Their Client ID · Full Name ·
+Party 2 Name · Contact Number · Stage · Assigned Consultant · Data Added · Sources · Notes` (10 columns,
+orange header, dropdowns on F and I) — superseded by the 23-column v2 layout.

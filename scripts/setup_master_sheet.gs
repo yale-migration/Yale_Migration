@@ -99,6 +99,14 @@ function setupEverything() {
 function buildSheet_(ss, name, headers, dropdowns, dateCols, widths) {
   var sh = ss.getSheetByName(name) || ss.insertSheet(name);
 
+  // 0. CLEAR STALE v1 DATA-VALIDATION **FIRST** — before writing anything (D-155).
+  //    The 25 Jul v1 build left a list-restricted dropdown on ROW 1 (cell F1: Stage/Enquiry/Engaged/...).
+  //    Writing a header into a validated cell THROWS:
+  //      "The data you entered in cell F1 violates the data validation rules set on this cell."
+  //    Clearing after the header write (the original order) was too late — setValues never got to run.
+  //    Also clears validation left on old data rows, which would otherwise reject valid v2 entry.
+  sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns()).clearDataValidations();
+
   // 1. headers
   sh.getRange(1, 1, 1, headers.length).setValues([headers]);
 
@@ -111,11 +119,6 @@ function buildSheet_(ss, name, headers, dropdowns, dateCols, widths) {
     .setWrap(true);
   sh.setRowHeight(1, 34);
   sh.setFrozenRows(1);
-
-  // 2b. clear STALE v1 data-validation across the whole sheet (D-145).
-  //     The 25 Jul manual build put Stage/Source dropdowns on v1 column positions. Left in place they
-  //     sit on different v2 columns and REJECT valid entry, because the old rules were list-restricted.
-  sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns()).clearDataValidations();
 
   // rows 2..N, clamped so a trimmed sheet cannot throw "those rows are out of bounds" mid-run
   var vRows = Math.max(1, Math.min(VALIDATION_ROWS, sh.getMaxRows() - 1));
