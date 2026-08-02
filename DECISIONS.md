@@ -1180,3 +1180,13 @@ ON THE CLIENT". (4) Decision counts stale in three files after appending D-138..
 in `ACCESS.md`'s revocation map and the `M9 — Gmail triage & delegation` module title. All six fixed.
 **LESSON: a fix applied to the two places an audit named is not a fix — grep the whole repo for the CLAIM, not
 the location.** Combined with D-133's silent-no-match lesson: assert on resulting CONTENT, repo-wide.
+D-147 | 🐛 STALE REGEX in `docs/M9-EMAIL-AI-SPEC.md` — D-68's correction was never applied to the spec |
+D-68 (30 Jul) corrected the Application ID pattern from `\b\d{10}\b` to `\b\d{9,11}\b` after finding a real
+**9-digit** ID (`365718045`, the 485 Ronaya case) alongside a 10-digit one (`1540713558`). **The decision was
+recorded; the spec was never updated** — so the M9 build would have silently missed every 9-digit Application
+ID, and a missed identifier means the s56 cannot be matched to a MASTER row. Also corrected Position number
+(`\d{8}` → `\d{6,10}`, label-anchored) since D-68 notes the length varies per officer; we hold `60093715`.
+Found only because a grep for the wrong file-count number happened to hit `1540713558`. **Same class as
+D-115 and D-146: a decision recorded but never propagated to the document that implements it.** The
+countermeasure is G6 (single source) plus: when a decision CORRECTS a value, grep for the OLD value repo-wide
+and fix every occurrence in the same commit.

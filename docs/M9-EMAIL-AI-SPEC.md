@@ -29,10 +29,10 @@ Weak/supporting: homeaffairs.gov.au + immi.homeaffairs.gov.au + online.immi.gov.
 | Field | Sample | Regex |
 |---|---|---|
 | Transaction reference number (TRN) | `EGP9XF6H64` | `\b[A-Z0-9]{10}\b` (labelled) |
-| Application ID | `1540713558` | `\b\d{10}\b` |
+| Application ID | `1540713558` (10) · `365718045` (9) | `\b\d{9,11}\b` **with label context** — ⚠️ corrected per D-68: the old `\b\d{10}\b` MISSED every 9-digit ID |
 | Client ID | `49924648532` | `\b\d{11}\b` |
 | File number | `BCC2025/7294045` | `\b[A-Z]{3}\d{4}/\d{7}\b` |
-| Position number | `60168462` | `Position number:\s*\d{8}` |
+| Position number | `60168462` · `60093715` | `Position number:\s*\d{6,10}` — length varies per officer (D-68); always label-anchored |
 
 ### 🚨 FINDING 2 — Deadline is RELATIVE, never printed as a date
 `due_date = letter_date + 1 day + days_allowed` (letter_date from the `Date: DD Month YYYY` line).
