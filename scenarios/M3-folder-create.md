@@ -22,20 +22,32 @@ never the folder picker (D-19/D-21). Write scope confirmed working (D-31).
 scheduled search catches every case. Idempotent by design — a row with a Folder URL is never picked up
 twice (D-14 safety).*
 
-## Module 2 — Router: resolve the target branch from Office + Team
-Add a **Router**, one route per branch, filter on `Office` and `Team` from the row:
+## Module 2 — Router: resolve the PARENT folder from Office + Team
 
-| Route | Filter | Parent folder |
-|---|---|---|
-| BNE Filipino | Office = BRISBANE AND Team = FILIPINO | Brisbane → CLIENT FILES → ENGAGED CLIENTS → CLIENT FILES- FILIPINO TEAM |
-| BNE Indian | Office = BRISBANE AND Team = INDIAN | Brisbane → CLIENT FILES → ENGAGED CLIENTS → (Indian team folder) |
-| Townsville | Office = TOWNSVILLE | TOWNSVILLE branch |
-| Philippines | Office = PHILIPPINES | PHILIPPINES branch |
-| Fallback | (no filter — last route) | Alert only, create nothing |
+Add a **Router**, one route per branch, filtering on `Office` (col J) and `Team` (col K):
 
-⚠️ **Before building this**: walk the tree once and record each parent's itemId into `ONEDRIVE-IDS.md`
-(BNE → CLIENT FILES → ENGAGED CLIENTS → each team folder). Use:
-`GET /v1.0/drives/A0BABA3C2640082C/items/<itemId>/children?$select=name,id&$top=999`
+| Route | Filter | Parent itemId | Status |
+|---|---|---|---|
+| BNE Filipino | Office=BRISBANE AND Team=FILIPINO | `A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f` | ✅ verified (T1.3) |
+| BNE Indian | Office=BRISBANE AND Team=INDIAN | `A0BABA3C2640082C!529` | ✅ verified (T1.3, legacy short id) |
+| Townsville | Office=TOWNSVILLE | `A0BABA3C2640082C!s35a05b1d476a452ea47170ba470e6034` **← branch ROOT, not the client folder** | 🔴 **UNMAPPED INSIDE** |
+| Philippines | Office=PHILIPPINES | `A0BABA3C2640082C!scad8a318943846ca8a81513279e9ea6e` **← branch ROOT** | 🔴 **UNMAPPED INSIDE** |
+| Fallback | (no filter — last route) | — | alert only, create nothing |
+
+### 🔴 TWO GAPS THAT MUST CLOSE BEFORE THESE ROUTES GO LIVE (D-136)
+1. **TOWNSVILLE and PHILIPPINES internals are not mapped.** We hold only their top-level ids. Brisbane nests
+   `CLIENT FILES → ENGAGED CLIENTS → <team>`; if those branches nest the same way, creating a client folder at
+   the branch ROOT would drop it in the wrong place, in the client's live drive. **Two API calls close this:**
+   `GET /v1.0/drives/A0BABA3C2640082C/items/<branchId>/children?$select=name,id&$top=999`
+   Until mapped, **restrict the live schedule to the two Brisbane routes**; Townsville/Philippines rows fall to
+   the Fallback route and only raise an alert. Costs nothing and cannot misfile.
+2. **`Work visa BNE AND TSV` (82 MB, `A0BABA3C2640082C!s125354abdab141af87f47d49394feec3`) may be where
+   482/407 matters actually live** — separate from ENGAGED CLIENTS. If so, **SET 2 (Work/Employer) folders
+   belong there, not under the team folders.** Unverified. Ask at the demo, or map it with one API call.
+   This is exactly the kind of placement question the ship ladder's "client 👍 on placement" gate exists for.
+
+*Both gaps are cheap to close (≈3 API calls) and neither blocks the Brisbane build, which is where the demo
+comes from.*
 
 ## Module 3 — Create the client folder (OneDrive → Make an API Call)
 | Field | Value |

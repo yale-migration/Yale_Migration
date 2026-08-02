@@ -31,8 +31,26 @@ function onEdit(e) {
   assignMissingCodes();
 }
 
-/** Assigns a code + Date Added to every row that has a name but no code. */
+/**
+ * Assigns a code + Date Added to every row that has a name but no code.
+ *
+ * LOCKING (added 2026-08-02, D-135): onEdit and the 5-minute timer can fire at the SAME moment —
+ * and two fast edits fire two onEdit runs. Without a lock, both read the same "highest existing
+ * number" and hand out the SAME code to two different clients. A duplicate client code would
+ * corrupt the folder link, the tracker cross-reference and every downstream scenario, and it is
+ * almost invisible until someone notices two clients sharing an ID. The lock makes that impossible.
+ */
 function assignMissingCodes() {
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(20000)) return;   // another run holds it; it will cover our rows anyway
+  try {
+    assignMissingCodes_();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function assignMissingCodes_() {
   var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
   if (!sh) return;
 
@@ -63,7 +81,27 @@ function assignMissingCodes() {
   if (changed) {
     sh.getRange(FIRST_ROW, COL_CODE, n, 1).setValues(codes);
     sh.getRange(FIRST_ROW, COL_DATE, n, 1).setValues(dates);
+    SpreadsheetApp.flush();   // commit before the lock is released
   }
+}
+
+/**
+ * Safety net — run manually any time to prove no code was ever issued twice.
+ * Logs duplicates and returns them. Expected output: "No duplicate codes ✅".
+ */
+function auditDuplicateCodes() {
+  var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+  if (!sh || sh.getLastRow() < FIRST_ROW) return [];
+  var vals = sh.getRange(FIRST_ROW, COL_CODE, sh.getLastRow() - FIRST_ROW + 1, 1).getValues();
+  var seen = {}, dups = [];
+  for (var i = 0; i < vals.length; i++) {
+    var v = String(vals[i][0]).trim();
+    if (!v) continue;
+    if (seen[v]) { dups.push(v + ' (rows ' + seen[v] + ' and ' + (i + FIRST_ROW) + ')'); }
+    else { seen[v] = i + FIRST_ROW; }
+  }
+  Logger.log(dups.length ? 'DUPLICATE CODES: ' + dups.join(' | ') : 'No duplicate codes ✅');
+  return dups;
 }
 
 /** Highest existing number + 1 (never reuses a code, even after deletions). */

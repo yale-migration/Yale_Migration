@@ -1028,3 +1028,28 @@ that item is **our own Run-once verification**, which is our task, not his. Comb
 (s56 template · folder approval · roster closed · both full s56 threads), **every input needed to build the
 MVP is now in hand.** Remaining client items are all future-dated, not blocking: test files (M10) · M6 wording
 👍 (before M6 goes live) · walk-in sheet location · **Make paid plan (go-live gate)** · final 50% on go-live.
+D-135 | 🐛 REAL DEFECT FIXED IN `master_codes.gs` — duplicate-code race condition | Found by auditing the
+script logic itself (not the docs) before T2 runs. `onEdit` and the 5-minute timer can fire simultaneously,
+and two quick edits fire two `onEdit` runs. Each run independently reads "highest existing number" and adds 1
+— so **two different clients could be issued the SAME `YM-2026-#####` code.** Impact if it had shipped: the
+folder URL, the tracker cross-reference and every downstream scenario key off that code, so a collision
+silently corrupts the record and is near-invisible until someone notices two clients sharing an ID.
+**Fix:** `LockService.getDocumentLock()` with `tryLock(20000)`, work moved into `assignMissingCodes_()`,
+`releaseLock()` in a `finally`, and `SpreadsheetApp.flush()` before release so the write commits inside the
+lock. If the lock is unavailable the run simply returns — the holder covers those rows anyway.
+**Also added `auditDuplicateCodes()`** — a manual safety net that scans column A and logs any duplicate.
+Expected output: `No duplicate codes ✅`. Verified: braces/parens balanced, column constants unchanged
+(A=1 · C=3 · T=20), onEdit still guards on column C.
+D-136 | 🔴 TWO T3 PLACEMENT GAPS — could misfile folders in the client's LIVE drive | Audit of
+`ONEDRIVE-IDS.md` against the M3 router found the spec still said "walk the tree and record the itemIds" when
+we already hold most of them, and that two routes point at branch ROOTS rather than verified client-folder
+parents:
+  1. **TOWNSVILLE and PHILIPPINES internals were never mapped.** Brisbane nests
+     `CLIENT FILES → ENGAGED CLIENTS → <team>`. If those branches nest similarly, creating a client folder at
+     the branch root drops it in the wrong place in live data. **Mitigation adopted:** the live schedule is
+     restricted to the two verified Brisbane routes; Townsville/Philippines rows fall to the Fallback route
+     and only raise an alert. Two API calls close it properly.
+  2. **`Work visa BNE AND TSV` (82 MB) may be where 482/407 matters actually live**, separate from ENGAGED
+     CLIENTS — in which case SET 2 folders belong there. Unverified; one API call or one question at the demo.
+M3 spec Module 2 now carries the **real itemIds** for the verified routes and flags both gaps inline, so the
+build cannot silently assume a parent. Neither gap blocks the Brisbane demo path.
