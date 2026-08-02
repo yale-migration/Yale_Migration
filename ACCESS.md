@@ -32,7 +32,7 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 
 **Materials still open:** Inquiry/Detail/Consultation forms beyond the CIS · 2–3 test client files for M10.
 **✅ ROSTER FULLY CLOSED 2 Aug** — `workvisa.bne@` = Robinder (D-94); **Nisha = former employee, exclude from
-all dropdowns and routing** (D-111).
+all dropdowns and routing** (D-124).
 
 ## 📁 FILENAME → RECORD MAP (added 31 Jul — required, G2)
 The table above names materials **descriptively**; the client's folder uses **filenames**. Without this map a
@@ -56,9 +56,9 @@ from `access/` are staged in `assets/samples/` (git-ignored, PII). **Add a row w
 | `s56 Request for More Information - BCC2025_7294045 …Request Checklist and Details.pdf (1).pdf` | S56 checklist, same 482 case → D-68 | ✅ 30 Jul |
 | `CoE Certificate (10F566341) (1).pdf` | ⚠️ MISLABELLED — actually a blank **Form 80** → D-72 | ✅ 30 Jul |
 | `form-1-version-3-statutory-declaration-form-pdf-version (6).pdf` | QLD Statutory Declaration template → D-73/D-74 | ✅ 30 Jul |
-| `Screenshot 2026-08-02 at 7.27.19 PM.png` | **s56 CLIENT-NOTIFICATION TEMPLATE** (their own wording) → D-104 | ✅ 2 Aug |
-| `Yale MIgration Mail - s56 request.pdf` | **FULL 482 Sevial s56 chase, 25 messages** 2 Jun–30 Jul → D-105/D-106/D-107/D-112 | ✅ 2 Aug |
-| `Yale MIgration Mail - Fwd_ s56 Request … RONAYA, IANBER TEOGALBO ….pdf` | **Full 485 Ronaya s56 thread, 11 messages** — multi-applicant + de-facto evidence → D-108/D-109/D-110 | ✅ 2 Aug |
+| `Screenshot 2026-08-02 at 7.27.19 PM.png` | **s56 CLIENT-NOTIFICATION TEMPLATE** (their own wording) → D-117 | ✅ 2 Aug |
+| `Yale MIgration Mail - s56 request.pdf` | **FULL 482 Sevial s56 chase, 25 messages** 2 Jun–30 Jul → D-118/D-119/D-120/D-125 | ✅ 2 Aug |
+| `Yale MIgration Mail - Fwd_ s56 Request … RONAYA, IANBER TEOGALBO ….pdf` | **Full 485 Ronaya s56 thread, 11 messages** — multi-applicant + de-facto evidence → D-121/D-122/D-123 | ✅ 2 Aug |
 
 ## Established working method with this client (D-90)
 **Robinder shares HIS screen and types his own passwords, on his own machine.** This is how the Make account

@@ -31,47 +31,55 @@ Vocabulary is **THEIRS**, not ours (D-51..D-56):
 - **Processing Stage:** Enquiry · Engaged · Documents Pending · Documents Complete · Ready for Lodgement ·
   Lodged · Awaiting Outcome · Closed
 - **Visa Outcome:** Pending · Granted · Refused · Withdrawn
-- **Assigned Consultant:** roster names only. ⛔ **Nisha is a FORMER EMPLOYEE — never in any dropdown** (D-111).
+- **Assigned Consultant:** roster names only. ⛔ **Nisha is a FORMER EMPLOYEE — never in any dropdown** (D-124).
 
 **ENQUIRIES tab (11 columns):** Date · Name · Phone · Email · Channel · Visa Interest · Location ·
 Assigned To · Status · Follow-up Due · Notes.
 
-## Folder convention — CLIENT-APPROVED 2 Aug (D-113). Supersedes the SOP's 10-folder tree.
+## Folder convention — CLIENT-APPROVED 2 Aug (D-126). Supersedes the SOP's 10-folder tree.
 Their SOP's 10 folders were **never implemented** — real folders are flat (D-47). The client chose fewer
 folders and asked for work visas to be organised by **application step**.
 
 **Naming:** `YM-2026-##### – FULL NAME` · employer/sponsorship matters:
 `YM-2026-##### – COMPANY NAME (SPONSOR)` (D-99). Existing folders are **NEVER** renamed or moved (D-12).
 
-**M3 routes on Visa Type to one of three sets — staff never choose:**
+**M3 routes on Visa Type to one of three sets — staff never choose.** Sets derive from **Yale's own
+checklists** (`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`), with the client's 2 Aug changes applied:
+Health & Character merged into Identity · Work organised by STEP · Partner gets 820/801 sub-folders.
 
-**STANDARD** (500 · 485 · 189/190/491 · 600 · 101/802 · 417)
+**SET 1 — STANDARD** (500 · 485 · 189/190/191/491/494/186 · 600 · 417 · Skills Assessment · EOI · Bridging · ART)
 ```
-01 Identity & Personal      ← incl. health, insurance, medicals, police checks (client merged these in)
-02 Education & Employment
+01 Identity & Personal        ← now also holds AFP/NBI police checks, medicals/HAP, OSHC (client merged)
+02 Education & Employment     ← CoE, transcripts, completion letter, PTE/IELTS, skills assessment, JRP/PSA
 03 Financial
-04 Forms & Lodgement
-05 Correspondence & Outcome
-```
-**WORK / EMPLOYER** (482 · 407 · 186 · 494) — *by step, so the tree shows application progress*
-```
-01 Identity & Personal
-02 Education & Employment
-03 Step 1 – Sponsorship (SBS 482 / TAS 407)
-04 Step 2 – Nomination
-05 Step 3 – Visa Lodgement
+04 Dependents & Relationship  ← their "485 WITH DEPENDENT" checklist needs full relationship evidence
+05 Forms & Lodgement
 06 Correspondence & Outcome
 ```
-**PARTNER** (820/801 · 300)
+**SET 2 — WORK / EMPLOYER** (482 · 407 · SBS · Nomination) — *by STEP, so the tree shows progress*
 ```
-01 Identity & Personal
-02 Relationship Evidence
-     ├── 820
-     └── 801          ← 801 documents arrive ~2 years later; must not mix (client's reason)
-03 Financial
-04 Forms & Lodgement
+01 Identity & Personal        ← incl. health & character
+02 Step 1 – Sponsorship       ← P&L, ABN/ACN/ASIC, Trust Deed, licences, premises, payroll, menu, SAF, invoices
+03 Step 2 – Nomination        ← position description, contract, org chart, LMT/advertising, training plan (407)
+04 Step 3 – Visa Lodgement    ← applicant skills assessment, quals, CV, payslips, Form 80/1221, ImmiAccount, TRN
+05 Dependents
+06 Correspondence & Outcome
+```
+**SET 3 — PARTNER / FAMILY** (820/801 · 300 · 101 · 802) — *organised by PARTY, mirroring their checklist*
+```
+01 Applicant Documents        ← passport, AFP/NBI, birth cert, tax returns, super beneficiary letter, medicals
+02 Sponsor Documents          ← passport/PR card, tax returns, super letter, income evidence
+03 Relationship Evidence
+     ├── 820                  ← initial bundle
+     └── 801                  ← updated bundle, lodged ~2 years later (client's explicit request)
+04 Forms & Lodgement          ← Form 47SP, 40SP, 888 (+ ID of each witness), Form 80, 1229
 05 Correspondence & Outcome
 ```
+**Why party-based for partner:** their checklist splits APPLICANT and SPONSOR documents, and the two lists are
+nearly identical (both submit passport, police check, tax returns, super letter). Filing by document type would
+put two passports together **with no way to tell whose is whose.** No employment folder — partner applicants
+submit none.
+
 Contents per visa type: `docs/FOLDER-CONTENTS-CHART.md`.
 Disambiguation rule for staff: **from the Department → 05. Sent to the Department → 04.**
 
@@ -94,13 +102,13 @@ OAuth'd **as itself**.
   temperature 0, few-shot from their real threads.
 - **Drafting:** Sonnet-class, template-grounded, **always saved as a Gmail draft — never auto-sent** (D-06).
 - Confidence below threshold → label **Needs Review** + notify owner. s56 detection errs toward flagging.
-- **s56 client notification uses THEIR template verbatim** (D-104):
+- **s56 client notification uses THEIR template verbatim** (D-117):
   `[NAME]'s file has opened the case officer has requested:` + items verbatim + `We need to submit the
   documents before [DATE]. thank you` — where **[DATE] = internal day-26, never the legal day-28** (D-58).
 - Escalation ladder **7 / 14 / 21 / 26 days**, stop-on-reply.
-- Attachments: **.zip/.rar cannot be read** — detect, log "compressed bundle", route to a human (D-106).
+- Attachments: **.zip/.rar cannot be read** — detect, log "compressed bundle", route to a human (D-119).
   Dedupe by document TYPE + client, never filename (the same doc arrives as photo then PDF).
-- One s56 may cover **multiple applicants** — parse the applicant table, don't assume one person (D-108).
+- One s56 may cover **multiple applicants** — parse the applicant table, don't assume one person (D-121).
 
 ## Message-sending rules
 Business hours only (Brisbane 08:00–20:00) · stop-on-reply on every sequence · every outbound logged to the

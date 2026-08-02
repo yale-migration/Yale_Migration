@@ -159,17 +159,17 @@ data!"). Diagnosed as the same scope-grant failure class as the OneDrive 403s (D
 not all ticked, or Workspace App Access Control restricting Make. Reauthorize instructions sent (D-97).
 2026-07-31 | WhatsApp | ✅ FOLDER NAMES SETTLED. Client originally wanted DIFFERENT sub-folder names per visa
 type; Sharjeel proposed one consistent 5-folder name set with different contents inside, and the client
-accepted (D-104). Correct call — per-visa naming would break adoption (staff file flat today), complicate the
+accepted (D-117). Correct call — per-visa naming would break adoption (staff file flat today), complicate the
 Make router, and give a returning client three structures for 500→485→190. His real need was CONTENTS, met by
 docs/FOLDER-CONTENTS-CHART.md. ✅ Gmail connection on visa.lodgement@ authorized after reauthorize (D-97);
 our Run-once test still pending. Re-asked for the s56 client-email screenshot.
 2026-08-02 | WhatsApp + files | 🎉 CLIENT DELIVERED EVERYTHING OUTSTANDING. (a) **s56 client template** sent as
-a screenshot — closes the ask open since 30 Jul (D-104). (b) **Full 482 Sevial s56 thread, 25 messages** —
+a screenshot — closes the ask open since 30 Jul (D-117). (b) **Full 482 Sevial s56 thread, 25 messages** —
 first complete client-facing chase we have seen: 16-day silence after the s56, documents complete only on day
-37, and on 30 Jul the CLIENT had to ask for a status update (D-105 — the single best justification for M5/M9).
+37, and on 30 Jul the CLIENT had to ask for a status update (D-118 — the single best justification for M5/M9).
 (c) **Full 485 Ronaya thread** — one s56 covering TWO applicants, plus a full de-facto relationship-evidence
-request inside a 485 (D-108/D-109); Department→consultant hop measured at 3 days over a weekend (D-110).
+request inside a 485 (D-121/D-122); Department→consultant hop measured at 3 days over a weekend (D-123).
 (d) **Folder structure APPROVED with three changes**: work/employer folders organised by STEPS (sponsorship →
-nomination → lodgement), partner gets 820/801 sub-folders, health & character folds into Personal (D-113).
-(e) **Nisha is a former employee** — roster now fully closed (D-111). All 3 files moved into `access/` +
+nomination → lodgement), partner gets 820/801 sub-folders, health & character folds into Personal (D-126).
+(e) **Nisha is a former employee** — roster now fully closed (D-124). All 3 files moved into `access/` +
 `assets/samples/`, `new-access/` deleted after verified copy.

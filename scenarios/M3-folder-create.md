@@ -1,6 +1,6 @@
 # Scenario: `YM-M3-folder-create` — auto client folder + client-approved sub-folders
 **v2 — 2026-08-02.** v1 specified 10 sub-folders; the client approved THREE sets routed by visa type
-(D-113). Authoritative structure: `ARCHITECTURE.md` v2 (G6 — do not restate it elsewhere).
+(D-126). Authoritative structure: `ARCHITECTURE.md` v2 (G6 — do not restate it elsewhere).
 
 **Trigger:** new row in MASTER with a Client Code and no Folder URL.
 **Cost:** ~13 Make operations per client (well inside the free tier for testing; paid plan at go-live, D-15).
@@ -67,27 +67,28 @@ error (and an alert), not a silent duplicate or a rename. Existing client folder
 **Three sets, chosen automatically from `Visa Type` (col H). Staff never choose.** Full definitions and
 rationale: `ARCHITECTURE.md` v2 §Folder convention.
 
-1. **Router** on `{{1.Visa Type}}`:
-   | Route | Visa Types | Set `subfolders` to |
+1. **Switch / Set variable** on `{{1.Visa Type}}` → `subfolders` (three cases, not a 20-branch router):
+   | Set | Visa Types | `subfolders` value |
    |---|---|---|
-   | WORK / EMPLOYER | `482 · 407 · 186 · 494` | `01 Identity & Personal;02 Education & Employment;03 Step 1 – Sponsorship (SBS 482 / TAS 407);04 Step 2 – Nomination;05 Step 3 – Visa Lodgement;06 Correspondence & Outcome` |
-   | PARTNER | `820/801 · 300` | `01 Identity & Personal;02 Relationship Evidence;03 Financial;04 Forms & Lodgement;05 Correspondence & Outcome` |
-   | STANDARD (fallback, no filter) | everything else | `01 Identity & Personal;02 Education & Employment;03 Financial;04 Forms & Lodgement;05 Correspondence & Outcome` |
+   | **1 STANDARD** *(default)* | 500 · 485 · 189 · 190 · 191 · 491 · 494 · 186 · 600 · 417 · Skills Assessment · EOI · Bridging · ART · Other | `01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome` |
+   | **2 WORK / EMPLOYER** | 482 · 407 · SBS · Nomination | `01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome` |
+   | **3 PARTNER / FAMILY** | 820/801 · 300 · 101 · 802 | `01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome` |
+
 2. **Tools → Iterator**: `split(subfolders; ";")`
 3. **OneDrive → Make an API Call** (inside the iterator):
    - `POST /v1.0/drives/A0BABA3C2640082C/items/{{3.body.id}}/children`
    - Body `{"name":"{{iterator.value}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}`
-4. **PARTNER ONLY — one nested level.** After `02 Relationship Evidence` is created, POST two children into
+4. **PARTNER ONLY — one nested level.** After `03 Relationship Evidence` is created, POST two children into
    it: `820` and `801`. Reason (client's own): the 801 documents arrive ~2 years later and must not mix with
    the 820 bundle. Cost: +2 ops on partner matters only.
 
-**Ops per matter:** standard ≈8 · work ≈9 · partner ≈11. Within the free tier for testing (D-22).
+**Ops per matter:** standard ≈9 · work ≈9 · partner ≈10. Within the free tier for testing (D-22).
 
 ⚠️ **VERIFIED 2026-07-29 (T1.4c): live client folders are FLAT — zero sub-folders (D-47).** The SOP's
 10-folder structure was never implemented; staff dump loose files. So this module DELIVERS A NEW STRUCTURE
 rather than mirroring one. **Framing to the client:** "your SOP specifies a structure; in practice files sit
 loose — the automation makes it real from now on, without touching existing folders."
-✅ **Client approved the structure 2 Aug** (D-113), including their own improvement: work visas organised by
+✅ **Client approved the structure 2 Aug** (D-126), including their own improvement: work visas organised by
 application STEP so the folder tree shows progress. Existing ~1,436 folders are never restructured (D-12/D-45).
 
 ## Module 5 — Write the folder link back (Google Sheets → Update a Row)

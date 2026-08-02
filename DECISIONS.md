@@ -854,7 +854,7 @@ credentials in a spreadsheet**, plus a hidden "withdrawal" tab. The password tab
 raise gently at handover (M11) — logged here so it is not lost again.
 
 ## ===== 2026-08-02 NEW ACCESS BATCH (3 files) — full audit =====
-D-104 | ✅ S56 CLIENT-NOTIFICATION TEMPLATE RECEIVED — closes open ask #3 (was pending since 30 Jul) |
+D-117 | ✅ S56 CLIENT-NOTIFICATION TEMPLATE RECEIVED — closes open ask #3 (was pending since 30 Jul) |
 Client sent their actual wording via WhatsApp screenshot + "Please use this as template / With instructions on
 the required documents and date to comply". Verbatim structure:
 ```
@@ -870,7 +870,7 @@ lower-case "thank you". **Template variables: {{client_name}}, {{requested_items
 🔴 **DESIGN CALL (no new client question needed):** the date shown to the client = our **INTERNAL day-26**
 date, never the legal day-28 (D-58). Their sample shows a bare date, so we simply populate the earlier one —
 otherwise documents land on the legal deadline with zero time to review and lodge.
-D-105 | 🚨 THE EVIDENCE FILE — full 482 Sevial s56 thread (25 messages, 2 Jun → 30 Jul 2026) | Previously we
+D-118 | 🚨 THE EVIDENCE FILE — full 482 Sevial s56 thread (25 messages, 2 Jun → 30 Jul 2026) | Previously we
 held only a forwarded fragment. The complete client-facing chase is now visible and it is the single best
 justification for this entire project:
   · **2 Jun** s56 + Form 80 sent to client → **18 Jun first follow-up = 16-DAY SILENCE** (independently
@@ -880,7 +880,7 @@ justification for this entire project:
   · **30 Jul** the CLIENT has to ask "just wondering what's the status of my application?" → reply: "wala pa
     pong update" (no update yet). Nearly two months, client chasing us.
   Every one of those failures is what M5 (dormancy detector + auto-chase) and M9 exist to remove.
-D-106 | Technical constraints discovered in the Sevial thread — affect M9 attachment handling | (a) Clients
+D-119 | Technical constraints discovered in the Sevial thread — affect M9 attachment handling | (a) Clients
 send **.rar and .zip archives** (Payslips.rar, Payslips.zip, TaxStatement.zip, Payslip_COLES.zip,
 Payslip_NYCbagel.zip) — the classifier CANNOT read inside archives; it must detect the archive, log
 "compressed bundle received", and route to a human rather than guess contents. (b) The **same document
@@ -889,38 +889,38 @@ must be by document TYPE + client, not by filename or hash. (c) Attachment names
 (`CamScanner 23-6-2026 10.49.pdf`, `CV_LES.docx`, `BBCO. Contract .pdf`) — reinforces the Phase 2 auto-rename
 case (D-47c). (d) Third-party blockers dominate: **NBI clearance quoted at 3–4 weeks**, employer evidence
 pending — supports M5's responsible-party field (chase the employer, not the client).
-D-107 | Recurring client questions that the request email should pre-empt | From the same thread: "How many
+D-120 | Recurring client questions that the request email should pre-empt | From the same thread: "How many
 payslips should I send?" → "latest 3 months would be fine sir." · "Just let me know sir if may kulang pa po
 ako :)" (is anything still missing?) · "what's the status of my application?". **All three are answerable in
 advance** — M4's document-request email should state quantities up front, and M5's checklist view answers
 "what's outstanding" without anyone asking. Cheap, high-perceived-value wins for the demo.
-D-108 | 485 Ronaya thread — ONE s56 can cover MULTIPLE APPLICANTS | Department email 17 Apr 2026 lists a
+D-121 | 485 Ronaya thread — ONE s56 can cover MULTIPLE APPLICANTS | Department email 17 Apr 2026 lists a
 table of **two** applicants (main + de facto partner) with names and dates of birth under one file number
 BCC2026/1472133. Consequences: (a) the M9 parser must handle a multi-row applicant table, not assume one
 person; (b) confirms MASTER's `Party 2 Name` column (D-11 matter grain); (c) the s56 deadline applies to the
 MATTER, so both applicants' documents feed one deadline.
-D-109 | 🔴 RELATIONSHIP EVIDENCE IS NOT PARTNER-VISA-ONLY | The 485 Ronaya s56 escalated on 7 May into a full
+D-122 | 🔴 RELATIONSHIP EVIDENCE IS NOT PARTNER-VISA-ONLY | The 485 Ronaya s56 escalated on 7 May into a full
 de-facto evidence request: updated photos together · updated joint bank statement · **statutory declaration of
 cohabitation** (QLD form attached) · conversation and call logs · relationship statements from a parent and a
 friend. The Department's own four-pillar guidance (financial · household · social · commitment) was pasted
-into the email. **This materially strengthens the partner-folder question (D-101):** relationship bundles
+into the email. **This materially strengthens the partner-folder question (D-128):** relationship bundles
 appear in 485 dependent cases too, not just 820/801 — so a dedicated relationship folder has broader value
 than first assessed. Also: the Department's four pillars are a ready-made CHECKLIST for M4.
-D-110 | Department→consultant hop-1 latency measured: 3 days | Department sent **Fri 17 Apr 4:53 PM** →
+D-123 | Department→consultant hop-1 latency measured: 3 days | Department sent **Fri 17 Apr 4:53 PM** →
 forwarded from `visa.lodgement@` to the consultant **Mon 20 Apr 9:18 AM** (weekend). The consultant then
 emailed the client **9 minutes later**. So the bottleneck is NOT the consultant — it is the unattended
 `visa.lodgement@` mailbox over weekends. **Quantified value of M9: recovers ~3 days of a 28-day clock.** Use
 this number at the demo; it is from their own file.
-D-111 | ✅ ROSTER FULLY CLOSED — "Nisha" is a former employee | Client 2 Aug: "No need to assign any work to
+D-124 | ✅ ROSTER FULLY CLOSED — "Nisha" is a former employee | Client 2 Aug: "No need to assign any work to
 Nisha. Previous employee." The ops-workbook tab is historical. **Remove Nisha from all assignment dropdowns
 and routing; retain the name only for reading old records.** The roster now has NO open gaps (workvisa.bne@
 closed in D-94).
-D-112 | ⚠️ QUALITY ISSUE: Yale is sending the mislabelled Form 80 to clients | The Sevial thread shows
+D-125 | ⚠️ QUALITY ISSUE: Yale is sending the mislabelled Form 80 to clients | The Sevial thread shows
 `CoE Certificate (10F566341) (1).pdf` attached **by Yale, to the client**, alongside the s56 request — and we
 established it is actually a blank Form 80 (D-72). The client then returned the same wrongly-named file. So
 the mislabelling propagates outward to clients, not just internally. Already flagged to the client politely;
 this is additional evidence for the Phase 2 QC/auto-rename feature, and worth one gentle mention at the demo.
-D-113 | ✅ CLIENT APPROVED THE FOLDER STRUCTURE — three instructions, all adopted | Client answers 2 Aug:
+D-126 | ✅ CLIENT APPROVED THE FOLDER STRUCTURE — three instructions, all adopted | Client answers 2 Aug:
   1. **Work/employer visas → organise by STEPS, not document type.** Verbatim: "for 407 and 482 steps are:
      1. Sponsorship registration (SBS-482, TAS-407). Step 2. Nomination, step 3 visa lodgement. This will be
      easier for checking for the application progress." **Excellent instruction — the folder tree becomes a
@@ -948,16 +948,16 @@ RECONSTRUCTED FINAL SETS (pending Sharjeel's confirmation):
 needs one nested level. Cost: ~+3 Make operations per partner matter, and a variable per set — small. This
 supersedes the single-set assumption in D-100; the ADOPTION reasoning in D-100 still holds because staff never
 choose the set — the automation picks it from the Visa Type already in the sheet.
-D-114 | Relationship-evidence folder is now JUSTIFIED, not optional (resolves D-101's deferred question) |
-D-101 deferred the partner-relationship-folder question as low impact. Two new facts overturn that: (a) the
-client has explicitly asked for 820/801 relationship sub-folders (D-113); (b) relationship bundles also appear
-inside **485** matters with a de-facto second applicant (D-109). The question is therefore answered by
-evidence rather than by asking — no client question needed. D-101's "do not ask" verdict stands; its
+D-127 | Relationship-evidence folder is now JUSTIFIED, not optional (resolves D-128's deferred question) |
+D-128 deferred the partner-relationship-folder question as low impact. Two new facts overturn that: (a) the
+client has explicitly asked for 820/801 relationship sub-folders (D-126); (b) relationship bundles also appear
+inside **485** matters with a de-facto second applicant (D-122). The question is therefore answered by
+evidence rather than by asking — no client question needed. D-128's "do not ask" verdict stands; its
 "low impact" assessment does not.
-D-115 | 🔴 ARCHITECTURE.md was STALE v1 — rewritten to v2 before it caused a wrong build | Audit 2 Aug found
+D-129 | 🔴 ARCHITECTURE.md was STALE v1 — rewritten to v2 before it caused a wrong build | Audit 2 Aug found
 the file CLAUDE.md points every session to as the conventions source had never been updated. Six live errors:
 (1) **10-folder tree** (`01 Enquiry … 10 Visa Outcome`) — superseded by the client's 5/6-folder sets (D-62,
-D-113); (2) **10-column data contract** — actual spec is 23 columns (D-51..D-56); (3) Stage dropdown used OUR
+D-126); (2) **10-column data contract** — actual spec is 23 columns (D-51..D-56); (3) Stage dropdown used OUR
 vocabulary, not theirs; (4) **Gmail DELEGATION described as the access model** — impossible and irrelevant
 (D-78/D-79/D-80); (5) `visa.lodgement@` not mentioned at all despite being the s56 mailbox (D-64); (6) script
 names wrong (`code_assign.gs`/`master_validate.gs` vs the real `master_codes.gs`/`setup_master_sheet.gs`).
@@ -968,7 +968,7 @@ access models · the s56 template + day-26 rule · attachment constraints (.zip/
 type) · multi-applicant parsing · Nisha exclusion · correct naming conventions. Data contract now POINTS to
 `docs/MASTER-SHEET-SPEC.md` instead of duplicating it — duplication is what let the two drift apart.
 **Rule added to PROCESS: docs must reference the single source, never restate it.**
-D-116 | Folder-set question CLOSED — no outstanding item with Sharjeel | Sharjeel confirmed 2 Aug that
+D-130 | Folder-set question CLOSED — no outstanding item with Sharjeel | Sharjeel confirmed 2 Aug that
 everything the client sent has been shared: two PDFs, one screenshot, and the typed answers. The "7-folder
 proposal" text existed only inside the question he sent, not as a separate document. **Stop asking.** The
 three sets in ARCHITECTURE v2 are final: they satisfy all three client instructions (fewer folders than 7 ·

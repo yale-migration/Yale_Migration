@@ -103,7 +103,7 @@ identical to progress and is not.
 
 `ARCHITECTURE.md` v1 duplicated the MASTER column list and the folder tree that also lived in
 `docs/MASTER-SHEET-SPEC.md` and `DECISIONS.md`. The copies drifted, and the stale copy was the one CLAUDE.md
-pointed at — so the next build would have created 10 wrong folders in the client's live OneDrive (D-115).
+pointed at — so the next build would have created 10 wrong folders in the client's live OneDrive (D-129).
 
 **Rule: each fact has exactly ONE authoritative file. Every other document links to it.**
 - Where we are → `STATUS.md` · What's next → `ROADMAP.md` · How → `ARCHITECTURE.md` ·

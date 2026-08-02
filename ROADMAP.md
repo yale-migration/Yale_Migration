@@ -152,9 +152,9 @@ Expected output: client sees working automation for the first time.
 ## OPEN CLIENT ASKS — 2 Aug: nearly all CLOSED
 🔴 **ONLY BLOCKING ITEM:** the Gmail connection on `visa.lodgement@` exists but returns **403 insufficient
    scopes** (D-97). Robinder must **Reauthorize** and tick EVERY permission box. Blocks M9 only.
-✅ CLOSED 2 Aug: **s56 client template** received (D-104) · **folder structure approved** with 3 changes
-   (D-113) · **Nisha = former employee**, roster fully closed (D-111) · full 482 + 485 s56 threads supplied
-   (D-105..D-110).
+✅ CLOSED 2 Aug: **s56 client template** received (D-117) · **folder structure approved** with 3 changes
+   (D-126) · **Nisha = former employee**, roster fully closed (D-124) · full 482 + 485 s56 threads supplied
+   (D-118..D-123).
 ✅ CLOSED 31 Jul: `workvisa.bne@` = Robinder (D-94) · mail platform = Google Workspace (D-76) ·
    `visa.lodgement@` owner = Robinder (D-80).
 ✅ CLOSED 30 Jul: s56 cadence 7/14/21/26 · MARN shown · 1,400 folders are live clients · 5 sub-folders.
@@ -162,7 +162,7 @@ Remaining, none blocking: ⬜ 2–3 test client files (M10) · ⬜ 👍 M6 auto-
 ⬜ walk-in sheet location · ⬜ **Make paid plan** (go-live gate, raise at demo) · ⬜ final 50% on go-live.
 
 ⚠️ **FOR SHARJEEL, NOT THE CLIENT:** the client answered against a **7-folder** proposal sent directly by
-   Sharjeel that is not in this repo. The structures in D-113 are RECONSTRUCTED from his three instructions.
+   Sharjeel that is not in this repo. The structures in D-126 are RECONSTRUCTED from his three instructions.
    **Confirm they match what was actually sent before T3 builds them.**
 
 ## KNOWN ISSUES TO RAISE AT THE DEMO (not blockers)
