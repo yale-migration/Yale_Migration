@@ -1319,3 +1319,25 @@ running it once now establishes the baseline. (c) 🔴 **DELETE the test row AND
 is left consumed, the client's genuinely-first client becomes `YM-2026-00002` — permanent, visible, and
 exactly the kind of detail Robinder notices. `nextNumber_` takes max+1 and never reuses, so clearing the cell
 is what frees the number.
+D-161 | ✅ T2 FULLY CLOSED — all three tail items verified (3 Aug) | (a) `Date Added` (col T) stamped
+**`2026-08-02`** in `yyyy-mm-dd` — the date write and the number format both work. (b) `auditDuplicateCodes`
+logged **`No duplicate codes ✅`** — the D-135 safety net runs clean and the baseline is established.
+(c) Test row deleted; MASTER is empty from row 2 with all 23 headers, dropdown carets on the 9 specified
+columns, and `YM-2026-00001` freed for the client's genuinely-first client.
+**M2 (Master data layer) is DONE** except the ~48-row tracker import, deliberately scheduled after the demo.
+D-162 | 🔴 TIMEZONE MISMATCH FOUND — will corrupt s56 deadline maths if not fixed before M5/M9 | The code was
+written at ~02:00 on **3 Aug** (per the Apps Script execution log) but `new Date()` stamped **2026-08-02**.
+That is a full calendar day out, and the cause is that the **Apps Script project timezone is not
+Australia/Brisbane** — it defaults to the creator's locale (Sharjeel is UTC+05:00; Brisbane is UTC+10:00), so
+02:00 Brisbane is still the previous day where the script thinks it lives.
+**Harmless for `Date Added`. NOT harmless for anything that computes a deadline.** D-33 requires
+`due = letter_date + 1 day + parsed days`, and D-58 sets the s56 ladder at 7/14/21/26 days with a **legal
+28-day** limit. A one-day error on a statutory deadline is the single worst failure this system could produce
+— it is exactly the risk the client is paying us to remove.
+**FIX (2 minutes, do before T3):**
+  1. Apps Script → ⚙️ **Project Settings** → **Time zone** → `(GMT+10:00) Brisbane` → Save
+  2. Google Sheet → **File → Settings** → **Time zone** → `(GMT+10:00) Brisbane` → Save & refresh
+  3. Make scenarios also run on the ORGANISATION timezone — check Make → Organization settings and set
+     Brisbane there too, so scheduling and any date formulas agree with the sheet.
+Then re-test: type a name, confirm `Date Added` shows the correct Brisbane date.
+**All three clocks (Apps Script · Sheet · Make) must read Australia/Brisbane. Verify at M5/M9 build time too.**

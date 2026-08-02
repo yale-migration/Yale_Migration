@@ -59,9 +59,14 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
 - ✅ T2.3 Trigger installed 3 Aug — `assignMissingCodes` · Time-driven · Minutes timer · every 5 min ·
       notify immediately. One trigger only, no installable onEdit (D-159).
 - ✅ T2.4 TEST PASSED — `TEST CLIENT ONE` in C2 → **`YM-2026-00001` in A2** (D-159)
-- ⬜ T2.5 Run **`auditDuplicateCodes`** → expect `No duplicate codes ✅` · also confirm **T2 holds the date**
-- ⬜ T2.6 **DELETE the test row AND its code** — otherwise the client's genuinely-first client becomes
-      `YM-2026-00002`, which is permanent and visible (D-145)
+- ✅ T2.5 `auditDuplicateCodes` → **`No duplicate codes ✅`** · `Date Added` = 2026-08-02 confirmed (D-161)
+- ✅ T2.6 Test row deleted, `YM-2026-00001` freed (D-161)
+- 🔴 **T2.7 NEW — SET ALL THREE CLOCKS TO Australia/Brisbane BEFORE T3 (D-162).** The code stamped 2026-08-02
+      when it ran on 3 Aug — the Apps Script project timezone is not Brisbane. Harmless for Date Added,
+      **fatal for s56 deadline maths** (D-33/D-58: 28-day legal limit).
+      1. Apps Script → ⚙️ Project Settings → Time zone → **(GMT+10:00) Brisbane**
+      2. Sheet → File → Settings → Time zone → **(GMT+10:00) Brisbane**
+      3. Make → Organization settings → timezone → **Brisbane**
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
 ### 🎯 T3 — Build the folder scenario (JOINT · ~90 min) — ACTIVE
