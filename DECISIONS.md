@@ -920,3 +920,37 @@ D-112 | ⚠️ QUALITY ISSUE: Yale is sending the mislabelled Form 80 to clients
 established it is actually a blank Form 80 (D-72). The client then returned the same wrongly-named file. So
 the mislabelling propagates outward to clients, not just internally. Already flagged to the client politely;
 this is additional evidence for the Phase 2 QC/auto-rename feature, and worth one gentle mention at the demo.
+D-113 | ✅ CLIENT APPROVED THE FOLDER STRUCTURE — three instructions, all adopted | Client answers 2 Aug:
+  1. **Work/employer visas → organise by STEPS, not document type.** Verbatim: "for 407 and 482 steps are:
+     1. Sponsorship registration (SBS-482, TAS-407). Step 2. Nomination, step 3 visa lodgement. This will be
+     easier for checking for the application progress." **Excellent instruction — the folder tree becomes a
+     progress indicator**, and it independently confirms CR-004 (sponsorship is a 3-stage chain, D-95). Adopt.
+  2. **Partner 820/801 → sub-folders for each stage.** "we can make it in both file for partner visa then we
+     can put subfolder as 801 and 820." Rationale from the client: the updated relationship documents arrive
+     ~2 years later at the 801 stage, so the two bundles must not mix. Adopt as sub-folders inside the
+     relationship folder — one matter, two stages (does NOT change the MASTER matter grain, D-11).
+  3. **Health & character folds into Personal.** "we can just put the insurance or health character in
+     personal folder because there not much document on it." Adopt — fewer folders wins on adoption (D-47c).
+⚠️ **ASSUMPTION FLAGGED (G1):** the client answered against a **7-folder** proposal ("Standard and Work have
+seven") that Sharjeel sent directly — that exact list is NOT in this repo, so the structures below are
+RECONSTRUCTED from the client's three instructions plus D-98/D-100. **Sharjeel must confirm they match what he
+actually sent before this goes to build.** Recording the gap rather than silently guessing.
+RECONSTRUCTED FINAL SETS (pending Sharjeel's confirmation):
+  **STANDARD** (500 · 485 · 189/190/491 · 600 · 101/802): `01 Identity & Personal` (now includes health,
+  insurance, medicals, police checks) · `02 Education & Employment` · `03 Financial` · `04 Forms & Lodgement` ·
+  `05 Correspondence & Outcome`
+  **WORK / EMPLOYER** (482 · 407 · 186 · 494): `01 Identity & Personal` · `02 Education & Employment` ·
+  `03 Step 1 – Sponsorship (SBS / TAS)` · `04 Step 2 – Nomination` · `05 Step 3 – Visa Lodgement` ·
+  `06 Correspondence & Outcome`
+  **PARTNER** (820/801 · 300): `01 Identity & Personal` · `02 Relationship Evidence` → sub-folders
+  `820` and `801` · `03 Financial` · `04 Forms & Lodgement` · `05 Correspondence & Outcome`
+**Build impact:** M3 now needs a ROUTER on visa type to pick one of three folder sets, and the partner set
+needs one nested level. Cost: ~+3 Make operations per partner matter, and a variable per set — small. This
+supersedes the single-set assumption in D-100; the ADOPTION reasoning in D-100 still holds because staff never
+choose the set — the automation picks it from the Visa Type already in the sheet.
+D-114 | Relationship-evidence folder is now JUSTIFIED, not optional (resolves D-101's deferred question) |
+D-101 deferred the partner-relationship-folder question as low impact. Two new facts overturn that: (a) the
+client has explicitly asked for 820/801 relationship sub-folders (D-113); (b) relationship bundles also appear
+inside **485** matters with a de-facto second applicant (D-109). The question is therefore answered by
+evidence rather than by asking — no client question needed. D-101's "do not ask" verdict stands; its
+"low impact" assessment does not.
