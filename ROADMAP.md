@@ -61,12 +61,9 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
 - ✅ T2.4 TEST PASSED — `TEST CLIENT ONE` in C2 → **`YM-2026-00001` in A2** (D-159)
 - ✅ T2.5 `auditDuplicateCodes` → **`No duplicate codes ✅`** · `Date Added` = 2026-08-02 confirmed (D-161)
 - ✅ T2.6 Test row deleted, `YM-2026-00001` freed (D-161)
-- 🔴 **T2.7 NEW — SET ALL THREE CLOCKS TO Australia/Brisbane BEFORE T3 (D-162).** The code stamped 2026-08-02
-      when it ran on 3 Aug — the Apps Script project timezone is not Brisbane. Harmless for Date Added,
-      **fatal for s56 deadline maths** (D-33/D-58: 28-day legal limit).
-      1. Apps Script → ⚙️ Project Settings → Time zone → **(GMT+10:00) Brisbane**
-      2. Sheet → File → Settings → Time zone → **(GMT+10:00) Brisbane**
-      3. Make → Organization settings → timezone → **Brisbane**
+- ✅ **T2.7 TIMEZONE FIXED 3 Aug (D-163)** — Apps Script · Sheet · Make all set to **Australia/Brisbane**
+      (Make was on Sydney, which shifts to +11:00 in summer). Re-test stamped **2026-08-03** = correct.
+      ⚠️ Re-verify all three at M5/M9 build time — s56 deadline maths depends on it.
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
 ### 🎯 T3 — Build the folder scenario (JOINT · ~90 min) — ACTIVE
@@ -164,6 +161,8 @@ Expected output: client sees working automation for the first time.
       deletes his. Triggers are owned by their creator — if ours is removed, code assignment stops SILENTLY
       with no error (D-153).
 - ⬜ Delete the 7 leftover "Integration OneDrive" discovery scenarios from the client's Make org (D-154)
+- ⬜ Rename the Make organization "My Organization" → `Yale Migration` (D-164)
+- ⬜ Tell Robinder his Make org **Region is EU** — Australian client data on EU servers, fixed at signup (D-164)
 - ⬜ Rename Apps Script project "Untitled project" → `YM MASTER automation`; fix file name
       `etup_master_sheet.gs` → `setup_master_sheet.gs` (D-154)
 

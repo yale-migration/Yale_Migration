@@ -1341,3 +1341,21 @@ Australia/Brisbane** — it defaults to the creator's locale (Sharjeel is UTC+05
      Brisbane there too, so scheduling and any date formulas agree with the sheet.
 Then re-test: type a name, confirm `Date Added` shows the correct Brisbane date.
 **All three clocks (Apps Script · Sheet · Make) must read Australia/Brisbane. Verify at M5/M9 build time too.**
+D-163 | ✅ TIMEZONE FIXED AND PROVEN — all three clocks now Australia/Brisbane (3 Aug) | Verified from
+screenshots: **Apps Script** Project Settings = `(GMT+10:00) Australian Eastern Standard Time – Brisbane` ·
+**Make** Organization settings = `(GMT+10:00) Australia/Brisbane` with Country `Australia` (changed FROM
+Australia/Sydney) · **Google Sheet** File→Settings = Locale `Australia`, Time zone `(GMT+10:00) Eastern
+Time – Brisbane`.
+**Proof it worked:** the re-test stamped `Date Added` = **`2026-08-03`** — the correct Brisbane date. The
+earlier run stamped 2026-08-02 for the same real-world moment. The one-day error is eliminated at source.
+**Why Brisbane and not Sydney (the trap that was live):** Queensland does NOT observe daylight saving, so
+Brisbane is GMT+10:00 year-round; Sydney/Melbourne shift to GMT+11:00 from October to April. Make had
+defaulted to **Australia/Sydney**, which would have run an hour ahead of the sheet for six months of every
+year — enough to move an s56 deadline across a date boundary. Caught before any deadline logic was built.
+**Standing rule: Apps Script · Google Sheet · Make must all read Australia/Brisbane. Re-verify at M5 and M9
+build time, and never accept Sydney as "close enough".**
+D-164 | Make org region is EU + org still named "My Organization" — handover items, not blockers | The Make
+organization's **Region is `EU`** (greyed out, fixed at signup), so Australian client data is processed on EU
+servers. Not a compliance failure and not changeable without recreating the org — but Robinder should be told
+where his data physically lives, at handover. Also the org is still called **"My Organization"** — rename to
+`Yale Migration` so the client's own account reads professionally. Both added to M11.
