@@ -1,76 +1,124 @@
 # ARCHITECTURE — Yale Migration MVP
+**v2 — 2026-08-02.** v1 had drifted badly (10-folder tree, 10-column data contract, obsolete Gmail
+delegation model, wrong script names). Building T3 from v1 would have produced the wrong structure.
+Authority order: `STATUS.md` (where we are) → `ROADMAP.md` (what's next) → this file (how) →
+`DECISIONS.md` (why, with a SUPERSEDED INDEX at the top).
 
 ## System map
 ```
-ENQUIRY SOURCES                     BRAIN                          ACTIONS
+ENQUIRY SOURCES                     BRAIN                              ACTIONS
 FB / IG Messenger ──┐
-WhatsApp Business ──┤   Google Sheet "MASTER DATABASE"   ──►  OneDrive folders (via Make↔OneDrive conn)
-Website→MS email  ──┼─► (automation Google account)      ──►  Checklist emails + upload links (Gmail)
-Walk-in sheet     ──┤   tabs: MASTER · ENQUIRIES         ──►  Chase reminders (Gmail/WhatsApp)
-Phone log form    ──┘                                    ──►  Notifications to consultants
-Gmail project1@ ──► Claude API (classify) ──► label + assign + draft (human sends)
+WhatsApp Business ──┤   Google Sheet "MASTER DATABASE"      ──►  OneDrive folders (Make↔OneDrive conn)
+Website→MS email  ──┼─► (automation Google account)         ──►  Checklist emails (Make↔Gmail project1@)
+Walk-in sheet     ──┤   tabs: MASTER · ENQUIRIES            ──►  Chase reminders (Gmail / WhatsApp)
+Phone log form    ──┘   · FOLDER INVENTORY (deferred)       ──►  Consultant notifications
+
+visa.lodgement@ (Dept s56) ──► Make↔Gmail conn ──► Claude Haiku classify ──► flag + deadline + DRAFT
+                                                     (human always sends)
 ```
-All scenarios live in the CLIENT's Make.com org (we are Admin). All data stays in client accounts.
+All scenarios live in the **client's** Make org (Owner `info@yalemigration.com.au`; we are member/Admin).
+All data stays in client-owned accounts.
 
 ## Data contract — MASTER tab (source of truth)
-**GRAIN: one row per MATTER (visa case), not per person.** A returning client gets a NEW row + new code
-(old row stays Closed). Dual-party matters (482 employer+employee, Partner applicant+sponsor) = ONE
-matter row; party details in columns (Party 2 Name/Phone/Email where applicable).
+**GRAIN: one row per MATTER, not per person** (D-11). Returning client = NEW row + new code; old row Closed.
+Dual-party matters (482 employer+worker, partner applicant+sponsor) = ONE row, counterparty in `Party 2 Name`.
 
-| Column | Rule |
-|---|---|
-| Client Code | `YM-2026-#####`, starts 00001, unique, never reused; auto for new rows (Apps Script) |
-| Full Name | UPPERCASE preferred (matches folder + file naming "JUAN DELA CRUZ - PASSPORT") |
-| Phone | E.164 where possible; dedupe key for enquiries |
-| Email | send target for checklists/chasing |
-| Visa Type | dropdown: 500, 485, 820/801, 482, 407, 189, 190, 491, 494, 600, 101, 802, 417, SkillsAssessment, EOI, Other |
-| Stage | dropdown: Enquiry · Engaged · Documents · Ready to Lodge · Lodged · Outcome · Closed |
-| Assigned Consultant | from team roster (pending) |
-| Date Added | auto timestamp; drives 7-day rule |
-| Source | dropdown: Facebook · Instagram · WhatsApp · Phone · Walk-in · Email · Website · Referral |
-| Folder URL | written back by Make after folder creation |
+**23 columns A–W. Canonical definition: `docs/MASTER-SHEET-SPEC.md` (v2) — do not restate it here.**
+Built by `scripts/setup_master_sheet.gs`. Key positions the code depends on:
+`A Client Code · B Their Client ID · C Full Name (typing here triggers the code) · T Date Added · V Folder URL`
 
-ENQUIRIES tab: Date · Name · Phone · Channel · Visa Interest · Assigned To · Status
-(New/Assigned/Contacted/Pending Decision/Not Proceeding/Lost Lead/Converted) · Follow-up Due.
+Vocabulary is **THEIRS**, not ours (D-51..D-56):
+- **Processing Stage:** Enquiry · Engaged · Documents Pending · Documents Complete · Ready for Lodgement ·
+  Lodged · Awaiting Outcome · Closed
+- **Visa Outcome:** Pending · Granted · Refused · Withdrawn
+- **Assigned Consultant:** roster names only. ⛔ **Nisha is a FORMER EMPLOYEE — never in any dropdown** (D-111).
 
-## Folder convention (from client SOPs; verify against model folder when named)
-`YM-2026-##### – FULL NAME/` → `01 Enquiry · 02 Identity Documents · 03 Education · 04 Employment ·
-05 Financial · 06 Enrolment · 07 Application Forms · 08 Lodgement · 09 Correspondence · 10 Visa Outcome`
+**ENQUIRIES tab (11 columns):** Date · Name · Phone · Email · Channel · Visa Interest · Location ·
+Assigned To · Status · Follow-up Due · Notes.
 
-## AI usage (client's Anthropic key, stored ONLY in Make connection)
-- Email classification: claude-haiku (cheap, 20–50/day) — tool-use JSON schema {category, urgency,
-  suggested_assignee, is_s56} — temperature 0, few-shot from client samples.
-- Reply drafting: sonnet-class, template-grounded, ALWAYS saved as Gmail draft — never auto-sent.
-- Conservative-by-design: confidence < threshold → label "Needs Review" + notify owner. S56 detection
-  errs on the side of flagging.
+## Folder convention — CLIENT-APPROVED 2 Aug (D-113). Supersedes the SOP's 10-folder tree.
+Their SOP's 10 folders were **never implemented** — real folders are flat (D-47). The client chose fewer
+folders and asked for work visas to be organised by **application step**.
+
+**Naming:** `YM-2026-##### – FULL NAME` · employer/sponsorship matters:
+`YM-2026-##### – COMPANY NAME (SPONSOR)` (D-99). Existing folders are **NEVER** renamed or moved (D-12).
+
+**M3 routes on Visa Type to one of three sets — staff never choose:**
+
+**STANDARD** (500 · 485 · 189/190/491 · 600 · 101/802 · 417)
+```
+01 Identity & Personal      ← incl. health, insurance, medicals, police checks (client merged these in)
+02 Education & Employment
+03 Financial
+04 Forms & Lodgement
+05 Correspondence & Outcome
+```
+**WORK / EMPLOYER** (482 · 407 · 186 · 494) — *by step, so the tree shows application progress*
+```
+01 Identity & Personal
+02 Education & Employment
+03 Step 1 – Sponsorship (SBS 482 / TAS 407)
+04 Step 2 – Nomination
+05 Step 3 – Visa Lodgement
+06 Correspondence & Outcome
+```
+**PARTNER** (820/801 · 300)
+```
+01 Identity & Personal
+02 Relationship Evidence
+     ├── 820
+     └── 801          ← 801 documents arrive ~2 years later; must not mix (client's reason)
+03 Financial
+04 Forms & Lodgement
+05 Correspondence & Outcome
+```
+Contents per visa type: `docs/FOLDER-CONTENTS-CHART.md`.
+Disambiguation rule for staff: **from the Department → 05. Sent to the Department → 04.**
+
+**Name sanitization** before creation: uppercase · strip `" * : < > ? / \ |` · collapse double spaces ·
+trim trailing dots/spaces · max 100 chars.
+
+## Mailboxes — three, with different jobs (do not conflate)
+| Mailbox | Role | Access model |
+|---|---|---|
+| `visa.lodgement@` | **Department s56 arrives here** (D-64) — Robinder's own address | Make↔Gmail OAuth **as that mailbox**. 🔴 currently 403 insufficient scopes (D-97) |
+| `project1@` | outbound sending for M4/M5 | Make↔Gmail OAuth, one-time client login (D-13) |
+| `info@` | general/shared; also the **Make account Owner login** | not an automation target |
+
+⛔ **Gmail delegation is NOT part of this architecture.** It is web-UI only and invisible to the Gmail API,
+and cannot target an external Gmail at all (D-78/D-79/D-80). Every mailbox the automation touches must be
+OAuth'd **as itself**.
+
+## AI usage (client's Anthropic key, stored ONLY in the Make connection)
+- **Classification:** Haiku, tool-use JSON schema `{category, urgency, suggested_assignee, is_s56}`,
+  temperature 0, few-shot from their real threads.
+- **Drafting:** Sonnet-class, template-grounded, **always saved as a Gmail draft — never auto-sent** (D-06).
+- Confidence below threshold → label **Needs Review** + notify owner. s56 detection errs toward flagging.
+- **s56 client notification uses THEIR template verbatim** (D-104):
+  `[NAME]'s file has opened the case officer has requested:` + items verbatim + `We need to submit the
+  documents before [DATE]. thank you` — where **[DATE] = internal day-26, never the legal day-28** (D-58).
+- Escalation ladder **7 / 14 / 21 / 26 days**, stop-on-reply.
+- Attachments: **.zip/.rar cannot be read** — detect, log "compressed bundle", route to a human (D-106).
+  Dedupe by document TYPE + client, never filename (the same doc arrives as photo then PDF).
+- One s56 may cover **multiple applicants** — parse the applicant table, don't assume one person (D-108).
 
 ## Message-sending rules
-Business hours only (default Brisbane 08:00–20:00, confirm with client) · stop-on-reply for all
-sequences · every outbound logged to the sheet · client-approved wording only (👍 in CLIENT-LOG).
+Business hours only (Brisbane 08:00–20:00) · stop-on-reply on every sequence · every outbound logged to the
+sheet · client-approved wording only (👍 recorded in `CLIENT-LOG.md`) · **AI never gives migration advice** —
+only the RMA does. MARN **1573959 (Robinder Pal Singh)** appears in signatures (D-60).
 
-## Folder rules (additions from final audit)
-- **Existing client folders are NEVER renamed/moved** — link their URL into MASTER; new convention
-  applies to NEW matters only.
-- **Name sanitization** before folder creation: uppercase; strip characters illegal in OneDrive
-  (`" * : < > ? / \ |`), collapse double spaces, trim trailing dots/spaces; ñ→N etc. via
-  transliteration; max 100 chars.
+## Error handling standard (EVERY scenario, no exceptions)
+Error route → alert to Sharjeel · **no silent failures** · idempotent (check-before-create; a row with a
+Folder URL is never picked up twice) · failure also written to the row's `Notes` so staff see it where they
+work · ship ladder **dry-run → clean up → 5 real cases → client 👍 → live schedule** (D-14).
 
-## Sending mechanism (critical distinction)
-- Gmail DELEGATION (sharry00010) = HUMAN access to read/manage the inbox.
-- AUTOMATED sending (checklists, reminders) = **Make↔Gmail connection where the client OAuths
-  project1@ once** (same one-time-login pattern as the OneDrive connection). Required before M4/M5 go
-  live — on the client-ask list.
+## Capacity
+Make **FREE = 1,000 ops/month** — build and testing only. Folder creation ≈8 ops/matter. Live volume
+(60–70 enquiries/week + chasing + folders) needs a **paid plan at go-live** (D-15/D-22). Raise at the demo.
 
-## Error handling standard (every Make scenario)
-Error route → WhatsApp/email alert to Sharjeel · no silent failures · scenarios idempotent (re-run
-safe: check-before-create for folders, dedupe keys for rows) · run log kept in Make history ·
-**every scenario ships through: test rows first (dry-run) → 5 real cases → client 👍 → live schedule**.
-
-## Capacity note
-Make FREE plan = 1,000 ops/month — sufficient for build/testing only. At live volume (60–70
-enquiries/wk + chasing + folders) a paid plan (Core, ~US$10–20/mo, pass-through) is REQUIRED at
-go-live. Flag to client BEFORE launch — never let it silently stop.
-
-## Naming
-Make scenarios: `YM-M3-folder-create`, `YM-M5-doc-chase`, `YM-M6-enquiry-fb`… (module-prefixed).
-Apps Script files in `scripts/` mirror the sheet functions: `code_assign.gs`, `master_validate.gs`.
+## Naming conventions
+- Make scenarios: `YM-M3-folder-create`, `YM-M5-doc-chase`, `YM-M9-email-triage` (module-prefixed)
+- Make connections: `YM <service> — <account>`
+- Apps Script (actual files): `scripts/setup_master_sheet.gs` (one-run builder) ·
+  `scripts/master_codes.gs` (code engine: onEdit + 5-minute timer, because onEdit does NOT fire for
+  API-created rows)

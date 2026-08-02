@@ -954,3 +954,23 @@ client has explicitly asked for 820/801 relationship sub-folders (D-113); (b) re
 inside **485** matters with a de-facto second applicant (D-109). The question is therefore answered by
 evidence rather than by asking — no client question needed. D-101's "do not ask" verdict stands; its
 "low impact" assessment does not.
+D-115 | 🔴 ARCHITECTURE.md was STALE v1 — rewritten to v2 before it caused a wrong build | Audit 2 Aug found
+the file CLAUDE.md points every session to as the conventions source had never been updated. Six live errors:
+(1) **10-folder tree** (`01 Enquiry … 10 Visa Outcome`) — superseded by the client's 5/6-folder sets (D-62,
+D-113); (2) **10-column data contract** — actual spec is 23 columns (D-51..D-56); (3) Stage dropdown used OUR
+vocabulary, not theirs; (4) **Gmail DELEGATION described as the access model** — impossible and irrelevant
+(D-78/D-79/D-80); (5) `visa.lodgement@` not mentioned at all despite being the s56 mailbox (D-64); (6) script
+names wrong (`code_assign.gs`/`master_validate.gs` vs the real `master_codes.gs`/`setup_master_sheet.gs`).
+**Building T3 from this would have created 10 wrong folders in the client's live OneDrive.** Caught by the
+G1 pre-build audit, which is exactly what the gate exists for.
+v2 adds: the three client-approved folder sets with router logic · the three-mailbox table with roles and
+access models · the s56 template + day-26 rule · attachment constraints (.zip/.rar unreadable, dedupe by
+type) · multi-applicant parsing · Nisha exclusion · correct naming conventions. Data contract now POINTS to
+`docs/MASTER-SHEET-SPEC.md` instead of duplicating it — duplication is what let the two drift apart.
+**Rule added to PROCESS: docs must reference the single source, never restate it.**
+D-116 | Folder-set question CLOSED — no outstanding item with Sharjeel | Sharjeel confirmed 2 Aug that
+everything the client sent has been shared: two PDFs, one screenshot, and the typed answers. The "7-folder
+proposal" text existed only inside the question he sent, not as a separate document. **Stop asking.** The
+three sets in ARCHITECTURE v2 are final: they satisfy all three client instructions (fewer folders than 7 ·
+health & character merged into Personal · work by step · partner 820/801 sub-folders) and are validated
+against real client files (D-98). Proceed to build on them.

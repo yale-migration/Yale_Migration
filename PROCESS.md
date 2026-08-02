@@ -99,6 +99,18 @@ identical to progress and is not.
 
 ---
 
+## G6 — SINGLE SOURCE, NEVER RESTATE (added 2 Aug)
+
+`ARCHITECTURE.md` v1 duplicated the MASTER column list and the folder tree that also lived in
+`docs/MASTER-SHEET-SPEC.md` and `DECISIONS.md`. The copies drifted, and the stale copy was the one CLAUDE.md
+pointed at — so the next build would have created 10 wrong folders in the client's live OneDrive (D-115).
+
+**Rule: each fact has exactly ONE authoritative file. Every other document links to it.**
+- Where we are → `STATUS.md` · What's next → `ROADMAP.md` · How → `ARCHITECTURE.md` ·
+  Why → `DECISIONS.md` · Columns → `docs/MASTER-SHEET-SPEC.md` · Access/credentials → `ACCESS.md`
+- **Before building anything, re-read the authoritative file for that thing** — not your memory of it, and
+  not a summary in another document.
+
 ## THE STANDING RULE
 
 **A spec is not a deliverable. A verified working thing the client can see is a deliverable.**
