@@ -11,7 +11,9 @@ Both halves of that sentence are true and both matter.
 
 ## What the client can see working right now
 
-**Nothing.** No automation has shipped. This is the only number that matters to Robinder.
+**The MASTER database is live and issuing client codes** (T2 complete, 3 Aug) — but Robinder has not been
+shown it yet. **Client-visible SHIPPED output is still zero until the T4 demo.** T3 (folder automation) is the
+piece that makes the demo worth watching.
 
 ## What is genuinely done (real work, not padding)
 
@@ -46,7 +48,7 @@ Then, in strict order, nothing else in between:
 
 | Step | What | Who | Time | Produces |
 |---|---|---|---|---|
-| **T2** | Run the 2 Apps Scripts | Sharjeel | 10 min | Working MASTER sheet + auto client codes |
+| ~~T2~~ | ~~Run the 2 Apps Scripts~~ | ✅ **DONE 3 Aug** | — | MASTER + ENQUIRIES live, `YM-2026-00001` issued |
 | **T3** | Build `YM-M3-folder-create` | Sharjeel + me | ~90 min | Name typed → OneDrive folder + the correct folder SET (6/6/5 by visa type) + link back |
 | **T4** | Record 60–90s demo, send | Sharjeel | 20 min | **First thing the client can SEE working** |
 

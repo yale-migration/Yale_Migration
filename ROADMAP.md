@@ -7,8 +7,8 @@ scenario → T4 DEMO → then M4/M5 → M6/M9.** Read `STATUS.md` first.
 ---
 ## 🔴 FOCUS LOCK (G4, PROCESS.md) — ONE active task at a time
 
-**🎯 ACTIVE NOW: T2 — build the MASTER sheet.** Both scripts written + verified. ~10 min, no dependencies.
-**Then T3 → T4 (demo) in strict order. Nothing else.**
+**✅ T2 COMPLETE 3 Aug** — MASTER + ENQUIRIES built, code engine live, `YM-2026-00001` issued on test.
+**🎯 ACTIVE NOW: T3 — build `YM-M3-folder-create`.** Then T4 (demo). Nothing else.
 
 **PARKED until T4 has shipped:** M9 mailbox connection (runbook frozen, execute at M9 start) · the Gmail
 connection video · M4–M8 build work · tracker import of the ~48 rows (after T3).
@@ -39,7 +39,7 @@ Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 - ⬜ usedRange of `Admissions Tracker ` (id {03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — enrolment pipeline?
       Relevant to Phase 2 enrolment tracker; note the TRAILING SPACE in the name (address by ID).
 
-### 🎯 T2 — Build the MASTER sheet (SHARJEEL · **10 min** · no dependencies) — ACTIVE
+### ✅ T2 — Build the MASTER sheet — **COMPLETE 3 Aug** (tail items T2.5/T2.6 below)
 *(Corrected 31 Jul: previously said "14 headers / 6 dropdowns / type in B2" from the superseded v1 spec —
 stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)*
 - ⬜ **T2.0 SAFETY FIRST (D-145 — the tabs are NOT empty; they were hand-built 25 Jul under the v1 layout)**
@@ -56,16 +56,15 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
       → Allow permissions *(builds 23 headers, 9 dropdowns, date formats, widths, header protection,
       + the ENQUIRIES tab — replaces all the old manual steps)*
 - ✅ T2.2 `master_codes.gs` pasted in Code.gs (D-157)
-- ⬜ T2.3 Triggers (⏰) → Add trigger → function **`assignMissingCodes`** → event source **Time-driven** →
-      **Minutes timer** → **Every 5 minutes** → failure notifications **Notify me immediately** → Save.
-      🔴 Do NOT add a trigger for `onEdit` — it is a SIMPLE trigger that runs automatically (D-158).
-- ⬜ T2.4 Test: type a name in **C2** (Full Name) → code appears in **A2**, date in **T2**
-- ⬜ T2.5 Run **`auditDuplicateCodes`** → expect `No duplicate codes ✅`
+- ✅ T2.3 Trigger installed 3 Aug — `assignMissingCodes` · Time-driven · Minutes timer · every 5 min ·
+      notify immediately. One trigger only, no installable onEdit (D-159).
+- ✅ T2.4 TEST PASSED — `TEST CLIENT ONE` in C2 → **`YM-2026-00001` in A2** (D-159)
+- ⬜ T2.5 Run **`auditDuplicateCodes`** → expect `No duplicate codes ✅` · also confirm **T2 holds the date**
 - ⬜ T2.6 **DELETE the test row AND its code** — otherwise the client's genuinely-first client becomes
       `YM-2026-00002`, which is permanent and visible (D-145)
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
-### T3 — Build the folder scenario (JOINT · ~90 min · after T1+T2)
+### 🎯 T3 — Build the folder scenario (JOINT · ~90 min) — ACTIVE
 - ⬜ Build `YM-M3-folder-create` per `scenarios/M3-folder-create.md` (6 modules)
 - ⬜ Dry-run 2 test rows → verify in OneDrive → delete tests
 - ⬜ 5 real cases → client 👍 → enable 15-min schedule

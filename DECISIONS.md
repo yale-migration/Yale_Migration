@@ -1300,3 +1300,22 @@ finds the lock held and returns) but it doubles executions for nothing. **Exactl
 Failure notification changed from the default "Notify me daily" to **immediately**: a silently dead trigger
 means client codes quietly stop being issued (the same silent-failure class as D-153), and daily is too slow
 to catch that during a live build.
+D-159 | ✅✅ T2 COMPLETE — the client-code engine is LIVE and working (3 Aug) | Verified from screenshots:
+  · **Trigger correct on every field**: function `assignMissingCodes` · deployment `Head` · event source
+    `Time-driven` · type `Minutes timer` · interval `Every 5 minutes` · failure notifications
+    **`Notify me immediately`** (D-158's recommendation applied). Exactly ONE trigger — no installable
+    `onEdit` was added, so no double-firing.
+  · **End-to-end test PASSED**: `TEST CLIENT ONE` typed into **C2** produced **`YM-2026-00001` in A2**.
+    The full chain works: human types → simple onEdit fires → LockService acquired → strict CODE_RE finds no
+    existing code → cell-by-cell write → code appears. Every hardening from D-135 and D-145 is exercised by
+    this single test and none of it broke the happy path.
+**M2 (Master data layer) is now functionally complete** apart from importing their ~48 active tracker rows,
+which is scheduled AFTER the demo (D-23 demo-first sequencing).
+D-160 | Three T2 tail items still open — small but two of them are client-visible | (a) **Verify `T2` (Date
+Added) actually stamped** — the screenshot is cropped at column H so the date column was never seen. The code
+writes it in the same loop as the code, so it is near-certain, but "near-certain" is not verified.
+(b) **Run `auditDuplicateCodes`** — expect `No duplicate codes ✅`. This is the safety net written in D-135;
+running it once now establishes the baseline. (c) 🔴 **DELETE the test row AND its code.** If `YM-2026-00001`
+is left consumed, the client's genuinely-first client becomes `YM-2026-00002` — permanent, visible, and
+exactly the kind of detail Robinder notices. `nextNumber_` takes max+1 and never reuses, so clearing the cell
+is what frees the number.
