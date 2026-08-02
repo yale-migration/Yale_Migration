@@ -39,10 +39,10 @@ Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 - ⬜ usedRange of `Admissions Tracker ` (id {03EB648D-4D8D-45EC-9A2D-89DF01C493FB}) — enrolment pipeline?
       Relevant to Phase 2 enrolment tracker; note the TRAILING SPACE in the name (address by ID).
 
-### ✅ T2 — Build the MASTER sheet — **COMPLETE 3 Aug** (tail items T2.5/T2.6 below)
+### ✅ T2 — Build the MASTER sheet — **COMPLETE 3 Aug** · one cleanup left: delete the `TZ TEST` row
 *(Corrected 31 Jul: previously said "14 headers / 6 dropdowns / type in B2" from the superseded v1 spec —
 stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)*
-- ⬜ **T2.0 SAFETY FIRST (D-145 — the tabs are NOT empty; they were hand-built 25 Jul under the v1 layout)**
+- ✅ **T2.0 SAFETY — DONE 3 Aug** (backup taken, container-bound, preflight clean: no formulas, no data past headers)
       1. Open the sheet → **File → Make a copy** (backup; a script-side column delete has no Ctrl+Z)
       2. Extensions → Apps Script — must be opened **from inside the sheet** (container-bound), else
          `SpreadsheetApp.getActive()` is null
