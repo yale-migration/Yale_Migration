@@ -22,7 +22,7 @@ Both halves of that sentence are true and both matter.
 | Discovery of their real system | ✅ **Complete** | ~1,436 client folders mapped · folders are FLAT · tracker = 49 active rows · naming chaotic · S56 routing chain found |
 | Design / specs | ✅ Written | MASTER sheet v2 · M3 folder scenario · M6 auto-reply · M9 email AI · M9 connection runbook |
 | Code written | ✅ Verified | `setup_master_sheet.gs` (23 headers, 9 dropdowns) · `master_codes.gs` (YM code engine) |
-| Decision record | ✅ 91 entries | `DECISIONS.md` — nothing lost across chats or devices |
+| Decision record | ✅ 127 entries | `DECISIONS.md` — nothing lost across chats or devices |
 | **Anything shipped** | ❌ **Zero** | — |
 
 **Honest read:** roughly the front half of the MVP is done, but it is all *inputs*. A spec is not a
@@ -47,7 +47,7 @@ Then, in strict order, nothing else in between:
 | Step | What | Who | Time | Produces |
 |---|---|---|---|---|
 | **T2** | Run the 2 Apps Scripts | Sharjeel | 10 min | Working MASTER sheet + auto client codes |
-| **T3** | Build `YM-M3-folder-create` | Sharjeel + me | ~90 min | Name typed → OneDrive folder + 5 sub-folders + link back |
+| **T3** | Build `YM-M3-folder-create` | Sharjeel + me | ~90 min | Name typed → OneDrive folder + the correct folder SET (6/6/5 by visa type) + link back |
 | **T4** | Record 60–90s demo, send | Sharjeel | 20 min | **First thing the client can SEE working** |
 
 **T4 is the target.** Everything else waits.
@@ -63,8 +63,8 @@ Then, in strict order, nothing else in between:
 
 ✅ **CLOSED 2 Aug:** s56 client template received · folder structure APPROVED (with 3 client improvements) ·
 roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supplied.
-🔴 **Only blocking item:** the `visa.lodgement@` Gmail connection returns **403 insufficient scopes** —
-needs Reauthorize with every permission ticked (M9 only, blocks nothing before it).
+✅ **NOTHING BLOCKED ON THE CLIENT (D-134).** The `visa.lodgement@` connection was authorized after the
+31 Jul reauthorize. Remaining on that item: **our own Run-once verification** — ours, not his.
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
 
 ## 🔴 Pre-build audit 2 Aug — caught a wrong build before it happened

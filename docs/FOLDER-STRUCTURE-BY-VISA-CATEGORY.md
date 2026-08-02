@@ -18,8 +18,9 @@ a heading in their documents. Supersedes the single 5-folder set (D-100/D-102 ov
 - **Checklists** hold the *detail* — which documents, which variant (onshore/offshore, individual/dependent,
   ACECQA/TRA/VETASSESS). That lives in the tracker + M4, **never in folder names**. 485 alone has 7 checklist
   variants; encoding those as folders would be unusable.
-- **Positions stay stable:** the last two folders are always Forms & Lodgement, then Correspondence & Outcome.
-  Whatever the case type, staff know where signed documents and Department letters go.
+- **The LAST folder is always `Correspondence & Outcome`** — whatever the case type, Department letters have
+  one home. *(The second-to-last is NOT stable: SET 2 has no `Forms & Lodgement` — its forms live in
+  `04 Step 3 – Visa Lodgement` — and its fifth folder is `05 Dependents`.)*
 
 **Universal rule for staff:** *from the Department → Correspondence & Outcome. Sent to the Department →
 Forms & Lodgement.*
@@ -39,7 +40,7 @@ Forms & Lodgement.*
 | `05 Forms & Lodgement` | **Detail Form · Client Information Sheet** · **Form 80** · Form 1221 · **GTE / GS statement** · signed application forms · Form 956 · statutory declarations · ImmiAccount receipt · TRN / Application ID · s56 response bundle |
 | `06 Correspondence & Outcome` | Department letters · **s56 requests** · EOI invitation · state nomination approval · IMMI acknowledgement · grant notice · refusal letter · withdrawal |
 
-> **Why `05` exists:** their **485 WITH DEPENDENT** checklist requires full relationship evidence (marriage
+> **Why `04 Dependents & Relationship` exists:** their **485 WITH DEPENDENT** checklist requires full relationship evidence (marriage
 > certificate, superannuation beneficiary, joint bank account, joint lease, shared expenses, call logs,
 > relationship story, statement from a friend, photos). Relationship evidence is **not** partner-only.
 > **Health & Character was originally separate** (their 407 checklist lists `6. Health` and `7. Character
@@ -114,5 +115,6 @@ a one-line change in that variable.
    Sets 1 and 2 are now **6** folders; Set 3 is **5** (+2 sub-folders).
 
 ## Implementation status
-`ARCHITECTURE.md` v2 and `scenarios/M3-folder-create.md` v2 both build from THIS file. One Switch module maps
+**THIS FILE IS THE SINGLE AUTHORITY (G6).** `ARCHITECTURE.md` v2 and `scenarios/M3-folder-create.md` v2 both
+build from it; where either differs from this file, **this file wins and the other is the bug.** One Switch module maps
 Visa Type → set (three cases, ~1 extra Make op). Renaming any folder is a one-line change to that variable.

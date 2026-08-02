@@ -3,3 +3,9 @@ assets/samples/*
 .DS_Store
 *.key
 *.env
+
+# --- client PII must never be tracked (CLAUDE.md hard rule; enforced 2026-08-02, D-143) ---
+docs/**/Team roster.docx
+docs/**/Model folder.docx
+docs/Answer to the questions..docx
+*.docx.pii

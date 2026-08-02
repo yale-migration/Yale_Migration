@@ -28,15 +28,17 @@ BRISBANE OFFICE WORK" shared (S56 7/14/28-day tracking, EOI/JRP/lodgement tabs)
 2026-07-26 | WhatsApp | OneDrive share email never arrived → asked client for link-share of client
 folders + walk-in sheet | WAITING
 
-## WAITING ON CLIENT (live list — tick when received)
-- [ ] OneDrive link-share (client folders + walk-in sheet)
-- [ ] Team roster (name, email, visa types per member)
-- [ ] Samples bundle: 5–10 sent emails (incl. document-request), 3–5 received (incl. ONE Section 56,
+## ✅ WAITING ON CLIENT — ALL RECEIVED (closed 2 Aug)
+OneDrive link-share (29 Jul, D-21) · team roster (26 Jul, D-16) · full samples bundle (29 Jul) · model client
+folder pointer (26 Jul, D-18). *Live open items now live ONLY in `ROADMAP.md` → OPEN CLIENT ASKS — one list,
+not two (G6).*
       names redacted), Inquiry/Detail/Consultation forms, follow-up templates, 2–3 WhatsApp screenshots
-- [ ] Model client folder pointer
-- [ ] WhatsApp verification → check ourselves in Meta Security Centre
-- [ ] (non-blocking) 2FA + password rotation on project1@
-- [ ] Confirm commencement payment landed in bank
+✅ Model client folder pointer — received 26 Jul (D-18).
+Still live, but they belong in `ROADMAP.md` → OPEN CLIENT ASKS, not here:
+· WhatsApp Business verification — **OURS to check** in Meta Security Centre, not a client ask
+· 2FA + password rotation on project1@ — client, non-blocking
+· Confirm the commencement payment landed in the bank — **Sharjeel to confirm**; `STATUS.md` and the memory
+  file both already assert "✅ 50% received", so either confirm it or correct those two.
 2026-07-26 | files | RECEIVED: Team roster (routing = Indian/Filipino team × visa × office; 12 staff
 emails incl. Townsville Cristelle + marketing Manali) · Model folder pointer (BRISBANE OFFICE/CLIENT
 FILES/ENGAGED CLIENTS/CLIENT FILES- FILIPINO TEAM; examples "Aaron Jean Desepida-SVEA", "ADRIENNE JANN

@@ -27,12 +27,12 @@ Anything new that arrives gets ONE LINE in the right file and is dropped. See `S
       needs client 👍 before build
 - ✅ T1.5 Tracker readable via workbook API: `Client Tracker` + `Admissions Tracker ` (D-48)
 
-### T1b — Read the client tracker — 🟡 2 of 3 done
+### T1b — Read the client tracker — ✅ COMPLETE
 - ✅ T1b.1 usedRange = `'Client Tracker'!A1:R49` → 18 cols × 49 rows = **ACTIVE case list, not the full
       register** (D-49). Folder tree (~1,436) = archive.
 - ✅ T1b.2 rows 1–3 are TITLE rows (headers at row 4/5; manual F9 timestamp) (D-50)
-- ⬜ T1b.3 read `A4:R10` → capture real column headers + 5 sample data rows
-- ⬜ T1b.4 map tracker columns → MASTER columns; decide reconciliation rules
+- ✅ T1b.3 DONE 29 Jul — 14 real columns captured (CLIENT-LOG 29 Jul, D-51..D-56)
+- ✅ T1b.4 DONE 29 Jul — mapping + import rules written into `docs/MASTER-SHEET-SPEC.md` v2
 Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 
 ### T1c — Also check the second sheet (1 call)
@@ -70,7 +70,7 @@ Expected output: client sees working automation for the first time.
   Claude API key · OneDrive **read + WRITE** proven (D-31), anchor IDs saved
 - ✅ Materials: team roster (D-16) · model folder (D-18) · Client Inquiry Form · full samples bundle
   29 Jul (S56 letter + requests, student & 485 threads, WhatsApp screenshots) → `ACCESS.md`
-- 🟡 Gmail delegation on project1@ (Sharjeel's own task; needed for M9 only)
+- ✅ ~~Gmail delegation on project1@~~ — **DROPPED, not applicable** (D-78/D-79/D-80): delegation cannot reach an external Gmail and the API ignores delegated mailboxes. project1@ needs a Make↔Gmail **OAuth** at M4 time (D-13), not delegation.
 - 🟡 WhatsApp Business verification — check ourselves in Meta Security Centre (M6 only)
 - ⬜ 2FA + password rotation on project1@ (client, non-blocking)
 
@@ -147,23 +147,25 @@ Expected output: client sees working automation for the first time.
 - ⬜ Make **paid plan** active (D-15) — free tier is 1,000 ops/month, insufficient for live volume
 - ⬜ Every scenario through the ladder: dry-run → 5 real cases → client 👍 (D-14)
 - ⬜ Error handler + alert on every scenario (no silent failures)
-- ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
+- ✅ MARN/RMA gate RESOLVED (D-60): supervising RMA = Robinder Pal Singh, MARN 1573959, shown in signatures.
 
 ## OPEN CLIENT ASKS — 2 Aug: nearly all CLOSED
-🔴 **ONLY BLOCKING ITEM:** the Gmail connection on `visa.lodgement@` exists but returns **403 insufficient
-   scopes** (D-97). Robinder must **Reauthorize** and tick EVERY permission box. Blocks M9 only.
+✅ **NOTHING IS BLOCKED ON THE CLIENT (D-134).** The `visa.lodgement@` Gmail connection was **authorized
+   after the reauthorize on 31 Jul** (CLIENT-LOG 31 Jul). The 403 is CLOSED. The only remaining work on that
+   item is **OUR own Run-once verification** (D-91) — our task, never a client ask. Do not re-ask Robinder.
 ✅ CLOSED 2 Aug: **s56 client template** received (D-117) · **folder structure approved** with 3 changes
    (D-126) · **Nisha = former employee**, roster fully closed (D-124) · full 482 + 485 s56 threads supplied
    (D-118..D-123).
 ✅ CLOSED 31 Jul: `workvisa.bne@` = Robinder (D-94) · mail platform = Google Workspace (D-76) ·
    `visa.lodgement@` owner = Robinder (D-80).
-✅ CLOSED 30 Jul: s56 cadence 7/14/21/26 · MARN shown · 1,400 folders are live clients · 5 sub-folders.
+✅ CLOSED 30 Jul: s56 cadence 7/14/21/26 · MARN shown · 1,400 folders are live clients · fewer sub-folders
+   than the SOP's 10 *(the exact structure was superseded 2 Aug by the three folder SETS — D-132)*.
 Remaining, none blocking: ⬜ 2–3 test client files (M10) · ⬜ 👍 M6 auto-reply wording (before M6 live) ·
-⬜ walk-in sheet location · ⬜ **Make paid plan** (go-live gate, raise at demo) · ⬜ final 50% on go-live.
+⬜ walk-in sheet location *(likely NOT a client ask — one API call on `BNE → INQUIRY` should find it, ONEDRIVE-IDS)* · ⬜ **Make paid plan** (go-live gate, raise at demo) · ⬜ final 50% on go-live.
 
-⚠️ **FOR SHARJEEL, NOT THE CLIENT:** the client answered against a **7-folder** proposal sent directly by
-   Sharjeel that is not in this repo. The structures in D-126 are RECONSTRUCTED from his three instructions.
-   **Confirm they match what was actually sent before T3 builds them.**
+✅ **Folder-set question CLOSED (D-130/D-132/D-133)** — the authority doc was found in `docs/`, is
+   marked CLIENT-APPROVED, and all three sets match across ARCHITECTURE / M3 spec / authority. Nothing to confirm.
+
 
 ## KNOWN ISSUES TO RAISE AT THE DEMO (not blockers)
 - **`info@` drops out of threads after message 1** — the shared inbox never sees the documents or later

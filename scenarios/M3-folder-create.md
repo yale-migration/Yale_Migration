@@ -1,9 +1,10 @@
 # Scenario: `YM-M3-folder-create` — auto client folder + client-approved sub-folders
 **v2 — 2026-08-02.** v1 specified 10 sub-folders; the client approved THREE sets routed by visa type
-(D-126). Authoritative structure: `ARCHITECTURE.md` v2 (G6 — do not restate it elsewhere).
+(D-126). Authoritative structure: **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`** (G6 single authority).
 
 **Trigger:** new row in MASTER with a Client Code and no Folder URL.
-**Cost:** ~13 Make operations per client (well inside the free tier for testing; paid plan at go-live, D-15).
+**Cost:** ≈9 Make operations per client (SET 1/2 ≈9 · SET 3 ≈10 with the two nested folders). Well inside the
+free tier for testing; paid plan at go-live (D-15/D-22).
 **Anchors:** driveId `A0BABA3C2640082C` · see `ONEDRIVE-IDS.md`. Use the **API-call module with IDs** —
 never the folder picker (D-19/D-21). Write scope confirmed working (D-31).
 
@@ -29,7 +30,7 @@ Add a **Router**, one route per branch, filtering on `Office` (col J) and `Team`
 | Route | Filter | Parent itemId | Status |
 |---|---|---|---|
 | BNE Filipino | Office=BRISBANE AND Team=FILIPINO | `A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f` | ✅ verified (T1.3) |
-| BNE Indian | Office=BRISBANE AND Team=INDIAN | `A0BABA3C2640082C!529` | ✅ verified (T1.3, legacy short id) |
+| BNE Indian | Office=BRISBANE AND Team=INDIAN | `A0BABA3C2640082C!529` | 🟡 **id verified, LABEL not**: ONEDRIVE-IDS records it as `CLIENT FILES (main/Indian?)` — confirm it is the Indian-team folder during the dry-run before any live row uses it |
 | Townsville | Office=TOWNSVILLE | `A0BABA3C2640082C!s35a05b1d476a452ea47170ba470e6034` **← branch ROOT, not the client folder** | 🔴 **UNMAPPED INSIDE** |
 | Philippines | Office=PHILIPPINES | `A0BABA3C2640082C!scad8a318943846ca8a81513279e9ea6e` **← branch ROOT** | 🔴 **UNMAPPED INSIDE** |
 | Fallback | (no filter — last route) | — | alert only, create nothing |
@@ -121,7 +122,9 @@ so the failure is visible where staff work, not only in Make's history.
 
 ## Ship ladder (D-14 — do not skip)
 1. **Dry-run**: 2 rows named `TEST DEMO ONE` / `TEST DEMO TWO`, Office BRISBANE, Team FILIPINO.
-   Run once. Verify in OneDrive: folder + the 5 STANDARD sub-folders + link written back to the sheet.
+   Run once. Verify in OneDrive: folder + **the 6 SET-1 STANDARD sub-folders** + link written back to the sheet.
+   ⚠️ Counts differ per set — **SET 1 = 6 · SET 2 = 6 · SET 3 = 5 (+2 nested under Relationship Evidence)**.
+   Check against the set the row's Visa Type routes to, not a fixed number (D-139).
    Then one WORK test (Visa Type 482) and one PARTNER test (820/801) to prove all three router branches.
 2. **Clean up**: DELETE both test folders (`DELETE /v1.0/drives/A0BABA3C2640082C/items/<id>`),
    clear the test rows.

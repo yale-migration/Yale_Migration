@@ -15,12 +15,13 @@ entry instead.** Update this index whenever a decision is corrected or withdrawn
 | D-85 | ✅ withdrawn | **D-89** | Make org ownership was fine; "My Organization/My Team" is just Make's default naming |
 | D-88 (invite branch) | ❌ unnecessary | **D-89, D-90** | Robinder already holds the `info@` Make login — he set it up himself |
 | D-89 (password-reset caveat) | ❌ unnecessary | **D-90** | He typed that password himself during the joint setup; no reset needed |
+| D-39 (item e) | ❌ obsolete | **D-47, D-132** | "the 10 sub-folder names … MUST be verified" — the SOP's 10-folder tree was never implemented and is replaced by the three approved SETS |
 | D-75 (item b) | ✅ resolved | **D-76** | Mail platform answered by public DNS/MX — no client round-trip needed |
 | D-100, D-102 | ❌ overturned | **D-132** + `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` | Folders are NOT one set for all visas — THREE checklist-derived sets (Standard / Work / Partner) |
 | D-103 | ❌ file deleted | **D-132** | `FOLDER-CONTENTS-CHART.md` duplicated the folder authority and held the superseded single-set structure |
 | D-126 (its reconstructed sets) | ⚠️ partly wrong | **D-132** | The client's three INSTRUCTIONS in D-126 are correct; the folder sets I reconstructed there were not |
-| D-128 | ⚠️ superseded | **D-132** | "Do not ask" still right, but the partner folder IS justified |
-| D-101, D-105–D-108, D-113 (2 Aug versions) | 🔢 renumbered | **D-117–D-130** | Duplicate IDs repaired (D-131). Earlier session keeps the original numbers |
+| D-101 | ⚠️ superseded | **D-132** | "Do not ask" still right, but the partner folder IS justified. *(An earlier index row said "D-128" — a corruption from the 2 Aug renumber; D-128 has never existed, D-141.)* |
+| D-104–D-108, D-113 (my 2 Aug versions) | 🔢 renumbered | **D-117–D-127, D-129, D-130** | Duplicate IDs repaired (D-131). The earlier session keeps the original numbers. ⚠️ Numbering has HOLES at D-104, D-109–D-116 and D-128 — these are artefacts of the renumber, **not deleted decisions** (verified: no content lost, D-141) |
 
 **Current truth on the M9 mailbox (the most-churned topic):** see **D-80** (frozen requirement), **D-82**
 (alternatives ruled out), **D-83/D-84** (correct UI path), **D-90** (client works by sharing HIS screen),
@@ -766,7 +767,7 @@ Doubles as **M11 staff training material** — the one-line disambiguation rule 
 takeaway: **"if it came FROM the Department it is 05; if we sent it TO the Department it is 04."**
 Send the chart to the client only if he asks for detail — the folder-names message needs one ask (👍), and a
 9-table chart would bury it (G5).
-D-105 | ⚠️ SUPERSEDES D-100 AND D-104 — client is RIGHT; folders vary by VISA CATEGORY (5 categories, not 20
+D-105 | ⚠️ SUPERSEDES D-100 AND D-102 — client is RIGHT; folders vary by VISA CATEGORY (5 categories, not 20
 subclasses) | Robinder's counter-argument, 31 Jul: (a) a **work visa** carries company details, **profit &
 loss, licensing** — business documents with no home in our set; (b) a **partner visa** (Australian PR/citizen
 sponsoring a spouse from India/Pakistan) needs **no employment documents at all**, it needs relationship
@@ -908,7 +909,7 @@ D-122 | 🔴 RELATIONSHIP EVIDENCE IS NOT PARTNER-VISA-ONLY | The 485 Ronaya s56
 de-facto evidence request: updated photos together · updated joint bank statement · **statutory declaration of
 cohabitation** (QLD form attached) · conversation and call logs · relationship statements from a parent and a
 friend. The Department's own four-pillar guidance (financial · household · social · commitment) was pasted
-into the email. **This materially strengthens the partner-folder question (D-128):** relationship bundles
+into the email. **This materially strengthens the partner-folder question (D-101):** relationship bundles
 appear in 485 dependent cases too, not just 820/801 — so a dedicated relationship folder has broader value
 than first assessed. Also: the Department's four pillars are a ready-made CHECKLIST for M4.
 D-123 | Department→consultant hop-1 latency measured: 3 days | Department sent **Fri 17 Apr 4:53 PM** →
@@ -953,11 +954,11 @@ RECONSTRUCTED FINAL SETS (pending Sharjeel's confirmation):
 needs one nested level. Cost: ~+3 Make operations per partner matter, and a variable per set — small. This
 supersedes the single-set assumption in D-100; the ADOPTION reasoning in D-100 still holds because staff never
 choose the set — the automation picks it from the Visa Type already in the sheet.
-D-127 | Relationship-evidence folder is now JUSTIFIED, not optional (resolves D-128's deferred question) |
-D-128 deferred the partner-relationship-folder question as low impact. Two new facts overturn that: (a) the
+D-127 | Relationship-evidence folder is now JUSTIFIED, not optional (resolves D-101's deferred question) |
+D-101 deferred the partner-relationship-folder question as low impact. Two new facts overturn that: (a) the
 client has explicitly asked for 820/801 relationship sub-folders (D-126); (b) relationship bundles also appear
 inside **485** matters with a de-facto second applicant (D-122). The question is therefore answered by
-evidence rather than by asking — no client question needed. D-128's "do not ask" verdict stands; its
+evidence rather than by asking — no client question needed. D-101's "do not ask" verdict stands; its
 "low impact" assessment does not.
 D-129 | 🔴 ARCHITECTURE.md was STALE v1 — rewritten to v2 before it caused a wrong build | Audit 2 Aug found
 the file CLAUDE.md points every session to as the conventions source had never been updated. Six live errors:
@@ -1070,3 +1071,77 @@ present · authority doc CLIENT-APPROVED with zero open questions · all six fol
 ARCHITECTURE / M3 spec / authority · 820/801 sub-folders documented · M3 carries real parent itemIds and flags
 both gaps · Nisha excluded everywhere · git clean and pushed.
 **Verdict: the build is aligned and safe to proceed. T2 and T3 are cleared to run.**
+
+## ===== 2026-08-02 THREE-AGENT PARALLEL AUDIT — findings + repairs =====
+D-138 | 🔴 T2 BLOCKER FIXED — `SBS` and `Nomination` routed to folder SET 2 but were REJECTED by the dropdown |
+All three folder documents route employer-side matters (`482 · 407 · SBS · Nomination`) to SET 2, but the
+Visa Type dropdown in `docs/MASTER-SHEET-SPEC.md` and `scripts/setup_master_sheet.gs` contained **neither
+`SBS` nor `Nomination`** — and `setAllowInvalid(false)` actively rejects unlisted values. **Every employer-side
+matter (`COMPANY NAME (SPONSOR)`, D-99) was a hard dead end at data entry.** This would have surfaced only when
+staff tried to log their first sponsorship matter. Both values added to the script and the spec (Visa Type now
+23 options). Caught by the parallel consistency audit; T2 writes this dropdown, so it had to be fixed first.
+D-139 | 🔴 SHIP-LADDER ACCEPTANCE CRITERIA CONTRADICTED THE BUILD | `scenarios/M3-folder-create.md` defined
+SET 1 as **6** folders at line 85 and then, in the dry-run gate at line 124, told the tester to *"verify the
+**5** STANDARD sub-folders"*. `STATUS.md` and `ROADMAP.md` repeated the 5. **The folder DEFINITIONS were fixed
+everywhere on 2 Aug; the VERIFICATION CRITERIA were not** — so a correct 6-folder build would have been checked
+against a gate expecting 5, in the client's live drive, immediately before the demo. Fixed: the gate now states
+**SET 1 = 6 · SET 2 = 6 · SET 3 = 5 (+2 nested)** and instructs checking against the set the row routes to,
+never a fixed number. *Lesson: when a definition changes, grep for its ACCEPTANCE TEST too.*
+D-140 | Op-count and authority-chain contradictions cleaned up | Three different per-matter op counts existed
+(≈8 in ARCHITECTURE, ~13 and ≈9/9/10 both inside M3). Unified to **≈9 (SET 3 ≈10)**. Also a three-way circular
+authority claim (ARCHITECTURE said the folder doc was authoritative; M3 said ARCHITECTURE was; the folder doc
+said both build from it). Resolved per G6: **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` is the single folder
+authority**; ARCHITECTURE's copy is explicitly labelled a convenience copy that loses any conflict. Also fixed:
+the staff disambiguation rule was stated with SET-3-only numbers (05/04) — now stated **by folder NAME**, since
+numbers differ per set and SET 2 has no `Forms & Lodgement` folder at all; `Other` restored to SET 1's list;
+the authority doc's own "last two folders are always…" principle corrected (SET 2 breaks it).
+D-141 | Renumber collateral repaired — `D-128` never existed | The 2 Aug blanket find-replace (D-131) also
+rewrote the EARLIER session's `D-101` into `D-128` in three places, creating an index row and two body
+references pointing at a decision that has never existed. All corrected back to D-101. Numbering holes at
+**D-104, D-109–D-116 and D-128** are renumber artefacts — verified **no decision content was lost** (header
+count held at 120 across the renumber commit; all thirteen 2 Aug entries map 1:1). The dangling `D-104`
+reference inside D-105's body also fixed. **Reinforces D-133's lesson: never run a global find-replace across
+files containing another session's history — scope it to the block you authored.**
+D-142 | ✅ EIGHT CLIENT ANSWERS existed only in `docs/PROJECT-STATE.md` — now decisions of record | None were
+lost, but none were greppable from `DECISIONS.md`, which CLAUDE.md designates as THE decision record — so a G2
+search returned nothing for any of them. Captured here:
+  (a) **20 Jul — SCOPE LOCKED.** "Yes these are the services we need for now. Please send the proposal."
+  (b) **21 Jul — verbal GO: MVP, $1,680, 50/50.** Commencement 50% received; final 50% at go-live.
+  (c) **25 Jul — walk-ins live on a SEPARATE sheet** (shared). Feeds M6; location still to be located.
+  (d) **25 Jul — consultant on leave ⇒ the office mobile is handed to another team member.** A real backup /
+      re-assignment rule the M6/M7 routing must respect — an out-of-office consultant must not silently own
+      new enquiries.
+  (e) **25 Jul — their checklists are CURRENT.** This is the validity basis for the entire M4 checklist
+      selector; without it the checklist map rests on undated documents.
+  (f) **25 Jul — website form submissions land in the client's Microsoft mailbox**, not Gmail. M6 capture must
+      read that mailbox, not project1@.
+  (g) **29 Jul — `INFORMATION HUB` is a reference library** (skills-assessment / visa info), client said KEEP.
+      **Excluded from client-file automation** — M3 must never create client folders there.
+  (h) **24 Jul — EXISTING clients also get YM codes**, not just new matters ("…For existing client"). D-04
+      fixed only the start number; this instruction was never recorded as a decision. Affects the tracker
+      import (D-49): the ~48 active matters all receive codes.
+D-143 | 🔴 SECURITY — three client-PII files were tracked and pushed to GitHub | Found by the artifact audit.
+`docs/04-additional-docs/Team roster.docx` (12 staff names + emails) · `docs/04-additional-docs/Model
+folder.docx` (real client folder names) · `docs/Answer to the questions..docx` were all committed, directly
+contradicting the CLAUDE.md hard rule *"docs/ is CURATED — never add client PII"* and ACCESS.md's *"local
+only … git-ignored"*. `.gitignore` covered `assets/samples/*` but nothing under `docs/`.
+**Action taken:** `git rm --cached` on all three (files remain on disk) + `.gitignore` hardened with explicit
+`docs/**` rules. **Residual risk, for Sharjeel to decide:** they remain in COMMIT HISTORY. The repo is
+**private**, so this is not public exposure — but it sits on a **personal** GitHub account, which is not an
+approved location for client data. Options: (1) accept, given private + limited sensitivity (no passports or
+identity documents — staff contacts and folder names); (2) rewrite history with `git filter-repo`, which fully
+removes them but rewrites every commit hash. **Not actioned unilaterally — history rewriting is destructive.**
+Recommendation: (1) now, and move the repo to a company org at handover.
+D-144 | Tracking granularity: 154 client files on disk, 17 mapped file-by-file — recorded, not hidden |
+The artifact audit confirmed **nothing is lost**: all 154 client files exist, and `access/` ↔ `assets/samples/`
+match on all 17 with identical SHA-256 hashes. But 137 files across batches 1–3 have only BATCH-level records,
+and the batch-1 SOP library (32 files incl. **3 unique infographic PNGs**, hash-verified as not duplicates)
+appeared in **no** tracking record at all — it lived only in `PROJECT-STATE.md` and a folder README, neither
+referenced from inside `yale-build/`. A **BATCH-LEVEL TRACKING** table is now in `ACCESS.md` stating the
+granularity per batch honestly, plus the images inventory and the deliberate exclusion of
+`APPLICATION FEES.docx` (real-client PII invoice). **Decision: batches 1–3 stay at batch granularity** — they
+are reference SOPs already reorganised and audited, per-file mapping would cost hours and unlock nothing.
+Batch 4 (`access/`) and all future deliveries stay file-by-file, because those drive build decisions.
+ALSO FIXED: the s56 screenshot's map row contained a plain space where the real filename has a **narrow
+no-break space (U+202F)** — so grepping the true filename returned nothing, the exact failure the map exists to
+prevent. Row is now byte-exact from disk.

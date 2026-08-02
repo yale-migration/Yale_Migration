@@ -43,11 +43,13 @@ folders and asked for work visas to be organised by **application step**.
 **Naming:** `YM-2026-##### – FULL NAME` · employer/sponsorship matters:
 `YM-2026-##### – COMPANY NAME (SPONSOR)` (D-99). Existing folders are **NEVER** renamed or moved (D-12).
 
-**M3 routes on Visa Type to one of three sets — staff never choose.** Sets derive from **Yale's own
-checklists** (`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`), with the client's 2 Aug changes applied:
+**M3 routes on Visa Type to one of three sets — staff never choose.**
+⚠️ **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` is the SINGLE AUTHORITY (G6).** The trees below are a
+convenience copy for readers of this file — **if they ever differ, the authority doc wins and this copy is the
+bug.** Sets derive from **Yale's own checklists** (`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`), with the client's 2 Aug changes applied:
 Health & Character merged into Identity · Work organised by STEP · Partner gets 820/801 sub-folders.
 
-**SET 1 — STANDARD** (500 · 485 · 189/190/191/491/494/186 · 600 · 417 · Skills Assessment · EOI · Bridging · ART)
+**SET 1 — STANDARD** (500 · 485 · 189/190/191/491/494/186 · 600 · 417 · Skills Assessment · EOI · Bridging · ART · **Other** — this is M3's DEFAULT case)
 ```
 01 Identity & Personal        ← now also holds AFP/NBI police checks, medicals/HAP, OSHC (client merged)
 02 Education & Employment     ← CoE, transcripts, completion letter, PTE/IELTS, skills assessment, JRP/PSA
@@ -81,7 +83,9 @@ put two passports together **with no way to tell whose is whose.** No employment
 submit none.
 
 **Contents of every folder, per set: `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` — the single authority (G6).**
-Disambiguation rule for staff: **from the Department → 05. Sent to the Department → 04.**
+Disambiguation rule for staff — **state it by NAME, never by number** (numbers differ per set, and SET 2 has
+no Forms & Lodgement folder at all): **from the Department → Correspondence & Outcome. Sent to the Department
+→ Forms & Lodgement** (SET 2: → `04 Step 3 – Visa Lodgement`).
 
 **Name sanitization** before creation: uppercase · strip `" * : < > ? / \ |` · collapse double spaces ·
 trim trailing dots/spaces · max 100 chars.
@@ -121,7 +125,7 @@ Folder URL is never picked up twice) · failure also written to the row's `Notes
 work · ship ladder **dry-run → clean up → 5 real cases → client 👍 → live schedule** (D-14).
 
 ## Capacity
-Make **FREE = 1,000 ops/month** — build and testing only. Folder creation ≈8 ops/matter. Live volume
+Make **FREE = 1,000 ops/month** — build and testing only. Folder creation **≈9 ops/matter** (SET 3 ≈10). Live volume
 (60–70 enquiries/week + chasing + folders) needs a **paid plan at go-live** (D-15/D-22). Raise at the demo.
 
 ## Naming conventions

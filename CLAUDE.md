@@ -11,7 +11,7 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
   client-facing message until verified against a PRIMARY SOURCE **this session**. Memory does not count.
   Prior chats do not count. Check public DNS before asking a client what platform they use.
 - **G2 SEARCH-OURSELVES-FIRST** — grep `DECISIONS.md`/`CLIENT-LOG.md`/`ACCESS.md` BEFORE asking the client
-  anything. 90+ decisions are recorded; asking what they already answered is the most credibility-damaging
+  anything. 127 decisions are recorded; asking what they already answered is the most credibility-damaging
   thing we can do.
 - **G3 SAME-DAY OPERATIONAL LOG** — who set up what, on whose machine, who holds which credential, how the
   client prefers to work → `ACCESS.md`, same day. Not just technical decisions.
@@ -41,7 +41,7 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 - **AI never auto-sends migration advice** — only the Registered Migration Agent advises (legal rule).
   All AI drafts route to human review. Confidence thresholds → "Needs Review", never silent guesses.
 - **Everything is built in CLIENT-owned accounts** (their Make, their Sheet, their OneDrive, their
-  Anthropic billing). We hold invited/delegated access only.
+  Anthropic billing). We hold invited access only.
 - **New client requests are NOT scope** — log them in `CHANGE-REQUESTS.md`, reply "Phase 2/3 list mein
   daal diya", keep building the MVP.
 - Client approvals arrive as WhatsApp 👍 — paste the message into `CLIENT-LOG.md` same day.
@@ -58,5 +58,5 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 
 ## Stack (decided, don't relitigate)
 Google Sheet = database · Make.com = connector/scenarios · OneDrive (personal, via Make connection) =
-client folders · Gmail (project1@, delegate) + Claude API (Haiku classify / Sonnet draft) = email triage
+client folders · Gmail via **Make↔Gmail OAuth** — `visa.lodgement@` inbound (s56) + `project1@` outbound; ⛔ NOT delegation (D-78/D-79/D-80) — + Claude API (Haiku classify / Sonnet draft) = email triage
 · Meta/WhatsApp Business = enquiry channels · Looker Studio = Phase 2 dashboard.

@@ -47,7 +47,8 @@ the front and back of the pipeline.)*
 **Visa Outcome:** `Pending · Granted · Refused · Withdrawn`
 **Location:** `Onshore · Offshore`
 **Visa Type:** `500 · 485 · 820/801 · 300 · 482 · 407 · 186 · 494 · 189 · 190 · 191 · 491 · 600 · 101 ·
-802 · 417 · Skills Assessment · EOI · ART · Bridging · Other`
+802 · 417 · **SBS** · **Nomination** · Skills Assessment · EOI · ART · Bridging · Other`
+*(SBS and Nomination added 2 Aug — employer-side matters route to folder SET 2 and must be selectable, D-138.)*
 **Visa Variant:** `Main · Dependent · Subsequent Entrant · Sponsor · Employer`
 **Office:** `BRISBANE · TOWNSVILLE · PHILIPPINES`
 **Team:** `INDIAN · FILIPINO`

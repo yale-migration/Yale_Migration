@@ -48,7 +48,10 @@ var MASTER_HEADERS = [
 var MASTER_DROPDOWNS = {
   7:  ['Onshore', 'Offshore'],                                                          // G Location
   8:  ['500','485','820/801','300','482','407','186','494','189','190','191','491',
-       '600','101','802','417','Skills Assessment','EOI','ART','Bridging','Other'],     // H Visa Type
+       '600','101','802','417','SBS','Nomination','Skills Assessment','EOI','ART',
+       'Bridging','Other'],                                                             // H Visa Type
+       // SBS + Nomination added 2 Aug (D-138): employer-side matters route to folder SET 2, but
+       // setAllowInvalid(false) below would have REJECTED them — every sponsorship matter was a dead end.
   9:  ['Main','Dependent','Subsequent Entrant','Sponsor','Employer'],                   // I Visa Variant
   10: ['BRISBANE','TOWNSVILLE','PHILIPPINES'],                                          // J Office
   11: ['INDIAN','FILIPINO'],                                                            // K Team

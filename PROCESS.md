@@ -35,7 +35,7 @@ If a fact cannot be verified, the message says "I need to check X" rather than s
 
 ## G2 — SEARCH OURSELVES FIRST (hard gate)
 
-**Before any question goes to the client, grep this repo.** `DECISIONS.md` is 90+ entries; the answer is
+**Before any question goes to the client, grep this repo.** `DECISIONS.md` is 127 entries; the answer is
 often already there.
 
 ```
