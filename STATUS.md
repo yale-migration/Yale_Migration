@@ -1,6 +1,6 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-07-31 · Read this FIRST every session (`PROCESS.md` session ritual).
+**Updated:** 2026-08-02 · Read this FIRST every session (`PROCESS.md` session ritual).
 
 ---
 
@@ -59,11 +59,20 @@ Then, in strict order, nothing else in between:
 - M4/M5/M6/M7/M8 build work
 - Tracker import of the ~48 active rows (after T3, not before)
 
-## Client-side pending (none of it blocks T2/T3/T4)
+## Client-side pending — 2 Aug: almost everything closed
 
-- `visa.lodgement@` connection (M9 only)
-- 👍 on the 5 sub-folder names — building against proposed names meanwhile
-- S56 email screenshot — drafting from their real wording instead of waiting
+✅ **CLOSED 2 Aug:** s56 client template received · folder structure APPROVED (with 3 client improvements) ·
+roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supplied.
+🔴 **Only blocking item:** the `visa.lodgement@` Gmail connection returns **403 insufficient scopes** —
+needs Reauthorize with every permission ticked (M9 only, blocks nothing before it).
+⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
+
+## 🔴 Pre-build audit 2 Aug — caught a wrong build before it happened
+`ARCHITECTURE.md` was still **v1**: 10-folder tree, 10-column data contract, obsolete Gmail-delegation model,
+wrong script names. It is the file CLAUDE.md points to for conventions, so **T3 would have created 10 wrong
+folders in the client's live OneDrive.** Rewritten to v2; `scenarios/M3-folder-create.md` rewritten to v2 with
+the three approved folder sets. New gate **G6 (single source, never restate)** added — the drift existed
+because the column list and folder tree were duplicated across files.
 
 ## Commercial
 
