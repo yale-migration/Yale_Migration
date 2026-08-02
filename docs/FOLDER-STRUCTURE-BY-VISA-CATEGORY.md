@@ -1,8 +1,17 @@
 # Client folder structure — by visa category
 
-**Status:** proposal for Robinder's 👍 (D-105/D-106). **Derived from Yale's own client checklists**, not from
-generic practice — every grouping below traces to a heading in their documents. Supersedes the single 5-folder
-set (D-100/D-104 overturned).
+**Status: ✅ CLIENT-APPROVED 2 Aug 2026, with three changes applied (D-126/D-132).**
+THE single authority for folder structure — `docs/FOLDER-CONTENTS-CHART.md` was deleted as a conflicting
+duplicate (G6). **Derived from Yale's own client checklists**, not generic practice: every grouping traces to
+a heading in their documents. Supersedes the single 5-folder set (D-100/D-102 overturned).
+
+### The client's three changes (2 Aug) — all applied below
+1. **Health & Character merged into `01 Identity & Personal`** — *"there not much document on it"*.
+   Sets 1 and 2 therefore go 7 → 6 folders.
+2. **Work / Employer reorganised by STEP** — *"1. Sponsorship registration (SBS-482, TAS-407). Step 2.
+   Nomination, step 3 visa lodgement. This will be easier for checking for the application progress."*
+3. **Partner 820 / 801 become SUB-FOLDERS** inside Relationship Evidence — the 801 bundle is lodged about two
+   years later and must not mix with the 820 bundle.
 
 ## The principle
 - **Folders** hold the *coarse, stable* shape — party and broad category. They rarely change.
