@@ -1053,3 +1053,20 @@ parents:
      CLIENTS — in which case SET 2 folders belong there. Unverified; one API call or one question at the demo.
 M3 spec Module 2 now carries the **real itemIds** for the verified routes and flags both gaps inline, so the
 build cannot silently assume a parent. Neither gap blocks the Brisbane demo path.
+D-137 | ✅ SECOND-PASS DEEP AUDIT COMPLETE — cleared to build | Rather than repeat the first pass, this one
+audited what had never been checked: **script logic**, **OneDrive parent IDs**, and **silent edit failures**.
+Three findings, all fixed:
+  1. **D-135 — duplicate-code race condition in `master_codes.gs`** (real defect, would have shipped). Fixed
+     with LockService + flush-inside-lock + a manual `auditDuplicateCodes()` safety net.
+  2. **D-136 — two folder-placement gaps.** TOWNSVILLE/PHILIPPINES internals unmapped (routes pointed at
+     branch ROOTS — would have misfiled in live data); `Work visa BNE AND TSV` may be the true home for
+     482/407. Mitigated by restricting the live schedule to the two verified Brisbane routes.
+  3. **A silent no-match edit.** The folder authority doc still read "proposal for Robinder's 👍" after an
+     earlier `.replace()` failed to match and returned quietly. **Caught only because the verification script
+     asserted on content rather than trusting the edit.** LESSON: `str.replace()` that no-matches is
+     indistinguishable from success — always assert the resulting content.
+**Full sweep result — all green:** decisions unique (124) · builder 23 headers = spec 23 rows · lock + auditor
+present · authority doc CLIENT-APPROVED with zero open questions · all six folder-set names identical across
+ARCHITECTURE / M3 spec / authority · 820/801 sub-folders documented · M3 carries real parent itemIds and flags
+both gaps · Nisha excluded everywhere · git clean and pushed.
+**Verdict: the build is aligned and safe to proceed. T2 and T3 are cleared to run.**
