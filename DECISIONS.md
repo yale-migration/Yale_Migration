@@ -1190,3 +1190,10 @@ Found only because a grep for the wrong file-count number happened to hit `15407
 D-115 and D-146: a decision recorded but never propagated to the document that implements it.** The
 countermeasure is G6 (single source) plus: when a decision CORRECTS a value, grep for the OLD value repo-wide
 and fix every occurrence in the same commit.
+D-148 | Stop hard-coding counts in prose — they drift every single time | The decision-count figure went stale
+four times in one day (90+ → 127 → 134 → 137), and the client-file count was asserted as 154 when it is 143
+(D-146). Every restatement of a number that changes is a future contradiction. **Rule: never write a live
+count into prose.** Say "the full decision history" / "every client file is mapped in the table below" and let
+the table or the file itself be the count. Where a number genuinely matters, compute it:
+`grep -cE '^D-[0-9]+ \|' DECISIONS.md`. Hardcoded counts removed from CLAUDE.md, PROCESS.md and STATUS.md.
+This is the same root cause as G6 (single source, never restate) — extended to numbers, not just structures.

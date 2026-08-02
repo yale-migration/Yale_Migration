@@ -11,7 +11,7 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
   client-facing message until verified against a PRIMARY SOURCE **this session**. Memory does not count.
   Prior chats do not count. Check public DNS before asking a client what platform they use.
 - **G2 SEARCH-OURSELVES-FIRST** — grep `DECISIONS.md`/`CLIENT-LOG.md`/`ACCESS.md` BEFORE asking the client
-  anything. 134 decisions are recorded; asking what they already answered is the most credibility-damaging
+  anything. the full decision history is recorded; asking what they already answered is the most credibility-damaging
   thing we can do.
 - **G3 SAME-DAY OPERATIONAL LOG** — who set up what, on whose machine, who holds which credential, how the
   client prefers to work → `ACCESS.md`, same day. Not just technical decisions.

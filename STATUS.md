@@ -22,7 +22,7 @@ Both halves of that sentence are true and both matter.
 | Discovery of their real system | ✅ **Complete** | ~1,436 client folders mapped · folders are FLAT · tracker = 49 active rows · naming chaotic · S56 routing chain found |
 | Design / specs | ✅ Written | MASTER sheet v2 · M3 folder scenario · M6 auto-reply · M9 email AI · M9 connection runbook |
 | Code written | ✅ Verified | `setup_master_sheet.gs` (23 headers, 9 dropdowns) · `master_codes.gs` (YM code engine) |
-| Decision record | ✅ 134 entries | `DECISIONS.md` — nothing lost across chats or devices |
+| Decision record | ✅ complete, with a SUPERSEDED INDEX | `DECISIONS.md` — nothing lost across chats or devices |
 | **Anything shipped** | ❌ **Zero** | — |
 
 **Honest read:** roughly the front half of the MVP is done, but it is all *inputs*. A spec is not a
