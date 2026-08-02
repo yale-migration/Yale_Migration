@@ -1004,3 +1004,27 @@ Relationship Evidence gains `820` / `801` sub-folders (his request).
 **This is another G2 failure — the answer was in our own repo and I did not search for it before reconstructing.
 The file was found only because a routine `ls` of docs/ surfaced it.** Reinforces G6: before writing a
 structure, locate and read the authoritative document, do not rebuild it from conversation memory.
+D-133 | ✅ FULL ALIGNMENT AUDIT PASSED (2 Aug) — plus three more defects found and fixed | Systematic scan of
+every document, script and cross-reference after the folder-set correction. **Found and fixed:**
+  1. `docs/FOLDER-CONTENTS-CHART.md` still asserted "**same 5 folders for every matter**" — directly
+     contradicting the client-approved three sets, and it duplicated the folder authority. **DELETED** (G6);
+     `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` is now the single folder authority, updated to APPROVED
+     status with the client's three changes applied and all its open questions closed.
+  2. My blanket D-number remap had **corrupted two references inside the earlier session's 31 Jul CLIENT-LOG
+     entry** (it referenced that session's numbers, not mine). Rewritten with the correct supersession note.
+     *Lesson: a global find-replace across shared history files is unsafe — scope remaps to the block you
+     authored.*
+  3. `D-103` pointed at the now-deleted chart → marked SUPERSEDED and added to the index, together with
+     D-100/D-102 (single-set overturned), D-126's reconstructed sets, and the D-117–D-130 renumber.
+**Verification results — all green:** scripts vs spec **23 headers = 23 spec rows**, 9 dropdowns,
+`COL_CODE=1 / COL_NAME=3 / COL_DATE=20` ✅ · all three folder sets **identical across ARCHITECTURE.md,
+scenarios/M3-folder-create.md and the authority doc** ✅ · zero stale structure strings (`01 Enquiry`,
+`10 Visa Outcome`, `06 Enrolment`, the old `02 Health & Character`, `04 Business & Sponsorship`) ✅ ·
+DECISIONS **122 headers, 122 unique** ✅ · **17/17 client files mapped**, now in BOTH `access/` and
+`assets/samples/` ✅ · git clean, everything pushed ✅ · 3 memory files indexed ✅.
+D-134 | ✅ CLIENT SIDE IS COMPLETE — nothing is blocked on Robinder | Confirmed from the 31 Jul log entry:
+the `visa.lodgement@` Gmail connection was **authorized after the reauthorize (D-97)**. The only thing left on
+that item is **our own Run-once verification**, which is our task, not his. Combined with the 2 Aug delivery
+(s56 template · folder approval · roster closed · both full s56 threads), **every input needed to build the
+MVP is now in hand.** Remaining client items are all future-dated, not blocking: test files (M10) · M6 wording
+👍 (before M6 goes live) · walk-in sheet location · **Make paid plan (go-live gate)** · final 50% on go-live.
