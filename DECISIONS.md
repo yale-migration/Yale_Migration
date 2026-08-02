@@ -1223,3 +1223,32 @@ run, and the two files are independent. Resolution: add `setup_master_sheet.gs` 
 `buildSheet_` alongside `onEdit`, `assignMissingCodes`, `auditDuplicateCodes`. **ROADMAP T2.0 now names the
 file each function comes from** — the step said "paste setup_master_sheet.gs → run preflightCheck" without
 making clear those are one file and `master_codes.gs` is a separate one.
+D-152 | ✅ PREFLIGHT RESULT (3 Aug) — safe to run `setupEverything`, one cleanup needed first | Output:
+`MASTER: 3 rows, data to col 10, 26 columns allocated` · `ENQUIRIES: 1 rows, data to col 8, 26 columns`.
+Reading it against the two destructive risks D-145 was written to catch:
+  · **Column-delete risk: GONE.** MASTER data reaches only col 10 (J) — nothing at or beyond col 24, so the
+    empty-tail check passes and X:Z delete safely. ENQUIRIES has data only to col 8 of 11, so L:Z (15 columns)
+    are provably empty. **Neither tab triggered the "DATA beyond the N headers" warning.**
+  · **Formula-flattening risk: GONE.** The preflight scans every data cell with `getFormulas()` and the
+    `🔴 FORMULAS present at:` line **did not appear** — so the v1 "YM-2026 code formula" feared in D-145 is
+    NOT in this sheet. `master_codes.gs` cannot flatten anything.
+  · **Remaining item: MASTER holds 2 legacy data rows** from the 25 Jul v1 build, where the NAME sat in column
+    **B**; v2 expects it in **C**. They are KEPT by the script, so they must be inspected and cleared/migrated
+    before the codes are trusted. ENQUIRIES has only a header row — nothing to clean.
+D-153 | Operator identity: script runs as `sharry00010@gmail.com`, sheet is client-owned — fine now, matters
+at handover | The OAuth consent named the app developer as `project1@yalemigration.com.au` while the
+authorizing user is `sharry00010@gmail.com`. Correct reading: the spreadsheet (and therefore its
+container-bound Apps Script) lives in the **client's** automation Google account, and Sharjeel is an editor
+running it under his own login. That satisfies the "build in client-owned accounts" rule (D-07).
+⚠️ **BUT Apps Script triggers are owned by the user who creates them.** The 5-minute `assignMissingCodes`
+trigger will run as Sharjeel. If his access is removed at handover, **the trigger silently stops and client
+codes quietly stop being issued** — a failure with no error message. **HANDOVER TASK (M11): the client
+re-creates the time-driven trigger under their own account, then Sharjeel deletes his.** Added to the
+handover checklist rather than fixed now.
+D-154 | Housekeeping found in the Make + Apps Script screenshots — cosmetic, fix before handover | (a) Seven
+leftover **"Integration OneDrive"** scenarios (25–29 Jul discovery runs) still sit in the client's Make org,
+all correctly OFF. They cost nothing (inactive scenarios do not count against the Free plan's 2-active limit)
+but they are clutter in the client's account — delete before handover. (b) The Apps Script project is named
+**"Untitled project"** and one file is saved as **`etup_master_sheet.gs`** (leading `s` lost in the paste).
+Neither affects execution — Apps Script resolves functions across files regardless of filename — but both
+should be renamed for a professional handover: project → `YM MASTER automation`, file → `setup_master_sheet`.

@@ -154,6 +154,12 @@ Expected output: client sees working automation for the first time.
 
 ### M10 — End-to-end testing with live files (2h) — ⬜ client to nominate 2–3 real cases
 ### M11 — Training, docs & handover (2h) — ⬜ guides + walkthrough + access transfer
+- ⬜ 🔴 **Client re-creates the 5-minute `assignMissingCodes` trigger under THEIR account**, then Sharjeel
+      deletes his. Triggers are owned by their creator — if ours is removed, code assignment stops SILENTLY
+      with no error (D-153).
+- ⬜ Delete the 7 leftover "Integration OneDrive" discovery scenarios from the client's Make org (D-154)
+- ⬜ Rename Apps Script project "Untitled project" → `YM MASTER automation`; fix file name
+      `etup_master_sheet.gs` → `setup_master_sheet.gs` (D-154)
 
 ---
 ## GO-LIVE GATES (nothing goes live until all pass)
