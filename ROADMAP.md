@@ -149,28 +149,21 @@ Expected output: client sees working automation for the first time.
 - ⬜ Error handler + alert on every scenario (no silent failures)
 - ⬜ MARN/RMA question resolved before any AI-drafted email goes out (D-37)
 
-## OPEN CLIENT ASKS
-🔴 **BLOCKING M9 — FROZEN WORDING (D-80), one action only.** Robinder authorizes **Make's Gmail connection**
-   once, signed in as the mailbox receiving the Department emails (`visa.lodgement@yalemigration.com.au`,
-   his own address per D-64). Delegation is NOT part of this and never was viable — it is web-UI only and
-   invisible to the Gmail API (D-79/D-80), and cannot reach an external Gmail at all (D-78).
-   History (do not repeat): asked as "delegation" 30 Jul → he could not find the option → superseded 31 Jul.
-   **This ask is now final. If it changes again, something is wrong with our verification, not the client.**
-1. ✅ ANSWERED 30 Jul: S56 wording + cadence (D-58/D-59/D-70) · MARN = Robinder, show it (D-60) ·
-   1,400 folders are live retained clients (D-61) · **5 sub-folders** (D-62) · real S56 emails supplied (D-63..D-70)
-2. 🟡 ASKED 30 Jul — 👍 on the 5 sub-folder NAMES (proposed set in D-62); building against the proposed
-   names in the meantime (they are a variable in the scenario, renaming later costs 2 minutes)
-3. 🟡 ASKED 30 Jul — their s56 email screenshot; we DRAFT the template from their real wording (D-70) and
-   send for 👍 rather than waiting for them to author one
-4. ⬜ Roster gap: **who is Nisha?** (has a tab in the ops workbook, absent from the roster).
-   ✅ `workvisa.bne@` CLOSED 31 Jul = **Robinder Singh** (D-94, from the SBS thread we already held).
-   NOTE: `visa.lodgement@` is NO LONGER a gap —
-   it is Robinder's own address per the D-64 header (D-80). Mail platform question also closed (D-76).
-   Remaining roster items are low priority and block nothing.
-5. ⬜ 👍 on M6 auto-reply questions + block-list wording (before M6 live)
-6. ⬜ 2–3 test client files for M10
-7. ⬜ Where the **walk-in/onsite client sheet** lives (candidate: BNE → INQUIRY folder, id in ONEDRIVE-IDS)
-8. ⬜ Screenshot of their common S56 client email (client offered to send)
+## OPEN CLIENT ASKS — 2 Aug: nearly all CLOSED
+🔴 **ONLY BLOCKING ITEM:** the Gmail connection on `visa.lodgement@` exists but returns **403 insufficient
+   scopes** (D-97). Robinder must **Reauthorize** and tick EVERY permission box. Blocks M9 only.
+✅ CLOSED 2 Aug: **s56 client template** received (D-104) · **folder structure approved** with 3 changes
+   (D-113) · **Nisha = former employee**, roster fully closed (D-111) · full 482 + 485 s56 threads supplied
+   (D-105..D-110).
+✅ CLOSED 31 Jul: `workvisa.bne@` = Robinder (D-94) · mail platform = Google Workspace (D-76) ·
+   `visa.lodgement@` owner = Robinder (D-80).
+✅ CLOSED 30 Jul: s56 cadence 7/14/21/26 · MARN shown · 1,400 folders are live clients · 5 sub-folders.
+Remaining, none blocking: ⬜ 2–3 test client files (M10) · ⬜ 👍 M6 auto-reply wording (before M6 live) ·
+⬜ walk-in sheet location · ⬜ **Make paid plan** (go-live gate, raise at demo) · ⬜ final 50% on go-live.
+
+⚠️ **FOR SHARJEEL, NOT THE CLIENT:** the client answered against a **7-folder** proposal sent directly by
+   Sharjeel that is not in this repo. The structures in D-113 are RECONSTRUCTED from his three instructions.
+   **Confirm they match what was actually sent before T3 builds them.**
 
 ## KNOWN ISSUES TO RAISE AT THE DEMO (not blockers)
 - **`info@` drops out of threads after message 1** — the shared inbox never sees the documents or later
