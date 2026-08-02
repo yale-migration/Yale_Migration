@@ -52,11 +52,13 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
             They are TWO separate script files — add the second with **+ → Script**, never overwrite the first.
       4. If it reports legacy rows / formulas in A or T / data right of the headers: clear or migrate them
          before continuing. Legacy v1 rows put the NAME in column **B**; v2 expects **C**.
-- ⬜ T2.1 Run `setupEverything`
+- ✅ T2.1 Run `setupEverything` — DONE 3 Aug 02:00, clean (D-157)
       → Allow permissions *(builds 23 headers, 9 dropdowns, date formats, widths, header protection,
       + the ENQUIRIES tab — replaces all the old manual steps)*
-- ⬜ T2.2 Paste `scripts/master_codes.gs` → Save → Run `assignMissingCodes` → Allow
-- ⬜ T2.3 Triggers (⏰) → Add trigger → `assignMissingCodes` → Time-driven → Minutes → **every 5 minutes**
+- ✅ T2.2 `master_codes.gs` pasted in Code.gs (D-157)
+- ⬜ T2.3 Triggers (⏰) → Add trigger → function **`assignMissingCodes`** → event source **Time-driven** →
+      **Minutes timer** → **Every 5 minutes** → failure notifications **Notify me immediately** → Save.
+      🔴 Do NOT add a trigger for `onEdit` — it is a SIMPLE trigger that runs automatically (D-158).
 - ⬜ T2.4 Test: type a name in **C2** (Full Name) → code appears in **A2**, date in **T2**
 - ⬜ T2.5 Run **`auditDuplicateCodes`** → expect `No duplicate codes ✅`
 - ⬜ T2.6 **DELETE the test row AND its code** — otherwise the client's genuinely-first client becomes

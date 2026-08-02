@@ -1277,3 +1277,26 @@ names set up in an earlier session for testing. Safe to delete, no migration nee
 header row. Live v1 header layout observed before the rebuild: `Client Code · Their Client ID · Full Name ·
 Party 2 Name · Contact Number · Stage · Assigned Consultant · Data Added · Sources · Notes` (10 columns,
 orange header, dropdowns on F and I) — superseded by the 23-column v2 layout.
+D-157 | ✅ T2.1 + T2.2 COMPLETE — MASTER and ENQUIRIES built successfully on the live sheet (3 Aug, 02:00) |
+`setupEverything` ran clean after the D-155 ordering fix: `Execution started 1:59:57 → Execution completed
+2:00:01`, no exception. Verified against the spec from the screenshots:
+  · **MASTER — 23 headers A–W** in exact spec order (Client Code → Notes), dark charcoal header row, row 1
+    frozen, columns terminate at **W** (so the empty-tail delete of X:Z ran and was safe), dropdown carets
+    visible on **G · H · I · J · K · L · M · N · U** = the 9 specified columns.
+  · **ENQUIRIES — 11 headers A–K**, dark header, dropdowns on **E Channel · G Location · H Assigned To ·
+    I Status** = the 4 specified.
+  · **FOLDER INVENTORY untouched** — still `Folder Name · Office · Team · Folder ID · Link` across 26
+    allocated columns, exactly as the script promises.
+  · Both v1 legacy test rows gone; the old orange v1 header and its F1 dropdown fully replaced.
+**The D-155 fix is confirmed working against the real sheet — not just in theory.**
+D-158 | ⚠️ TRIGGER SETUP — the dialog defaults are WRONG for our case, and one trap must be avoided |
+Sharjeel opened Add Trigger and it defaulted to `onEdit` / `From spreadsheet` / `On open`. Correct values:
+**function `assignMissingCodes` · event source `Time-driven` · type `Minutes timer` · `Every 5 minutes` ·
+failure notifications `Notify me immediately`.**
+🔴 **TRAP — do NOT create a trigger for `onEdit`.** `onEdit` is a **simple** trigger: Apps Script runs it
+automatically because of its reserved name, with no registration. Adding an *installable* onEdit trigger on
+top makes `assignMissingCodes` fire **twice per edit** — harmless thanks to the D-135 lock (the second run
+finds the lock held and returns) but it doubles executions for nothing. **Exactly ONE trigger is needed.**
+Failure notification changed from the default "Notify me daily" to **immediately**: a silently dead trigger
+means client codes quietly stop being issued (the same silent-failure class as D-153), and daily is too slow
+to catch that during a live build.
