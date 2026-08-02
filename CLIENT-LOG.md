@@ -176,3 +176,10 @@ request inside a 485 (D-121/D-122); Department→consultant hop measured at 3 da
 nomination → lodgement), partner gets 820/801 sub-folders, health & character folds into Personal (D-126).
 (e) **Nisha is a former employee** — roster now fully closed (D-124). All 3 files moved into `access/` +
 `assets/samples/`, `new-access/` deleted after verified copy.
+2026-08-02 | audit | THREE-AGENT PARALLEL AUDIT (artifact tracking · client-message record · document
+consistency). Headline: **nothing the client sent is lost** — 154 files on disk, access/ ↔ assets/samples/
+hash-identical on all 17, CLIENT-LOG unbroken 6 Jul → 2 Aug. 12 defects found and fixed (D-138..D-144), worst
+three: the SBS/Nomination dropdown dead end that would have blocked every sponsorship matter; the ship-ladder
+gate demanding 5 folders when the build makes 6; and three of our own documents still claiming Robinder was
+blocking us when he completed the Gmail reauthorize on 31 Jul. Also: 3 client-PII files untracked from git,
+8 client answers promoted from PROJECT-STATE into DECISIONS, batch-level tracking recorded honestly in ACCESS.

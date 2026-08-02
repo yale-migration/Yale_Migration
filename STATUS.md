@@ -67,7 +67,21 @@ roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supp
 31 Jul reauthorize. Remaining on that item: **our own Run-once verification** — ours, not his.
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
 
-## 🔴 Pre-build audit 2 Aug — caught a wrong build before it happened
+## ✅ THREE-AGENT PARALLEL AUDIT — 2 Aug (artifacts · client record · document consistency)
+**Headline: nothing the client sent is lost.** All 154 client files exist; `access/` ↔ `assets/samples/` match
+on all 17 with identical SHA-256 hashes; CLIENT-LOG covers 6 Jul → 2 Aug with 42 entries and no unexplained gap.
+**But 12 real defects were found and fixed**, the three worst being:
+1. **T2 BLOCKER** — `SBS`/`Nomination` routed to folder SET 2 but were rejected by the Visa Type dropdown
+   (`setAllowInvalid(false)`), making every employer-side matter a dead end at data entry (D-138).
+2. **Ship-ladder gate contradicted the build** — it told the tester to verify **5** SET-1 folders when the
+   build creates **6**. Definitions were fixed 2 Aug; the acceptance test was not (D-139).
+3. **We were still telling ourselves the client was blocking us** — the `visa.lodgement@` reauthorize was
+   completed by Robinder on **31 Jul**; ROADMAP, STATUS and memory all still said he had to do it (D-134).
+   Re-asking him would have been the most credibility-damaging thing available.
+Also fixed: renumber corruption (`D-128` never existed), 8 client answers that lived only in PROJECT-STATE,
+3 client-PII files tracked in git, a U+202F filename mismatch, op-count and authority-chain contradictions.
+
+## 🔴 Earlier pre-build audit 2 Aug — caught a wrong build before it happened
 `ARCHITECTURE.md` was still **v1**: 10-folder tree, 10-column data contract, obsolete Gmail-delegation model,
 wrong script names. It is the file CLAUDE.md points to for conventions, so **T3 would have created 10 wrong
 folders in the client's live OneDrive.** Rewritten to v2; `scenarios/M3-folder-create.md` rewritten to v2 with
