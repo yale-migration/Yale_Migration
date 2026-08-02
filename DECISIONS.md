@@ -974,3 +974,28 @@ proposal" text existed only inside the question he sent, not as a separate docum
 three sets in ARCHITECTURE v2 are final: they satisfy all three client instructions (fewer folders than 7 ·
 health & character merged into Personal · work by step · partner 820/801 sub-folders) and are validated
 against real client files (D-98). Proceed to build on them.
+D-131 | 🔴 DECISION-NUMBER COLLISION — 7 duplicate IDs found and repaired | Audit 2 Aug: `DECISIONS.md`
+contained duplicate headers for D-101, D-105, D-106, D-107, D-108, D-113 (and a false-positive on D-81).
+Cause: I derived the next number from `grep -c "^D-"` — a **COUNT**, not the **MAX**. Counts diverge from max
+whenever numbering is non-contiguous or a parallel session has appended. Cross-references like "see D-105"
+were therefore ambiguous — pointing at two different decisions. **Repair:** my entire 2 Aug block renumbered
+to D-117…D-130 (the earlier session's entries keep their numbers, since they were first in file order), and
+every cross-reference updated across ARCHITECTURE.md · PROCESS.md · CLIENT-LOG.md · ROADMAP.md · ACCESS.md ·
+scenarios/M3-folder-create.md. Verified: **120 headers, 120 unique, zero duplicates.** A dangling `D-104`
+reference in `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` was also corrected to D-100/D-102.
+**RULE (now G7): next decision number = `MAX existing + 1`, never the count.**
+`grep -oE '^D-[0-9]+' DECISIONS.md | sort -t- -k2 -n | tail -1`
+D-132 | 🔴 MY RECONSTRUCTED FOLDER SETS WERE WRONG — replaced with the real checklist-derived sets | D-126
+recorded the client's three instructions but reconstructed the folder sets from memory, because I had not
+found `docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md` — which already contained the actual 7-folder proposal the
+client was answering, **derived from Yale's own client checklists**. My reconstruction dropped two folders the
+client's own documents require: **`Dependents & Relationship`** (their "485 WITH DEPENDENT" checklist demands
+full relationship evidence — marriage certificate, joint account, joint lease, call logs, photos) and the
+party-based split for partner matters. It also invented a generic "Financial" folder for work matters instead
+of the **Business & Sponsorship** grouping Robinder specifically asked for (P&L, licences, ABN/ACN, Trust Deed).
+**Corrected sets now in ARCHITECTURE v2 and the M3 spec** — the real three sets with the client's 2 Aug changes
+applied: Health & Character merged into Identity (his request) · Work reorganised by STEP (his request) ·
+Relationship Evidence gains `820` / `801` sub-folders (his request).
+**This is another G2 failure — the answer was in our own repo and I did not search for it before reconstructing.
+The file was found only because a routine `ls` of docs/ surfaced it.** Reinforces G6: before writing a
+structure, locate and read the authoritative document, do not rebuild it from conversation memory.

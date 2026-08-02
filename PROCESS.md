@@ -111,6 +111,19 @@ pointed at — so the next build would have created 10 wrong folders in the clie
 - **Before building anything, re-read the authoritative file for that thing** — not your memory of it, and
   not a summary in another document.
 
+## G7 — DECISION IDS COME FROM MAX, NOT COUNT (added 2 Aug)
+
+Seven duplicate decision IDs were created because the next number was taken from `grep -c` (a count) instead
+of the highest existing ID (D-131). Duplicates make every cross-reference ambiguous.
+
+```
+grep -oE '^D-[0-9]+' DECISIONS.md | sort -t- -k2 -n | tail -1     # → next = that + 1
+```
+Also: after any renumber, update cross-references repo-wide and re-verify uniqueness:
+```
+grep -oE '^D-[0-9]+ \|' DECISIONS.md | sort | uniq -d            # must be empty
+```
+
 ## THE STANDING RULE
 
 **A spec is not a deliverable. A verified working thing the client can see is a deliverable.**
