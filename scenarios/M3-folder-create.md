@@ -1,4 +1,6 @@
-# Scenario: `YM-M3-folder-create` — auto client folder + 10 sub-folders
+# Scenario: `YM-M3-folder-create` — auto client folder + client-approved sub-folders
+**v2 — 2026-08-02.** v1 specified 10 sub-folders; the client approved THREE sets routed by visa type
+(D-113). Authoritative structure: `ARCHITECTURE.md` v2 (G6 — do not restate it elsewhere).
 
 **Trigger:** new row in MASTER with a Client Code and no Folder URL.
 **Cost:** ~13 Make operations per client (well inside the free tier for testing; paid plan at go-live, D-15).
@@ -43,7 +45,9 @@ Add a **Router**, one route per branch, filter on `Office` and `Team` from the r
 | Header | `Content-Type: application/json` |
 | Body | `{"name":"{{folderName}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}` |
 
-**folderName** = `{{1.Client Code}} – {{sanitized name}}` (en-dash with spaces, matching D-18).
+**folderName** = `{{1.Client Code}} – {{sanitized name}}` (en-dash with spaces, D-18).
+For employer/sponsorship matters the Full Name IS the company, so the folder becomes
+`YM-2026-##### – COMPANY NAME (SPONSOR)` automatically — no special handling needed (D-99).
 
 **Sanitizer** (apply to Full Name before use):
 ```
@@ -58,32 +62,40 @@ rules).
 **`conflictBehavior: "fail"`** is deliberate — if a folder with that name already exists we want the
 error (and an alert), not a silent duplicate or a rename. Existing client folders are never touched (D-12).
 
-## Module 4 — Create the 10 sub-folders (Iterator + API call)
-1. **Tools → Set variable**: `subfolders` =
-   `01 Enquiry;02 Identity Documents;03 Education;04 Employment;05 Financial;06 Enrolment;07 Application Forms;08 Lodgement;09 Correspondence;10 Visa Outcome`
+## Module 4 — Create the sub-folders (Router on Visa Type → Set variable → Iterator → API call)
+
+**Three sets, chosen automatically from `Visa Type` (col H). Staff never choose.** Full definitions and
+rationale: `ARCHITECTURE.md` v2 §Folder convention.
+
+1. **Router** on `{{1.Visa Type}}`:
+   | Route | Visa Types | Set `subfolders` to |
+   |---|---|---|
+   | WORK / EMPLOYER | `482 · 407 · 186 · 494` | `01 Identity & Personal;02 Education & Employment;03 Step 1 – Sponsorship (SBS 482 / TAS 407);04 Step 2 – Nomination;05 Step 3 – Visa Lodgement;06 Correspondence & Outcome` |
+   | PARTNER | `820/801 · 300` | `01 Identity & Personal;02 Relationship Evidence;03 Financial;04 Forms & Lodgement;05 Correspondence & Outcome` |
+   | STANDARD (fallback, no filter) | everything else | `01 Identity & Personal;02 Education & Employment;03 Financial;04 Forms & Lodgement;05 Correspondence & Outcome` |
 2. **Tools → Iterator**: `split(subfolders; ";")`
 3. **OneDrive → Make an API Call** (inside the iterator):
-   - Method `POST`
-   - URL `/v1.0/drives/A0BABA3C2640082C/items/{{3.body.id}}/children` ← parent = the folder just created
+   - `POST /v1.0/drives/A0BABA3C2640082C/items/{{3.body.id}}/children`
    - Body `{"name":"{{iterator.value}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}`
+4. **PARTNER ONLY — one nested level.** After `02 Relationship Evidence` is created, POST two children into
+   it: `820` and `801`. Reason (client's own): the 801 documents arrive ~2 years later and must not mix with
+   the 820 bundle. Cost: +2 ops on partner matters only.
+
+**Ops per matter:** standard ≈8 · work ≈9 · partner ≈11. Within the free tier for testing (D-22).
 
 ⚠️ **VERIFIED 2026-07-29 (T1.4c): live client folders are FLAT — zero sub-folders (D-47).** The SOP's
-10-folder structure was never implemented; staff dump loose files (e.g. `Aadhar front and back.PDF`,
-`AFP_repaired (10).pdf`, `Trascript.PDF`).
-Therefore this module DELIVERS A NEW STRUCTURE rather than mirroring one. Two consequences:
-1. **Client 👍 REQUIRED on the folder list before build** — creating 10 folders staff then ignore is worse
-   than none. Offer a lighter alternative (e.g. `01 Identity · 02 Education/Employment · 03 Financial ·
-   04 Forms & Lodgement · 05 Correspondence`) and let them choose.
-2. **Framing to the client:** "your SOP specifies this structure; in practice files sit loose — the
-   automation makes the SOP real from now on, without touching existing folders."
-Existing 1,436 folders are never restructured or renamed (D-12/D-45).
+10-folder structure was never implemented; staff dump loose files. So this module DELIVERS A NEW STRUCTURE
+rather than mirroring one. **Framing to the client:** "your SOP specifies a structure; in practice files sit
+loose — the automation makes it real from now on, without touching existing folders."
+✅ **Client approved the structure 2 Aug** (D-113), including their own improvement: work visas organised by
+application STEP so the folder tree shows progress. Existing ~1,436 folders are never restructured (D-12/D-45).
 
 ## Module 5 — Write the folder link back (Google Sheets → Update a Row)
 | Field | Value |
 |---|---|
 | Row number | `{{1.__ROW_NUMBER__}}` |
-| Folder URL (col M) | `{{3.body.webUrl}}` |
-| Stage (col I) | `Engaged` *(only if currently blank — don't overwrite staff edits)* |
+| Folder URL (col **V**) | `{{3.body.webUrl}}` |
+| Processing Stage (col **M**) | `Engaged` *(only if currently blank — never overwrite staff edits)* |
 
 ## Module 6 — Error handling (mandatory, D-14/ARCHITECTURE)
 Right-click **each** API-call module → **Add error handler** → **Resume** (so one bad row can't kill the
@@ -96,7 +108,8 @@ so the failure is visible where staff work, not only in Make's history.
 
 ## Ship ladder (D-14 — do not skip)
 1. **Dry-run**: 2 rows named `TEST DEMO ONE` / `TEST DEMO TWO`, Office BRISBANE, Team FILIPINO.
-   Run once. Verify in OneDrive: folder + 10 sub-folders + link written back to the sheet.
+   Run once. Verify in OneDrive: folder + the 5 STANDARD sub-folders + link written back to the sheet.
+   Then one WORK test (Visa Type 482) and one PARTNER test (820/801) to prove all three router branches.
 2. **Clean up**: DELETE both test folders (`DELETE /v1.0/drives/A0BABA3C2640082C/items/<id>`),
    clear the test rows.
 3. **5 real cases**: use 5 genuine upcoming clients (or 5 realistic names agreed with the client).
@@ -105,6 +118,6 @@ so the failure is visible where staff work, not only in Make's history.
 
 ## Demo capture (the deliverable that matters)
 Record 60–90 seconds, no narration needed:
-type a name in MASTER → code appears (Apps Script) → cut to OneDrive → folder with 10 sub-folders exists
+type a name in MASTER → code appears (Apps Script) → cut to OneDrive → folder with its sub-folders exists
 → cut back to sheet → Folder URL populated. Send with one line:
 *"First piece is live — new clients now get their folder and code automatically."*
