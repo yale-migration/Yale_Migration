@@ -42,12 +42,22 @@ Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 ### 🎯 T2 — Build the MASTER sheet (SHARJEEL · **10 min** · no dependencies) — ACTIVE
 *(Corrected 31 Jul: previously said "14 headers / 6 dropdowns / type in B2" from the superseded v1 spec —
 stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)*
-- ⬜ T2.1 Extensions → Apps Script → paste `scripts/setup_master_sheet.gs` → Save → Run `setupEverything`
+- ⬜ **T2.0 SAFETY FIRST (D-145 — the tabs are NOT empty; they were hand-built 25 Jul under the v1 layout)**
+      1. Open the sheet → **File → Make a copy** (backup; a script-side column delete has no Ctrl+Z)
+      2. Extensions → Apps Script — must be opened **from inside the sheet** (container-bound), else
+         `SpreadsheetApp.getActive()` is null
+      3. Paste `setup_master_sheet.gs` → run **`preflightCheck`** FIRST → read the Execution log
+      4. If it reports legacy rows / formulas in A or T / data right of the headers: clear or migrate them
+         before continuing. Legacy v1 rows put the NAME in column **B**; v2 expects **C**.
+- ⬜ T2.1 Run `setupEverything`
       → Allow permissions *(builds 23 headers, 9 dropdowns, date formats, widths, header protection,
       + the ENQUIRIES tab — replaces all the old manual steps)*
 - ⬜ T2.2 Paste `scripts/master_codes.gs` → Save → Run `assignMissingCodes` → Allow
 - ⬜ T2.3 Triggers (⏰) → Add trigger → `assignMissingCodes` → Time-driven → Minutes → **every 5 minutes**
 - ⬜ T2.4 Test: type a name in **C2** (Full Name) → code appears in **A2**, date in **T2**
+- ⬜ T2.5 Run **`auditDuplicateCodes`** → expect `No duplicate codes ✅`
+- ⬜ T2.6 **DELETE the test row AND its code** — otherwise the client's genuinely-first client becomes
+      `YM-2026-00002`, which is permanent and visible (D-145)
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
 ### T3 — Build the folder scenario (JOINT · ~90 min · after T1+T2)
@@ -119,7 +129,7 @@ Expected output: client sees working automation for the first time.
 ### M8 — Lead follow-up sequences (2h) — ⬜
 - ⬜ 7-day + 30-day lost-lead cadence, stop-on-reply (their Inquiry SOP rule)
 
-### M9 — Gmail triage & delegation (5h) — 🟡 spec complete
+### M9 — Gmail triage & s56 detection (5h) — 🟡 spec complete
 - ✅ Spec: `docs/M9-EMAIL-AI-SPEC.md` — S56 phrase set (**never "s56"**, D-32), identifier regexes,
   deadline computation (D-33), categories + volumes, tone/signature, safety rules, model plan
 - ⬜ Build: Haiku classifier (tool-use schema) · quote-stripper (D-35) · Mailsuite suppression ·

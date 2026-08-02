@@ -62,7 +62,7 @@ from `access/` are staged in `assets/samples/` (git-ignored, PII). **Add a row w
 
 ## 📦 BATCH-LEVEL TRACKING — batches 1–3 (audited 2 Aug)
 `access/` (batch 4) is mapped file-by-file above. **The three earlier batches are tracked at BATCH level only** —
-154 client files exist on disk, 17 are individually mapped. Nothing is lost; the granularity differs.
+143 client files exist on disk, 17 are individually mapped. Nothing is lost; the granularity differs.
 
 | Batch | Source folder | Files | Curated copy | Per-file record |
 |---|---|---|---|---|
@@ -92,4 +92,4 @@ browser, and never ask us to hold his passwords. Also record, the same day: who 
 machine, and who holds which credential.
 
 Revocation map (client can cut us off anytime): unshare sheets · remove Make member · remove Meta
-person · remove Gmail delegate · rotate Claude key. This is by design — say it proudly if asked.
+person · revoke the Make↔Gmail connection · rotate Claude key. This is by design — say it proudly if asked.

@@ -21,6 +21,7 @@ var COL_CODE     = 1;  // A  Client Code
 var COL_NAME     = 3;  // C  Full Name  (B = their CL-### id)
 var COL_DATE     = 20; // T  Date Added
 var FIRST_ROW    = 2;  // row 1 = headers
+var CODE_RE      = /^YM-\d{4}-\d{5}$/;   // what a REAL code looks like (D-145)
 
 /** Fires when someone types in the sheet. */
 function onEdit(e) {
@@ -42,7 +43,9 @@ function onEdit(e) {
  */
 function assignMissingCodes() {
   var lock = LockService.getDocumentLock();
-  if (!lock.tryLock(20000)) return;   // another run holds it; it will cover our rows anyway
+  // 10s, not 20s: a simple onEdit trigger has a hard 30-second budget (D-145). If the timer holds
+  // the lock we return immediately and the next 5-minute tick covers the row.
+  if (!lock.tryLock(10000)) return;
   try {
     assignMissingCodes_();
   } finally {
@@ -63,26 +66,26 @@ function assignMissingCodes_() {
   var dates = sh.getRange(FIRST_ROW, COL_DATE, n, 1).getValues();
 
   var next = nextNumber_(codes);
-  var changed = false;
+  var wrote = 0;
 
   for (var i = 0; i < n; i++) {
-    var hasName = String(names[i][0]).trim() !== '';
-    var hasCode = String(codes[i][0]).trim() !== '';
-    if (hasName && !hasCode) {
-      codes[i][0] = CODE_PREFIX + pad_(next, 5);
-      next++;
-      changed = true;
-      if (String(dates[i][0]).trim() === '') {
-        dates[i][0] = new Date();
-      }
+    var hasName  = String(names[i][0]).trim() !== '';
+    // A cell counts as "already coded" ONLY if it holds a REAL code. A legacy v1 formula result or a
+    // stray test value would otherwise suppress the code forever and silently fail the T2 test (D-145).
+    var hasCode  = CODE_RE.test(String(codes[i][0]).trim());
+    if (!hasName || hasCode) continue;
+
+    // Write CELL BY CELL, never whole columns. A column-wide setValues() would flatten any formula in
+    // A or T into a static value and clobber concurrent human/Make edits between read and write (D-145).
+    sh.getRange(FIRST_ROW + i, COL_CODE).setValue(CODE_PREFIX + pad_(next, 5));
+    next++;
+    wrote++;
+    if (String(dates[i][0]).trim() === '') {
+      sh.getRange(FIRST_ROW + i, COL_DATE).setValue(new Date());
     }
   }
 
-  if (changed) {
-    sh.getRange(FIRST_ROW, COL_CODE, n, 1).setValues(codes);
-    sh.getRange(FIRST_ROW, COL_DATE, n, 1).setValues(dates);
-    SpreadsheetApp.flush();   // commit before the lock is released
-  }
+  if (wrote) SpreadsheetApp.flush();   // commit inside the lock
 }
 
 /**
@@ -109,7 +112,7 @@ function nextNumber_(codes) {
   var max = 0;
   for (var i = 0; i < codes.length; i++) {
     var v = String(codes[i][0]).trim();
-    if (v.indexOf(CODE_PREFIX) === 0) {
+    if (CODE_RE.test(v)) {                       // strict — ignores legacy/partial values (D-145)
       var num = parseInt(v.substring(CODE_PREFIX.length), 10);
       if (!isNaN(num) && num > max) max = num;
     }

@@ -93,7 +93,7 @@ trim trailing dots/spaces · max 100 chars.
 ## Mailboxes — three, with different jobs (do not conflate)
 | Mailbox | Role | Access model |
 |---|---|---|
-| `visa.lodgement@` | **Department s56 arrives here** (D-64) — Robinder's own address | Make↔Gmail OAuth **as that mailbox**. 🔴 currently 403 insufficient scopes (D-97) |
+| `visa.lodgement@` | **Department s56 arrives here** (D-64) — Robinder's own address | Make↔Gmail OAuth **as that mailbox** — ✅ **AUTHORIZED 31 Jul** (D-97/D-134). The 403 is CLOSED; only OUR Run-once verification remains (D-91). **Do not re-ask the client.** |
 | `project1@` | outbound sending for M4/M5 | Make↔Gmail OAuth, one-time client login (D-13) |
 | `info@` | general/shared; also the **Make account Owner login** | not an automation target |
 

@@ -1132,9 +1132,9 @@ approved location for client data. Options: (1) accept, given private + limited 
 identity documents — staff contacts and folder names); (2) rewrite history with `git filter-repo`, which fully
 removes them but rewrites every commit hash. **Not actioned unilaterally — history rewriting is destructive.**
 Recommendation: (1) now, and move the repo to a company org at handover.
-D-144 | Tracking granularity: 154 client files on disk, 17 mapped file-by-file — recorded, not hidden |
-The artifact audit confirmed **nothing is lost**: all 154 client files exist, and `access/` ↔ `assets/samples/`
-match on all 17 with identical SHA-256 hashes. But 137 files across batches 1–3 have only BATCH-level records,
+D-144 | Tracking granularity: 143 client files on disk, 17 mapped file-by-file — recorded, not hidden |
+The artifact audit confirmed **nothing is lost**: all 143 client files exist, and `access/` ↔ `assets/samples/`
+match on all 17 with identical SHA-256 hashes. But 126 files across batches 1–3 have only BATCH-level records,
 and the batch-1 SOP library (32 files incl. **3 unique infographic PNGs**, hash-verified as not duplicates)
 appeared in **no** tracking record at all — it lived only in `PROJECT-STATE.md` and a folder README, neither
 referenced from inside `yale-build/`. A **BATCH-LEVEL TRACKING** table is now in `ACCESS.md` stating the
@@ -1145,3 +1145,38 @@ Batch 4 (`access/`) and all future deliveries stay file-by-file, because those d
 ALSO FIXED: the s56 screenshot's map row contained a plain space where the real filename has a **narrow
 no-break space (U+202F)** — so grepping the true filename returned nothing, the exact failure the map exists to
 prevent. Row is now byte-exact from disk.
+D-145 | 🔴 T2 WAS UNSAFE TO RUN — the target tabs are NOT empty. Scripts hardened, not just documented |
+Independent readiness review before execution. `MASTER`/`ENQUIRIES` were **hand-built 25 Jul under the
+superseded v1 layout**, including a YM-2026 code formula (PROJECT-STATE), but both scripts were written
+assuming blank tabs. Five real defects, all FIXED IN CODE rather than papered over with a warning:
+  1. **`deleteColumns` ran unconditionally** — would have deleted MASTER col X+ and ENQUIRIES col **L+
+     (fifteen columns)** in the client's live database, with no undo (a script-side delete is not in the
+     user's Ctrl+Z stack). → now deletes ONLY when the trailing block is provably empty; otherwise it stops
+     and toasts.
+  2. **Whole-column `setValues()` on A and T** — `getValues()` returns formula RESULTS, so writing them back
+     **flattens any formula into a static value** and clobbers concurrent human/Make edits between read and
+     write. → now writes **cell by cell**, only the rows that actually change.
+  3. **`hasCode = cell not empty`** — a legacy v1 formula output in A2 would have suppressed the new code
+     forever, silently failing the T2 acceptance test. → now a strict `/^YM-\d{4}-\d{5}$/` test, applied in
+     `nextNumber_()` too so junk values cannot poison the max.
+  4. **Stale v1 data-validation survived** — old list-restricted dropdowns sitting on different v2 columns
+     would REJECT valid entry. → `clearDataValidations()` across the sheet before applying the new rules.
+  5. **`getRange(2, col, 999, 1)` threw** on a tab trimmed below 1000 rows, aborting setup half-done with no
+     rollback. → clamped to `getMaxRows() - 1`. Protection removal also wrapped in try/catch (throws when the
+     protection was created by a different Google account).
+Plus **`preflightCheck()`** — read-only; reports existing rows, formulas in A/T, and data beyond the headers
+BEFORE anything is written. ROADMAP T2 now opens with **T2.0**: back up the sheet, open Apps Script
+**container-bound**, run preflight, clear legacy v1 content — and closes with T2.5 `auditDuplicateCodes` and
+**T2.6 delete the test row AND its code** (otherwise the client's first real client becomes `YM-2026-00002`,
+permanent and visible). Lock reduced 20s → **10s** to stay inside a simple trigger's 30-second budget.
+Both files pass `node --check`.
+D-146 | Verification pass caught FIVE defects introduced BY the previous fixes | Independent re-audit of the
+12 repairs: 10 verified, 2 partial, and five NEW problems created by my own edits — the important lesson of
+this session. (1) I asserted **"154 client files"** without counting; the real total is **143** (15+17+86+8+17),
+and the wrong number had already propagated to four files. (2) `ARCHITECTURE.md` still flagged the s56 mailbox
+as *"🔴 currently 403"* — the very belief D-134 exists to kill, sitting in the file CLAUDE.md sends every
+session to for conventions. (3) `STATUS.md` listed `visa.lodgement@` as "Open" 45 lines above "NOTHING BLOCKED
+ON THE CLIENT". (4) Decision counts stale in three files after appending D-138..D-144. (5) Delegation survived
+in `ACCESS.md`'s revocation map and the `M9 — Gmail triage & delegation` module title. All six fixed.
+**LESSON: a fix applied to the two places an audit named is not a fix — grep the whole repo for the CLAIM, not
+the location.** Combined with D-133's silent-no-match lesson: assert on resulting CONTENT, repo-wide.

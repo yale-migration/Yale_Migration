@@ -8,7 +8,11 @@
  *  2. Extensions -> Apps Script.
  *  3. Paste this whole file into a new file called setup_master_sheet.gs -> Save.
  *  4. Select function `setupEverything` -> Run -> Allow permissions.
- *  5. Done. Re-running is SAFE (idempotent): it rewrites headers/validation, never deletes data rows.
+ *  5. Done. Re-running rewrites headers/validation and never deletes data ROWS.
+ *     ⚠️ Trailing COLUMNS are deleted ONLY when provably empty (D-145) — if they hold data the script
+ *     stops and toasts instead. Even so: File → Make a copy BEFORE the first run on a live sheet.
+ *
+ *  RUN preflightCheck() FIRST — it reports what is already in the sheet and changes nothing.
  *
  * WHAT IT DOES
  *  - MASTER: 23 headers (A..W), bold dark header row, frozen, column widths, 9 dropdowns,
@@ -108,7 +112,15 @@ function buildSheet_(ss, name, headers, dropdowns, dateCols, widths) {
   sh.setRowHeight(1, 34);
   sh.setFrozenRows(1);
 
-  // 3. dropdowns (rows 2..VALIDATION_ROWS+1)
+  // 2b. clear STALE v1 data-validation across the whole sheet (D-145).
+  //     The 25 Jul manual build put Stage/Source dropdowns on v1 column positions. Left in place they
+  //     sit on different v2 columns and REJECT valid entry, because the old rules were list-restricted.
+  sh.getRange(1, 1, sh.getMaxRows(), sh.getMaxColumns()).clearDataValidations();
+
+  // rows 2..N, clamped so a trimmed sheet cannot throw "those rows are out of bounds" mid-run
+  var vRows = Math.max(1, Math.min(VALIDATION_ROWS, sh.getMaxRows() - 1));
+
+  // 3. dropdowns
   Object.keys(dropdowns).forEach(function (colStr) {
     var col  = parseInt(colStr, 10);
     var rule = SpreadsheetApp.newDataValidation()
@@ -116,12 +128,12 @@ function buildSheet_(ss, name, headers, dropdowns, dateCols, widths) {
       .setAllowInvalid(false)      // reject typos so reporting stays clean
       .setHelpText('Pick from the list — values are used by the automation.')
       .build();
-    sh.getRange(2, col, VALIDATION_ROWS, 1).setDataValidation(rule);
+    sh.getRange(2, col, vRows, 1).setDataValidation(rule);
   });
 
   // 4. date formats
   (dateCols || []).forEach(function (col) {
-    sh.getRange(2, col, VALIDATION_ROWS, 1).setNumberFormat('yyyy-mm-dd');
+    sh.getRange(2, col, vRows, 1).setNumberFormat('yyyy-mm-dd');
   });
 
   // 5. column widths
@@ -134,15 +146,72 @@ function buildSheet_(ss, name, headers, dropdowns, dateCols, widths) {
   // 6. protect the header row (warning-only: nobody gets locked out, but accidents are caught)
   var existing = sh.getProtections(SpreadsheetApp.ProtectionType.RANGE);
   for (var i = 0; i < existing.length; i++) {
-    if (existing[i].getDescription() === 'Header row — do not edit') existing[i].remove();
+    try {
+      if (existing[i].getDescription() === 'Header row — do not edit') existing[i].remove();
+    } catch (err) { /* protection owned by another account — ignore, not worth aborting setup */ }
   }
   sh.getRange(1, 1, 1, headers.length).protect()
     .setDescription('Header row — do not edit')
     .setWarningOnly(true);
 
-  // 7. tidy: remove unused trailing columns so the sheet reads cleanly
+  // 7. tidy: remove unused trailing columns — ONLY if they are provably EMPTY.
+  //    D-145: these tabs were hand-built 25 Jul under the v1 layout, so they are NOT blank.
+  //    An unconditional deleteColumns here would destroy live client data with no undo
+  //    (a script-side delete is not in the user's Ctrl+Z stack).
   var maxCols = sh.getMaxColumns();
-  if (maxCols > headers.length) {
-    sh.deleteColumns(headers.length + 1, maxCols - headers.length);
+  var extra   = maxCols - headers.length;
+  if (extra > 0) {
+    var lastRow  = Math.max(sh.getLastRow(), 1);
+    var tailVals = sh.getRange(1, headers.length + 1, lastRow, extra).getValues();
+    var tailEmpty = tailVals.every(function (row) {
+      return row.every(function (c) { return c === '' || c === null; });
+    });
+    if (tailEmpty) {
+      sh.deleteColumns(headers.length + 1, extra);
+    } else {
+      SpreadsheetApp.getActive().toast(
+        name + ': columns right of ' + headers.length + ' contain data — LEFT IN PLACE, nothing deleted. ' +
+        'Review them manually.', 'Yale Migration — safety stop', 15);
+    }
   }
+}
+
+
+/**
+ * PREFLIGHT — run this BEFORE setupEverything(). Changes nothing; reports what is already in the sheet.
+ * Added 2026-08-02 (D-145) because MASTER/ENQUIRIES were hand-built on 25 Jul under the superseded v1
+ * layout, and the setup scripts were originally written assuming empty tabs.
+ */
+function preflightCheck() {
+  var ss = SpreadsheetApp.getActive();
+  var out = ['PREFLIGHT — ' + ss.getName(), ''];
+  [['MASTER', MASTER_HEADERS.length], ['ENQUIRIES', ENQUIRY_HEADERS.length]].forEach(function (pair) {
+    var nm = pair[0], want = pair[1];
+    var sh = ss.getSheetByName(nm);
+    if (!sh) { out.push(nm + ': does not exist yet — will be created cleanly ✅'); return; }
+    var lastRow = sh.getLastRow(), lastCol = sh.getLastColumn(), maxCols = sh.getMaxColumns();
+    out.push(nm + ': ' + lastRow + ' rows, data to col ' + lastCol + ', ' + maxCols + ' columns allocated');
+    if (lastCol > want) {
+      out.push('   ⚠️ DATA beyond the ' + want + ' headers (col ' + (want + 1) + '+). Setup will NOT delete it, but review it.');
+    }
+    if (lastRow > 1) {
+      out.push('   ⚠️ ' + (lastRow - 1) + ' existing data row(s) — these are KEPT. Legacy v1 rows put the NAME in column B;');
+      out.push('      v2 expects it in column C. Clear or migrate old test rows before relying on the codes.');
+      var formulas = sh.getRange(2, 1, lastRow - 1, Math.max(lastCol, 1)).getFormulas();
+      var withF = [];
+      formulas.forEach(function (row, r) {
+        row.forEach(function (f, c) { if (f) withF.push('R' + (r + 2) + 'C' + (c + 1)); });
+      });
+      if (withF.length) {
+        out.push('   🔴 FORMULAS present at: ' + withF.slice(0, 12).join(', ') + (withF.length > 12 ? ' …' : ''));
+        out.push('      master_codes.gs writes VALUES into A and T — a formula there would be replaced. Remove it first.');
+      }
+    }
+    if (sh.getMaxRows() < 1000) out.push('   ℹ️ only ' + sh.getMaxRows() + ' rows — validation will be clamped, not an error.');
+  });
+  out.push('', 'Nothing was changed. Take File → Make a copy before running setupEverything().');
+  var msg = out.join('\n');
+  Logger.log(msg);
+  ss.toast('Preflight done — see Execution log (Ctrl+Enter)', 'Yale Migration', 10);
+  return msg;
 }

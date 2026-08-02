@@ -18,11 +18,11 @@ Both halves of that sentence are true and both matter.
 | Area | State | Evidence |
 |---|---|---|
 | Requirements gathering | ✅ **Complete** | 3 SOP batches + access folder + WhatsApp answers + 2 real S56 email threads, all audited |
-| Access & credentials | ✅ ~95% | Sheets · OneDrive **read+write proven** · Make Admin · Meta BM · Claude key. Open: `visa.lodgement@` |
+| Access & credentials | ✅ ~95% | Sheets · OneDrive **read+write proven** · Make Admin · Meta BM · Claude key. ✅ `visa.lodgement@` authorized 31 Jul — only our own Run-once check remains |
 | Discovery of their real system | ✅ **Complete** | ~1,436 client folders mapped · folders are FLAT · tracker = 49 active rows · naming chaotic · S56 routing chain found |
 | Design / specs | ✅ Written | MASTER sheet v2 · M3 folder scenario · M6 auto-reply · M9 email AI · M9 connection runbook |
 | Code written | ✅ Verified | `setup_master_sheet.gs` (23 headers, 9 dropdowns) · `master_codes.gs` (YM code engine) |
-| Decision record | ✅ 127 entries | `DECISIONS.md` — nothing lost across chats or devices |
+| Decision record | ✅ 134 entries | `DECISIONS.md` — nothing lost across chats or devices |
 | **Anything shipped** | ❌ **Zero** | — |
 
 **Honest read:** roughly the front half of the MVP is done, but it is all *inputs*. A spec is not a
@@ -68,7 +68,7 @@ roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supp
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
 
 ## ✅ THREE-AGENT PARALLEL AUDIT — 2 Aug (artifacts · client record · document consistency)
-**Headline: nothing the client sent is lost.** All 154 client files exist; `access/` ↔ `assets/samples/` match
+**Headline: nothing the client sent is lost.** All 143 client files exist; `access/` ↔ `assets/samples/` match
 on all 17 with identical SHA-256 hashes; CLIENT-LOG covers 6 Jul → 2 Aug with 42 entries and no unexplained gap.
 **But 12 real defects were found and fixed**, the three worst being:
 1. **T2 BLOCKER** — `SBS`/`Nomination` routed to folder SET 2 but were rejected by the Visa Type dropdown
