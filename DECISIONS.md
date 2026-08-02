@@ -1197,3 +1197,29 @@ count into prose.** Say "the full decision history" / "every client file is mapp
 the table or the file itself be the count. Where a number genuinely matters, compute it:
 `grep -cE '^D-[0-9]+ \|' DECISIONS.md`. Hardcoded counts removed from CLAUDE.md, PROCESS.md and STATUS.md.
 This is the same root cause as G6 (single source, never restate) — extended to numbers, not just structures.
+D-149 | ✅ M9 MAILBOX VERIFIED END-TO-END (3 Aug) — the s56 pipeline's foundation is proven | Run-once on the
+`Gmail → Watch emails` module returned **Bundle 1** containing a real message addressed to
+`Yale Migration <visa.lodgement@yalemigration.com.au>`, with **full text body, HTML body, headers, System
+folder = INBOX, Message ID and Thread ID**. Cost: **1 operation, 1 credit**. What this proves, in order:
+(a) the OAuth connection is valid; (b) the **restricted scopes really were granted** — message BODIES are
+readable, not just headers, which is what M9's classifier needs (D-97 closed for good); (c) we are reading the
+**correct mailbox** — the `To:` confirms visa.lodgement@, not project1@ or info@; (d) `Mark as read = No` left
+the client's mailbox untouched; (e) folder/label metadata is exposed, so the s56 filter can key on INBOX +
+sender domain (D-65). **M9 is now unblocked at the infrastructure layer.**
+Observation for later: the oldest message in that mailbox is a Gmail welcome dated **3 Jul 2025**, so the
+mailbox was created around then — useful when sizing an s56 backfill.
+D-150 | ⚠️ SCHEDULE vs ON/OFF are DIFFERENT THINGS in Make — verified safe | Sharjeel set Schedule settings to
+"At regular intervals / 15 minutes" and asked whether that makes it auto-run. **It does not, by itself.** In
+Make the schedule only says WHEN a scenario runs *if it is switched ON*; the ON/OFF toggle is separate.
+Confirmed from the org dashboard screenshot: **Active scenarios 0 / 2** — nothing is running. Also captured:
+**956 / 1,000 credits left** (~44 used, 4%), resets 25 Aug, data transfer 311.5 KB / 512 MB. **Rule for the
+build: leave every scenario OFF until its ship ladder passes (D-14).** A 15-minute schedule switched on
+against a live inbox would consume ~2,880 operations/month — nearly 3× the entire free tier (D-22).
+D-151 | Sequencing correction: `preflightCheck` lives in `setup_master_sheet.gs`, which was not yet pasted |
+Sharjeel pasted `master_codes.gs` into `Code.gs` first and could not find `preflightCheck` in the function
+dropdown — correctly, because that function is defined in the OTHER script file. No harm done: nothing was
+run, and the two files are independent. Resolution: add `setup_master_sheet.gs` as a SECOND script file
+(**+ → Script**, do NOT overwrite `Code.gs`), then the dropdown lists `preflightCheck`, `setupEverything`,
+`buildSheet_` alongside `onEdit`, `assignMissingCodes`, `auditDuplicateCodes`. **ROADMAP T2.0 now names the
+file each function comes from** — the step said "paste setup_master_sheet.gs → run preflightCheck" without
+making clear those are one file and `master_codes.gs` is a separate one.

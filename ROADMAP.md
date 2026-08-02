@@ -46,7 +46,10 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
       1. Open the sheet → **File → Make a copy** (backup; a script-side column delete has no Ctrl+Z)
       2. Extensions → Apps Script — must be opened **from inside the sheet** (container-bound), else
          `SpreadsheetApp.getActive()` is null
-      3. Paste `setup_master_sheet.gs` → run **`preflightCheck`** FIRST → read the Execution log
+      3. Paste **`setup_master_sheet.gs`** → Save → run **`preflightCheck`** FIRST → read the Execution log
+         ⚠️ `preflightCheck` and `setupEverything` live in **setup_master_sheet.gs**;
+            `onEdit`, `assignMissingCodes`, `auditDuplicateCodes` live in **master_codes.gs**.
+            They are TWO separate script files — add the second with **+ → Script**, never overwrite the first.
       4. If it reports legacy rows / formulas in A or T / data right of the headers: clear or migrate them
          before continuing. Legacy v1 rows put the NAME in column **B**; v2 expects **C**.
 - ⬜ T2.1 Run `setupEverything`
@@ -160,9 +163,9 @@ Expected output: client sees working automation for the first time.
 - ✅ MARN/RMA gate RESOLVED (D-60): supervising RMA = Robinder Pal Singh, MARN 1573959, shown in signatures.
 
 ## OPEN CLIENT ASKS — 2 Aug: nearly all CLOSED
-✅ **NOTHING IS BLOCKED ON THE CLIENT (D-134).** The `visa.lodgement@` Gmail connection was **authorized
-   after the reauthorize on 31 Jul** (CLIENT-LOG 31 Jul). The 403 is CLOSED. The only remaining work on that
-   item is **OUR own Run-once verification** (D-91) — our task, never a client ask. Do not re-ask Robinder.
+✅ **M9 MAILBOX FULLY VERIFIED 3 Aug (D-149).** Run-once returned a real message from the
+   `visa.lodgement@yalemigration.com.au` INBOX with full body, headers and folder metadata — 1 operation,
+   1 credit. Connection + scopes + read access all PROVEN. Nothing outstanding on this item from anyone.
 ✅ CLOSED 2 Aug: **s56 client template** received (D-117) · **folder structure approved** with 3 changes
    (D-126) · **Nisha = former employee**, roster fully closed (D-124) · full 482 + 485 s56 threads supplied
    (D-118..D-123).

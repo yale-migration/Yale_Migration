@@ -63,8 +63,8 @@ Then, in strict order, nothing else in between:
 
 ✅ **CLOSED 2 Aug:** s56 client template received · folder structure APPROVED (with 3 client improvements) ·
 roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supplied.
-✅ **NOTHING BLOCKED ON THE CLIENT (D-134).** The `visa.lodgement@` connection was authorized after the
-31 Jul reauthorize. Remaining on that item: **our own Run-once verification** — ours, not his.
+✅ **M9 MAILBOX VERIFIED END-TO-END 3 Aug (D-149)** — Run-once returned a real inbox message with full body.
+Connection, scopes and read access all proven. Nothing outstanding on this item.
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
 
 ## ✅ THREE-AGENT PARALLEL AUDIT — 2 Aug (artifacts · client record · document consistency)
