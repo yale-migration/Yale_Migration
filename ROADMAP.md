@@ -73,7 +73,12 @@ Expected output: typing a name produces `YM-2026-00001` within seconds.
 - ⬜ **T3.1 Idempotency proof** — re-run unchanged, MUST return 0 bundles
 - ⬜ **T3.2 Delete the 7 test folders** from the live Filipino team folder
 - ⬜ **T3.3 Error handlers** on OneDrive 12 and 14 (Resume + alert + write error to Notes)
+- 🔴 **T3.5 RESTORE ROUTING BEFORE GO-LIVE (D-189)** — parent folder and sub-folder set are currently
+      HARDCODED to Brisbane/Filipino + SET 1. Fine for the demo; would misfile Indian-team clients and give
+      wrong folders to 482/partner matters. Approach (a) Set-variables with CLICKED chips (untried, cheapest)
+      → fallback (b) Router with dropdown filters.
 - ⬜ T3.4 Five real cases → client 👍 → enable the 15-minute schedule
+      ⛔ **DO NOT enable the schedule until T3.5 is done.**
 Expected output: new MASTER row ⇒ folder + sub-folders in the correct office/team branch + link in the sheet.
 
 ### T4 — DEMO (SHARJEEL · 20 min · the first shipped deliverable)

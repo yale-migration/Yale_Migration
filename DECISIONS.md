@@ -1621,3 +1621,29 @@ volume (60–70 enquiries/week) the paid plan is confirmed necessary at go-live 
 corrected from ≈9 to 11.**
 **M3 is functionally COMPLETE. Remaining before T4: (1) idempotency re-run must return 0 bundles;
 (2) delete the seven test folders; (3) error handlers on the two OneDrive modules.**
+D-188 | ✅ `12. body: webUrl` chip CONFIRMED CORRECT — do not touch | Sharjeel queried whether the existing
+chip needed replacing. It does not. The clicked form renders **`12. body: webUrl`** (lowercase `body`, colon
+separator); the dead pasted form rendered `12.Body.webUrl` (capital B, dot separator). His run wrote the real
+URL to column V and reported `Updated cells: 1`, so the chip is bound and working. **Visual tell for the
+future: a live OneDrive chip uses `module. body: field`; a dead pasted one uses `module.Body.field`.**
+D-189 | 🔴🔴 CRITICAL AUDIT FINDING — the built scenario is DEMO-READY but NOT PRODUCTION-READY | The routing
+layer was abandoned when the Set-variables formulas failed (D-174/D-175/D-176), and **the values it was meant
+to compute are now HARDCODED**:
+  · **OneDrive 12 URL** is hardcoded to `…!sbc920268db9044bdb12dd6072bf26d0f` = the **FILIPINO team folder**.
+    Every client goes there **regardless of Office or Team**. An INDIAN-team client would be misfiled into the
+    Filipino team's folder, in live data, silently.
+  · **Iterator 13 array** is hardcoded to the **SET 1 STANDARD** six-folder list. Every client gets those
+    folders **regardless of Visa Type**. A 482/407 matter would NOT get the step-based structure the client
+    specifically asked for (D-126), and an 820/801 partner matter would not get Applicant/Sponsor/Relationship
+    with the 820/801 sub-folders.
+**This is safe for the T4 demo** — the demo row is BRISBANE + FILIPINO + 485, which is exactly what the
+hardcoded values produce. **It is NOT safe to schedule or to run on real clients.**
+**REQUIRED BEFORE GO-LIVE — restore routing.** Two viable approaches, decide after the demo:
+  (a) **Retry Set-variables with CLICKED chips inside the formula.** Never actually attempted — every failed
+      attempt used typed references. Formulas themselves parse correctly (the `if(`/`contains(` tokens
+      rendered), and clicked chips are proven to bind (D-176). Cheapest if it works: 2 variables, 5 chips.
+  (b) **Router with dropdown filter conditions** — no formula syntax at all, conditions built in Make's filter
+      UI. Costs duplicated downstream modules per route (D-165's original objection), but carries zero syntax
+      risk. Fall back to this if (a) fails once.
+**Do not enable the 15-minute schedule until routing is restored.** Currently the only protection is that the
+scenario is switched OFF.
