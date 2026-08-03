@@ -49,8 +49,11 @@ with a single **Tools → Set multiple variables** module and a linear flow. Few
 🔴 **`{{ }}` PLACEMENT RULE (D-174) — the mistake that cost a build cycle.** A *plain* mapping is
 `` {{2.`Office (J)`}} ``. But when a FUNCTION is involved, **the whole expression takes ONE outer `{{ }}` and
 the field references inside drop their braces**:
-- ❌ `switch({{2.`Office (J)`}} & "|" & ...)` → Make strips the inner braces and stores the rest as literal text
-- ✅ `` {{switch(2.`Office (J)` & "|" & 2.`Team (K)`; …)}} ``
+- ❌ `switch({{2.`Office (J)`}} & …)` → Make strips the inner braces and stores the rest as literal text
+- ✅ one outer wrapper only: `` {{if(2.`Office (J)` = "BRISBANE"; …)}} ``
+🔴 **AND `&` IS NOT CONCATENATION IN MAKE (D-175).** Any expression joining strings with `&` fails silently
+and returns its DEFAULT branch — which looks like a plausible answer, not an error. Both Module-2 formulas
+below are written **concatenation-free** for exactly this reason.
 Symptom of getting it wrong: the module output shows the formula source, with gaps where the references were.
 **Module numbering: Search Rows is module `2` in this scenario, not 1** — Make does not always start at 1.
 
