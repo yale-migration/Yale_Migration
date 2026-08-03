@@ -1526,3 +1526,32 @@ ever browses that folder**, and definitely before the T4 demo recording:
 Also note `conflictBehavior: "fail"` means re-running with the same hardcoded name will now ERROR (409) —
 which is the safety working as designed (D-12: never silently duplicate or rename), but it means the next
 test needs either a dynamic name or the folder deleted first.
+D-179 | 🔑 MAKE'S REAL FIELD SYNTAX FOUND — ZERO-BASED NUMERIC INDEX, not name or column letter | The user's
+raw Body text finally exposed it: `{{2.`0`}}` = Client Code (A), `{{2.`2`}}` = Full Name (C). Make's Google
+Sheets module keys its output by **zero-based column position wrapped in backticks** — so every reference I
+wrote across eight attempts was wrong: `` `Office (J)` `` (header name) ❌, `2.J` (column letter) ❌,
+`` 2.`9` `` ✅. Index map for MASTER: Client Code **0** · Their Client ID 1 · Full Name **2** · Party 2 Name 3 ·
+Contact 4 · Email 5 · Location 6 · Visa Type **7** · Visa Variant 8 · Office **9** · Team **10** ·
+Consultant 11 · Stage **12** · Outcome 13 · Grant 14 · Expiry 15 · Refusal 16 · Last Contact 17 ·
+Next Follow-up 18 · Date Added 19 · Source 20 · **Folder URL 21** · Notes 22.
+**This makes formulas paste-able again** — the Tools module can now be written as
+`` {{if(2.`9` = "BRISBANE"; …)}} `` and copied in, no clicking required. Retry the Set-variables module with
+numeric indices when routing is added back.
+*Root cause of the whole episode: I never obtained ground truth for the reference syntax and guessed three
+different formats instead. The user's own paste of the raw field settled it in one message.*
+D-180 | ✅ SECOND 201 — dynamic name confirmed working | `YM-2026-00001 – TEST DEMO TWO` created at
+`…/CLIENT FILES- FILIPINO TEAM`, id `A0BABA3C2640082C!s87e7ae6d69a640bb87bf0e09d5291e8a`, 17:45:03Z. The
+resolved request Body shows real values, so the two chips read live from the sheet. Trailing-space defect
+caught in review before the run (would have produced a folder name ending in a space — OneDrive trims or
+rejects those, and our sanitizer rule forbids them).
+🔴 **CLEANUP DEBT NOW TWO FOLDERS** in the client's live Filipino team folder:
+  · `…!se00524ce73c1435cb023d73de27c65ab` — TEST DEMO ONE
+  · `…!s87e7ae6d69a640bb87bf0e09d5291e8a` — TEST DEMO TWO
+`DELETE /v1.0/drives/A0BABA3C2640082C/items/<id>` for each, before the T4 demo recording.
+D-181 | ⚠️ UNVERIFIED — which scenario the last run executed in | The run output header read **"New scenario"**
+with only a OneDrive module visible, not `YM-M3-folder-create` with Sheets + OneDrive. Two readings: (a) UI
+label artefact and the real scenario is intact, or (b) the module was rebuilt in a stray scenario, in which
+case the Sheets trigger is not connected and the "dynamic" name may actually be hardcoded text that merely
+looks resolved. **Do not build further modules until this is confirmed** — attaching sub-folder logic to the
+wrong scenario wastes the work. Check: scenario name top-left, and whether the Body still shows two GREEN
+chips rather than plain text.
