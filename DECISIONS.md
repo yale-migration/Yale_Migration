@@ -1380,3 +1380,19 @@ the filter. So the demo capture line "type a name → folder appears" is **not a
 **Full Name · Office · Team · Visa Type** (4 fields, ~10 seconds). Still a strong demo — code auto-appears
 from the name alone, then the folder tree builds itself — but the script must show what is actually typed.
 Do not record a demo that implies less input than the system needs; the client will try it and it will fail.
+D-167 | Make↔Google Sheets connection: authorize as **`project1@`**, not `sharry00010@` | Both work today —
+Sharjeel has edit rights on the sheet, so his own account would connect fine. Choosing project1@ for three
+reasons:
+  1. **Handover durability.** A Make connection is bound to the account that authorized it. Authorized as
+     Sharjeel, the scenario **breaks silently** the moment his access is removed at handover — the same
+     silent-failure class as the Apps Script trigger (D-153). Authorized as project1@ (client-owned), it
+     survives. We already carry one handover re-auth task; do not create a second.
+  2. **D-07** — everything is built in client-owned accounts.
+  3. **OAuth survives password rotation.** We have recommended the client rotate project1@'s password and add
+     2FA. A rotation does NOT invalidate an existing OAuth grant — only explicitly revoking the app's access
+     does. So project1@ is safe even after they harden it.
+Sharjeel holds the project1@ password (ACCESS.md #9), so this needs no client involvement.
+**Noted mixed-ownership, deliberately accepted:** the Apps Script still runs as `sharry00010@` (D-153) and the
+OneDrive connection is also his (D-31, accepted because `Files.ReadWrite.All` on a consumer account covers the
+shared folder). Those two remain handover tasks in M11. The Sheets connection does not need to join them.
+**Naming:** `YM Sheets — project1` (convention `YM <service> — <account>`, D-140).

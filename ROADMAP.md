@@ -157,6 +157,8 @@ Expected output: client sees working automation for the first time.
 
 ### M10 — End-to-end testing with live files (2h) — ⬜ client to nominate 2–3 real cases
 ### M11 — Training, docs & handover (2h) — ⬜ guides + walkthrough + access transfer
+- ⬜ Re-authorize the **OneDrive** Make connection as the client (currently `sharry00010@`, D-31) — or
+      confirm with the client that our access stays. Same silent-break risk as the trigger.
 - ⬜ 🔴 **Client re-creates the 5-minute `assignMissingCodes` trigger under THEIR account**, then Sharjeel
       deletes his. Triggers are owned by their creator — if ours is removed, code assignment stops SILENTLY
       with no error (D-153).
