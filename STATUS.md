@@ -1,6 +1,6 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-08-02 · Read this FIRST every session (`PROCESS.md` session ritual).
+**Updated:** 2026-08-03 · Read this FIRST every session (`PROCESS.md` session ritual).
 
 ---
 
@@ -20,7 +20,7 @@ piece that makes the demo worth watching.
 | Area | State | Evidence |
 |---|---|---|
 | Requirements gathering | ✅ **Complete** | 3 SOP batches + access folder + WhatsApp answers + 2 real S56 email threads, all audited |
-| Access & credentials | ✅ ~95% | Sheets · OneDrive **read+write proven** · Make Admin · Meta BM · Claude key. ✅ `visa.lodgement@` authorized 31 Jul — only our own Run-once check remains |
+| Access & credentials | ✅ **100%** | Sheets · OneDrive **read+write proven** · Make Admin · Meta BM · Claude key. ✅ `visa.lodgement@` authorized 31 Jul — only our own Run-once check remains |
 | Discovery of their real system | ✅ **Complete** | ~1,436 client folders mapped · folders are FLAT · tracker = 49 active rows · naming chaotic · S56 routing chain found |
 | Design / specs | ✅ Written | MASTER sheet v2 · M3 folder scenario · M6 auto-reply · M9 email AI · M9 connection runbook |
 | Code written | ✅ Verified | `setup_master_sheet.gs` (23 headers, 9 dropdowns) · `master_codes.gs` (YM code engine) |
@@ -41,8 +41,8 @@ identical to progress. Gate **G4 ONE-FOCUS LOCK** in `PROCESS.md` exists to stop
 
 ## 🎯 THE ONLY ACTIVE THING
 
-**T2 — build the MASTER sheet.** Both scripts are written and verified. Needs ~10 minutes of Sharjeel
-pasting and running them. Nothing blocks it. No client dependency.
+**T3 — build `YM-M3-folder-create`.** Spec is v3 (linear, 7 modules). No client dependency; the demo path
+(BRISBANE + FILIPINO) uses the one fully-verified parent folder. T2 finished 3 Aug.
 
 Then, in strict order, nothing else in between:
 
