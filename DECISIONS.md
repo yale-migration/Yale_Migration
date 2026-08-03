@@ -1579,3 +1579,28 @@ D-183 | 🔴 CLEANUP DEBT — FIVE test folders now in the client's live OneDriv
   · TEST DEMO FIVE  `!s1674b4aed2cc4b5a9af5e111ccc97292`
 **Must all be gone before the T4 demo recording** — a demo video showing five stray TEST folders in their
 production drive would undo the credibility the demo is meant to build.
+D-184 | ✅ SUB-FOLDER CHAIN RE-CONFIRMED on a second full run (3 Aug 19:37Z) | `YM-2026-00001 – TEST DEMO SIX`
+created, then all 6 sub-folders 201 inside it. Reference `{{12.Body.id}}` resolved correctly in module 14's
+URL (`…!s638f25b9f63645ce8b3f78ae874b73c9`). The create-and-populate half of M3 is reliable and repeatable —
+two consecutive clean runs.
+D-185 | 🔴 WRITE-BACK MODULE (15) IS BROKEN IN TWO WAYS — must be fixed before any schedule | Run output:
+  1. **`Values in columns: empty`** — the `Folder URL (V)` mapping did NOT bind. `{{12.Body.webUrl}}` was
+     pasted and rendered as a chip but resolved to nothing at runtime (the same dead-typed-reference class as
+     D-176). **The Folder URL was never written, so the row is still eligible for the trigger — idempotency
+     is NOT yet achieved.** On a 15-minute schedule this row would be reprocessed ~96×/day, each attempt
+     erroring at 409 once the folder exists.
+  2. **Module 15 executed 6 TIMES** (6 operations, 6 credits) because it sits DOWNSTREAM of the Iterator and
+     inherits its 6 bundles. Every one reported `Updated range: MASTER!A2`. Correct behaviour is ONE update
+     per client row.
+  🔴 **POSSIBLE DATA LOSS TO VERIFY IMMEDIATELY:** the module reports updating `MASTER!A2` — the **Client
+  Code** cell — with an empty value set. If A2 was cleared, `YM-2026-00001` is gone and `assignMissingCodes`
+  will issue a NEW code on its next 5-minute tick, orphaning the folder that was already named with the old
+  one. **Check A2 before doing anything else.**
+D-186 | FIX for the 6× execution: Array aggregator between the Iterator and the write-back | In Make,
+everything downstream of an Iterator runs once per bundle. The standard pattern to collapse back to a single
+bundle is **Flow Control → Array aggregator**, with Source Module = the Iterator. Insert it between
+OneDrive (14) and Google Sheets (15); module 15 then fires exactly once per client.
+Cost effect: per-client operations drop from 14 to **9** (1 trigger + 1 folder + 1 iterator + 6 sub-folders +
+1 aggregator + 1 update = 10, still within the ≈9–10 estimate of D-140). Without it, every client costs 5
+wasted Sheets operations — at 60–70 enquiries/week that alone is ~1,400 wasted ops/month, more than the entire
+free tier (D-22).

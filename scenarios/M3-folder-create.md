@@ -160,7 +160,16 @@ loose — the automation makes it real from now on, without touching existing fo
 ✅ **Client approved the structure 2 Aug** (D-126), including their own improvement: work visas organised by
 application STEP so the folder tree shows progress. Existing ~1,436 folders are never restructured (D-12/D-45).
 
+## Module 4b — Array aggregator (REQUIRED, D-186)
+Between the sub-folder module and the write-back. **Flow Control → Array aggregator**, Source Module =
+the Iterator. Without it the write-back inherits the Iterator's 6 bundles and updates the same row **six
+times** (proven 3 Aug: 6 operations, 6 credits, six identical `MASTER!A2` updates).
+
 ## Module 5 — Write the folder link back (Google Sheets → Update a Row)
+🔴 **The `Folder URL (V)` value MUST be inserted by CLICKING** `OneDrive (12) → Body → webUrl` in the mapping
+panel. A pasted `{{12.Body.webUrl}}` renders as a chip but does NOT bind — proven 3 Aug, the run reported
+`Values in columns: empty` and nothing was written (D-185). **Verify after every run: the input must show a
+real `https://onedrive.live.com…` value, not `empty`.**
 | Field | Value |
 |---|---|
 | Row number | `` {{1.`Row number`}} `` — verified field name, NOT `__ROW_NUMBER__` (D-170) |
