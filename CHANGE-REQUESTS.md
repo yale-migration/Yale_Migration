@@ -38,3 +38,23 @@ CR-006 | 2026-07-31 | (internal capability, not client scope) **Make partner sta
 client authorizes in their own browser, we never see the password. Restricted to Make **partners/enterprise**
 (D-87), so unavailable on the client's Free plan. Would remove the whole screen-share/reauthorize dance seen
 on 31 Jul (D-90/D-97) and improve every future client onboarding. Ours to pursue, not billable to Yale.
+
+CR-007 | 2026-08-03 | **Client asks to run the CRM demo IN PARALLEL with MVP-1** — "we can work side by side
+on CRM demo along with MVP 1 … so our other branches will start working on it, and we'll have a demo on what
+we are working on" | POSITION: **SEQUENCE IT, DON'T PARALLELISE — and say yes to the goal, not the timing.**
+Reasoning (engineering, not stalling):
+  1. **The CRM is a FACE over the MASTER data layer** (CR-001: AppSheet over our data). That data layer is
+     being built and validated RIGHT NOW, and has not yet met real data — the ~48-row tracker import is still
+     to come and will surface schema issues (their Visa Type free-text mixes variants, contradictory
+     stage/outcome combinations — D-53/D-56). **Build the CRM face before the schema settles and it gets
+     built twice.** That is real rework, paid or unpaid.
+  2. **Nothing is shipped yet.** Zero client-visible output. Opening a second workstream before the first
+     proves itself is precisely the focus failure that cost 31 Jul (G4).
+  3. **The good news is genuine, not a consolation:** once MASTER holds real clients, an AppSheet view over
+     it is **hours, not weeks** — it reads the sheet directly. Finishing the data layer first makes the CRM
+     demo cheap; doing it first makes it expensive.
+  4. Commercially: CRM is Phase 3 (~30–50h, CR-001). Starting unbilled Phase-3 work while MVP-1 is
+     half-delivered dilutes both. **Robinder's underlying need — something to show his other branches — is
+     legitimate and is better served by the MVP demo plus a populated CRM view than by an empty CRM shell.**
+DISPOSITION: reply yes-to-the-goal, sequence after the tracker import; offer the CRM view as the immediate
+next thing once real data is in. Do NOT commit a date for the CRM until MVP-1 core is demoed.

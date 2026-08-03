@@ -80,7 +80,7 @@ Expected output: client sees working automation for the first time.
 ---
 ## MODULE STATUS
 
-### M1 — Discovery, access & security (3h) — 🟡 95%
+### M1 — Discovery, access & security (3h) — ✅ 100% (Gmail mailbox verified 3 Aug, D-149)
 - ✅ Kick-off 25 Jul; SOPs confirmed against live practice
 - ✅ Access: MASTER sheet · ops workbook "YALE BRISBANE OFFICE WORK" · Meta BM · Make (Admin) ·
   Claude API key · OneDrive **read + WRITE** proven (D-31), anchor IDs saved
@@ -90,7 +90,7 @@ Expected output: client sees working automation for the first time.
 - 🟡 WhatsApp Business verification — check ourselves in Meta Security Centre (M6 only)
 - ⬜ 2FA + password rotation on project1@ (client, non-blocking)
 
-### M2 — Master data layer (3h) — 🟡 45% → completes with T2
+### M2 — Master data layer (3h) — ✅ COMPLETE 3 Aug (D-159/D-161) · tracker import deferred to after the demo
 - ✅ MASTER DATABASE sheet exists (MASTER · FOLDER INVENTORY · ENQUIRIES tabs)
 - ✅ Spec written: `docs/MASTER-SHEET-SPEC.md` (matter grain D-11, Office+Team D-16)
 - ✅ Code engine written: `scripts/master_codes.gs` (onEdit + 5-min timer, D-28)
@@ -99,7 +99,7 @@ Expected output: client sees working automation for the first time.
 - ⬜ Protect header row · client walkthrough 👍
 - ⏸️ M2-D folder inventory — deferred until after the demo (credit budget D-22/D-23)
 
-### M3 — Client intake & auto folder creation (4h) — next after T2 · unblocked end-to-end
+### M3 — Client intake & auto folder creation (4h) — 🎯 IN PROGRESS (T3, spec v3)
 - ✅ Write-access gate passed (D-31)
 - ✅ Scenario spec written: `scenarios/M3-folder-create.md` (router, sanitizer, error handling, ladder)
 - ⬜ Build + dry-run + 5 real cases + 👍 (**= T3**) · ⬜ Demo video (**= T4**)
