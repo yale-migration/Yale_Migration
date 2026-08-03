@@ -1396,3 +1396,28 @@ Sharjeel holds the project1@ password (ACCESS.md #9), so this needs no client in
 OneDrive connection is also his (D-31, accepted because `Files.ReadWrite.All` on a consumer account covers the
 shared folder). Those two remain handover tasks in M11. The Sheets connection does not need to join them.
 **Naming:** `YM Sheets — project1` (convention `YM <service> — <account>`, D-140).
+D-168 | 🔴 OPEN QUESTION SURFACED — who actually OWNS the MASTER DATABASE sheet? | Sharjeel's Module-1
+screenshot shows the Google Sheets connection as **"Muhammad's Google connection"** (= `sharry00010@`), with
+Search Method **"Select from My Drive"** — and the spreadsheet **was found**. That is ambiguous evidence:
+Make lists files the account can *access*, not only files it owns, so this does not prove ownership either way.
+**Why it matters more than the connection question (D-167):** if the sheet is owned by `sharry00010@`, then
+the client's entire client database lives in **our personal Google account**, which breaks D-07 ("everything
+in client-owned accounts") and would need an ownership TRANSFER at handover — a much bigger item than
+re-authorizing a connection. Contradicting signals on file: `ACCESS.md` #1 says the MASTER DATABASE lives in
+the "automation Google account" supplied by the client, and the Apps Script consent screen named the app
+developer as `project1@yalemigration.com.au` (container-bound scripts inherit the spreadsheet's owner) —
+both point to project1@. Unverified.
+**RESOLVE IT IN 30 SECONDS:** open the sheet → **Share** → read the Owner line. Then:
+  · Owner = `project1@` (or another client account) → ✅ correct already; only the Make connection account is
+    in question, and switching it is a 2-click change on the module.
+  · Owner = `sharry00010@` → 🔴 transfer ownership to the client account BEFORE go-live, and note it as a
+    handover blocker, not a nicety.
+**Do NOT block T3 on this.** The existing connection works and the dry run is a test; swapping the connection
+later costs two clicks. Verify ownership in parallel.
+D-169 | Two corrections to my own Module-1 instructions | (a) I wrote Search Method = **"Select a
+Spreadsheet"** — that option does not exist. Make's real options are **"Select from My Drive"** / "Enter
+manually" / "Search by path". Sharjeel picked the right one despite the wrong label. (b) I specified Column
+range **A–W**; Make offers only preset ranges (A-Z, A-AZ, … A-ZZZ) with **no A-W**. **A-ZZZ is acceptable** —
+with "Table contains headers = Yes" Make maps by header NAME, so the extra empty columns simply produce empty
+fields. `A-Z` is tidier but not worth redoing. Neither error affects behaviour; both are logged because
+G1 requires UI paths to be verified, and these were written from assumption.
