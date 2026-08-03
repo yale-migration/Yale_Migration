@@ -1604,3 +1604,20 @@ Cost effect: per-client operations drop from 14 to **9** (1 trigger + 1 folder +
 1 aggregator + 1 update = 10, still within the ≈9–10 estimate of D-140). Without it, every client costs 5
 wasted Sheets operations — at 60–70 enquiries/week that alone is ~1,400 wasted ops/month, more than the entire
 free tier (D-22).
+D-187 | 🎉🎉🎉 T3 COMPLETE — `YM-M3-folder-create` works end to end (3 Aug 19:54Z) | Six modules, one clean run:
+`Google Sheets 2 (Search Rows) → OneDrive 12 (create client folder) → Iterator 13 → OneDrive 14 (6 sub-folders)
+→ Array aggregator 19 → Google Sheets 15 (Update a Row)`.
+Verified from the run output:
+  · Client folder `YM-2026-00001 – TEST DEMO SEVEN` created at `…/CLIENT FILES- FILIPINO TEAM/` — 201
+  · All **6 sub-folders 201** inside it (SET 1 STANDARD, client-approved D-126)
+  · **Array aggregator fixed the 6× write-back** — Sheets 15 now runs **1 operation**, not 6 (D-186 resolved)
+  · **`Folder URL (V)` WROTE SUCCESSFULLY**: `https://onedrive.live.com?cid=A0BABA3C2640082C&id=…!s7a4618da…`
+    — the mapping bound only when **clicked**, never when pasted (fourth confirmation of D-176)
+  · `Updated range MASTER!A2:V2` · **`Updated cells: 1`** — proof only column V was written and no other
+    client data was touched. This was the destructive risk flagged in D-185; it is now disproven.
+**Actual cost: 11 operations per client** (1 trigger + 1 folder + 1 iterator + 6 sub-folders + 1 aggregator +
+1 update) — higher than the ≈9 estimate (D-140). At 1,000 free ops/month that is ~90 clients; at their real
+volume (60–70 enquiries/week) the paid plan is confirmed necessary at go-live (D-15). **Spec cost figure
+corrected from ≈9 to 11.**
+**M3 is functionally COMPLETE. Remaining before T4: (1) idempotency re-run must return 0 bundles;
+(2) delete the seven test folders; (3) error handlers on the two OneDrive modules.**

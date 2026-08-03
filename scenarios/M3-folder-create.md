@@ -1,10 +1,11 @@
 # Scenario: `YM-M3-folder-create` — auto client folder + client-approved sub-folders
+## ✅ BUILT AND PROVEN 3 Aug 2026 (D-187) — module IDs as built: 2 → 12 → 13 → 14 → 19 → 15
 **v3 — 2026-08-03.** v1 = 10 sub-folders (wrong). v2 = 3 client-approved sets but built on a **Router**,
 which in Make cannot reconverge and would have meant 16 modules. **v3 is linear: 7 modules, one Set-variables
 module doing both lookups.** Authoritative structure: **`docs/FOLDER-STRUCTURE-BY-VISA-CATEGORY.md`** (G6).
 
 **Trigger:** new row in MASTER with a Client Code and no Folder URL.
-**Cost:** ≈9 Make operations per client (SET 1/2 ≈9 · SET 3 ≈10 with the two nested folders). Well inside the
+**Cost:** **11 Make operations per client, MEASURED 3 Aug** (1 trigger + 1 folder + 1 iterator + 6 sub-folders + 1 aggregator + 1 update). SET 3 adds 2 for the nested 820/801. Well inside the
 free tier for testing; paid plan at go-live (D-15/D-22).
 **Anchors:** driveId `A0BABA3C2640082C` · see `ONEDRIVE-IDS.md`. Use the **API-call module with IDs** —
 never the folder picker (D-19/D-21). Write scope confirmed working (D-31).

@@ -11,9 +11,10 @@ Both halves of that sentence are true and both matter.
 
 ## What the client can see working right now
 
-**The MASTER database is live and issuing client codes** (T2 complete, 3 Aug) — but Robinder has not been
-shown it yet. **Client-visible SHIPPED output is still zero until the T4 demo.** T3 (folder automation) is the
-piece that makes the demo worth watching.
+**The full intake automation now works end to end** (T2 + T3 complete, 3 Aug): type a name in MASTER → a
+client code is issued → a correctly-structured client folder with 6 sub-folders appears in their live
+OneDrive → the folder link is written back to the sheet. **Robinder has not been shown it yet — the T4 demo
+recording is the only thing between this and client-visible delivery.**
 
 ## What is genuinely done (real work, not padding)
 
@@ -49,7 +50,7 @@ Then, in strict order, nothing else in between:
 | Step | What | Who | Time | Produces |
 |---|---|---|---|---|
 | ~~T2~~ | ~~Run the 2 Apps Scripts~~ | ✅ **DONE 3 Aug** | — | MASTER + ENQUIRIES live, `YM-2026-00001` issued |
-| **T3** | Build `YM-M3-folder-create` | Sharjeel + me | ~90 min | Name typed → OneDrive folder + the correct folder SET (6/6/5 by visa type) + link back |
+| ~~T3~~ | ~~Build `YM-M3-folder-create`~~ | ✅ **DONE 3 Aug** | — | Name typed → folder + 6 sub-folders + link written back to column V. **PROVEN in the live drive.** |
 | **T4** | Record 60–90s demo, send | Sharjeel | 20 min | **First thing the client can SEE working** |
 
 **T4 is the target.** Everything else waits.

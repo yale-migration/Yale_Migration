@@ -8,7 +8,7 @@ scenario → T4 DEMO → then M4/M5 → M6/M9.** Read `STATUS.md` first.
 ## 🔴 FOCUS LOCK (G4, PROCESS.md) — ONE active task at a time
 
 **✅ T2 COMPLETE 3 Aug** — MASTER + ENQUIRIES built, code engine live, `YM-2026-00001` issued on test.
-**🎯 ACTIVE NOW: T3 — build `YM-M3-folder-create`.** Then T4 (demo). Nothing else.
+**✅ T3 BUILT 3 Aug.** 🎯 **ACTIVE NOW: T3.1 idempotency proof → T3.2 delete test folders → T4 DEMO.**
 
 **PARKED until T4 has shipped:** M9 mailbox connection (runbook frozen, execute at M9 start) · the Gmail
 connection video · M4–M8 build work · tracker import of the ~48 rows (after T3).
@@ -66,10 +66,14 @@ stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name 
       ⚠️ Re-verify all three at M5/M9 build time — s56 deadline maths depends on it.
 Expected output: typing a name produces `YM-2026-00001` within seconds.
 
-### 🎯 T3 — Build the folder scenario (JOINT · ~90 min) — ACTIVE
-- ⬜ Build `YM-M3-folder-create` per `scenarios/M3-folder-create.md` (6 modules)
-- ⬜ Dry-run 2 test rows → verify in OneDrive → delete tests
-- ⬜ 5 real cases → client 👍 → enable 15-min schedule
+### ✅ T3 — Folder scenario BUILT AND WORKING (3 Aug, D-187)
+- ✅ `YM-M3-folder-create` built: Sheets 2 → OneDrive 12 → Iterator 13 → OneDrive 14 → Aggregator 19 → Sheets 15
+- ✅ Client folder + all 6 sub-folders created in the live drive · Folder URL written back to column V
+- ✅ Only 1 cell updated (V2) — no other client data touched
+- ⬜ **T3.1 Idempotency proof** — re-run unchanged, MUST return 0 bundles
+- ⬜ **T3.2 Delete the 7 test folders** from the live Filipino team folder
+- ⬜ **T3.3 Error handlers** on OneDrive 12 and 14 (Resume + alert + write error to Notes)
+- ⬜ T3.4 Five real cases → client 👍 → enable the 15-minute schedule
 Expected output: new MASTER row ⇒ folder + sub-folders in the correct office/team branch + link in the sheet.
 
 ### T4 — DEMO (SHARJEEL · 20 min · the first shipped deliverable)
