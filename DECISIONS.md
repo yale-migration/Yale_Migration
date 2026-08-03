@@ -1555,3 +1555,27 @@ case the Sheets trigger is not connected and the "dynamic" name may actually be 
 looks resolved. **Do not build further modules until this is confirmed** — attaching sub-folder logic to the
 wrong scenario wastes the work. Check: scenario name top-left, and whether the Body still shows two GREEN
 chips rather than plain text.
+D-182 | 🎉🎉 T3 CORE WORKING — full client folder + all 6 sub-folders created automatically (3 Aug 19:20Z) |
+End-to-end run, scenario `YM-M3-folder-create`: Google Sheets (2) → OneDrive (12) → Iterator (13) →
+OneDrive (14). Result: `YM-2026-00001 – TEST DEMO FIVE` created at
+`…/CLIENT FILES- FILIPINO TEAM/`, then **6 sub-folders all returning 201**: `01 Identity & Personal` ·
+`02 Education & Employment` · `03 Financial` · `04 Dependents & Relationship` · `05 Forms & Lodgement` ·
+`06 Correspondence & Outcome` — the exact SET 1 STANDARD structure the client approved on 2 Aug (D-126).
+**Cost: 9 operations per client** (1 trigger + 1 folder + 1 iterator + 6 sub-folders) — matches the ≈9
+estimate in the spec (D-140). At 1,000 ops/month free that is ~110 clients; the paid plan is still required
+at go-live for the other modules (D-15).
+Working reference forms now PROVEN in production: `` {{2.`0`}} `` Sheets column by zero-based index ·
+`{{13.value}}` iterator value · `{{12.Body.id}}` parent folder id (resolved correctly once inserted by
+clicking, visible in module 14's URL as `A0BABA3C2640082C!s1674b4ae…`).
+**M3 is functionally proven. Remaining for T3: write the folder URL back to column V (this is what makes the
+scenario idempotent), error handling, then delete the five test folders.**
+D-183 | 🔴 CLEANUP DEBT — FIVE test folders now in the client's live OneDrive | All in
+`CLIENT FILES- FILIPINO TEAM` alongside 738 real client folders. TEST DEMO FIVE also contains 6 sub-folders.
+`DELETE /v1.0/drives/A0BABA3C2640082C/items/<id>` — deleting a parent removes its children:
+  · TEST DEMO ONE   `!se00524ce73c1435cb023d73de27c65ab`
+  · TEST DEMO TWO   `!s87e7ae6d69a640bb87bf0e09d5291e8a`
+  · TEST DEMO THREE / FOUR — ids not captured; find via
+    `GET /v1.0/drives/A0BABA3C2640082C/items/!sbc920268db9044bdb12dd6072bf26d0f/children?$select=name,id`
+  · TEST DEMO FIVE  `!s1674b4aed2cc4b5a9af5e111ccc97292`
+**Must all be gone before the T4 demo recording** — a demo video showing five stray TEST folders in their
+production drive would undo the credibility the demo is meant to build.
