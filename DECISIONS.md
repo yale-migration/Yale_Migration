@@ -1443,3 +1443,17 @@ populated a row can never be picked up again (D-14 safety); (c) the Brisbane tim
 ⚠️ **NOT yet proven: the routing fields.** `Visa Type (H)`, `Office (J)` and `Team (K)` were all EMPTY in
 Run A because TZ TEST had only a name. Module 2's switch cannot be validated until a row carries those three
 values — that is the next test row.
+D-172 | ✅ MODULE 1 FULLY VERIFIED — routing fields confirmed with exact casing (3 Aug) | Third run returned
+`Visa Type (H) = 485` · `Office (J) = BRISBANE` · `Team (K) = FILIPINO` · `Client Code (A) = YM-2026-00001` ·
+`Full Name (C) = TEST DEMO ONE` · `Row number = 2`. **Casing matches the switch key exactly** — the sheet
+returns UPPERCASE from the dropdowns, so `"BRISBANE|FILIPINO"` will match. No trailing whitespace observed.
+Confirms the dropdowns (`setAllowInvalid(false)`) are doing their real job: they guarantee the routing key can
+only ever be one of the values the formula knows about. **That is why the Visa Type dropdown had to include
+`SBS`/`Nomination` (D-138) — an unlisted value would be unroutable AND unenterable.**
+Module 1 status: DONE. 3 runs, 3 credits, filter + idempotency + field names + casing all proven.
+D-173 | Module 2 built as ONE "Set multiple variables" module — two variables, no Router (confirms D-165) |
+`parentId` via `switch()` on the concatenated `Office|Team` key (2 known routes + empty default), and
+`subfolders` via nested `if(contains(...))` on Visa Type with SET 1 as the default. Comma-wrapping both sides
+of the membership test (`","& value &","` against `",482,407,..,"`) prevents substring collisions — without it
+`300` would match inside a hypothetical `1300`, and `82` inside `820/801`. Empty `parentId` is the deliberate
+safety signal consumed by the Module-2b filter (D-136): unmapped offices stop dead rather than misfile.
