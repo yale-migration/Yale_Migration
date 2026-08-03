@@ -60,21 +60,14 @@ reading it. Do not try to map `{{1.Folder URL (V)}}` — it does not exist in th
 
 **`parentId`** — maps Office+Team to the destination folder:
 ```
-{{switch(2.`Office (J)` & "|" & 2.`Team (K)`;
-  "BRISBANE|FILIPINO"; "A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f";
-  "BRISBANE|INDIAN";   "A0BABA3C2640082C!529";
-  "")
+{{if(2.`Office (J)` = "BRISBANE"; if(2.`Team (K)` = "FILIPINO"; "A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f"; if(2.`Team (K)` = "INDIAN"; "A0BABA3C2640082C!529"; "")); "")}}
 ```
 Anything else (Townsville, Philippines, blanks) returns **empty** → the next module stops it safely.
 
 **`subfolders`** — picks the client-approved set from Visa Type. Comma-wrapped so `300` cannot match inside
 another value:
 ```
-{{if(contains(",482,407,SBS,Nomination,"; "," & 2.`Visa Type (H)` & ",");
-   "01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome";
-if(contains(",820/801,300,101,802,"; "," & 2.`Visa Type (H)` & ",");
-   "01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome";
-   "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome"))
+{{if(2.`Visa Type (H)` = ""; "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome"; if(contains("482,407,SBS,Nomination"; 2.`Visa Type (H)`); "01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome"; if(contains("820/801,300,101,802"; 2.`Visa Type (H)`); "01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome"; "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome")))}}
 ```
 Default (no match) = **SET 1 STANDARD**, which is correct for every remaining visa type including `Other`.
 

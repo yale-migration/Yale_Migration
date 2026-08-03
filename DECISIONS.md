@@ -1471,3 +1471,22 @@ first run output the formula as literal text with empty gaps where the field ref
 result, the expression was treated as text — check the `{{ }}` placement first, before suspecting the logic.
 Cost: 2 wasted operations and one build cycle. Spec corrected with the rule stated explicitly so the next
 module (and M5/M9 later) does not repeat it.
+D-175 | 🐛 `&` IS NOT A STRING-CONCATENATION OPERATOR IN MAKE — both Module-2 formulas failed silently |
+Run 2 of the Set-variables module: `parentId = empty`, `subfolders = SET 1 STANDARD`. That looks like a
+partial success. It is not — **both formulas failed identically and each returned its DEFAULT branch.**
+`switch()`'s default is `""` → empty parentId. The nested `if(contains(…))` default is SET 1 → which happens
+to be the correct answer for visa type 485, so it *looked* right. **Feed it a 482 and it would still have
+returned SET 1** — wrong folders, silently, in the client's live drive.
+Root cause: every failing expression used `&` to join strings (`2.\`Office (J)\` & "|" & 2.\`Team (K)\``, and
+`"," & 2.\`Visa Type (H)\` & ","`). Make does not evaluate `&` as concatenation, so the comparison and the
+`contains()` test both received malformed input and fell through.
+**FIX — remove concatenation entirely rather than guess the correct operator:**
+  · `parentId` → nested `if()` comparing the two fields **separately**, no joining of Office and Team.
+  · `subfolders` → `contains("482,407,SBS,Nomination"; 2.\`Visa Type (H)\`)` with **no comma-wrapping**.
+    Safe for THIS value set: no dropdown value is a substring of another list entry (checked all 23).
+    An **empty-Visa-Type guard is added first**, because `contains(list; "")` returns TRUE and would have
+    misrouted blank rows to SET 2.
+**LESSON — the dangerous shape of this bug:** a formula that falls through to its default produces a
+plausible-looking value, not an error. **Never accept a default-branch result as proof a formula works.**
+Validation must use an input that forces a NON-default branch — which is why the 482 and 820/801 test rows in
+the ship ladder are mandatory, not optional.
