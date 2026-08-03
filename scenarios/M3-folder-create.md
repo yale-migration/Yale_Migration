@@ -39,12 +39,20 @@ with a single **Tools → Set multiple variables** module and a linear flow. Few
 `1.Visa Type` — those resolve to nothing and every switch would have fallen to the default.
 | Use | Correct reference |
 |---|---|
-| Client Code | `` {{1.`Client Code (A)`}} `` |
-| Full Name | `` {{1.`Full Name (C)`}} `` |
-| Visa Type | `` {{1.`Visa Type (H)`}} `` |
-| Office | `` {{1.`Office (J)`}} `` |
-| Team | `` {{1.`Team (K)`}} `` |
-| Row number | `` {{1.`Row number`}} `` (no column letter) |
+| Client Code | `` {{2.`Client Code (A)`}} `` |
+| Full Name | `` {{2.`Full Name (C)`}} `` |
+| Visa Type | `` {{2.`Visa Type (H)`}} `` |
+| Office | `` {{2.`Office (J)`}} `` |
+| Team | `` {{2.`Team (K)`}} `` |
+| Row number | `` {{2.`Row number`}} `` (no column letter) |
+
+🔴 **`{{ }}` PLACEMENT RULE (D-174) — the mistake that cost a build cycle.** A *plain* mapping is
+`` {{2.`Office (J)`}} ``. But when a FUNCTION is involved, **the whole expression takes ONE outer `{{ }}` and
+the field references inside drop their braces**:
+- ❌ `switch({{2.`Office (J)`}} & "|" & ...)` → Make strips the inner braces and stores the rest as literal text
+- ✅ `` {{switch(2.`Office (J)` & "|" & 2.`Team (K)`; …)}} ``
+Symptom of getting it wrong: the module output shows the formula source, with gaps where the references were.
+**Module numbering: Search Rows is module `2` in this scenario, not 1** — Make does not always start at 1.
 
 ⚠️ **U, V and W are ABSENT from the output bundle** — Make trims trailing empty columns. Harmless: we never
 READ Folder URL (the filter `V notexist` still works server-side), and Module 5 WRITES to V by column, not by
@@ -52,7 +60,7 @@ reading it. Do not try to map `{{1.Folder URL (V)}}` — it does not exist in th
 
 **`parentId`** — maps Office+Team to the destination folder:
 ```
-switch({{1.`Office (J)`}} & "|" & {{1.`Team (K)`}};
+{{switch(2.`Office (J)` & "|" & 2.`Team (K)`;
   "BRISBANE|FILIPINO"; "A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f";
   "BRISBANE|INDIAN";   "A0BABA3C2640082C!529";
   "")
@@ -62,9 +70,9 @@ Anything else (Townsville, Philippines, blanks) returns **empty** → the next m
 **`subfolders`** — picks the client-approved set from Visa Type. Comma-wrapped so `300` cannot match inside
 another value:
 ```
-if(contains(",482,407,SBS,Nomination,"; "," & {{1.`Visa Type (H)`}} & ",");
+{{if(contains(",482,407,SBS,Nomination,"; "," & 2.`Visa Type (H)` & ",");
    "01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome";
-if(contains(",820/801,300,101,802,"; "," & {{1.`Visa Type (H)`}} & ",");
+if(contains(",820/801,300,101,802,"; "," & 2.`Visa Type (H)` & ",");
    "01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome";
    "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome"))
 ```

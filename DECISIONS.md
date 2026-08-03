@@ -1457,3 +1457,17 @@ D-173 | Module 2 built as ONE "Set multiple variables" module — two variables,
 of the membership test (`","& value &","` against `",482,407,..,"`) prevents substring collisions — without it
 `300` would match inside a hypothetical `1300`, and `82` inside `820/801`. Empty `parentId` is the deliberate
 safety signal consumed by the Module-2b filter (D-136): unmapped offices stop dead rather than misfile.
+D-174 | 🐛 MY FORMULA FORMAT WAS WRONG — `{{ }}` must wrap the WHOLE expression, not each field | Module 2's
+first run output the formula as literal text with empty gaps where the field references should have been:
+`switch( & "|" & ; "BRISBANE|FILIPINO"; …)`. Two faults, both mine:
+  1. **Inner braces.** I wrote `switch({{2.`Office (J)`}} & …)`. In Make a mapping is either a plain
+     `{{field}}` OR a function expression wrapped ONCE: `` {{switch(2.`Office (J)` & …)}} ``. Nesting `{{ }}`
+     inside a function call makes Make strip the inner braces and keep the remainder as **plain text** — the
+     expression is never evaluated.
+  2. **Module number.** Earlier formulas said `1.` and Make errored `[ID 3] references non-existing module
+     [module ID 1]`. Confirmed from the canvas badge: **Search Rows is module `2`**. Make does not
+     necessarily number from 1 — always read the badge.
+**Detection signal to remember:** if a Set-variable module's OUTPUT shows the formula source rather than a
+result, the expression was treated as text — check the `{{ }}` placement first, before suspecting the logic.
+Cost: 2 wasted operations and one build cycle. Spec corrected with the rule stated explicitly so the next
+module (and M5/M9 later) does not repeat it.
