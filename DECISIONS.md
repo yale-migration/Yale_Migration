@@ -1490,3 +1490,20 @@ Root cause: every failing expression used `&` to join strings (`2.\`Office (J)\`
 plausible-looking value, not an error. **Never accept a default-branch result as proof a formula works.**
 Validation must use an input that forces a NON-default branch — which is why the 482 and 820/801 test rows in
 the ship ladder are mandatory, not optional.
+D-176 | 🔴🔴 ROOT CAUSE FOUND — in Make, typed field references DO NOT BIND. Click them, always | Controlled
+one-credit diagnostic, 3 Aug, same module and same run:
+  · `testOffice` built by **CLICKING** `Office (J)` in the panel → renders `2. Office (J)` → resolves **BRISBANE** ✅
+  · every reference in my formulas, **TYPED** as `` 2.`Office (J)` `` → renders `` 2.`Office (J)` `` → resolves **empty** ❌
+**Both display as green chips.** A typed reference is visually almost identical to a working one — the only
+tell is the retained **backticks**. Make raises no error; the dead reference simply evaluates to `""`.
+This single fault explains every Module-2 failure and cost ~6 credits and three build cycles:
+  · `Office` → `""` so `= "BRISBANE"` was false → `parentId` empty
+  · `Visa Type` → `""` so my empty-guard fired → `subfolders` returned SET 1 — the RIGHT answer for 485, by
+    coincidence, which masked the bug for a full cycle (D-175).
+**RULE, now at the top of the M3 spec and applying to M4/M5/M6/M9:** type only literal text — functions,
+quotes, semicolons, brackets — and **insert every field by clicking it in the right-hand panel.** Pre-save
+check: every green chip must read `2. Field Name (X)` with **no backticks**.
+**Process note:** I wrote Make formula syntax from memory across three attempts instead of verifying it. The
+one-credit diagnostic that finally isolated it should have been the FIRST move after the first empty result,
+not the fourth. G1 says verify before instructing; the corollary is **diagnose before re-guessing** — when a
+fix fails once, stop fixing and start isolating.

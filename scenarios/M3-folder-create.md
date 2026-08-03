@@ -33,6 +33,26 @@ with a single **Tools → Set multiple variables** module and a linear flow. Few
 
 **Module: Tools → Set multiple variables** — two variables.
 
+## 🔴🔴 THE ONE RULE FOR EVERY MAPPING IN THIS PROJECT — CLICK, NEVER TYPE (D-176)
+
+**Field references must be inserted by CLICKING the field in Make's right-hand panel. Typing them as text
+does not bind, and Make gives NO error.**
+
+Proven by a controlled test on 3 Aug — same module, same run:
+
+| How the reference was created | Renders as | Resolves to |
+|---|---|---|
+| **Clicked** from the panel | `2. Office (J)` — no backticks | ✅ `BRISBANE` |
+| **Typed** as `` 2.`Office (J)` `` | `` 2.`Office (J)` `` — backticks kept | ❌ empty |
+
+Both render as green chips, so a typed reference **looks identical to a working one**. The only visible tell
+is the **backticks**. A dead reference resolves to empty string, so every comparison quietly fails and the
+formula returns its DEFAULT branch — a plausible-looking wrong answer, never an error (see D-175).
+
+**Checklist before saving any mapped field:** every green chip reads `2. Field Name (X)` with NO backticks.
+
+*Applies to M4, M5, M6 and M9 too — not just this scenario.*
+
 🔴 **VERIFIED FIELD NAMES (real Run-once output, 3 Aug — D-170).** Make's Sheets module names every field
 `Header (ColumnLetter)`, e.g. **`Office (J)`**, not `Office`. The name contains a space and brackets, so it
 **must be wrapped in backticks** inside formulas. Earlier versions of this spec used `1.Office` /
