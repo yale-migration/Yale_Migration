@@ -1421,3 +1421,25 @@ range **A–W**; Make offers only preset ranges (A-Z, A-AZ, … A-ZZZ) with **no
 with "Table contains headers = Yes" Make maps by header NAME, so the extra empty columns simply produce empty
 fields. `A-Z` is tidier but not worth redoing. Neither error affects behaviour; both are logged because
 G1 requires UI paths to be verified, and these were written from assumption.
+D-170 | 🐛 SPEC BUG CAUGHT BY THE DRY RUN — Make's Sheets field names carry the column letter | Real Run-once
+output (3 Aug) shows every field named **`Header (ColumnLetter)`**: `Client Code (A)`, `Full Name (C)`,
+`Visa Type (H)`, `Office (J)`, `Team (K)`, plus a bare `Row number`. The M3 spec used `1.Office`,
+`1.Visa Type`, `1.Client Code` and `{{1.__ROW_NUMBER__}}` — **none of those resolve.** Consequences had we
+built it: `parentId` would always be empty (every row stopping at the Module-2b filter, so nothing created),
+`subfolders` would always fall through to SET 1 STANDARD even for 482/partner matters, and Module 5 could not
+find the row to write back to. Names contain a space and brackets so they **must be backtick-wrapped**:
+`` {{1.`Office (J)`}} ``. Spec corrected with a verified reference table.
+**Also verified from the same run:** ⚠️ **columns U, V and W are ABSENT from the output bundle** — Make trims
+trailing empty columns. Harmless here: the filter `V notexist` is evaluated server-side and still works
+(proven — it matched the row), we never need to READ Folder URL, and Module 5 writes to V by column. But
+`{{1.Folder URL (V)}}` must never be mapped; it does not exist.
+**Spreadsheet ID recorded:** `1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k`.
+D-171 | ✅ MODULE 1 VERIFIED — filter and idempotency both proven | Run A (with a coded row present) returned
+**1 bundle**: `Client Code (A) = YM-2026-00001`, `Full Name (C) = TZ TEST`, `Date Added (T) = 2026-08-03`,
+`Row number = 2`. Run B (row deleted) returned **0 bundles**. That pair proves: (a) the filter
+`A exist AND V notexist` selects exactly the rows we want; (b) **idempotency works** — once Folder URL is
+populated a row can never be picked up again (D-14 safety); (c) the Brisbane timezone fix holds
+(`Date Added = 2026-08-03`); (d) cost is 1 operation per poll regardless of result.
+⚠️ **NOT yet proven: the routing fields.** `Visa Type (H)`, `Office (J)` and `Team (K)` were all EMPTY in
+Run A because TZ TEST had only a name. Module 2's switch cannot be validated until a row carries those three
+values — that is the next test row.

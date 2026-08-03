@@ -15,7 +15,7 @@ never the folder picker (D-19/D-21). Write scope confirmed working (D-31).
 | Field | Value |
 |---|---|
 | Connection | automation Google account |
-| Spreadsheet / Sheet | Yale Migration — MASTER DATABASE / `MASTER` |
+| Spreadsheet / Sheet | Yale Migration — MASTER DATABASE (`1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k`) / `MASTER` |
 | Filter | `Client Code` **is not empty** AND `Folder URL` **is empty** |
 | Limit | `5` (keep small while testing) |
 | Schedule | Off during build; later "Every 15 minutes" |
@@ -31,11 +31,28 @@ routes that **never reconverge**. A router here would force Modules 3–6 to be 
 (4 routes × 4 modules = 16 modules to build and maintain, and every future fix applied four times). Replaced
 with a single **Tools → Set multiple variables** module and a linear flow. Fewer modules, one place to edit.
 
-**Module: Tools → Set multiple variables** — two variables:
+**Module: Tools → Set multiple variables** — two variables.
+
+🔴 **VERIFIED FIELD NAMES (real Run-once output, 3 Aug — D-170).** Make's Sheets module names every field
+`Header (ColumnLetter)`, e.g. **`Office (J)`**, not `Office`. The name contains a space and brackets, so it
+**must be wrapped in backticks** inside formulas. Earlier versions of this spec used `1.Office` /
+`1.Visa Type` — those resolve to nothing and every switch would have fallen to the default.
+| Use | Correct reference |
+|---|---|
+| Client Code | `` {{1.`Client Code (A)`}} `` |
+| Full Name | `` {{1.`Full Name (C)`}} `` |
+| Visa Type | `` {{1.`Visa Type (H)`}} `` |
+| Office | `` {{1.`Office (J)`}} `` |
+| Team | `` {{1.`Team (K)`}} `` |
+| Row number | `` {{1.`Row number`}} `` (no column letter) |
+
+⚠️ **U, V and W are ABSENT from the output bundle** — Make trims trailing empty columns. Harmless: we never
+READ Folder URL (the filter `V notexist` still works server-side), and Module 5 WRITES to V by column, not by
+reading it. Do not try to map `{{1.Folder URL (V)}}` — it does not exist in the bundle.
 
 **`parentId`** — maps Office+Team to the destination folder:
 ```
-switch(1.Office & "|" & 1.Team;
+switch({{1.`Office (J)`}} & "|" & {{1.`Team (K)`}};
   "BRISBANE|FILIPINO"; "A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f";
   "BRISBANE|INDIAN";   "A0BABA3C2640082C!529";
   "")
@@ -45,9 +62,9 @@ Anything else (Townsville, Philippines, blanks) returns **empty** → the next m
 **`subfolders`** — picks the client-approved set from Visa Type. Comma-wrapped so `300` cannot match inside
 another value:
 ```
-if(contains(",482,407,SBS,Nomination,"; "," & 1.`Visa Type` & ",");
+if(contains(",482,407,SBS,Nomination,"; "," & {{1.`Visa Type (H)`}} & ",");
    "01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome";
-if(contains(",820/801,300,101,802,"; "," & 1.`Visa Type` & ",");
+if(contains(",820/801,300,101,802,"; "," & {{1.`Visa Type (H)`}} & ",");
    "01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome";
    "01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome"))
 ```
@@ -77,7 +94,7 @@ blank-Office row simply stops here. **Nothing is created in the wrong place, eve
 | Header | `Content-Type: application/json` |
 | Body | `{"name":"{{folderName}}","folder":{},"@microsoft.graph.conflictBehavior":"fail"}` |
 
-**folderName** = `{{1.Client Code}} – {{sanitized name}}` (en-dash with spaces, D-18).
+**folderName** = `` {{1.`Client Code (A)`}} `` + ` – ` + sanitized `` {{1.`Full Name (C)`}} `` (en-dash with spaces, D-18).
 For employer/sponsorship matters the Full Name IS the company, so the folder becomes
 `YM-2026-##### – COMPANY NAME (SPONSOR)` automatically — no special handling needed (D-99).
 
@@ -122,7 +139,7 @@ application STEP so the folder tree shows progress. Existing ~1,436 folders are 
 ## Module 5 — Write the folder link back (Google Sheets → Update a Row)
 | Field | Value |
 |---|---|
-| Row number | `{{1.__ROW_NUMBER__}}` |
+| Row number | `` {{1.`Row number`}} `` — verified field name, NOT `__ROW_NUMBER__` (D-170) |
 | Folder URL (col **V**) | `{{3.body.webUrl}}` |
 | Processing Stage (col **M**) | `Engaged` *(only if currently blank — never overwrite staff edits)* |
 
