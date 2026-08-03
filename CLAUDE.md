@@ -46,7 +46,11 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
   daal diya", keep building the MVP.
 - Client approvals arrive as WhatsApp 👍 — paste the message into `CLIENT-LOG.md` same day.
 
-## ⚠️ Before switching ANY scenario on
+## ⚠️ Before building or switching on ANY scenario
+**`DEFINITION-OF-DONE.md` — the 12-point gate every scenario must pass.** M3 ran successfully four times and
+still had five production blockers. Working ≠ production-ready. Apply it to M4–M9 too, not just M3.
+
+## ⚠️ Current blocker status
 Read `PRODUCTION-READINESS.md`. `YM-M3-folder-create` is built and demo-ready but has **5 open blockers**
 (hardcoded routing · no name sanitization · no error handling · stuck-row on partial failure · polling
 exceeds the free plan). The demo path works; unattended operation does not yet.
@@ -59,6 +63,7 @@ exceeds the free plan). The demo path works; unattended operation does not yet.
 - `ARCHITECTURE.md` — system design, naming conventions, data contract
 - `ACCESS.md` — access inventory + status (no secrets)
 - `PRODUCTION-READINESS.md` — blockers between 'it works' and 'it can be switched on'
+- `DEFINITION-OF-DONE.md` — the 12-point gate EVERY scenario must pass before going live
 - `scripts/` — Apps Script sources · `scenarios/` — Make blueprints/exports · `assets/samples/` —
   client-provided samples (sanitized only)
 

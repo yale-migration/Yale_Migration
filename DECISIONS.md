@@ -1669,3 +1669,26 @@ write-back touching exactly 1 cell, timezone correctness, LockService on the cod
 verified against live data rather than notes.
 **Remediation order fixed: idempotency proof → delete test folders → RECORD DEMO → error handling →
 sanitization → routing → full-matrix testing → paid plan → re-authorize connections.**
+D-191 | STRATEGY DECIDED — Demo first, then harden M3 into the REFERENCE IMPLEMENTATION, then M4+ | Sharjeel
+asked whether to perfect everything before moving on. Three options were weighed:
+  (a) **Perfect M3 fully, then M4** — bulletproof module, but the client sees nothing for another half-day
+      while 8 modules remain unbuilt.
+  (b) **Build all modules roughly, harden at the end** — compounds the same defect in eight places and
+      establishes no standard. Rejected outright.
+  (c) ✅ **CHOSEN: demo first (~30 min), then harden M3 as the reference implementation (~2.5h), then M4+.**
+**The strategic insight that decides it: the five M3 blockers are NOT M3-specific — they are PATTERNS every
+module needs.** Error handling, sanitization, idempotency proof, routing, ops budgeting — M4, M5, M6 and M9
+each require all five. Fixing them once, properly, on M3 converts "2.5 hours of fixing" into "building the
+standard for the whole system." M3 becomes the shape every later module copies.
+**Demo goes first because:** the client has paid 50% and seen ZERO working output; he has asked for something
+to show his other branches (CR-007); the demo path is precisely the one that already works; and it costs 30
+minutes. If he asks "can we turn it on now?", the honest answer — *"one safety pass first, about half a day"* —
+is a good answer, not a defensive one.
+D-192 | `DEFINITION-OF-DONE.md` created — 12-point gate every scenario must pass before being switched on |
+Written because M3 ran successfully **four times** and still had five production blockers. **Working ≠
+production-ready**, and nothing in the process previously encoded that distinction. The checklist captures
+every expensive lesson from the M3 build so M4–M9 do not repeat them: click-never-type mappings · a
+default-branch result is not proof · verify `Updated cells` · sanitize before JSON/URL/filename · error
+handler on every external call · trace partial-failure state · test every branch with a forcing input ·
+**measure** ops cost including polling · client-owned connections · scenario stays OFF until all pass.
+Referenced from `CLAUDE.md` so it loads every session.
