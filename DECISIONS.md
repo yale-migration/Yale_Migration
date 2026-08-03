@@ -1647,3 +1647,25 @@ hardcoded values produce. **It is NOT safe to schedule or to run on real clients
       risk. Fall back to this if (a) fails once.
 **Do not enable the 15-minute schedule until routing is restored.** Currently the only protection is that the
 scenario is switched OFF.
+D-190 | 🔴 PRODUCTION-READINESS AUDIT — 5 blockers, 4 high-severity gaps. Full report: `PRODUCTION-READINESS.md`
+Audited the built scenario as an unattended system against 1,436 live client folders. **Verdict: demo-ready,
+NOT production-ready.** Two findings were not previously known:
+  **B2 — NAME SANITIZATION WAS SPECIFIED BUT NEVER BUILT.** Module 12's body is raw string interpolation:
+  `{"name":"<code> – <Full Name>"}`. A Full Name containing `"` produces **invalid JSON** (400); `\` breaks
+  escaping; `/ \ : * ? < > |` are rejected by OneDrive. Across 1,436 clients with demonstrably messy data
+  (D-47), a name like `MARIA/JOSE` is entirely plausible. The sanitizer is in ARCHITECTURE and D-18 and was
+  simply never implemented — a spec-to-build gap, the same class as D-147.
+  **B5 — POLLING ALONE EXCEEDS THE FREE PLAN.** A 15-minute schedule is **96 executions/day ≈ 2,880 ops/month
+  before any client is processed**, against a 1,000/month allowance. The scenario would die mid-month,
+  silently. **This upgrades the Make Core plan from "recommended at go-live" (D-15) to a hard prerequisite**,
+  and gives us a concrete number to put to the client. Mitigations: business-hours-only schedule
+  (≈1,056 polls/month) and/or 30-minute polling.
+  **B4 — partial failure creates a permanently stuck row.** If sub-folder 3 of 6 fails, the run aborts before
+  the write-back; `Folder URL` stays empty; the trigger re-picks the row; OneDrive 12 now returns 409 because
+  the client folder already exists; abort again — **forever, with no alert.** This is the most dangerous
+  failure mode in the current build because it is silent and self-perpetuating.
+Also confirmed genuinely production-grade: `conflictBehavior: "fail"` (cannot overwrite a real client folder),
+write-back touching exactly 1 cell, timezone correctness, LockService on the code engine, and placement
+verified against live data rather than notes.
+**Remediation order fixed: idempotency proof → delete test folders → RECORD DEMO → error handling →
+sanitization → routing → full-matrix testing → paid plan → re-authorize connections.**

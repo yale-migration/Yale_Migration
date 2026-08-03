@@ -46,6 +46,11 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
   daal diya", keep building the MVP.
 - Client approvals arrive as WhatsApp 👍 — paste the message into `CLIENT-LOG.md` same day.
 
+## ⚠️ Before switching ANY scenario on
+Read `PRODUCTION-READINESS.md`. `YM-M3-folder-create` is built and demo-ready but has **5 open blockers**
+(hardcoded routing · no name sanitization · no error handling · stuck-row on partial failure · polling
+exceeds the free plan). The demo path works; unattended operation does not yet.
+
 ## File map
 - `ROADMAP.md` — module checklist with live statuses (the single source of "where are we")
 - `CLIENT-LOG.md` — chronological log of every client message/decision that matters
@@ -53,6 +58,7 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 - `DECISIONS.md` — architecture decisions + why (append-only)
 - `ARCHITECTURE.md` — system design, naming conventions, data contract
 - `ACCESS.md` — access inventory + status (no secrets)
+- `PRODUCTION-READINESS.md` — blockers between 'it works' and 'it can be switched on'
 - `scripts/` — Apps Script sources · `scenarios/` — Make blueprints/exports · `assets/samples/` —
   client-provided samples (sanitized only)
 
