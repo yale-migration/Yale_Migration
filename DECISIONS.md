@@ -1507,3 +1507,22 @@ check: every green chip must read `2. Field Name (X)` with **no backticks**.
 one-credit diagnostic that finally isolated it should have been the FIRST move after the first empty result,
 not the fourth. G1 says verify before instructing; the corollary is **diagnose before re-guessing** — when a
 fix fails once, stop fixing and start isolating.
+D-177 | 🎉 FIRST REAL ARTIFACT CREATED — folder written to the client's live OneDrive (3 Aug, 17:33Z) |
+`POST /v1.0/drives/A0BABA3C2640082C/items/…!sbc920268…/children` returned **201** and created
+`YM-2026-00001 – TEST DEMO ONE`. **The returned `path` is the proof that matters:**
+`/YALE MIGRATION - ONE SYSTEM/BRISBANE OFFICE/CLIENT FILES/ENGAGED CLIENTS/CLIENT FILES- FILIPINO TEAM`
+— confirming the parent itemId carried since T1.3 really is the Filipino team folder. Placement verified
+against live data, not against our notes.
+Captured from the response: new folder id `A0BABA3C2640082C!se00524ce73c1435cb023d73de27c65ab` ·
+`webUrl` pattern `https://onedrive.live.com?cid=<driveId>&id=<itemId>` (this is what Module 5 writes to
+column V) · `folder.childCount = 0` · `driveType = personal` (re-confirms CR-003) · created-by
+`sharry00010@gmail.com` (re-confirms the OneDrive connection is ours — M11 handover item, D-31).
+**Method that finally worked, after eight failed formula attempts: a fully literal JSON body with no field
+references at all.** Sequence proven: Sheets trigger → OneDrive API call → folder in the right branch.
+D-178 | 🔴 CLEANUP DEBT — a test folder now exists in the client's LIVE OneDrive | `YM-2026-00001 – TEST DEMO
+ONE` sits in the Filipino team folder alongside 738 real client folders. **Must be deleted before the client
+ever browses that folder**, and definitely before the T4 demo recording:
+`DELETE /v1.0/drives/A0BABA3C2640082C/items/A0BABA3C2640082C!se00524ce73c1435cb023d73de27c65ab`
+Also note `conflictBehavior: "fail"` means re-running with the same hardcoded name will now ERROR (409) —
+which is the safety working as designed (D-12: never silently duplicate or rename), but it means the next
+test needs either a dynamic name or the folder deleted first.
