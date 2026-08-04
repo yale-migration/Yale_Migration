@@ -1,6 +1,6 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-08-03 · Read this FIRST every session (`PROCESS.md` session ritual).
+**Updated:** 2026-08-04 · Read this FIRST every session (`PROCESS.md` session ritual).
 
 ---
 
@@ -40,10 +40,21 @@ identical to progress. Gate **G4 ONE-FOCUS LOCK** in `PROCESS.md` exists to stop
 
 ---
 
+## 📍 PHASE PLAN (D-191) — demo first, then harden M3 as the reference implementation
+
+| Phase | Contents | Time |
+|---|---|---|
+| **1 — SHIP THE DEMO** 🎯 | T3.1 idempotency proof → T3.2 delete 7 test folders → T4 record + send | ~30 min |
+| **2 — HARDEN M3** | error handlers · sanitization · restore routing · full test matrix · paid plan | ~2.5 h |
+| **3 — M4 onward** | reuse M3's proven patterns per `DEFINITION-OF-DONE.md` | — |
+
+The five M3 blockers are **patterns every module needs**, so fixing them once on M3 builds the standard for
+M4–M9 rather than being rework.
+
 ## 🎯 THE ONLY ACTIVE THING
 
-**T3 — build `YM-M3-folder-create`.** Spec is v3 (linear, 7 modules). No client dependency; the demo path
-(BRISBANE + FILIPINO) uses the one fully-verified parent folder. T2 finished 3 Aug.
+**T3.1 — the idempotency proof.** Run `YM-M3-folder-create` once, changing nothing. It must return
+**0 bundles**. One minute, no client dependency, and it gates the demo and everything after it.
 
 Then, in strict order, nothing else in between:
 
