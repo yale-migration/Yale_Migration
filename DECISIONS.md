@@ -1711,3 +1711,21 @@ left it — V2 populated — and then re-run. Restating the test so it is unambi
   1. Ensure row 2 has `Folder URL (V)` FILLED (from a successful run)
   2. Change NOTHING
   3. Run once → **expect `Total number of bundles: 0`**
+D-195 | ✅✅✅ M3 WORKING END-TO-END WITH LIVE SHEET DATA (4 Aug 19:38Z) | Full chain verified from a single run:
+`Sheets 2` returned `Client Code (A)=YM-2026-00001 · Full Name (C)=DEMO CLIENTS · Visa Type=485 ·
+Office=BRISBANE · Team=FILIPINO · Row number=2` → `OneDrive 12` posted
+`{"name":"YM-2026-00001-DEMO CLIENTS"}` and got **201** → `Iterator 13` split 6 → `OneDrive 14` created **all
+six sub-folders, every one 201**. Folder confirmed in the live drive with the six children.
+**ROOT CAUSE OF THE ~8-HOUR OUTAGE, finally established:** the trigger row simply had no data / had a stale
+`Folder URL` for most of that period, so Search Rows either returned 0 bundles or an empty row — and with no
+sanitization (B2) an empty row produced a folder literally named `-`. **The mappings, the chips, the module
+order and the connections were never broken.** Every "fix" applied to chips, operators, `{{ }}` placement and
+module order was chasing a symptom.
+**PROCESS LESSON — the expensive one:** I asked for the trigger module's OUTPUT panel six times and worked
+from config screenshots instead when it did not arrive. That one panel resolved the whole thing in one
+message. **Rule: when a downstream module receives wrong data, the FIRST artefact to obtain is the upstream
+module's OUTPUT — not its configuration, not the canvas, not the logs.** Nothing else is diagnostic.
+D-196 | Cosmetic: separator is `-` not ` – ` (space en-dash space) | Created name is
+`YM-2026-00001-DEMO CLIENTS`; the client-approved convention (D-18) is `YM-2026-##### – FULL NAME`. Purely
+the literal text between the two chips in module 12's Body. Fix before the demo recording — the folder name
+is visible in the video and the convention was approved by the client.

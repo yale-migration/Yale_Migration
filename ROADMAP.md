@@ -70,7 +70,9 @@ Expected output: typing a name produces `YM-2026-00001` within seconds.
 - ✅ `YM-M3-folder-create` built: Sheets 2 → OneDrive 12 → Iterator 13 → OneDrive 14 → Aggregator 19 → Sheets 15
 - ✅ Client folder + all 6 sub-folders created in the live drive · Folder URL written back to column V
 - ✅ Only 1 cell updated (V2) — no other client data touched
-- 🎯 **T3.1 IDEMPOTENCY PROOF — ACTIVE NOW.** Re-run unchanged, MUST return 0 bundles. 1 minute. Gate on everything else.
+- ✅ **T3 PROVEN END-TO-END WITH LIVE SHEET DATA 4 Aug (D-195)** — real row → `YM-2026-00001-DEMO CLIENTS`
+      + all 6 sub-folders, every call 201.
+- 🎯 **T3.1 NOW: fix the separator to ` – ` (D-196), clean test folders, then RECORD THE DEMO (T4).**
 - ⬜ **T3.2 Delete the 7 test folders** from the live Filipino team folder
 - ⬜ **T3.3 Error handlers** on OneDrive 12 and 14 (Resume + alert + write error to Notes)
 - 🔴 **T3.5 RESTORE ROUTING BEFORE GO-LIVE (D-189)** — parent folder and sub-folder set are currently
