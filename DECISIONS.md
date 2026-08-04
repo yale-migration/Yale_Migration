@@ -1692,3 +1692,22 @@ default-branch result is not proof · verify `Updated cells` · sanitize before 
 handler on every external call · trace partial-failure state · test every branch with a forcing input ·
 **measure** ops cost including polling · client-owned connections · scenario stays OFF until all pass.
 Referenced from `CLAUDE.md` so it loads every session.
+D-193 | 🔴 OneDrive 12 Body mapping LOST ITS BINDING — and it proves blocker B2 is real | Run 4 Aug: the
+resolved body was `{"name":" – ", …}` — **both chips (`Client Code`, `Full Name`) resolved to EMPTY**, leaving
+only the separator. OneDrive rejected it: *"The name field included leading or trailing spaces."*
+The Sheets module still returned 1 bundle with data, so the row is fine; **the mapping in module 12 is what
+broke.** Cause not yet established — candidates: the module was re-edited, or a change elsewhere (e.g.
+switching module 15's "Use column headers as IDs" to Yes) re-keyed the Sheets output so index `0`/`2` no
+longer resolve.
+**This is B2 (missing sanitization) demonstrating itself.** With no trim/validation, an empty or
+whitespace-only name produces a malformed folder name and a hard failure. A real client row with a blank
+Full Name would do exactly the same thing in production. **B2 moves from "theoretical" to "observed".**
+Also worth noting: with no error handler (B3), this single bad row **aborted the entire run** — rows 2–5 of
+any batch would never have processed. B3 observed too.
+D-194 | Idempotency test (T3.1) NOT yet run — the input was changed | Sharjeel entered `TEST DEMO Eight` into
+C2, which left `Folder URL` empty, so the trigger correctly picked the row up. **1 bundle was the right answer
+to that input, not a failure.** The test requires the row to be left EXACTLY as the previous successful run
+left it — V2 populated — and then re-run. Restating the test so it is unambiguous:
+  1. Ensure row 2 has `Folder URL (V)` FILLED (from a successful run)
+  2. Change NOTHING
+  3. Run once → **expect `Total number of bundles: 0`**
