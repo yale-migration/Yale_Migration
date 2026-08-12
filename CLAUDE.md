@@ -61,12 +61,17 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 **`DEFINITION-OF-DONE.md` — the 12-point gate every scenario must pass.** M3 ran successfully four times and
 still had five production blockers. Working ≠ production-ready. Apply it to M4–M9 too, not just M3.
 
-## ⚠️ Current blocker status (11 Aug)
-**M3 ✅ · M4a ✅ · M5a ✅ — all built, tested against live client data, and PROVEN.**
-All five original M3 blockers are closed (D-207…D-217). **The ONLY thing standing between built and running
-is the Make Core plan** — both scenarios are deliberately INACTIVE because a 15-minute schedule costs
-~2,880 ops/month EACH against 1,000 free. **477 of 1,000 used this month.**
-Read `PRODUCTION-READINESS.md` for the full board and `CLIENT-ASKS.md` for the outstanding balance.
+## ⚠️ Current blocker status (13 Aug)
+**M3 ✅ · M4a ✅ · M5a ✅ · DASHBOARD ✅ — all built and proven against live client data.**
+- ✅ **A-01 downgraded (D-291):** `Weekdays (Mon-Fri)` + 3 fixed times = ~392 ops/mo against 1,000.
+  **M3 and M4 can go live on the Free plan.** Paid plan still needed for M6/M9 — Free caps *active
+  scenarios* at 2, and M3+M4 is exactly two.
+- 🔴 **The ONE blocker is A-14** — the link to the Google Sheet they actually use. Their
+  `Engaged Client Tracker.xlsx` is **abandoned** (D-289); importing it would have loaded dead data.
+- 🟠 **A-15** — Make's Create-a-Draft module needs `https://mail.google.com/`; our connection has only
+  `gmail.modify` (D-290). Blocks M4b/M5b. One reauthorize click, bundled with the cutover call.
+- ⚠️ **This is a CUTOVER, not an import** — read `CUTOVER-PLAN.md` before touching M2.
+**481 of 1,000 ops used.** Read `PRODUCTION-READINESS.md` and `CLIENT-ASKS.md`.
 
 ## File map
 - `STATUS.md` — where we are · `CLIENT-ASKS.md` — **what we are waiting on the client for**

@@ -2783,3 +2783,38 @@ Revisit only if the scope extension is refused.
 **Sequencing decision:** do NOT send a separate ask. A-14 (their live Google Sheet link) is already
 outstanding with the team, and the cutover conversation with Robinder is coming regardless. Bundle the
 reauthorize into that one session — two clicks, one interruption (G5).
+
+## D-291 | ✅ A-01 DOWNGRADED — the Make paid plan is NO LONGER what blocks M3 and M4 going live
+**Verified in the live Make UI, 13 Aug** (screenshots from Sharjeel, `YM-M3-folder-create` → Schedule
+settings). The "Run scenario" dropdown on this **Free** org offers:
+
+`At regular intervals` · `Once` · **`Daily`** · **`Weekdays (Mon - Fri)`** · `Weekly` · `Monthly` ·
+`Specified dates` · `On demand`
+
+…plus **`Advanced scheduling → + Add more schedules`**, which allows several fixed times per day.
+The 15-minute limit applies only to `At regular intervals` ("Must be higher than or equal to 15") —
+it is a **minimum**, and every other scheduling type is unrestricted on Free.
+
+**Chosen configuration (set on cutover day, not before):**
+> `Weekdays (Mon - Fri)` · **09:00 · 13:00 · 17:00** Australia/Brisbane, via Add more schedules.
+
+**Operations, recomputed against the real limits:**
+
+| Schedule | Runs/mo each | M3+M4 baseline | +20 new clients | Total | Free = 1,000 |
+|---|---|---|---|---|---|
+| Every 15 min (the old assumption) | 2,880 | 5,760 | +260 | **6,020** | ❌ 6× over |
+| **Weekdays, 3×/day** | 66 | 132 | +260 | **~392** | ✅ ~600 spare |
+
+**Why the old number was so wrong:** we costed a 15-minute poll because that is Make's default, and
+never questioned whether a visa practice onboarding a handful of clients a day needs 15-minute latency.
+It does not. A folder appearing within four working hours is indistinguishable from instant to the
+person waiting for it. **We treated a default as a requirement for eight days.**
+
+**What A-01 still covers — do not delete it:** the Free plan caps **active scenarios at 2**
+(`license.scenarios: 2`, verified via `organizations_list`). M3 + M4 is exactly two. **M6 (enquiry
+auto-reply) and M9 (email triage) cannot run at all on Free**, regardless of operations. So the paid
+plan is still required to finish the MVP — it just stopped being the thing standing between us and
+switching the first two modules on. Raise it when M6/M9 are ready, with M3/M4 already running as the
+evidence, exactly as D-273 intended.
+
+**Status change:** A-01 🔴 blocking go-live → 🟢 needed for M6/M9 later.

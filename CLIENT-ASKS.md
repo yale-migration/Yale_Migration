@@ -10,7 +10,13 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 
 | # | Ask | Asked | Status |
 |---|---|---|---|
-| A-01 | **Make Core paid plan** (~AUD 12/mo) | raised 5 Aug · **deliberately NOT re-raised** (D-273) | 🔴 still true technically — M3 and M4 stay OFF. Sharjeel's call to hold the ask until the tracker import and dashboard make the value self-evident |
+| **A-14** | 🔴 **Link to the Google Sheet they use for monitoring TODAY** | 12 Aug, to the team | 🔴 **THE ONLY THING BLOCKING US.** Gates the schema reconciliation → import → real dashboard numbers → cutover date. No reply as of 13 Aug |
+
+## 🟢 NO LONGER BLOCKING
+
+| # | Ask | Asked | Status |
+|---|---|---|---|
+| A-01 | **Make Core paid plan** (~AUD 12/mo) | raised 5 Aug · **deliberately NOT re-raised** (D-273) | 🟢 **DOWNGRADED 13 Aug (D-291).** `Weekdays (Mon-Fri)` + 3 fixed times = ~392 ops/month against 1,000 — **M3 and M4 can go live on Free.** Still required later: Free caps *active scenarios* at 2, so M6 and M9 cannot run without it. Raise then, with M3/M4 already running as the evidence |
 
 ---
 
@@ -25,7 +31,7 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 | A-04 | **Dashboard requirements** — 6 questions | ~8 Aug | 🟠 **no answer.** Who opens it · top-3 views · phone or laptop · refresh rate · what to keep · anything else |
 | A-05 | **CRM** — which of CRM4Agencies / Migration Manager / Agentcis is closest | ~8 Aug | 🟠 no answer. One word halves Phase-3 discovery |
 | A-13 | **Updated staff list** — `Mershe Ventura` answered our tracker questions but is on no roster we hold (D-269) | 11 Aug | 🟠 `Assigned Consultant` is a locked dropdown; anyone missing cannot be selected at all |
-| **A-14** | 🔴 **Link to the Google Sheet they use for monitoring TODAY** — `Engaged Client Tracker.xlsx` is abandoned (D-289) | 12 Aug | 🔴 **now the top ask.** The import source is unknown until we have it, and the dashboard has no real data to sit on. One link closes it |
+| ~~A-14~~ | *(promoted to the blocking table above)* | | |
 
 ---
 
