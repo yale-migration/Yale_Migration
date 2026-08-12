@@ -15,7 +15,7 @@ NEVER the folder picker (it only shows the connection's own drive — see D-19/D
 | PHILIPPINES | `A0BABA3C2640082C!scad8a318943846ca8a81513279e9ea6e` | 25 MB |
 | TOWNSVILLE | `A0BABA3C2640082C!s35a05b1d476a452ea47170ba470e6034` | 46 MB |
 | Work visa BNE AND TSV | `A0BABA3C2640082C!s125354abdab141af87f47d49394feec3` | 82 MB |
-| BNE → APPLICATION FORMS | `A0BABA3C2640082C!sc9b3012895a745e0a295c9967ba32c1f` | 199 MB (templates, not clients) |
+| BNE → APPLICATION FORMS | `A0BABA3C2640082C!sc9b3012895a745e0a295c9967ba32c1f` | 199 MB — ⚠️ **COLLEGE application forms, NOT visa templates** (D-246). 42 education-provider folders + `COLLEGES FORMS AND FEES` (97 items). Enrolment side → Phase 2 P2-06. **Do not put visa checklists here.** |
 | BNE → CLIENT FILES | `A0BABA3C2640082C!s3b01f26d7900497a81693f9f7bff7681` | ✅ T1.1 — path to clients |
 | BNE → INQUIRY | `A0BABA3C2640082C!se4c3fed3c2f64a0c94ba085145d4903e` | ✅ T1.1 — 🔍 check for walk-in/enquiry records |
 | BNE → PARTNER SCHOOL | `A0BABA3C2640082C!sa3369935a9da43559d44a751a0ec2435` | ✅ T1.1 — education partners (M4 later) |
@@ -24,9 +24,9 @@ NEVER the folder picker (it only shows the connection's own drive — see D-19/D
 | CLIENT FILES → **GRANTED** | `A0BABA3C2640082C!s985f1ffb73a34d45ac271d4354d18df5` | ✅ T1.2 — lifecycle: folders MOVED here on grant |
 | CLIENT FILES → **REFUSED OR WITHDRAWN** | `A0BABA3C2640082C!s456e3bcd584843898ebfb052d68a9057` | ✅ T1.2 — lifecycle |
 | CLIENT FILES → **Engaged Client Tracker.xlsx** | `A0BABA3C2640082C!s991d8bd1da0b40b0a4e477e47864ebbc` | ✅ T1.2 — 🚨 live register, 208 revisions — read via workbook API |
-| ENGAGED CLIENTS → **CLIENT FILES** (main/Indian?) | `A0BABA3C2640082C!529` | ✅ T1.3 — rev 239 = heavily used; legacy short ID |
+| ENGAGED CLIENTS → **CLIENT FILES — INDIAN TEAM** | `A0BABA3C2640082C!529` | ✅ **CONFIRMED 5 Aug (D-214)** — M3 routed `YM-2026-00002 – RAJVEER SINGH` here; sits beside Komal/Baljeet/GURJOT/Savita. Legacy short ID. **This is M3's INDIAN target.** |
 | ENGAGED CLIENTS → **CLIENT FILES- FILIPINO TEAM** | `A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f` | ✅ T1.3 — rev 1 |
 | ENGAGED CLIENTS → CLIENT FILES → *698 client folders* | e.g. `485 Akshay` = `A0BABA3C2640082C!s42d2e47448244d4f940fcd337e6d64f6` | ✅ T1.4a — Indian team (150 vs 15 surname markers) |
 | ENGAGED CLIENTS → FILIPINO TEAM → *738 items* | (ids in Make run history) | ✅ T1.4b |
 | One real client folder → sub-folders | ✅ T1.4c DONE — **NONE, folders are FLAT** (D-47) | ⭐ decided the build |
-| Engaged Client Tracker.xlsx → worksheets | ✅ T1.5 DONE — `Client Tracker` + `Admissions Tracker ` (D-48) | M2 import source (D-49) |
+| Engaged Client Tracker.xlsx → worksheets | ✅ **IDs captured 11 Aug (D-288)** — `Client Tracker` = `{00000000-0001-0000-0000-000000000000}` · `Admissions Tracker ` = `{03EB648D-4D8D-45EC-9A2D-89DF01C493FB}` | M2 import source. **Address by ID, never by name** — the second name has a trailing space, and Make double-encodes any `%` you pre-write (D-288) |

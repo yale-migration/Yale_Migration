@@ -23,7 +23,8 @@ All data stays in client-owned accounts.
 **GRAIN: one row per MATTER, not per person** (D-11). Returning client = NEW row + new code; old row Closed.
 Dual-party matters (482 employer+worker, partner applicant+sponsor) = ONE row, counterparty in `Party 2 Name`.
 
-**23 columns A–W. Canonical definition: `docs/MASTER-SHEET-SPEC.md` (v2) — do not restate it here.**
+**25 columns A–Y** (was 23; `Skills Authority` X and `Checklist Filed` Y added for M4 — D-245/D-251).
+**Canonical definition: `docs/MASTER-SHEET-SPEC.md` (v2) — do not restate it here.**
 Built by `scripts/setup_master_sheet.gs`. Key positions the code depends on:
 `A Client Code · B Their Client ID · C Full Name (typing here triggers the code) · T Date Added · V Folder URL`
 

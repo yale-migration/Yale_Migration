@@ -58,3 +58,36 @@ Reasoning (engineering, not stalling):
      legitimate and is better served by the MVP demo plus a populated CRM view than by an empty CRM shell.**
 DISPOSITION: reply yes-to-the-goal, sequence after the tracker import; offer the CRM view as the immediate
 next thing once real data is in. Do NOT commit a date for the CRM until MVP-1 core is demoed.
+
+## CR-008 — Checklist content rewrite (Phase 2) — raised by client 6 Aug
+**Robinder, `New-docs/ANSWER.docx`:** *"These checklists are not fully implemented yet. If we can make a
+better checklists that would be fine."* and, on the CDR issue, *"if you can suggest a better way for this,
+we are willing to update it."*
+**Position:** accept the FORM, decline the CONTENT.
+- ✅ **We do:** consistent structure across all visa lines, one file per variant, correct and predictable
+  naming, a single source of truth so automation always selects the right file, and a template Robinder
+  fills in.
+- ❌ **We do not:** decide which documents a visa requires. Only the Registered Migration Agent advises
+  (CLAUDE.md hard rule, D-240). A checklist missing a required document is a refused application.
+**Sequence:** after MVP go-live. Do not absorb into M4 — M4 selects and delivers whatever files exist.
+
+## CR-009 — Dashboard (raised by client 6 Aug, via Sharjeel)
+**Ask:** Robinder wants "a dashboard of the things that are possible."
+**🔑 DRIVER CLARIFIED 6 Aug (via Sharjeel): he wants to RUN MULTIPLE BRANCHES and see how they are working.**
+That resolves the ambiguity — it is an **operations dashboard with Office/Team as the primary dimension**,
+not a capability slide.
+**⚠️ Same underlying need as CR-001 and CR-007** — three asks, one driver: multi-branch oversight.
+CR-007 recorded his words on 3 Aug: *"so our other branches will start working on it."* All three read from
+the SAME data layer. Full commercial detail + estimates now live in **`PHASE-2-3-BACKLOG.md` (P2-01)**.
+**Original ambiguity, retained for the record:**
+- **(a) An operations dashboard** — live counts off MASTER: matters by stage, by consultant, by visa type,
+  dormant files, upcoming s56 deadlines. Looker Studio on the MASTER sheet. **~2h once the ~48 tracker rows
+  are imported.** Note their existing tracker already has a manual dashboard block in columns P–Q, and its
+  `48hr Alert` column is broken with a `#REF!` (D-55) — so this replaces something they already wanted.
+- **(b) A capability overview** — a one-page summary of what the system can and will do. **~1h, no data.**
+**Scope position:** Looker Studio is listed as **Phase 2** in the stack (`CLAUDE.md`). It is NOT in the
+signed MVP (M1–M11). CLAUDE.md standing rule: new client requests get logged and parked, not absorbed.
+**Recommendation:** reading **(a)** confirmed by the driver. Log, quote, and finish M4 + M5 first.
+**Hard dependency: the ~48-row tracker import.** A dashboard over 5 test rows shows nothing and would
+undo the impression the demo just built. Est. **6–10h**, billable — see `PHASE-2-3-BACKLOG.md` P2-01.
+**Dependency:** meaningful only once the ~48 active matters are imported (M2 deferred item).

@@ -1,0 +1,147 @@
+[
+ {
+  "canonical": "485_INDIVIDUAL_ACECQA.pdf",
+  "sha256": "aa2452721313b2c5",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/GRADUATE VISA 485 - CHECKLISTS/485 CHECKLIST - INDIVIDUAL - ACECQA.pdf"
+ },
+ {
+  "canonical": "485_INDIVIDUAL_TRA.pdf",
+  "sha256": "66b177cab6a82c7a",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/GRADUATE VISA 485 - CHECKLISTS/485 CHECKLIST - INDIVIDUAL - TRA.pdf"
+ },
+ {
+  "canonical": "485_INDIVIDUAL_MASTERS-BACHELORS.pdf",
+  "sha256": "84f61ffdda9250f6",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/GRADUATE VISA 485 - CHECKLISTS/485 CHECKLIST - INDIVIDUAL - MASTERS BACHELORS.pdf"
+ },
+ {
+  "canonical": "485_INDIVIDUAL_VETASSESS.docx",
+  "sha256": "e6c9fc5230bf593e",
+  "source": "New-docs/485 VISA CHECKLISTS-INDIVIDUAL-VETASSESS.docx"
+ },
+ {
+  "canonical": "485_DEPENDENT_ACECQA.pdf",
+  "sha256": "0da6883893c8d4db",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/GRADUATE VISA 485 - CHECKLISTS/485 CHECKLIST - WITH DEPENDENT - ACECQA.pdf"
+ },
+ {
+  "canonical": "485_DEPENDENT_TRA.pdf",
+  "sha256": "5e74aec6067e0990",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/New folder/485 VISA CHECKLISTS-WITH DEPENDENT TRA (2).pdf"
+ },
+ {
+  "canonical": "485_DEPENDENT_MASTERS-BACHELORS.pdf",
+  "sha256": "5168a6721285f278",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/GRADUATE VISA 485 - CHECKLISTS/485 CHECKLIST - WITH DEPENDENT - MASTERS BACHELORS (CDR section missing).pdf"
+ },
+ {
+  "canonical": "485_DEPENDENT_VETASSESS.pdf",
+  "sha256": "4b6529aa117eaa84",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/New folder/485 VISA CHECKLISTS-WITH DEPENDENT-VETASSESS.pdf"
+ },
+ {
+  "canonical": "500_INDIVIDUAL_ONSHORE.pdf",
+  "sha256": "0e4ef2e8c55f6589",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/STUDENT VISA 500 - CHECKLISTS & FEES/500 CHECKLIST - INDIVIDUAL - ONSHORE.pdf"
+ },
+ {
+  "canonical": "500_INDIVIDUAL_OFFSHORE.pdf",
+  "sha256": "428bf87701880bf1",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/STUDENT VISA 500 - CHECKLISTS & FEES/500 CHECKLIST - INDIVIDUAL - OFFSHORE.pdf"
+ },
+ {
+  "canonical": "500_DEPENDENT_ONSHORE.pdf",
+  "sha256": "8e99a0c6be317d02",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/STUDENT VISA 500 - CHECKLISTS & FEES/500 CHECKLIST - WITH DEPENDENT - ONSHORE.pdf"
+ },
+ {
+  "canonical": "500_DEPENDENT_OFFSHORE.pdf",
+  "sha256": "f5e4c9f8153b69ea",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/STUDENT VISA CHECKLISTS WITH DEPENDENT-OFFSHORE.pdf"
+ },
+ {
+  "canonical": "500_ADDING-DEPENDENT.pdf",
+  "sha256": "b664bb344e71d9c6",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/STUDENT VISA 500 - CHECKLISTS & FEES/500 CHECKLIST - ADDING A DEPENDENT - ONSHORE OR OFFSHORE.pdf",
+  "flag": "REVIEW-FEES",
+  "note": "Contains a filled fee quote. Never auto-send. Reviewer must check the amount."
+ },
+ {
+  "canonical": "820-801_PARTNER.docx",
+  "sha256": "522fa0bf8064b84e",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/PARTNER VISA 820-801 - CHECKLIST/820-801 CLIENT CHECKLIST - ONSHORE PARTNER VISA.docx"
+ },
+ {
+  "canonical": "407_TRAINING.docx",
+  "sha256": "a0204def8cfa76ec",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/TRAINING VISA 407 - CHECKLIST & FEES/407 CLIENT CHECKLIST & FEE QUOTE.docx",
+  "flag": "REVIEW-FEES",
+  "note": "Contains a filled fee quote. Never auto-send. Reviewer must check the amount."
+ },
+ {
+  "canonical": "482_SKILLS-IN-DEMAND.docx",
+  "sha256": "34c6959447370943",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/New folder/Skills in Demand visa (subclass 482).docx"
+ },
+ {
+  "canonical": "189_SKILLED-INDEPENDENT.docx",
+  "sha256": "f1c1482c46775013",
+  "source": "New-docs/Subclass 189 Skilled Independent Visa.docx"
+ },
+ {
+  "canonical": "491_SKILLED-REGIONAL.docx",
+  "sha256": "23e65a568670a57b",
+  "source": "New-docs/Subclass 491 Skilled Work Regional (Provisional) Visa.docx"
+ },
+ {
+  "canonical": "494_EMPLOYER-REGIONAL.docx",
+  "sha256": "04a845538d0491cd",
+  "source": "New-docs/Subclass 494 Skilled Employer  Sponsored Regional (Provisional) Visa.docx"
+ },
+ {
+  "canonical": "802_CHILD.docx",
+  "sha256": "bb69ad25f1745b4f",
+  "source": "New-docs/SUBCLASS 802-CHILD VISA.docx"
+ },
+ {
+  "canonical": "101-802_CHILD-VISAS.docx",
+  "sha256": "2a40b2f6c9a78c14",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/New folder/Australian Child visas (Subclass 101 offshore, 802 onshore)1.docx"
+ },
+ {
+  "canonical": "417_WORKING-HOLIDAY.pdf",
+  "sha256": "963cf7e7a987fec9",
+  "source": "SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/New folder/WORK HOLIDAY VISA.pdf"
+ },
+ {
+  "canonical": "REF_EOI-POINTS-CALCULATOR.docx",
+  "sha256": "3eb32d41ca0b147b",
+  "source": "New-docs/AUSTRALIA PR VISA-EOI POINTS CALCULATOR (2026).docx"
+ },
+ {
+  "canonical": "REF_COURSES-FOR-PR.docx",
+  "sha256": "bc6e36f39a31e704",
+  "source": "New-docs/LISTS OF COURSES FOR PR.docx"
+ },
+ {
+  "canonical": "REF_JRP-GUIDE.docx",
+  "sha256": "d89d0256650b3f74",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/SKILLS ASSESSMENT & TEACHER PATHWAYS/TRA JOB READY PROGRAM (JRP) GUIDE.docx"
+ },
+ {
+  "canonical": "REF_AITSL-TEACHERS.pdf",
+  "sha256": "0fe6246bb719c765",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/SKILLS ASSESSMENT & TEACHER PATHWAYS/TEACHERS - AITSL MIGRATION PATHWAY BROCHURE.pdf"
+ },
+ {
+  "canonical": "REF_500-FEES-APPENDIX-A.docx",
+  "sha256": "e64634577dec95e2",
+  "source": "02 CLIENT-FACING - CHECKLISTS FEES & GUIDES/STUDENT VISA 500 - CHECKLISTS & FEES/500 FEES AND CHARGES - APPENDIX A.docx"
+ },
+ {
+  "canonical": "190_SKILLED-NOMINATED.docx",
+  "sha256": "070af10ee5c817ce",
+  "source": "New-docs/Subclass 190 Skilled Nominated CORRECT (Mershe, 11 Aug).docx",
+  "note": "Supplied 11 Aug after two wrong versions. Verified: heading says 190, zero mentions of 491/189."
+ }
+]

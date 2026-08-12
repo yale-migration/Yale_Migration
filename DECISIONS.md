@@ -1729,3 +1729,1015 @@ D-196 | Cosmetic: separator is `-` not ` – ` (space en-dash space) | Created n
 `YM-2026-00001-DEMO CLIENTS`; the client-approved convention (D-18) is `YM-2026-##### – FULL NAME`. Purely
 the literal text between the two chips in module 12's Body. Fix before the demo recording — the folder name
 is visible in the video and the convention was approved by the client.
+
+D-197 | ⭐ TRUE ROOT CAUSE OF THE `" – "` / `-` FOLDER BUG — the Search Rows filter matched BLANK rows
+(5 Aug, established from the saved blueprint + a run with an empty sheet) | Module 2's filter was
+`[[{"a":"A","o":"exist"},{"a":"V","o":"notexist"}]]`. In the **Google Sheets search filter**, `exist` tests
+whether the KEY is present in the row object, **not whether the cell has a value**. The MASTER sheet carries
+data-validation dropdowns down to ~row 1000, so Google returns padded rows and column A "exists" as `""` on
+every one of them. Result: with a **completely empty sheet**, module 2 still returned **1 bundle**, and
+module 12 posted `{"name":" – "}` → `[400] name cannot contain leading, or trailing, spaces`.
+This is the same defect that earlier produced the folder literally named `-`. D-195 blamed "the row had no
+data"; that was the symptom. The defect is that an empty row was ever allowed through.
+**FIX (applied via Make MCP, blueprint pushed 5 Aug 07:26Z):** a **module-level filter on module 12** —
+`Row has a code and a name`: `{{2.`0`}} Exists AND {{2.`2`}} Exists`. In a *scenario* filter (the wrench),
+`Exists` DOES mean non-empty — unlike the Sheets search filter. Blank rows can no longer reach OneDrive.
+Supersedes the advice given earlier the same day to swap the Sheets filter to `text:contains "YM-"`; the
+module filter is the safer fix because it does not depend on Make's Sheets-filter operator ids.
+
+D-198 | Array aggregator 19 REMOVED; write-back moved BEFORE the iterator | Saved blueprint was
+`2 → 12 → 13 → 14 → 19(agg) → 15(updateRow)`. Successful runs consumed **9 operations**
+(1 trigger + 1 folder + 1 iterator + 6 sub-folders) — proving module 15 **never executed**, which is why
+`Folder URL (V)` was never written and every subsequent run re-selected the same row and hit
+`[409] Name already exists`. The aggregator resets bundle context, so `{{2.`__ROW_NUMBER__`}}` in module 15
+failed validation ("Validation failed for 1 parameter(s)", 20:34 / 20:50 / 21:00).
+**New order: `2 → 12 → 15 → 13 → 14`.** Module 15 now sits between the folder creation and the iterator,
+where `2.` is still in scope. No aggregator. Expected cost: **10 ops/client** (was 9 with no write-back).
+Known accepted gap: if a sub-folder fails after V is written, the row reads as done — tracked as B4.
+
+D-199 | `trim()` added to both name components | Module 12 body is now
+`{"name":"{{trim(2.`0`)}} – {{trim(2.`2`)}}", ...}`. Defends against trailing spaces pasted into the sheet,
+which OneDrive rejects with a 400. Also restores the client-approved ` – ` (space en-dash space) separator
+required by D-18 and flagged in D-196 — **D-196 is now closed**.
+
+D-200 | Module 2 column range narrowed `A1:ZZZ1` → `A1:Z1` | The ZZZ range made Make generate an output
+interface with **18,283 entries (957 KB)**, which alone made the blueprint 1.6 MB and unreadable via the API.
+The real table is 23 columns (A–W). `A1:Z1` is the smallest value in the field's allowed enum. Blueprint is
+now 11 KB and can be read, diffed and patched programmatically — which is how D-197 and D-198 were finally
+found. **Rule for M4–M9: never leave a Sheets trigger on a ZZZ column range.**
+
+D-201 | Modules renamed to intent (DoD item 1) | `Find new clients` · `Create client folder` ·
+`Write folder link back` · `Six sub-folders` · `Create sub-folder`. The client will open this scenario one
+day and must be able to read it without us.
+
+D-202 | Blueprint editing via the Make MCP is now the primary repair tool | Reading the saved blueprint
+settled in minutes what six hours of screenshots could not: which modules actually exist, the exact filter
+operators, and the exact mapping syntax Make itself stores (`{{2.`0`}}`, `{{2.`__ROW_NUMBER__`}}`,
+`{{12.body.webUrl}}`). **Process rule added: when a Make scenario misbehaves, fetch the blueprint FIRST.**
+Caveat: `scenarios_get` output can exceed the tool limit — it is written to a file; parse it with a script
+rather than reading it into context. Activating a live client scenario remains a human click.
+
+D-203 | ⚠️ TRAP: Make's "Run once" executes the BROWSER'S UNSAVED state, not the saved blueprint | 5 Aug.
+The blueprint pushed via MCP at 07:26:48Z saved correctly (verified by re-fetch: module 15, blank-row filter,
+`trim()`, `A1:Z1`, renamed modules). But the open browser tab still held an older local edit containing a
+manually-added module **23** and the default module names — and the 15:21 "Run once" executed **that** copy.
+Result: two divergent versions of the same scenario, and a green successful run that did **not** exercise the
+hardening. **Rule: after any API-side blueprint change, RELOAD the Make tab before running, and never press
+Save from a tab opened before the push — Save would overwrite the API version.**
+Diagnostic tell: the canvas shows module ids/names that do not match `scenarios_get`.
+
+D-204 | B4 failure mode CHANGED (not closed) by moving the write-back before the iterator | Old behaviour:
+sub-folder failure → `Folder URL` never written → row retried forever → permanent 409 loop (the bug that cost
+4 Aug). New behaviour: `Folder URL` is written immediately after the client folder is created, so a
+sub-folder failure leaves the row **marked done with an incomplete structure** — silent, but no longer a loop
+and no longer blocking other rows. **This is a deliberate trade, not a fix.** Proper close still requires B3
+(error handler → Resume + write the failure into `Notes`). Recorded so nobody later reads "write-back moved"
+as "B4 resolved".
+
+D-205 | Measured cost is now 10 ops/client, not 11 | 1 trigger + 1 client folder + 1 write-back + 1 iterator
++ 6 sub-folders. The aggregator's op is gone (D-198). Supersedes the 11-op figure in
+`scenarios/M3-folder-create.md` and `PRODUCTION-READINESS.md`. SET 3 (820/801) will add 2.
+
+D-206 | ✅ M3 medium item CLOSED — the 7 `TEST DEMO` folders are gone from the live Filipino team folder |
+Confirmed 5 Aug from the client's live OneDrive listing: `CLIENT FILES- FILIPINO TEAM` now shows only
+`YM-2026-00001 – ANNA REYES` (ours, 6 items) alongside genuine client folders. Closes M3 in
+`PRODUCTION-READINESS.md`. **The drive is clean enough to record the T4 demo.**
+
+D-207 | ✅ H1 IDEMPOTENCY PROVEN (5 Aug) | Run once with row 2 complete: `Find new clients 2` returned ✓1,
+the module-12 filter returned **⊘0**, nothing downstream executed. **Two defences proved in one run** — the
+Sheets filter excluded the finished row on `Folder URL`, and the new blank-row guard caught the padded empty
+row that the Sheets `exist` operator still lets through (D-197). Safe to schedule. Closes H1.
+
+D-208 | ✅ B1 CLOSED — routing built, WITHOUT a Set-variables module | Both switches live inline in the
+modules that consume them, using the exact reference form already proven in production (`2.`0``, `2.`2``):
+- **Parent folder** — module 12 URL: `{{switch(2.`10`; "FILIPINO"; <filipino id>; "INDIAN"; "…!529")}}`
+- **Folder set** — module 13 array: `{{split(switch(2.`7`; "482"/"407"/"SBS"/"Nomination" → SET 2;
+  "820/801"/"300"/"101"/"802" → SET 3; default → SET 1); ";")}}`
+Rejected the Set-variables module (v3 spec) and the Router (v2 spec): both add modules and neither adds
+safety. Two fields, zero extra operations, one place each to edit. Note `820/801` is a SINGLE dropdown value
+in MASTER col H — not two — verified in `scripts/setup_master_sheet.gs`.
+
+D-209 | Unroutable rows are BLOCKED, not misfiled | Module 12's filter is two OR-groups, each requiring
+code + name + `Office = BRISBANE` + a known Team. **TOWNSVILLE and PHILIPPINES client-folder itemIds do not
+exist in `ONEDRIVE-IDS.md`** — only the office roots — so those rows are skipped rather than dropped into the
+wrong drive. Accepted risk: the skip is currently **silent**; B3's Notes write-back is what makes it visible.
+⚠️ **Also unverified: `A0BABA3C2640082C!529` is recorded as "CLIENT FILES (main/Indian?)".** The `?` is real.
+INDIAN routing must be confirmed against the live drive before a real Indian-team client is entered.
+
+D-210 | ✅ B2 CLOSED — whitelist sanitization, not blacklist | Module 12 body:
+`{{trim(replace(2.`0`; "/[^A-Za-z0-9-]/g"; ""))}} – {{trim(replace(replace(2.`2`;
+"/[^A-Za-z0-9À-ÖØ-öø-ÿ '.,()-]/g"; " "); "/  +/g"; " "))}}`
+**Why a whitelist:** a blacklist pattern must itself contain `"` and `\`, which then need escaping inside an
+IML string inside a JSON blueprint — three nesting levels, and a mistake there breaks the payload silently.
+The whitelist pattern contains no quote and no backslash, so it is provably safe to embed. Accented letters
+are preserved via the `À-ÖØ-öø-ÿ` ranges (Filipino/Spanish surnames). Double spaces collapse via `/  +/g` —
+`{2,}` was deliberately avoided because braces collide with Make's `{{ }}` parser.
+
+D-211 | ✅ SET 3 nesting built — 820 / 801 as sub-folders (client's 2 Aug instruction) | Modules 16 (iterator
+`820;801`) + 17 (create) run after module 14, gated by a **filter** `{{13.value}} = "03 Relationship Evidence"`.
+⚠️ **The filter placement is the whole point.** Putting the condition inside the iterator's array
+(`if(...; split(...); emptyarray)`) was written first and rejected on review: an iterator executes **once per
+incoming bundle**, so it would have burned **+6 operations for every client**, partner or not — 10 → 16 ops.
+As a filter it costs **zero** for non-partner clients. **Rule for M4–M9: a condition that can live in a filter
+must never live in an iterator's array.**
+
+D-212 | Measured cost per client, as built | SET 1 / SET 2 → **10 ops**. SET 3 → **13 ops**
+(1 trigger + 1 folder + 1 write-back + 1 iterator + 5 sub-folders + 1 iterator + 2 nested). Supersedes D-205
+for partner matters.
+
+D-213 | ✅ FULL TEST MATRIX PASSED — the client's "5 real cases" acceptance bar (5 Aug, exec
+`a43caf1a…`, 30 ops, status 1) | Four rows in ONE execution. Op count reconciles exactly:
+1 trigger + 3 folders + 3 write-backs + 3 folder-sets + 17 sub-folders + 1 nested-iterator + 2 nested = **30**.
+- **INDIAN routing** → `items/A0BABA3C2640082C!529/` → `YM-2026-00002 – RAJVEER SINGH`, **201**
+- **SET 3** → `820/801` produced the 5 party-based folders, and modules 16/17 fired **once and twice** —
+  `820` + `801` created inside `03 Relationship Evidence` only
+- **Sanitizer** → `JOSE/CRUZ "TEST"` → `YM-2026-00004 – JOSE CRUZ TEST`, **201**; `MARIA O'BRIEN-SANTOS`
+  kept its apostrophe. The whitelist strips the dangerous and preserves the legitimate (D-210 validated)
+- **Unroutable** → PRIYA SHARMA / TOWNSVILLE created nothing, `Folder URL` left empty
+- **Multi-row** → 4 rows, no interference; write-backs touched `Updated cells: 1` each
+- **Filter economy** → 0 extra ops for the two non-partner clients (D-211 validated)
+
+D-214 | ⭐ `A0BABA3C2640082C!529` CONFIRMED = the INDIAN team's client folder | The `?` in
+`ONEDRIVE-IDS.md` ("CLIENT FILES (main/Indian?)") is resolved. `YM-2026-00002 – RAJVEER SINGH` landed
+alongside `Komal Student Visa Extension`, `Baljeet Tourist visa parents`, `GURJOT 485 DEPENDANT`,
+`Savita 485` — Indian-team matters. Update `ONEDRIVE-IDS.md` to drop the question mark. Closes the open
+risk flagged in D-209.
+
+D-215 | ✅ B3 CLOSED — error handlers on all three OneDrive calls | Each of modules 12, 14 and 17 now carries
+`onerror: [google-sheets:updateRow → Notes, builtin:Ignore]`. A failure writes
+`AUTO: <what failed> — <error message>` into the row's **Notes (W)** column, where staff actually work, then
+skips **that bundle only** — the rest of the batch continues. Costs zero operations unless something fails.
+⚠️ **Blueprint schema gotcha:** `onerror` is a **flat array of modules**, NOT `[{"flow":[…]}]` like `routes`.
+The first push failed with *"should NOT have additional properties, additionalProperty: 'flow'"* — a safe
+failure (nothing was written). Recorded so M4–M9 get it right first time.
+
+D-216 | ⬜ ONLY REMAINING M3 GAP: SET 2 is unproven | The test row for RAJVEER SINGH was entered with Visa
+Type **`485`**, not `482`, so he correctly received SET 1 — meaning the **Work/Employer branch
+(482 · 407 · SBS · Nomination → Step 1/2/3 folders) has never executed.** A typo in test data, not a defect,
+but the branch is untested and must not be called done. One row with `482` closes it.
+
+D-217 | ✅ SET 2 PROVEN — D-216 CLOSED. **All three folder sets and both teams now verified in the live
+drive** | `YM-2026-00006 – TEST SPONSOR PTY LTD` (Visa Type `482`, BRISBANE, INDIAN) created at
+`ENGAGED CLIENTS → CLIENT FILES` with exactly the six client-approved Step folders:
+`01 Identity & Personal · 02 Step 1 – Sponsorship · 03 Step 2 – Nomination · 04 Step 3 – Visa Lodgement ·
+05 Dependents · 06 Correspondence & Outcome`. **10 operations**, matching the D-212 prediction exactly.
+Module 16 correctly returned **⊘0** — SET 2 has no `03 Relationship Evidence`, so the 820/801 branch stayed
+shut and cost nothing. This is the structure Robinder asked for on 2 Aug so an empty `03 Step 2` reads as
+"nomination not started" (D-126).
+**Every branch of M3 has now executed against live client data:** SET 1 · SET 2 · SET 3 + nesting ·
+Filipino team · Indian team · hostile characters · multi-row · unroutable-blocked · idempotent re-run.
+
+D-218 | Not a bug: `Date Added` for row 7 reads **2026-08-06** while rows 2–6 read 2026-08-05 | The sheet
+stamps **Australia/Brisbane** (GMT+10, no DST — D-163). The row was entered late on 5 Aug Pakistan time,
+which is already 6 Aug in Brisbane. **The client's clock is the correct clock** — Yale operates in Brisbane.
+Recorded because it looks like an off-by-one and will be queried again.
+
+D-219 | 🟢 M3 VERDICT: PRODUCTION-READY FOR BRISBANE — three named conditions, none of them code |
+All 12 points of `DEFINITION-OF-DONE.md` pass for the Brisbane/Filipino + Brisbane/Indian paths.
+Remaining conditions are commercial or client-dependent, not defects:
+1. **B5 — Make Core plan.** 15-min polling ≈ 2,880 ops/mo vs the free 1,000. **The schedule must stay OFF
+   until this is bought**, otherwise it dies mid-month silently.
+2. **TOWNSVILLE / PHILIPPINES** client-folder itemIds unknown — asked Robinder 5 Aug. Those rows are safely
+   blocked and leave `Folder URL` empty, which is visible in the sheet. Two-line change once answered.
+3. **H3 — connections are ours, not the client's.** Re-authorize at handover (M11) or the whole thing stops
+   silently when our access ends.
+**M3 is the reference implementation. M4–M9 copy its shape** (DoD closing line).
+
+D-220 | 🟠 CONCURRENCY FINDING — the write-back is POSITIONAL, so a row deleted mid-run could write the link
+to the WRONG client | Module 15 targets `rowNumber: {{2.`__ROW_NUMBER__`}}`. Google Sheets row numbers are
+positions, not identities. Sequence that breaks it: Make reads row 5 → a staff member deletes row 3 → every
+row below shifts up → Make writes the folder link to what is now row 5, i.e. a **different client**.
+**Window:** the seconds between the trigger read and the write-back (measured runs: 9–33 s for a full batch).
+**Likelihood:** low — it needs a deletion inside that window. **Impact if it happens:** a client's Folder URL
+points at another client's folder, and the real row looks unprocessed. Silent.
+**Fix (M4-era, not urgent):** replace `Update a Row` with **Search Rows on `Client Code` → Update** so the
+write is keyed to identity rather than position. Costs +1 op per client (10 → 11).
+**Interim mitigation, zero cost:** tell staff to ARCHIVE rather than delete rows — which they should do
+anyway for audit. Add to the M11 training guide.
+
+D-221 | Trigger limit of 5 rows/run is deliberate and adequate | With the 15-minute schedule that is
+**20 clients/hour**, against a real intake of roughly 15 new matters per MONTH (D-49: 49 active matters).
+A bulk paste of 10 rows processes 5 now and 5 in the next cycle — no loss, just a delay. Keeping the limit
+low bounds the blast radius of any future defect. Revisit only at the ~48-row tracker import, where a
+one-off raise to 25 is appropriate.
+
+D-222 | Concurrency verified SAFE at the three other layers | (a) **Code assignment** — `LockService`
+document lock prevents two staff generating the same code (D-135), plus `auditDuplicateCodes` as a net.
+(b) **Make executions** — Make refuses to run the same scenario twice concurrently, so overlapping
+15-minute cycles cannot double-process a row. (c) **Duplicate client names** — codes are unique, so
+`YM-2026-00007 – JOHN SMITH` and `YM-2026-00008 – JOHN SMITH` are distinct folders; `conflictBehavior: fail`
+can never overwrite an existing one.
+
+D-223 | ❌ THREE OF MY OWN M4 FINDINGS WERE WRONG — withdrawn before they reached the client | I audited only
+`docs/02-client-facing/` (curated from SOP batch 1) and declared three gaps. All three were false; the files
+exist in **SOP batch 2** at `docs/03-sops-batch-2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/` and in
+`docs/04-additional-docs/`:
+- ❌ "No 482 client checklist" → **EXISTS**: `Skills in Demand visa (subclass 482).docx` — a full
+  STEP 1 / STEP 2 / STEP 3 document checklist that maps 1:1 onto folder SET 2.
+- ❌ "485 WITH DEPENDENT – VETASSESS missing" → **EXISTS** (both .docx and .pdf).
+- ❌ "500 WITH DEPENDENT – OFFSHORE missing" → **EXISTS**:
+  `STUDENT VISA CHECKLISTS WITH DEPENDENT-OFFSHORE.pdf`.
+**Root cause:** I treated a CURATED folder as the whole library. `02-client-facing` was organised from
+batch 1 on 5 Jul; batch 2 arrived later and was never merged into it.
+**Gate added — G8 SEARCH THE WHOLE TREE:** before asserting a client document does not exist, `find` across
+**every** docs subfolder, not the tidy one. Curation hides things. Caught by re-audit before sending (G1/G5).
+
+D-224 | 🔴🔴 REAL AND SERIOUS — every GSM checklist filename points at the WRONG document. Systematic
+off-by-one | Verified by extracting each file's own page-1 title, not by trusting filenames:
+| Filename | Document actually inside |
+|---|---|
+| `Subclass 189 Skilled Nominated visa.docx` | **491** checklist |
+| `Subclass 190 Skilled Nominated visa.docx` | **189** checklist |
+| `Subclass 491.docx` | **494** checklist |
+| `Subclass 494.docx` | **802 Child Visa** checklist |
+| `Subclass 802-CHILD VISA.docx` | **EOI Points Calculator** |
+**Consequence today, before any automation:** a consultant picking a file by name sends a 491 applicant the
+wrong checklist. **Consequence for M4:** a filename-keyed selector would industrialise the error across
+every GSM client. **M4's selector must key on verified content, never on filename.**
+⚠️ **`190` has NO checklist anywhere** — a full-tree content search found no Subclass 190 document. That gap
+is real; the earlier 482/485/500 gaps were not.
+
+D-225 | ✅ Both 485 defects CONFIRMED from primary source (previously only asserted in our own READ ME) |
+(a) `485 VISA CHECKLISTS-INDIVIDUAL-VETASSESS.pdf` page 1 header reads **"485 VISA APPLICATIONS WITH
+DEPENDENT"** — wrong. The other three INDIVIDUAL files correctly read "485 VISA APPLICATIONS".
+(b) `485 VISA CHECKLISTS WITH DEPENDENT- MASTERS_BACHELORS_CDR.pdf` contains **zero** occurrences of "CDR"
+or "Engineers Australia" — the filename promises a section the document does not have.
+
+D-226 | M4 selector needs ONE new MASTER column, and one derivation confirmed | Checklist choice needs four
+dimensions. MASTER supplies three:
+- **Visa Type** → col H ✅ · **Onshore/Offshore** → `Location` col G ✅
+- **Individual vs With Dependent** → 🟡 derivable from `Party 2 Name` (col D) being filled — **confirm with
+  the client**, do not assume. `Visa Variant` (col I) is Main/Dependent/Sponsor/Employer — the applicant's
+  ROLE, not whether they have dependents. Wrong field for this.
+- **Skills authority** (ACECQA / TRA / VETASSESS / Masters-Bachelors) → 🔴 **no column exists.** 485 alone
+  has 7 variants keyed on it. Add **column X `Skills Authority`** to MASTER before building the selector.
+
+D-227 | "Adam" is NOT a Yale contact — do not address any Yale message to him | The only "Adam" in this
+workspace appears in `sample format for plan/Zap It - BigQuery…` — a DIFFERENT client engagement. Yale's
+sole contact is **Robinder Pal Singh** (Director, MARN 1573959). Recorded because the name surfaced in
+dictation and a cross-client mix-up in a client-facing message would be unrecoverable.
+
+D-228 | M4 question list FINALISED after a second full-tree audit — 3 asks, not 9 | Most candidate questions
+were answerable from our own records (G2/G8). Converted to decisions we state rather than ask:
+- **"With dependent" detection** → `Party 2 Name` (col D) is already specced as "dependent / employer /
+  sponsor". Rule: **D filled ⇒ WITH-DEPENDENT checklist, else INDIVIDUAL.** Asymmetric-risk choice: an extra
+  document list is an annoyance, a missing one costs the client documents.
+- **How clients return documents** → they already reply with email attachments; **~45% of thread messages
+  are attachment-only with zero body text** (D-35). No upload portal for MVP. The `upload link` in ROADMAP's
+  M4 line was our invention, not their practice — dropped.
+- **Onshore/Offshore** → `Location` col G already exists and was added precisely because it drives checklist
+  choice (D-52). Nothing to ask.
+- **Fees** → stay on email only, never chat (their own rule). 407 and 500 already bundle fees into the
+  checklist document, so no separate fee logic is needed.
+- **Blank Email Address** → skip the send, write the reason to `Notes`. Our call, no client input needed.
+**Genuinely unanswerable without Robinder — the only three asks:**
+1. **Skills Authority** (ACECQA / TRA / VETASSESS / Masters-Bachelors) — 485 has 7 variants keyed on it;
+   it is in NEITHER their live tracker (D-51..D-56 column list) NOR MASTER. Needs new column X.
+2. **Subclass 190 checklist** — a full-tree content search found none. 189/491/494/802 all exist.
+3. **Auto-send vs draft-for-review** — see D-229.
+
+D-229 | 🔴 COMPLIANCE QUESTION only the RMA can answer — must be asked before M4b sends anything |
+`CLAUDE.md` hard rule: *AI never auto-sends migration advice; only the Registered Migration Agent advises.*
+A document checklist is arguably standard information rather than advice — but it goes out under Yale's name
+into a regulated relationship, and D-37 already found consultants giving procedural direction in emails with
+**no MARN shown**. That is Robinder's professional exposure, not ours to assume away.
+**Recommendation to put to him: DRAFT-FOR-REVIEW first** (system prepares the email, consultant clicks send),
+switching to auto-send later once he has seen the output. Costs one click, removes the risk entirely.
+**Do not build auto-send until he answers.**
+
+D-230 | ✅ CLOSED BY CLIENT — TOWNSVILLE and PHILIPPINES are OUT OF MVP SCOPE | Robinder, 5/6 Aug:
+*"we will do in future, in couples of months."* The blocked-row behaviour built in D-209 is therefore the
+**correct permanent design for the MVP**, not a gap awaiting an answer. **Do not ask again (G2).**
+When those offices arrive: add two cases to module 12's URL switch + two OR-groups to its filter. ~10 min.
+**Consequence to manage now:** MASTER's `Office` dropdown still offers TOWNSVILLE and PHILIPPINES, and it
+should — they must still be able to TRACK those clients even though folders aren't automated. So a staff
+member can create a row that will never get a folder. See D-231.
+
+D-231 | Unroutable rows: keep the silent block, make it visible in the SHEET not in Make | Three options
+weighed for surfacing a blocked row:
+- ❌ **Remove TOWNSVILLE/PHILIPPINES from the dropdown** — would stop them tracking those clients at all.
+- ❌ **Let the row through to a 404 and log via the error handler** — visible, but burns 1 op per row per
+  poll (**96/day**) and rewrites `Notes` forever, because `Folder URL` never fills. Over two months that is
+  ~5,760 wasted operations for zero benefit.
+- ✅ **Conditional formatting in MASTER** — highlight any row where `Office ≠ BRISBANE` **and**
+  `Folder URL` is empty. **Zero Make operations, zero structural change to a proven scenario, and visible
+  exactly where staff work.** Add to the M11 training note: *"orange row = create this folder by hand."*
+
+D-232 | 🔴 EDGE CASE FIXED — module 15 had no error handler, which could loop a row forever | Modules 12, 14
+and 17 all carry `onerror`; **module 15 (Write folder link back) did not.** Failure mode: a transient Google
+Sheets error kills the whole execution, so the remaining rows in that batch are never processed AND the
+current row keeps its folder with an empty `Folder URL` — the exact 409 loop that cost 4 Aug.
+**Fix: `onerror: [builtin:Ignore]` on module 15.** Deliberately NO Notes-writer on this one — if the Sheets
+API is failing, a second Sheets call to write Notes would fail too. Skip, let the next poll retry.
+**Rule for M4–M9: an error handler on every external call means EVERY one — including the boring ones.**
+
+D-233 | Edge cases audited and ACCEPTED (documented, not fixed) | Deliberate calls, so nobody "discovers"
+them later and treats them as defects:
+- **Name that sanitizes to empty** (e.g. `///`) → produces `YM-2026-#####– ` → OneDrive 400 → error handler
+  writes Notes → row skipped. Ugly but safe and visible. Real client names are never pure punctuation.
+- **No 100-character cap** on folder names (DoD item 5 asked for one). OneDrive's real limit is 255 per path
+  segment; their longest existing folder name is ~45. Deferred, not forgotten.
+- **Blank Visa Type** → falls to SET 1 (Standard). Correct default: 6 general folders beat no folder.
+- **Blank Office or Team** → blocked, same as an unsupported office. Covered by D-231's highlighting.
+- **>5 new rows in one cycle** → 5 now, rest 15 minutes later. No loss (D-221).
+- **OneDrive 429/500** → error handler → Notes → skip; `Folder URL` stays empty so the next poll retries.
+  Self-healing.
+- **Two clients, identical name** → different codes ⇒ different folder names; `conflictBehavior: fail`
+  cannot overwrite.
+- **Sub-folder fails on `03 Relationship Evidence`** → that bundle is skipped, so 820/801 are not created.
+  Notes records it. Accepted.
+- **Positional write-back** (D-220) → unchanged; fix folded into M4.
+
+D-234 | ✅ ALL FIVE CLIENT QUESTIONS ANSWERED — `New-docs/ANSWER.docx`, 6 Aug | Robinder's replies:
+1. **GSM filenames** → *"Updated Documents sent"* + *"These checklists are not fully implemented yet.
+   If we can make better checklists that would be fine."*
+2. **485 VETASSESS header** → new file supplied.
+3. **CDR** → *"For applicants with a Bachelor's or Master's degree, a skills assessment is generally not
+   required. However, for occupations that require a CDR (such as some engineering and IT occupations),
+   the applicant must apply for a skills assessment through **Engineers Australia**."*
+4. **190 checklist** → *"New Checklists sent"*.
+5. **Skills Authority column** → ✅ **APPROVED**: *"You can add a column on that one so that it will be
+   easier to identify."* Explanation: *"There are 7 different checklists for 485 because of the courses
+   the client have. For each course there is a specific skills assessment they need to apply."*
+   Their current practice: **TRA** = a tracker with login details + current step · **ACECQA** = portal only ·
+   **VETASSESS** = portal only, no tracker. He offered to send the TRA tracker.
+6. **Auto-send vs review** → ✅ **DRAFT-FOR-REVIEW CONFIRMED**: *"I think it would be better if we can
+   prepare and check first before sending it to the client."* **M4b must NOT auto-send.** Closes D-229.
+
+D-235 | ✅ FIVE OF SIX DOCUMENT DEFECTS FIXED — verified by extracting each new file's own heading |
+| New file | Heading inside | |
+|---|---|---|
+| `Subclass 189 Skilled Independent Visa.docx` | Subclass **189** | ✅ |
+| `Subclass 491 Skilled Work Regional…docx` | Subclass **491** | ✅ |
+| `Subclass 494 Skilled Employer Sponsored…docx` | Subclass **494** | ✅ |
+| `SUBCLASS 802-CHILD VISA.docx` | Subclass **802** | ✅ |
+| `AUSTRALIA PR VISA-EOI POINTS CALCULATOR (2026).docx` | EOI Points Calculator | ✅ correctly renamed — hash `3eb32d41ca0b` proves it is the same file previously mis-named `Subclass 802-CHILD VISA.docx` |
+| `485 VISA CHECKLISTS-INDIVIDUAL-VETASSESS.docx` | `485 VISA APPLICATION-INDIVIDUAL` — "WITH DEPENDENT" gone | ✅ |
+
+D-236 | 🔴 STILL OPEN — the new "190" file is the 491 checklist again | `Subclass 190 State Nomination
+Visa.docx` opens with **"Skilled Work Regional (Provisional) Visa (Subclass 491) – Document Checklist"**.
+Content search: **"190" appears 0 times**, "491" twice, and the body carries the regional-living commitment
+and family-sponsorship clauses that belong to 491, not 190.
+**These are materially different visas** — 190 is permanent with state nomination (+5 points, no regional
+residence condition); 491 is provisional for 5 years (+15 points, must live/work/study in a designated
+regional area). Sending 491 to a 190 applicant misstates their obligations.
+Not byte-identical to the 491 file, so it was edited — the heading and body simply were not switched.
+**This is the ONLY item still outstanding from the whole document review.**
+
+D-237 | Skills Authority column = FIVE options, not four | The four I inferred from filenames were
+incomplete. Robinder's own CDR answer adds a fifth authority. Final dropdown for **MASTER column X**:
+`ACECQA · TRA · VETASSESS · Engineers Australia · Not required (Bachelor/Masters)`
+- **Engineers Australia** — from his answer: CDR occupations (engineering/IT) assess through them.
+- **Not required (Bachelor/Masters)** — his words: *"a skills assessment is generally not required."*
+Decided rather than asked: both values come verbatim from his own reply, so re-asking would be a G2 breach.
+State it to him, don't question it.
+
+D-238 | `LISTS OF COURSES FOR PR.docx` does NOT solve skills-authority derivation — checked, not assumed |
+Hoped it might map course → assessing authority, which would have removed the need for column X. It does
+not: it maps **course → occupation → demand level** only. Zero mentions of VETASSESS, ACECQA, TRA, ANMAC,
+AITSL, ACS or Engineers Australia. It is a marketing/pathway guide — **valuable for M6 enquiry replies
+(Phase 2), useless for M4 selection.** Column X remains required.
+
+D-239 | Minor, logged not raised: two identical-titled points calculators | `POINTS COMPUTATION
+REFERENCE.docx` and `AUSTRALIA PR VISA-EOI POINTS CALCULATOR (2026).docx` both open
+"Australia PR Visa – EOI Points Calculator (2026)" with different hashes. Neither is a checklist, so M4
+never sends them and nothing is blocked. Resolve at the Phase-2 content pass — not worth a client message
+now (G5: one ask, and the 190 file is the one that matters).
+
+D-240 | Scope guard on *"if we can make better checklists that would be fine"* | A genuine invitation, and
+tempting. **We do not author migration content.** Only the RMA advises (CLAUDE.md hard rule) — a checklist
+that omits a required document is a client's refused application. What we CAN offer, and should: consistent
+structure, one file per variant, correct naming, and a single source of truth so the automation always picks
+the right one. Log the content rewrite in `CHANGE-REQUESTS.md` as Phase 2, with Robinder authoring and us
+formatting. Do not absorb it into the MVP.
+
+D-241 | ⭐ The client's "updated documents" were RENAMES, not rewrites — and that CONFIRMS the audit |
+SHA-256 proves each corrected file is byte-identical to a previously mis-named one:
+`f1c1482c46` was `Subclass 190…` → now correctly `Subclass 189 Skilled Independent Visa.docx` ·
+`04a845538d` was `Subclass 491.docx` → now `…494…` · `bb69ad25f1` was `Subclass 494.docx` → now
+`SUBCLASS 802-CHILD VISA.docx` · `3eb32d41ca` was `Subclass 802-CHILD VISA.docx` → now
+`AUSTRALIA PR VISA-EOI POINTS CALCULATOR (2026).docx`.
+**The CONTENT was always right; only the NAMES were wrong** — exactly what the audit claimed. Renaming was
+the correct minimal fix. The one exception is the 190 file, where the rename happened but the body was
+never swapped (D-236).
+
+D-242 | Canonical checklist set established: **67 files on disk, 47 unique documents, 20 duplicated across
+batches** | Same document lives in up to four places (`02 CLIENT-FACING`, `SOP'S 2/CHECKLISTS GENERAL`,
+`SOP'S 2/GRADUATE VISA SOP/CHECKLISTS`, `additionaldocsforsop`), often under different names. This is the
+same structural trap that caused the G8 failure.
+🔴 **M4 MUST select from ONE canonical folder keyed by content hash — never by scanning the tree.**
+Build `docs/05-canonical-checklists/` before the selector: one file per (visa × variant × authority), named
+to a fixed convention, each entry recorded with its SHA-256 so a swapped file is detectable.
+
+D-243 | 485 selector matrix RESOLVED — 8 variants, both ambiguities closed without asking the client |
+| Variant | Canonical (SHA-256 prefix) |
+|---|---|
+| Individual · ACECQA | `aa24527213` |
+| Individual · Masters/Bachelors | `84f61ffdda` |
+| Individual · TRA | `66b177cab6` |
+| Individual · VETASSESS | **`e6c9fc5230`** ← the NEW 6-Aug file |
+| With dependent · ACECQA | `0da6883893` |
+| With dependent · Masters/Bachelors | `5168a67212` |
+| With dependent · TRA | `5e74aec606` |
+| With dependent · VETASSESS | `4b6529aa11` (PDF) |
+**Ambiguity 1 — two "WITH DEPENDENT TRA" files.** Diffed: 186 lines / 536 words each, differing by ONE
+character — `Prepared by: REYWARD JAKE M GANMOL` vs `GAMOL`. A staff-name typo, not a content difference.
+Took `(2)` as the later export. **Not worth a client question** (G5).
+**Ambiguity 2 — VETASSESS with-dependent exists as .docx and .pdf.** Same document, source vs export. PDF is
+canonical, consistent with every other checklist. Resolved.
+🔴 **QUARANTINE `1c7a663480`** — the OLD broken Individual-VETASSESS (heading reads "WITH DEPENDENT"). It
+still sits in THREE folders and would be picked by any filename-based selector. Superseded by `e6c9fc5230`.
+
+D-244 | ✅ Connection ownership better than recorded — only TWO handover risks, not three | Audited from the
+live blueprint: the **Google Sheets connection is already authenticated as `project1@yalemigration.com.au`
+— the CLIENT's account**, despite being labelled "Muhammad's Google connection". Only the **OneDrive
+connection** (`sharry00010@gmail.com`) and the **Apps Script 5-minute trigger** (Sharjeel's account) are
+ours. Both are silent-failure risks at handover: folders stop being created / codes stop being issued, with
+no error. Corrects H3 in `PRODUCTION-READINESS.md`, which assumed all three were ours.
+
+D-245 | ✅ MASTER column X `Skills Authority` LIVE (7 Aug) | Options: `ACECQA · TRA · VETASSESS ·
+Engineers Australia · Not required (Bachelor/Masters)`. Approved by the client 6 Aug (D-234). Added by
+`scripts/add_skills_authority_column.gs`, standalone and idempotent — A–W untouched. MASTER is now
+**24 columns (A–X)**; update any spec that still says 23.
+⚠️ **Apps Script gotcha, cost ~10 min:** `SpreadsheetApp.getUi().alert()` **HANGS** when a function is run
+from the Apps Script editor — the dialog opens in the *spreadsheet* tab, which the user is not looking at,
+and the execution waits forever on a click that never comes. It does not error; it just sits on
+"Execution started". **Rule for every future script: use `Logger.log()`, never `getUi()`, in anything meant
+to be run from the editor.** Reserve `getUi()` for custom-menu functions only.
+
+D-246 | ❌ ASSUMPTION WRONG — `BNE → APPLICATION FORMS` is the COLLEGES folder, not visa templates |
+Listed it via the API rather than trusting the name (G8's twin rule). It holds **42 education-provider
+folders**: ACUMEN COLLEGE · BRITTS INTERNATIONAL · CHARLTON BROWN · CTI · ECA · EXCELSIA · FEDERATION
+ACADEMY · GOLD COAST INTERNATIONAL · HOSPITALITY TRAINING ACADEMY · IKON · IMAGINE EDUCATION · KAPLAN ·
+LEADERS INSTITUTE · MACALLAN · MASTERY · MELBOURNE CITY · OCEANIA · PEACH · QUEENSFORD · QAT · REACH ·
+RIVERDALE · SITS · SKILLS INSTITUTE · SOUTHERN CROSS EDUCATION INSTITUTE · SOUTHERN CROSS UNIVERSITY ·
+SPENCER (14 items) · SPRING HILL · VIBE · VICTORIA UNIVERSITY … plus **`COLLEGES FORMS AND FEES` (97 items)**.
+**"Application forms" means COLLEGE applications — the enrolment side — not visa applications.**
+`ONEDRIVE-IDS.md` called it "199 MB (templates, not clients)", which was true but misleading.
+**Uploading the visa checklist library here would have been a misfiling** — the same class of error we spent
+this week finding in their documents. Target changed to `INFORMATION HUB`, which the client themselves
+described as *"info about skills assessment & visa applications"* — verify before uploading.
+🎁 **Bonus value:** this is the partner-school inventory (42 providers + a 97-item forms/fees folder) —
+direct input for the **Phase 2 enrolment tracker (P2-06)** and the untouched `Admissions Tracker ` sheet.
+
+D-247 | ✅ CHECKLIST LIBRARY HOME CONFIRMED — `INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS` | Listed
+INFORMATION HUB (`!sabeb092f5aa947ce96e89bfef41e2459`) rather than assuming again. It holds exactly two
+folders — **`ENGLISH SCORE REQUIREMENTS`** and **`TEACHING REGISTRATION TO AITSL`** — both pure reference
+material about visa and skills-assessment requirements, no client files. That matches the client's own
+description of the folder verbatim (*"info about skills assessment & visa applications"*, ONEDRIVE-IDS)
+and matches what a checklist library is.
+**Naming follows their convention** — the two existing folders are uppercase and descriptive, so
+`CLIENT DOCUMENT CHECKLISTS` sits naturally beside them rather than looking like something we bolted on.
+Rejected `BNE → APPLICATION FORMS` (D-246, colleges) and the drive root (client files live there).
+**The folder is created BY the scenario, not by hand** — a POST returns the new itemId directly in the run
+output, which removes a manual copy-the-URL step and eliminates a typo risk in the id that M4 depends on.
+
+D-248 | ✅ Folder LIVE — `INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS` | Created 7 Aug 20:50Z, **201**.
+**itemId `A0BABA3C2640082C!s78266e65226d4b9ebed382720c437f2c`**
+path `/YALE MIGRATION - ONE SYSTEM/INFORMATION HUB/CLIENT DOCUMENT CHECKLISTS`. This is M4's source folder.
+
+D-249 | 🔴 PRE-UPLOAD SAFETY SCAN — two checklists are also FEE QUOTES. Never auto-send either |
+Scanned all 27 canonical files for banking/PII markers before publishing them to the client's live drive.
+One hit: `500_ADDING-DEPENDENT.pdf`.
+- **The bank details are Yale's OWN** — "Yale Migration and Education Consultants", ANZ, BSB 014286,
+  Sunnybank branch. It is their receiving account on an invoice. **Intentional, not a leak.**
+- **The real risk is a hardcoded amount: `Total Amount Due $2,028.00`.** This document is a checklist AND a
+  filled quote. Auto-sending it would bill every adding-a-dependent client the same figure regardless of
+  their actual fee.
+- **Known inconsistency, still unresolved:** $2,000 visa fee in this quote vs **$2,500 VAC** in
+  `500 FEES AND CHARGES - APPENDIX A` (flagged in the 5 Jul document audit, never answered).
+- `407_TRAINING.docx` is the same shape — checklist + fee quote, total $4,060.
+**Mitigation already in place:** the client chose **prepare-and-check, never auto-send** (D-234). A human
+sees every checklist email before it leaves. A decision made for COMPLIANCE reasons now also covers this
+COMMERCIAL one.
+**Additional control for M4:** both files are tagged `REVIEW-FEES` in the manifest. When either is selected,
+M4 writes `⚠️ CONTAINS FEE QUOTE — CHECK AMOUNT` into `Notes` so the reviewer cannot miss it.
+**Raise with the client at the next natural point** (not a separate message — G5): are these fixed prices,
+or should the quote be stripped out and fees handled separately?
+
+D-250 | Storage: the 25 MB upload lands on the CLIENT's quota, not ours | The OneDrive banner showing
+"3.1 GB used of 5 GB" is **Sharjeel's personal OneDrive**, unrelated to this project. Files uploaded into a
+folder shared BY someone else count against the **owner's** quota. Robinder's drive holds 68.2 GB in
+BRISBANE OFFICE alone, so he is on a paid plan and 25 MB is immaterial. No action.
+
+D-251 | ✅ M4 SETUP LIVE — MASTER is now 25 columns (A–Y) + a `CHECKLIST MAP` tab | Column **Y
+`Checklist Filed`** is M4's done-marker, exactly the role `Folder URL` plays for M3 — idempotency designed
+in from the start rather than retrofitted after a 409 loop. `CHECKLIST MAP` holds **36 rows**
+(`Visa Type · Dependent · Authority/Location · Checklist File`), verified readable through Make's own
+connection at fields `0–3`.
+**Config lives in a SHEET, not in a Make formula** — this closes M1 in `PRODUCTION-READINESS.md`
+(*"folder names live inside the Iterator's formula; renaming means editing a scenario"*). When Robinder
+sends the correct 190 checklist, someone adds two spreadsheet rows. No scenario edit, no developer.
+
+D-252 | ✅ `YM-M4-checklist-file` BUILT (id 6867537, 7 Aug 21:59Z, `isinvalid: false`) | 10 modules, INACTIVE.
+```
+1  Sheets   rows where Folder URL filled AND Checklist Filed empty      (idempotent trigger)
+2  Router
+   ├─ A  visa type IS mapped  AND  Folder URL contains "&id="
+   │   3  Sheets   look up CHECKLIST MAP  (visa × dependent × authority/location)
+   │   4  OneDrive copy the file into the client's folder
+   │   5  Sheets   write the filename into Checklist Filed
+   └─ B  visa type NOT mapped (13 × text:notequal)
+       6  Sheets   Checklist Filed = "NO CHECKLIST — review" + Notes explains why
+```
+**Cost ≈ 4 ops/client.** Error handler on every external call (D-232 rule).
+**Design notes:**
+- **Dependent test:** `{{if(1.`3` = emptystring; "N"; "Y")}}` — Party 2 Name filled ⇒ dependent variant.
+- **Third key:** `{{switch(1.`7`; "485"; 1.`23`; "500"; 1.`6`; emptystring)}}` — Skills Authority for 485,
+  Location for 500, blank for everything else. No string concatenation anywhere (D-175).
+- **Target folder** parsed from the Folder URL M3 already wrote:
+  `{{substring(1.`21`; indexOf(1.`21`; "&id=") + 4)}}`. Route A also requires the URL to contain `&id=`,
+  so a hand-edited or malformed cell can never reach the copy call.
+- **Copy is anchored to the library's itemId**, `/items/<libId>:/<filename>:/copy` — not a long text path.
+  Immune to anyone renaming a parent folder.
+- **Route B is the important half.** A Sheets lookup returning 0 bundles silently ends the flow, which would
+  leave unmapped rows retried forever with no explanation. The router catches them BEFORE the lookup and
+  writes a reason into the sheet. **No silent skips, no infinite retry.**
+
+D-253 | 🔒 M4 SECURITY REVIEW — five checks, all pass | Reviewed before switching anything on:
+1. **Path traversal** — the filename comes from `CHECKLIST MAP`, an internal tab whose header row is
+   protected. Our 27 names are `[A-Za-z0-9_.-]` only. A hostile value like `../../` would need staff edit
+   access, and the copy is anchored to the library itemId. **Residual risk accepted; noted for M11 training.**
+2. **Wrong-client copy** — the destination is parsed from the same row's `Folder URL`, which M3 wrote from
+   OneDrive's own response. Not user-entered. Route A rejects anything without `&id=`.
+3. **PII exposure** — 27 templates only. Pre-upload scan found the one file with bank details; they are
+   **Yale's own receiving account** (D-249), not client data.
+4. **Overwrite risk** — copy only ever WRITES a new file into a client folder. It cannot modify or delete
+   anything that exists.
+5. **Credentials** — nothing new. Reuses the two existing connections; no secrets in the blueprint.
+⚠️ **Known, accepted:** the Graph copy endpoint returns **202 Accepted** and completes asynchronously, so a
+2xx does not strictly prove the file landed. The first test run verifies visually. If it ever proves
+unreliable, add a follow-up existence check — not worth the extra operation today.
+
+D-254 | 🟠 OPERATIONS BUDGET IS THE NEXT REAL DEADLINE | Org total this month: **437 of 1,000 free**
+(M3 development 389 · seven leftover "Integration OneDrive" scenarios 43 · M9 stub + temp 5).
+**~563 remain.** M4 build + test will use 60–100. Both M3 and M4 remain **INACTIVE** — correct: once the
+15-minute schedules are switched on, polling alone is **~2,880/month per scenario** before any work is done.
+**Make Core is now the gating item for the whole MVP, not just M3.**
+
+D-255 | 🔴 `text:contains` / `text:notcontains` ARE NOT VALID MAKE FILTER OPERATORS — they fail SILENTLY |
+M4's first run: trigger returned **3 perfect bundles** (482, 820/801, 485+TRA, every Folder URL containing
+`&id=`) and **BOTH router routes returned ⊘0** — logically impossible, since Route B was built as a
+catch-all. Cause: every Route A group carried a second condition
+`{"a":"{{1.`21`}}","o":"text:contains","b":"&id="}`, and Route B's fourth group used `text:notcontains`.
+**Make does not raise an error for an unknown operator — the condition simply evaluates FALSE.** So every
+Route A group failed on its second condition, Route B's group 4 failed, and nothing matched.
+**The only filter operators PROVEN in this project are `exist`, `notexist`, `text:equal`, `text:notequal`**
+(D-197 blank-row guard; D-213 BRISBANE/FILIPINO routing). I reached for one I had never verified.
+**FIX:** dropped both `contains` conditions entirely rather than guessing at the correct spelling. A
+malformed `Folder URL` now falls through to module 4, fails the copy, and the error handler writes
+`Checklist Filed = "COPY FAILED — review"` + the reason into `Notes`. **Still visible, one less unverified
+operator.**
+**RULE for M5–M9: use only the four proven operators. Any new operator must be proven on a throwaway run
+BEFORE it goes into a scenario** — an unknown operator is indistinguishable from a legitimate non-match.
+
+D-256 | Diagnostic rule re-proven, and it worked in ONE message this time | The canvas showed
+`✓1 → ⊘0 / ⊘0` and I could not tell whether the trigger was wrong, the routes were wrong, or the data was
+wrong. Asked for the **trigger's OUTPUT panel** and nothing else. It showed 3 correct bundles, which
+immediately eliminated the trigger and the data and left only the filters.
+**Cost: one message. On 4 Aug the same class of problem cost six hours because I worked from canvas
+screenshots and module configs instead.** (D-195/D-202). The `✓1` badge is the OPERATION count, never the
+bundle count — that misreading has now caused confusion three separate times; **read `__IMTLENGTH__` in the
+Output, never the bubble.**
+
+D-257 | ✅ M4a WORKING — all three routes correct on one run (7 Aug) | MASTER column Y after the run:
+| Row | Input | Result | Route |
+|---|---|---|---|
+| 2 | 485, Skills Authority **blank** | `NEEDS REVIEW` + Notes explaining what to fix | B ✅ |
+| 3 | 482 | `482_SKILLS-IN-DEMAND.docx` | A ✅ |
+| 4 | 820/801 | `820-801_PARTNER.docx` | A ✅ |
+| 5 | 485 + TRA | `485_INDIVIDUAL_TRA.pdf` | A ✅ |
+Three distinct visa types selecting three distinct checklists from a 36-row lookup table, plus the
+incomplete row flagged rather than dropped. The dependent test (`Party 2 Name` empty ⇒ INDIVIDUAL) and the
+authority switch (485 ⇒ col X, 500 ⇒ col G) both resolved correctly with **no string concatenation**.
+Remaining before M4a is closed: (a) confirm the copied files physically exist in the client folders — the
+Graph copy returns **202 Accepted** and completes asynchronously (D-253), so a green run is not proof;
+(b) idempotency re-run must return 0 bundles; (c) clear row 2's marker after filling Skills Authority to
+prove `NEEDS REVIEW` is recoverable, not a dead end.
+
+D-258 | ✅✅ M4a COMPLETE — all three verifications passed (7–8 Aug) |
+1. **Files are real.** `485_INDIVIDUAL_TRA.pdf` **422 KB** in `YM-2026-00004`; `482_SKILLS-IN-DEMAND.docx`
+   **97.9 KB** in `YM-2026-00002`, which also carries the SET-2 Step 1/2/3 folders. Not stubs — the async
+   Graph copy (202 Accepted, D-253) completes properly. That risk is now retired.
+2. **Idempotency.** Re-run with nothing changed → `__IMTLENGTH__ = 0`.
+3. **Recovery.** Row 2 was flagged `NEEDS REVIEW` for a missing Skills Authority; filling `TRA` and clearing
+   the marker made the next run file `485_INDIVIDUAL_TRA.pdf` correctly. **A flag is a to-do, not a dead end**
+   — this is the operating model staff will actually use.
+**M4a is production-ready on the same terms as M3** (paid plan before the schedule goes on). Only **M4b**
+(emailing the checklist, needs the Gmail OAuth) remains in M4.
+
+D-259 | 🟠 NO DUPLICATE-CLIENT DETECTION — surfaced by the client's own question | Two rows both named
+`MARIA SANTOS CRUZ` (`YM-2026-00001` 6 Aug, `YM-2026-00004` 8 Aug) produced two codes and two folders,
+silently. **The system behaved correctly** — but nothing warns a user who enters the same client twice, and
+their documents would then split across two folders with nobody noticing.
+**Why this is NOT a simple block:** the grain is **one row = one MATTER** (D-11). The same person legitimately
+gets a second row for a second application — a 485 today, a partner visa in two years. Blocking duplicate
+names would break the data model.
+**Correct fix — a WARNING keyed on EMAIL, not name** (D-54: email is the reliable identity field; names
+repeat, and Contact Number is blank in ~half their live rows):
+- Conditional formatting or an Apps Script check on `Email Address` (col F)
+- Writes to `Notes`: *"possible duplicate of YM-2026-#####"* — visible, never blocking
+- ⚠️ Their live data has **trailing spaces in emails** (D-54) — the check must TRIM before comparing
+**Sequencing:** do it as part of the ~48-row tracker import, where real duplicates will actually surface.
+Logged, not built now.
+
+D-260 | ✅ M5a BUILT — dormant-file detector in APPS SCRIPT, deliberately not Make |
+`scripts/m5_dormant_detector.gs`. **Zero Make operations.** The same logic as a Make scenario on a 15-minute
+schedule would cost ~2,880 ops/month forever; this is pure date arithmetic on a sheet, so it belongs in Apps
+Script on a daily trigger. With 437 of the free 1,000 ops already consumed (D-254), that is not a
+micro-optimisation.
+**Logic, per open matter:**
+- last touch = `Last Contact` (R), or `Date Added` (T) when never contacted
+- never contacted → `Next Follow-up Due` = last touch **+3 days** (their day-3 chase)
+- contacted before → last touch **+7 days** (their day-7 chase)
+- overdue → prepends `DORMANT: no contact for N days` to `Notes`
+**Closed matters are skipped and their due date CLEARED** — `Processing Stage = Closed`, or
+`Visa Outcome` in Granted/Refused/Withdrawn. Never chase a granted file; that is the fastest way to lose
+trust in an automation.
+**Idempotent:** `stripDormant_()` removes any previous DORMANT prefix before recomputing, so repeated runs
+converge instead of stacking text. Dates are stamped in **Australia/Brisbane** (D-163).
+**This replaces their broken `48hr Alert` column** (`#REF!`, D-55) — the alerting they wanted and lost.
+`addDormantHighlight()` adds conditional formatting so overdue rows turn orange without anyone reading a
+column. Excludes rows where `Visa Outcome` is set, so granted files never light up.
+**M5b (the actual chase emails) still needs the Gmail OAuth** — same dependency as M4b, still not asked for.
+
+D-261 | ✅ M5a PROVEN — four runs, all correct (8 Aug) |
+| Run | Log | Meaning |
+|---|---|---|
+| `addDormantHighlight` | "Dormant highlight added" | conditional formatting installed, run once only |
+| normal client | `Open matters: 1 \| DORMANT: 0` | due date set to intake +3 |
+| forced old date | `Open matters: 1 \| DORMANT: 1` | flagged + row turns orange |
+| `Visa Outcome = Granted` | `Open matters: 0 \| DORMANT: 0 \| closed or skipped: 1` | due date CLEARED, flag removed |
+**The fourth run is the important one.** A system that chases a client whose visa has already been granted
+loses staff trust permanently — one bad email is enough. Closed matters are provably excluded.
+This replaces their `48hr Alert` column (`#REF!` since before we arrived, D-55) and directly targets the
+16-day and 71-day silent gaps found in discovery (D-34).
+
+D-262 | ⭐ HANDOVER RISK SMALLER THAN RECORDED — Apps Script is ALREADY client-owned | The editor shows
+**"You're currently signed in as project1@yalemigration.com.au"**. All scripts and any trigger created from
+this session belong to the **client's** account, not Sharjeel's.
+**Corrects D-153 and H3 in `PRODUCTION-READINESS.md`**, which assumed the trigger would have to be re-created
+by the client at handover. It does not.
+**Only ONE silent-failure risk remains: the OneDrive Make connection**, authenticated as
+`sharry00010@gmail.com`. If that access ends, folder creation stops with no error.
+⚠️ **Consequence for every future trigger: create it while signed in as `project1@`.** A trigger created
+from a personal account would silently die at handover — the exact failure D-153 warned about.
+
+D-263 | 🔴 D-262 PARTIALLY WRONG — one trigger IS still personally owned, and now we can see it |
+The Triggers screen shows two time-based triggers on `YM MASTER automation`:
+| Function | Owner | Status |
+|---|---|---|
+| `updateFollowUps` (M5a, daily) | **Me** = `project1@` ✅ | created 8 Aug from the client's session |
+| `assignMissingCodes` (M2, every 5 min) | **Other user** 🔴 | last run 9 Aug 19:56, error rate 0% |
+"Other user" is Sharjeel's personal Google account. **D-262 over-generalised** from the editor's
+"signed in as project1@" banner: scripts created in that session are client-owned, but the M2 trigger was
+created earlier from a personal account and did NOT move.
+**Live risk, exactly as D-153 predicted:** if that access ends, `assignMissingCodes` stops firing **silently**
+— no error, no alert — and client codes stop being issued until someone notices a blank column A.
+**FIX (2 min, must be done while signed in as `project1@`):** add a second `assignMissingCodes` trigger —
+Time-driven · Minutes timer · every 5 minutes · notify immediately — then sign in personally and delete the
+old one. **Two triggers running briefly is SAFE**: `master_codes.gs` holds a `LockService` document lock
+(D-135) precisely so concurrent runs cannot issue duplicate codes.
+**Standing rule, now visible on one screen: check the Triggers page's "Owned by" column at every handover
+checkpoint.** It is the only place this failure mode is observable before it happens.
+
+D-264 | 🟡 Trigger ownership HALF fixed — safe, but not finished | Triggers page now shows three:
+`updateFollowUps` (Me ✅) · `assignMissingCodes` (**Other user** 🔴, last run 9 Aug 23:41) ·
+`assignMissingCodes` (Me ✅). The client-owned duplicate exists, so `assignMissingCodes` currently fires
+**twice every 5 minutes**. **Safe** — `master_codes.gs` holds a `LockService` document lock (D-135) so
+concurrent runs cannot issue duplicate codes — but it is duplicated work and must not be left.
+**Remaining step can ONLY be done from the personal account:** Google does not permit one account to delete
+another's trigger. Sign in personally → same script → Triggers → delete the `assignMissingCodes` shown as
+"Me" there. End state: **2 triggers, both owned by `project1@`**.
+⚠️ Also observed in the dialog: failure notification set to **"Notify me daily"**. For a 5-minute function
+that issues client codes that means up to 24 hours of silent failure — change to **"Notify me immediately"**.
+
+D-265 | Housekeeping found in the tab bar: an orphan `Sheet4` | Spreadsheet tabs are now
+`MASTER · CHECKLIST MAP · Sheet4 · FOLDER INVENTORY · ENQUIRIES`. **`Sheet4` is not part of the design** —
+`setup_master_sheet.gs` creates MASTER + ENQUIRIES; FOLDER INVENTORY and CHECKLIST MAP are deliberate.
+Verify it is empty, then delete. Logged rather than deleted blind: this is the client's live workbook and a
+stray tab could be something a staff member started.
+
+D-266 | ✅ `48hr Alert` question ANSWERED — and it validates M5a | Team reply, `answer_new.docx` 10 Aug:
+*"we are not currently following it but if we can work that out **both the manager and consultant should be
+notified**."*
+Two things settled:
+1. **They had already given up on it.** The `#REF!` (D-55) was not a fresh break — the alerting has been dead
+   long enough that nobody relies on it. So M5a restores a capability they wanted and lost, rather than
+   adding a new burden. Worth saying exactly that when it is demoed.
+2. **Notification target confirmed: MANAGER + CONSULTANT, both.** That is the M5b recipient rule — do not
+   design it as consultant-only. `Assigned Consultant` (col L) gives the consultant; the manager needs a
+   configurable address, most likely `info@` or Robinder. **Confirm the manager address when asking for the
+   Gmail OAuth (A-03) — one message, two answers.**
+
+D-267 | ❌ OUR OWN VAGUENESS BLOCKED TWO OF THREE TEAM QUESTIONS | Both non-answers were the same:
+*"Which sheet you are referring to?"* and *"I need to know the tracker we are referring."*
+**Cause:** the message said *"the summary section in columns P and Q"* and *"anything else in the tracker"*
+without ever naming the file. We know it precisely — `Engaged Client Tracker.xlsx`,
+`BRISBANE OFFICE → CLIENT FILES`, tab `Client Tracker`, itemId
+`A0BABA3C2640082C!s991d8bd1da0b40b0a4e477e47864ebbc`, 49 rows, 208 revisions — and used none of it.
+They have **many** spreadsheets; column letters mean nothing without a filename.
+**Gate G5 extended — CLIENT-MESSAGE GATE now also requires: name the exact FILE, TAB and PATH whenever a
+question refers to a document.** A screenshot beats a description. Cost here: one wasted round trip with
+their team, ~2 days.
+
+D-268 | `CLIENT-ASKS.md` created — the outstanding balance, separate from the chronological log |
+`CLIENT-LOG.md` records what happened; it does not answer *"what are we still waiting on?"* at a glance.
+Twelve open asks now tracked with severity, date asked, and blocking impact — 1 blocking go-live (Make Core),
+4 blocking a module, 3 team questions, 4 not yet blocking. **Read alongside `STATUS.md` at session start.**
+
+D-269 | 🔴 ROSTER IS INCOMPLETE — `Mershe Ventura` answered our team questions and is on NO list we hold |
+Document metadata of `answer_new.docx`: `dc:creator` and `cp:lastModifiedBy` = **Mershe Ventura**,
+created 6 Aug 00:16, last modified 11 Aug 03:21.
+**Searched every record: she appears NOWHERE.** Not in `access/Team roster.docx` (Robinder · Inder ·
+Gayatri · Priyanka · Fiza · RJ · Star · Rey · Cristelle), not in DECISIONS, not in any of the 143 client
+files, not in the `Assigned Consultant` dropdown built into MASTER.
+**D-124 declared the roster "fully closed" on 2 Aug. That was wrong** — it closed the question we asked
+(*is Nisha still here?*) and we treated it as closing the roster itself.
+**Why it matters beyond tidiness:**
+- `Assigned Consultant` (col L) has a `setAllowInvalid(false)` dropdown — **if Mershe handles matters, her
+  name cannot be entered at all.** Same class of dead end as SBS/Nomination missing from Visa Type (D-138).
+- M6 and M9 auto-assignment route by roster. Anyone missing is invisible to routing.
+- She is the person who answers tracker questions — i.e. **the operational owner of the very sheet the
+  dashboard will read.** Addressing the re-ask to "Hi team" wasted the natural route to her.
+**Action:** address the tracker re-ask to Mershe BY NAME, and ask Robinder to confirm the current full staff
+list rather than assuming the 26 Jul roster is still accurate. **Lesson: verify document authorship — the
+metadata of a client file can reveal an org fact no one thought to tell us.**
+
+D-270 | Batch 5 file relocated out of the repo root | `answer_new.docx` was sitting loose in
+`SOP'S/`. Moved to `New-docs/ANSWER-2 dashboard and tracker (Mershe Ventura, 11 Aug).docx` — alongside
+`ANSWER.docx`, so all client replies live in one place — and recorded in `ACCESS.md`'s batch-5 table.
+Filename now carries **who** and **when**, because both turned out to matter (D-269).
+
+D-271 | ⭐⭐ CORRECTION — THE GMAIL CONNECTION ALREADY EXISTS AND CAN SEND. A-03 was a false blocker |
+Sharjeel challenged the claim that we needed a Gmail OAuth. He was right. Verified from Make's connection
+API, not memory:
+```
+Yale's Gmail connection   id 9452213   type google-email (the Gmail connector)
+  mailbox   visa.lodgement@yalemigration.com.au
+  authorId  8767171  =  info@yalemigration.com.au  → CREATED BY THE CLIENT
+  expires   2027-01-29
+  scopes    openid · userinfo.profile · userinfo.email
+            https://www.googleapis.com/auth/gmail.modify
+            https://www.googleapis.com/auth/gmail.readonly
+```
+**`gmail.modify` is sufficient for `users.messages.send` AND `users.drafts.create`** (Google's Gmail API
+scope table: modify grants all read/write except permanent deletion). So **M4b and M5b can be built today** —
+no new authorisation, no call, nothing from Robinder.
+**Root cause of the error:** D-13 recorded "OAuth project1@ needed at M4 time" back in July and it was carried
+forward for three weeks without ever being re-checked against the live connection list. The client had
+already authorised Gmail on 1 Aug for M9 (D-149) — the same connection covers sending.
+**This is a G1 failure of the most expensive kind: an ask that would have made us look like we do not know
+our own system.** Sharjeel caught it before it was sent.
+**Gate reinforced — before ANY access request, run `connections_list` and read the actual scopes.**
+
+D-272 | The real M4b question is much smaller: WHICH MAILBOX should drafts appear in? |
+The existing Gmail connection is on **`visa.lodgement@`** — the inbound mailbox that receives Department
+s56 emails (D-64/D-80). D-13 had assumed **`project1@`** for outbound.
+Since the client chose **prepare-and-review, never auto-send** (D-234), M4b creates a **draft** that a
+consultant opens and sends. So the question is where that draft should land:
+- **(a) `visa.lodgement@`** — works today, zero client action, but it is the lodgement inbox
+- **(b) `project1@`** — matches the original design; needs one 2-minute Gmail OAuth
+**Decision: BUILD ON (a) NOW.** Swapping the connection later is a one-field change in one module. Ask
+Robinder as a preference, not a prerequisite — a question that does not block is worth a fraction of one
+that does.
+**`Muhammad's Google connection` (9501125, project1@) is type `google`, NOT `google-email`** — it drives
+Sheets only and cannot send mail. Option (b) would require a genuinely new connection.
+
+D-273 | Make paid plan removed from the outgoing message on Sharjeel's instruction | Commercially his call
+— he judged it too early to push. **Nothing changes technically: both scenarios stay OFF.** The constraint
+(~2,880 ops/month per scenario vs 1,000 free) is unchanged and stays recorded in `CLIENT-ASKS.md` A-01.
+Raise it when the tracker import and dashboard make the value obvious.
+
+D-274 | 🔴 DOCUMENTATION DRIFT AUDIT — the control files had fallen 6 days behind reality | Prompted by a
+"check everything one more time" request. Verified live systems first (Make connections + scenario list),
+then swept every control doc. **Nothing in the BUILD was wrong; the DOCS were.** Found and fixed:
+| File | Was claiming | Reality |
+|---|---|---|
+| `STATUS.md` | *"Client-visible output is still ZERO"* · *"Anything shipped ❌ Zero"* · *"Robinder has not been shown it"* · 🎯 = record the demo | Demo sent; M3 + M4a + M5a all complete and proven |
+| `STATUS.md` | "PARKED: M4/M5 build work · tracker import" | Both built; the import is now the ACTIVE task |
+| `CLAUDE.md` | "PROCESS.md — its **5** gates" | **8** gates (G6/G7 added 2 Aug, G8 added 10 Aug) |
+| `CLAUDE.md` | "M3 has **5 open blockers**" | All five closed 5 Aug (D-207…D-217) |
+| `CLAUDE.md` | Stack: "project1@ outbound" implying an OAuth is still needed | Gmail connection already exists (D-271) |
+| `CLAUDE.md` | File map missing `STATUS`, `CLIENT-ASKS`, `PROCESS`, `PHASE-2-3-BACKLOG`, canonical checklists | added |
+| `ROADMAP.md` | `M4 — ⬜` and `M5 — ⬜` | M4a and M5a complete |
+| `ROADMAP.md` / `ARCHITECTURE.md` | "23 columns A–W" | **25 columns A–Y** since D-245/D-251 |
+**Why this matters more than it looks:** `CLAUDE.md` and `STATUS.md` are loaded at the start of every
+session. A stale `ARCHITECTURE.md` nearly caused ten wrong folders to be created in the client's live drive
+on 2 Aug (the reason G6 exists). Stale control files do not stay harmless — they become instructions.
+**Rule added to the session-END ritual: when a module completes, update `STATUS.md`, `ROADMAP.md` AND
+`CLAUDE.md`'s blocker section in the same commit as the code. Not "later".**
+
+D-275 | ✅ FULL-SYSTEM VERIFICATION, 11 Aug — everything reconciles | Checked against live APIs, not memory:
+- **Connections (4):** Google Sheets `project1@` ✅ client-owned · **Gmail `visa.lodgement@` ✅ client-created,
+  `gmail.modify`** · Microsoft `sharry00010@` ⚠️ **the only remaining handover item** · Make AI provider.
+- **Scenarios:** `YM-M3-folder-create` 63 execs / 399 ops / `isinvalid:false` / **INACTIVE** ·
+  `YM-M4-checklist-file` 8 execs / 27 ops / **0 errors** / `isinvalid:false` / **INACTIVE** ·
+  M9 stub · TMP · 7 leftover "Integration OneDrive" (43 ops, all inactive, delete at M11).
+- **Apps Script:** 2 triggers, **both owned by `project1@`**, 0% error rate, both fired on schedule.
+- **Operations: 477 of 1,000 this month · 523 remaining.**
+- **Canonical library:** 27 files, hash-verified on disk AND in the client's OneDrive.
+**M4's development produced ZERO errors across 8 executions** — against M3's 22 during development. The
+patterns learned on M3 (D-255 operator discipline, blueprint-first debugging, error handler on every
+external call) are demonstrably paying off.
+
+D-276 | 🔴 NEAR-MISS — draft message implied M3/M4 run automatically. THEY DO NOT | Sharjeel challenged
+"the system files the checklist automatically" against the fact that Make was never switched on. He was
+right. Precise state, verified:
+| Capability | Automatic? | Evidence |
+|---|---|---|
+| Client codes (`assignMissingCodes`) | ✅ **YES** — Apps Script, every 5 min | ran 10 Aug 09:17, 0% error, owner `project1@` |
+| Dormant flagging (`updateFollowUps`) | ✅ **YES** — Apps Script, daily ~6am | ran 10 Aug 06:15, 0% error, owner `project1@` |
+| Folder creation (M3) | ❌ **NO** — Make scenario `isActive:false`, manual Run once |
+| Checklist filing (M4) | ❌ **NO** — Make scenario `isActive:false`, manual Run once |
+**The Google half is genuinely live; the Make half is built but switched off.** Conflating the two in a
+client message is the worst kind of overclaim: Robinder would add a test client, nothing would happen, and
+the whole system would look broken — after a demo that showed it working.
+**Approved wording, which does not require raising the paid plan (D-273):** *"built and tested — I run them
+manually at the moment; they'll run on their own once we switch the schedule on."*
+**Rule added: before writing "automatic" in any client message, check `isActive` on the scenario and the
+Triggers page for the script. "Built" and "running" are different words and must stay different.**
+
+D-277 | Confirmed: the dashboard and CRM questions are STILL unanswered | `ANSWER-2 … (Mershe Ventura,
+11 Aug).docx` contains **only the TEAM message** (P/Q summary · 48hr Alert · tracker) — all 18 paragraphs
+extracted and checked. It contains **nothing** on: who opens the dashboard · top-3 views · phone vs laptop ·
+refresh frequency · CRM4Agencies/Migration Manager/Agentcis.
+Two separate threads had blurred into one: the **dashboard + CRM** message went to Robinder (no reply), the
+**tracker** message went to the team (Mershe replied, 1 of 11 bullets). A-04 and A-05 remain open in
+`CLIENT-ASKS.md`.
+
+D-278 | 🔴 CAUGHT PRE-SEND — the dashboard proposal promised a view we cannot build | Checked each proposed
+view against MASTER's 25 columns before the message went out:
+| View | Source | |
+|---|---|---|
+| Active matters per branch | `J Office` | ✅ |
+| What's stuck, and at which stage | `M Processing Stage` | ✅ |
+| Clients not contacted in 2 weeks | `R Last Contact` + `S Next Follow-up Due` | ✅ |
+| **s56 deadlines coming up** | **no column exists** | 🔴 |
+| Granted vs refused | `N Visa Outcome` | ✅ |
+| Files per consultant | `L Assigned Consultant` | ✅ |
+**There is no s56 deadline field in A–Y**, and the s56 urgent flag + deadline write-back is unbuilt M9 work
+(ROADMAP still `⬜`). Promising it would mean delivering five of six promised views and explaining the gap.
+**Fix: keep it in the message but explicitly as LATER** — *"once the email side is reading the Department
+letters"*. It is a genuine roadmap item and worth signalling; it is not a Phase-1 dashboard view.
+**Rule: before proposing any dashboard/report view to a client, trace every metric to a COLUMN THAT EXISTS.
+A view with no data source is a promise, not a plan.**
+
+D-279 | Dated claims rot — never put "this morning" in a message that may not send today |
+Draft said *"it ran at 6:15 this morning"* — true on 10 Aug, false on 11 Aug. Client messages sit in drafts,
+get rewritten, and go out a day late. **Use the recurring fact, not the instance: "it runs at 6am every
+morning."** Same credibility, no expiry.
+
+D-280 | ✅ A-02 CLOSED — the correct Subclass 190 checklist arrived and is verified | Third attempt, and this
+one is right. Checked by content, never by filename (G8):
+```
+Heading   "Skilled Nominated Visa (Subclass 190) – Document Checklists"
+"190" ×1  ·  "491" ×0  ·  "189" ×0  ·  "regional" ×0
+"Minimum 65 points ... including 5 points for state/territory nomination"   ← correct: 190 = +5, 491 = +15
+"State or Territory nomination required" ×3
+SHA-256 070af10ee5c817ce  ·  author Mershe Ventura  ·  11 Aug 02:55
+```
+**"regional" appearing ZERO times is the decisive check** — its presence is exactly what exposed both
+earlier wrong versions (D-236). The 491 file carries the regional-residence commitment; a genuine 190 file
+cannot.
+Filed as `190_SKILLED-NOMINATED.docx` in the canonical library (now **23 client checklists + 5 reference**),
+hash recorded in `MANIFEST.json`, README selector matrix updated from 🔴 MISSING to ✅.
+**Two manual steps remain before M4 can use it:** upload the file to OneDrive
+`INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS`, and add two rows to the `CHECKLIST MAP` tab
+(`190 · N · (blank) · 190_SKILLED-NOMINATED.docx` and the same with `Y`).
+**That second step is the design paying off** — adding a new checklist is two spreadsheet rows, no scenario
+edit and no developer (D-251).
+
+D-281 | Mershe Ventura authored the 190 checklist as well as the tracker answers — she is not admin support |
+Both `ANSWER-2 …docx` and the corrected 190 checklist carry her as `dc:creator`. She is producing
+**client-facing migration documents**, not just answering process questions. That materially strengthens
+A-13: she almost certainly belongs in `Assigned Consultant`, which is a locked dropdown she cannot currently
+be selected in. Keep the staff-list ask in the Robinder message.
+
+D-282 | 🔴 UNVERIFIED DEPENDENCY — nobody has confirmed Looker Studio is available on their Workspace |
+The dashboard has been assumed to be Looker Studio since Proposal v3, and in three weeks **nobody has opened
+it as `project1@yalemigration.com.au`**. Google Workspace admins can disable Looker Studio per-org. If it is
+off, we discover that the weekend before delivery.
+**Check before promising a date: sign in as `project1@` → `lookerstudio.google.com` → confirm a blank report
+can be created.** 60 seconds. This is exactly the class of assumption that produced D-246 (APPLICATION FORMS
+was the colleges folder) and D-271 (the Gmail OAuth we already had).
+**FALLBACK, and arguably the better default anyway — a `DASHBOARD` tab inside MASTER:**
+| | Sheet tab | Looker Studio |
+|---|---|---|
+| Extra tool / login | none | new tool |
+| Works on phone | ✅ Sheets app | ✅ |
+| Access control | inherits the sheet they already share | per-report |
+| **Per-branch visibility (option b)** | ❌ cannot hide rows per viewer | ✅ row-level security |
+| Risk of Workspace policy blocking it | **zero** | real, unverified |
+**Decision: if Robinder answers (a) or (c), build the sheet tab — faster, zero dependency, lives where they
+already work. Only option (b) genuinely requires Looker Studio.** That also means his one answer selects the
+tool, not just the permissions.
+
+D-283 | Likely reason Robinder never answered the dashboard questions — our own message deferred it |
+The 8 Aug message said *"Should have it working in the next day or two, **then the dashboard is next**"*,
+then asked six open-ended questions with no deadline. **We told him it was not yet time.** A busy director
+reads that as "he will come back to me". The non-reply may be our sequencing, not his silence.
+**Fix applied: open the new message by closing that loop — "M4 is done, as promised, so now the dashboard."**
+That is the trigger he is waiting for and it evidences the previous commitment was met.
+**Rule: never pair "this is next, not now" with a question you actually need answered now.**
+
+D-284 | Dashboard dependency check — no hard blockers, three things to line up | Traced end to end:
+| Dependency | State |
+|---|---|
+| Data source (MASTER) | 🟠 empty — needs the ~48-row import. **Ours, ~1h, needs the tracker read run first** |
+| Tracker readable via workbook API | ✅ proven T1.5 / D-48 |
+| Every proposed view has a column | ✅ verified D-278 (s56 removed — no column exists) |
+| Tool available | 🔴 **unverified — D-282** |
+| Who may see it | 🟠 Robinder (a/b/c) — also selects the tool |
+| Manager email addresses for sharing | 🟠 needs the staff list (A-13) |
+**No blocker we cannot clear ourselves except his one answer.** Critical path is: run the tracker read →
+import → build. The import does not wait on him.
+
+D-285 | 🔴 MY OMISSION — adding a checklist needs THREE steps, not two. I gave two | When the 190 file
+arrived I told Sharjeel: (1) upload to OneDrive, (2) add two `CHECKLIST MAP` rows. **I forgot the third:
+`190` also has to be added to M4's ROUTER filters.**
+Route A enumerates 13 accepted visa types; Route B rejects those same 13. `190` was in neither, so a 190
+client would have fallen through to **Route B → `NEEDS REVIEW`** — the map rows and the uploaded file would
+have had no effect, and it would have looked like the new checklist "didn't work".
+**Fixed 11 Aug 19:51Z** — `190` added to Route A (14 groups) and to Route B's exclusion list (14 conditions).
+**This contradicts what I told the client in D-251/D-280** — that adding a checklist is "two spreadsheet
+rows, no scenario edit". **It is only true for a visa type ALREADY in the router.** A brand-new visa type
+needs a one-line scenario change too.
+**Correct statement for the client, and for M11 training:** *"a new checklist for an existing visa type is
+two spreadsheet rows; a brand-new visa type also needs one line added to the scenario."*
+**Root cause: I described the design as I intended it, not as I built it.** The router's hardcoded visa list
+is the gap between the two. Worth revisiting at M11 — the list could read from the CHECKLIST MAP tab instead
+of being enumerated in filters, which would make the original claim true.
+
+D-286 | ⭐ Mershe's answer partially resolves A-04 — use it instead of re-asking | Her `48hr Alert` reply
+says alerts should reach *"both the manager and consultant"*. That is an operational statement about **who
+needs visibility into quiet clients** — which is dashboard question 1 in different words. It rules out
+option (a) *only you*, and points at **(c) everyone sees everything**.
+**Decision: state (c) as the assumption rather than re-ask.** For a client who has not replied to six
+open questions, "tell me if this is wrong" is a far cheaper reply than "choose a, b or c". It also honours
+G2 — we already have a partial answer in our records; asking again would ignore it.
+**Bonus: (c) also selects the cheaper build** — a `DASHBOARD` tab inside MASTER, no Looker Studio dependency
+(D-282). Only option (b) needed row-level security.
+
+D-287 | Read of the client's silence — it is sequencing, not frustration | Evidence against frustration:
+he answered our checklist questions 6 Aug · the corrected 190 file arrived 11 Aug via Mershe · Mershe
+answered the team message. **He is actioning requests and delegating them.**
+Evidence for why the dashboard questions specifically went unanswered: (1) six open-ended questions is
+homework, not a reply; (2) our own 8 Aug message said *"then the dashboard is next"* — we told him it was
+not his turn yet (D-283).
+**Therefore the next message must contain no homework and no apology.** Progress, a date, and a stated
+assumption. Apologising for a delay he has not complained about would invent a problem.
+
+D-288 | 🔴 NEVER PRE-ENCODE A URL FOR MAKE'S `makeApiCall` — Make encodes it again | The tracker read
+failed with *"Couldn't find the workbook range... the URL points to a worksheet or file that doesn't exist"*.
+I wrote `worksheets('Client%20Tracker')`; Make encoded the `%` to `%25`, so Graph searched for a sheet
+literally named `Client%20Tracker`.
+**Rule: put RAW characters in the URL field — spaces, braces, apostrophes — and let Make encode.**
+**Also switched from name-based to ID-based addressing:**
+`/workbook/worksheets/{00000000-0001-0000-0000-000000000000}/range(address='A1:R12')`
+`Client Tracker` = `{00000000-0001-0000-0000-000000000000}` · `Admissions Tracker ` =
+`{03EB648D-4D8D-45EC-9A2D-89DF01C493FB}` (note the **trailing space** in that second name — exactly why
+names are the wrong key here).
+**Diagnostic pattern that worked again:** rather than guessing at three encodings and burning an operation
+each, ONE call to `/workbook/worksheets` returned both names and IDs and ended the question. Same discipline
+as fetching the blueprint instead of reading screenshots (D-202).
+
+## D-289 | 🔴 THE TRACKER WE SPENT TWO WEEKS ANALYSING IS ABANDONED — they moved to Google Sheets
+**Team reply, 12 Aug (answering our 11 Aug message that named the file explicitly):**
+> *"with regards to that file. we are not using it but if we can create a new one that has an accurate
+> columns for each client application that would be better. we are using the google sheets for our
+> monitoring as of the moment"*
+
+**What this kills:**
+- `Engaged Client Tracker.xlsx` (`A0BABA3C2640082C!s991d8bd1da0b40b0a4e477e47864ebbc`) is **dead data**.
+  The 49 rows read on 29 Jul were a snapshot of a system they have since left. Importing it would have
+  put stale matters into MASTER and made the dashboard confidently wrong — the worst possible failure
+  for a first client-visible deliverable.
+- **A-06 and A-08 are moot, not unanswered.** Both asked about the P/Q manual summary and annoyances in a
+  file nobody opens. Re-asking them (which the 11 Aug message did) was wasted, and asking a THIRD time
+  would be the credibility damage G2 exists to prevent. **Both close as ⛔ WITHDRAWN.**
+- The Microsoft Graph workbook-read work (D-287/D-288 — worksheet IDs, `$select`, the `%2520` encoding
+  trap) is no longer on the critical path. Keep the findings; they still apply to the Admissions Tracker
+  (P2-06) which lives in the same workbook.
+
+**What this unlocks:**
+1. **The import gets much easier.** Google Sheets → Google Sheets is native in Make (connection 9501125,
+   `project1@`). No workbook API, no worksheet GUIDs, no URL-encoding traps, no 202-async copies.
+2. **`executions_get-detail` returns no module bundles on the Free plan** (verified 12 Aug — it returns
+   only `{"status":"SUCCESS"}`). That blocked reading the xlsx through the API entirely. A Google Sheet
+   can simply be opened in a browser and read directly, which removes the whole blind-import problem.
+3. **"create a new one that has accurate columns" IS MASTER.** They are asking for the thing already
+   built: 25 columns A–Y, their vocabulary, their `CL-###` ids preserved (D-51), dropdowns, auto codes.
+   This is not a change request and must not be logged as one — it is signed M2 scope, already delivered.
+   **Show it; do not ask permission to build it.**
+
+**Cost of the miss:** ~0 build hours. Nothing was built against the xlsx — the import was still specced.
+The discovery work (their column vocabulary, Processing Stage values, the CL-### convention, the broken
+`48hr Alert`) all remains valid, because MASTER v2 was reconciled to their *concepts*, not to that file.
+
+**Rule added:** before importing from any client data source, confirm it is the one they actually use
+TODAY. "It exists and has data in it" is not evidence that it is live. Ask "is this what you open every
+morning?" — a snapshot with 208 revisions can still be abandoned.
+
+**New ask A-14:** the link to the Google Sheet they use now. Until we have it, the import source is
+unknown and the dashboard has nothing real to sit on.

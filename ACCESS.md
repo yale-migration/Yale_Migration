@@ -71,6 +71,28 @@ from `access/` are staged in `assets/samples/` (git-ignored, PII). **Add a row w
 | 2 | `SOP'S 2/` | 86 *(incl. 12 workflow PNGs)* | `docs/03-sops-batch-2/` (85) | ⚠️ batch line, CLIENT-LOG 16 Jul |
 | 3 | `additionaldocsforsop/` | 8 | `docs/04-additional-docs/` | ⚠️ batch line, CLIENT-LOG 20 Jul |
 | 4 | `access/` | 17 | `assets/samples/` (17, hash-verified identical) | ✅ every file mapped |
+| **5** | **`New-docs/`** (6 Aug) | **14** | not yet copied | ✅ **every file opened + hash-verified, D-234/D-235/D-236** |
+
+### Batch 5 — `New-docs/`, received 6 Aug (Robinder's answers + corrected checklists)
+| File | What it is | Verdict |
+|---|---|---|
+| `ANSWER.docx` (+ `ANSWER copy.docx`, byte-identical) | Answers to all 5 of our questions | ✅ D-234 |
+| `Subclass 189 Skilled Independent Visa.docx` | 189 checklist — hash `f1c1482c46`, **the same file previously mis-named `Subclass 190…`** | ✅ renamed correctly |
+| `Subclass 491 Skilled Work Regional…docx` | 491 checklist | ✅ |
+| `Subclass 494 Skilled Employer Sponsored…docx` | 494 checklist — hash `04a845538d`, was `Subclass 491.docx` | ✅ renamed correctly |
+| `SUBCLASS 802-CHILD VISA.docx` | 802 checklist — hash `bb69ad25f1`, was `Subclass 494.docx` | ✅ renamed correctly |
+| `AUSTRALIA PR VISA-EOI POINTS CALCULATOR (2026).docx` | Points calculator — hash `3eb32d41ca`, was `Subclass 802-CHILD VISA.docx` | ✅ renamed correctly |
+| `Subclass 190 State Nomination Visa.docx` | **contains the 491 checklist, "190" appears 0×** | 🔴 **STILL WRONG — D-236** |
+| `485 VISA CHECKLISTS-INDIVIDUAL-VETASSESS.docx` | NEW file, hash `e6c9fc5230`, heading `485 VISA APPLICATION-INDIVIDUAL` | ✅ fixes the old `1c7a663480` |
+| `POINTS COMPUTATION REFERENCE.docx` | Second copy of the points calculator, different hash | ⚠️ D-239, not blocking |
+| `LISTS OF COURSES FOR PR.docx` | Course → occupation → demand guide. **No skills-authority mapping** | 🟢 Phase-2 / M6 asset, D-238 |
+| `STUDENT VISA CHECKLISTS WITH DEPENDENT.docx` | The source file the 5 Jul audit listed as MISSING | ✅ gap closed |
+| `EOI CALCULATOR.xlsx` · `FEES AND INVOICE REFERENCE.xlsx` | Reference workbooks | 🟢 not used by M4 |
+| **`ANSWER-2 dashboard and tracker (Mershe Ventura, 11 Aug).docx`** | Replies to the TEAM message — `48hr Alert` answered, two questions bounced back as "which sheet?" | ✅ D-266/D-267. **Author = Mershe Ventura, NOT on our roster — see D-269.** Moved out of the repo root 11 Aug |
+
+**⚠️ The "fixes" were RENAMES, not rewrites** — hashes prove each corrected file is the identical document
+under its correct name. That is exactly the right fix, and it independently confirms the original audit:
+the CONTENT was always correct, only the NAMES were wrong.
 
 **Deliberate exclusion, recorded here so it never looks like a loss:**
 `SOP'S 2/CHECKLISTS GENERAL/001UPDATED CHECKLISTS/APPLICATION FEES.docx` is the ONE batch-2 file not copied to
@@ -84,6 +106,21 @@ its original folder.
 ⚠️ **Filename gotcha:** the s56 screenshot contains a **narrow no-break space (U+202F)** before "PM", not a
 plain space — macOS writes these. The map row above is now byte-exact. **When grepping for a filename and
 getting no hit, suspect an invisible Unicode space before assuming the file is untracked.**
+
+## 🔑 CONNECTION-OWNERSHIP AUDIT (6 Aug) — the silent-failure map for M11
+Every automation depends on an authenticated identity. If that identity's access ends, the automation stops
+**with no error and no alert.** Audited from the live Make blueprint, not from memory:
+
+| Connection | Authenticated as | Owner | Risk at handover |
+|---|---|---|---|
+| Google Sheets (`__IMTCONN__ 9501125`) | **`project1@yalemigration.com.au`** | ✅ **CLIENT** | 🟢 none — already client-owned |
+| OneDrive (`__IMTCONN__ 9279810`) | `sharry00010@gmail.com` | ❌ **US** | 🔴 folders stop being created |
+| Apps Script 5-min trigger | Sharjeel's Google account | ❌ **US** | 🔴 client codes stop being issued (D-153) |
+| Make org membership | `info@yalemigration.com.au` owns the org; we are Admin members | ✅ CLIENT | 🟢 |
+| Claude API key | Client's key, client's billing | ✅ CLIENT | 🟢 |
+
+**Two items to transfer at M11, both silent-failure risks. The Sheets connection is already correct** —
+better than previously recorded, which assumed all three were ours.
 
 ## Established working method with this client (D-90)
 **Robinder shares HIS screen and types his own passwords, on his own machine.** This is how the Make account

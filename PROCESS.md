@@ -130,3 +130,31 @@ grep -oE '^D-[0-9]+ \|' DECISIONS.md | sort | uniq -d            # must be empty
 
 At any moment, be able to answer: *"what can the client actually see working?"* If the answer is "nothing
 yet", that is the only thing that matters and everything else is a distraction.
+
+---
+
+## G8 SEARCH THE WHOLE TREE, NOT THE TIDY ONE (added 5 Aug — D-223)
+
+**Before asserting that a client document, file or answer does not exist, search EVERY folder — not the
+curated one.**
+
+`docs/02-client-facing/` was organised from SOP batch 1 on 5 Jul. Batch 2 arrived later and was never merged
+in. On 5 Aug I audited only the tidy folder and told Sharjeel that three client checklists were missing —
+**all three existed**, in `03-sops-batch-2/` and `04-additional-docs/`. Had that reached Robinder, we would
+have asked him to produce documents he had already sent us. That is the exact failure G2 exists to prevent,
+one level deeper: G2 says search our records; G8 says search **all** of them.
+
+**The check, every time:**
+```
+find . -iname "*<subject>*" | grep -v ".git/"          # whole tree, not one folder
+```
+
+**And its twin: a filename is not evidence of content.** D-224 found every GSM checklist filename pointing
+at the wrong document — `Subclass 189…docx` contains the 491 checklist. Before stating what a document
+contains, **open it**:
+```
+python3 -c "import zipfile,re; x=zipfile.ZipFile(F).read('word/document.xml').decode('utf8','ignore'); print(re.sub(r'<[^>]+>','\n',x)[:600])"
+pdftotext -f 1 -l 1 file.pdf -
+```
+
+**Anything built to select documents must key on verified content, never on filename.**

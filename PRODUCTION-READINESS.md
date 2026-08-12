@@ -2,7 +2,32 @@
 **3 Aug 2026.** Audited as a system that will run unattended against a live client drive holding ~1,436 real
 client folders — not as a demo.
 
-**Verdict: DEMO-READY. NOT PRODUCTION-READY.** Five blockers, four high-severity gaps.
+**Verdict (3 Aug): DEMO-READY, NOT PRODUCTION-READY** — five blockers, four high-severity gaps.
+
+---
+## ⚡ UPDATE 5 Aug — B1·B2·B3·B4·H1·H2 CLOSED (D-197 … D-216)
+| | Was | Now |
+|---|---|---|
+| B1 routing | 🔴 hardcoded Filipino + SET 1 | ✅ `switch(Team)` → parent · `switch(Visa Type)` → SET 1/2/3 (D-208) |
+| B2 sanitization | 🔴 none | ✅ whitelist + `trim()` + double-space collapse (D-210) |
+| B3 error handling | 🔴 none | ✅ `onerror` → write to **Notes (W)** + Skip, on modules 12/14/17 (D-215) |
+| B4 partial failure | 🔴 row stuck forever | ✅ no loop; failures now land in Notes (D-204 + D-215) |
+| H1 idempotency | 🔴 unproven | ✅ second run = **0 bundles** (D-207) |
+| H2 test matrix | 🔴 one path | ✅ 4 rows / 1 run: both teams, SET 1 + SET 3, hostile name, unroutable (D-213) |
+| SET 3 nesting | 🔴 missing | ✅ `820`/`801` inside `03 Relationship Evidence` (D-211) |
+| M2 module names | 🔴 generic | ✅ renamed to intent (D-201) |
+| M3 test folders | 🔴 7 left in live drive | ✅ removed (D-206) |
+
+**Still open before the schedule goes ON:**
+- 🔴 **B5** Make **Core** plan — 15-min polling ≈ 2,880 ops/mo vs 1,000 free. Client decision.
+- 🟠 **D-216** SET 2 (482 · 407 · SBS · Nomination) has **never executed** — one `482` row closes it.
+- 🟠 **H3** all three connections are ours, not the client's — re-authorize at handover (M11).
+- 🟠 TOWNSVILLE / PHILIPPINES client-folder itemIds unknown — those rows are safely skipped (D-209).
+
+**Measured cost:** SET 1/2 = **10 ops**, SET 3 = **13 ops** per client (D-212).
+
+---
+### Original 3 Aug audit follows (kept for the record)
 Do not enable the schedule until every BLOCKER is closed.
 
 ---

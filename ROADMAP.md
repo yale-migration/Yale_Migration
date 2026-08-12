@@ -41,7 +41,7 @@ Expected output: column mapping table written into `docs/MASTER-SHEET-SPEC.md`.
 
 ### ✅ T2 — Build the MASTER sheet — **COMPLETE 3 Aug** · one cleanup left: delete the `TZ TEST` row
 *(Corrected 31 Jul: previously said "14 headers / 6 dropdowns / type in B2" from the superseded v1 spec —
-stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)*
+stale. The scripts build the v2 layout: **23 headers A–W, 9 dropdowns**, name typed in **C**.)* ⚠️ **Now 25 columns A–Y** — `Skills Authority` (X, D-245) and `Checklist Filed` (Y, D-251) added for M4.
 - ✅ **T2.0 SAFETY — DONE 3 Aug** (backup taken, container-bound, preflight clean: no formulas, no data past headers)
       1. Open the sheet → **File → Make a copy** (backup; a script-side column delete has no Ctrl+Z)
       2. Extensions → Apps Script — must be opened **from inside the sheet** (container-bound), else
@@ -83,6 +83,12 @@ Expected output: typing a name produces `YM-2026-00001` within seconds.
       ⛔ **DO NOT enable the schedule until T3.5 is done.**
 Expected output: new MASTER row ⇒ folder + sub-folders in the correct office/team branch + link in the sheet.
 
+### ✅ T3 CLOSED 5–6 Aug — all blockers fixed, every branch proven (D-197 … D-233)
+Routing · sanitization · SET 3 nesting · error handlers on ALL FOUR external calls · idempotency ·
+full test matrix. **TOWNSVILLE/PHILIPPINES are OUT OF SCOPE by client decision (D-230)** — *"we will do in
+future, in couples of months"*. Brisbane-only routing is therefore CORRECT, not a gap. Do not re-ask.
+Only go-live gate left: **Make Core paid plan**.
+
 ### T4 — DEMO (SHARJEEL · 20 min · the first shipped deliverable)
 - ⬜ Record 60–90s: name typed → code appears → folder tree exists → link written back
 - ⬜ Send to Robinder with one line
@@ -115,7 +121,7 @@ Expected output: client sees working automation for the first time.
 - ✅ Scenario spec written: `scenarios/M3-folder-create.md` (router, sanitizer, error handling, ladder)
 - ⬜ Build + dry-run + 5 real cases + 👍 (**= T3**) · ⬜ Demo video (**= T4**)
 
-### M4 — Checklist selector & document request (3h) — ⬜
+### M4 — Checklist selector & document request (3h) — 🟡 **M4a COMPLETE 8 Aug (D-258)** · M4b buildable now (D-271)
 - ⬜ Checklist map: visa × onshore/offshore × dependents × skills-authority → template file
 - ⬜ **CLIENT ASK:** OAuth project1@ into Make's Gmail connection (D-13 — required to SEND)
 - ⬜ Email template + upload link, tone grounded in their real threads
@@ -123,7 +129,7 @@ Expected output: client sees working automation for the first time.
 - Note: onshore/offshore is often implicit — `VISA EXPIRY <MONTH YEAR>` in the subject is the reliable
   signal for an onshore renewal (from the student-thread audit)
 
-### M5 — Document tracking & auto-chasing (4h) — ⬜
+### M5 — Document tracking & auto-chasing (4h) — 🟡 **M5a COMPLETE 10 Aug (D-261)**, Apps Script, zero Make ops · M5b buildable now
 - ⬜ Per-client checklist status columns
 - ⬜ **Dormant-file detector** — highest-value item (D-34: real gaps of 16 and 71 days, no chase)
 - ⬜ Day-3/day-7 chases, business hours only, stop-on-reply

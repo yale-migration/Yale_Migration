@@ -1,20 +1,21 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-08-04 · Read this FIRST every session (`PROCESS.md` session ritual).
+**Updated:** 2026-08-11 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
 
 ---
 
 ## The one-line truth
 
-**Discovery and design are genuinely well advanced. Client-visible output is still ZERO.**
-Both halves of that sentence are true and both matter.
+**Three modules are built, proven against live client data, and running on the client's own account.
+The demo has been sent. The system is not yet switched on.**
 
 ## What the client can see working right now
 
-**The full intake automation now works end to end** (T2 + T3 complete, 3 Aug): type a name in MASTER → a
-client code is issued → a correctly-structured client folder with 6 sub-folders appears in their live
-OneDrive → the folder link is written back to the sheet. **Robinder has not been shown it yet — the T4 demo
-recording is the only thing between this and client-visible delivery.**
+Type a name in MASTER → a client code is issued → a correctly-routed folder with the right sub-folder set
+appears in their live OneDrive → the folder link is written back → **the right checklist is selected and
+filed into that folder** → **anyone who goes quiet is flagged each morning**.
+**The demo has been sent.** Both Make scenarios run on the client's own Google account; both Apps Script
+triggers are owned by `project1@` (D-262/D-264).
 
 ## What is genuinely done (real work, not padding)
 
@@ -26,52 +27,79 @@ recording is the only thing between this and client-visible delivery.**
 | Design / specs | ✅ Written | MASTER sheet v2 · M3 folder scenario · M6 auto-reply · M9 email AI · M9 connection runbook |
 | Code written | ✅ Verified | `setup_master_sheet.gs` (23 headers, 9 dropdowns) · `master_codes.gs` (YM code engine) |
 | Decision record | ✅ complete, with a SUPERSEDED INDEX | `DECISIONS.md` — nothing lost across chats or devices |
-| **Anything shipped** | ❌ **Zero** | — |
+| **M3** intake → folders | ✅ **Complete** | 3 folder sets · both teams · sanitization · error handlers · idempotent |
+| **M4a** checklist select + file | ✅ **Complete** | 485/482/820-801 proven · real files 422 KB & 97.9 KB · recovery path works |
+| **M5a** dormant detection | ✅ **Complete** | 4 runs · granted files excluded · **ran itself 6:15am 10 Aug** |
+| **Shipped to the client** | ✅ **Demo video sent** | first client-visible delivery |
 
-**Honest read:** roughly the front half of the MVP is done, but it is all *inputs*. A spec is not a
-deliverable (`PROCESS.md` standing rule). We are not at step 0 — we are at the point where the build must
-start producing visible output, and it hasn't yet.
+**Honest read:** ~17 of 40 build-hours ≈ **43%**. The foundation is finished and every remaining module
+reads from a data layer that now works. What is done is genuinely done — proven from execution output, not
+assumed.
 
-## Why nothing has shipped yet — named plainly
+## What is actually left — named plainly
 
-31 Jul went into an M9 mailbox permission — a module that is **days away and not on the critical path** —
-while T2/T3/T4, which produce the client's first working demo, sat untouched. Depth on the wrong thing looks
-identical to progress. Gate **G4 ONE-FOCUS LOCK** in `PROCESS.md` exists to stop this recurring.
+**Nothing in the build is blocked by us.** Both scenarios sit INACTIVE because switching on a 15-minute
+schedule costs ~2,880 operations/month EACH against a 1,000 free allowance — that is the Make Core plan
+(A-01), and Sharjeel has chosen to hold that ask until the tracker import and dashboard make the value
+self-evident (D-273).
+**Operations used this month: 477 of 1,000** (M3 dev 399 · M4 27 · leftovers 43 · misc 8).
+**Next build: the ~48-row tracker import** — needs nobody's permission and unlocks the real dormant list
+plus the dashboard.
 
 ---
 
-## 📍 PHASE PLAN (D-191) — demo first, then harden M3 as the reference implementation
+## 📍 PHASE PLAN — ✅ phases 1 and 2 complete
 
-| Phase | Contents | Time |
+| Phase | Contents | State |
 |---|---|---|
-| **1 — SHIP THE DEMO** 🎯 | T3.1 idempotency proof → T3.2 delete 7 test folders → T4 record + send | ~30 min |
-| **2 — HARDEN M3** | error handlers · sanitization · restore routing · full test matrix · paid plan | ~2.5 h |
-| **3 — M4 onward** | reuse M3's proven patterns per `DEFINITION-OF-DONE.md` | — |
+| ~~1 — SHIP THE DEMO~~ | idempotency proof · delete test folders · record + send | ✅ done 5 Aug |
+| ~~2 — HARDEN M3~~ | error handlers · sanitization · routing · full test matrix | ✅ done 5 Aug (D-207…D-217) |
+| **3 — M4 / M5 onward** 🎯 | M4a ✅ · M5a ✅ · **next: tracker import**, then M4b/M5b | in progress |
 
-The five M3 blockers are **patterns every module needs**, so fixing them once on M3 builds the standard for
-M4–M9 rather than being rework.
+M3's patterns became the standard — M4 and M5 reused them and were built in a fraction of the time.
 
 ## 🎯 THE ONLY ACTIVE THING
 
-**T3.1 — the idempotency proof.** Run `YM-M3-folder-create` once, changing nothing. It must return
-**0 bundles**. One minute, no client dependency, and it gates the demo and everything after it.
+> ### ✅ 5 Aug — M3 IS COMPLETE AND PROVEN (D-197 … D-219)
+> Every branch has executed against the client's live drive: **SET 1 · SET 2 · SET 3 + 820/801 nesting ·
+> Filipino team · Indian team · hostile characters · 4 rows in one run · unroutable safely blocked ·
+> idempotent re-run = 0 bundles.** Routing, sanitization and error handling are all built and verified.
+> Cost measured: **10 ops/client** (SET 1/2), **13** (SET 3).
+> **Blocking go-live: only the Make Core plan (B5).** Both schedules stay OFF until it's bought.
 
-Then, in strict order, nothing else in between:
+> ### 🎯 NEXT: IMPORT THE ~48 REAL CLIENT MATTERS
+> Needs nobody's permission. Turns M5a's dormant list from `0` into the real 16-day and 71-day gaps, and is
+> the hard dependency for the dashboard Robinder asked for. **~2 Make operations** using Bulk Add Rows.
+> ⛔ Do NOT let M3/M4 create 48 folders yet — that is ~670 operations against 523 remaining.
+
+
+~~T3.1 idempotency proof~~ ✅ **PASSED 5 Aug** (D-207) — second run returned 0 bundles.
+
+**How M3 was finished (D-197 → D-219):** reading the saved blueprint through the Make API — instead of
+working from screenshots — exposed three defects in minutes that six hours of canvas screenshots had not:
+the Sheets filter `exist` matched **blank rows** (the `-` / `" – "` folder bug), the array aggregator blocked
+the write-back so `Folder URL` was never written (the 409 loop), and a `ZZZ` column range had bloated the
+blueprint to 1.6 MB. Routing, sanitization, SET 3 nesting and error handling were then pushed the same way.
+**Standing rule (D-202): when a Make scenario misbehaves, fetch the blueprint FIRST.**
+
+Remaining order, nothing else in between:
 
 | Step | What | Who | Time | Produces |
 |---|---|---|---|---|
 | ~~T2~~ | ~~Run the 2 Apps Scripts~~ | ✅ **DONE 3 Aug** | — | MASTER + ENQUIRIES live, `YM-2026-00001` issued |
 | ~~T3~~ | ~~Build `YM-M3-folder-create`~~ | ✅ **DONE 3 Aug** | — | Name typed → folder + 6 sub-folders + link written back to column V. **PROVEN in the live drive.** |
+| ~~T3.1–T3.4~~ | ~~Idempotency · routing · sanitization · error handlers · full test matrix~~ | ✅ **DONE 5 Aug** | — | All 3 folder sets + both teams proven live (D-207 … D-217) |
 | **T4** | Record 60–90s demo, send | Sharjeel | 20 min | **First thing the client can SEE working** |
 
-**T4 is the target.** Everything else waits.
+~~**T4 is the target.**~~ ✅ **Demo sent.** The target is now the tracker import — see the 🎯 block above.
 
-## Explicitly PARKED (do not touch until T4 has shipped)
+## Explicitly PARKED
 
-- M9 mailbox connection — runbook is complete and frozen; execute it when M9 starts, not now
-- The video for Robinder about the Gmail connection — same reason
-- M4/M5/M6/M7/M8 build work
-- Tracker import of the ~48 active rows (after T3, not before)
+- **Dashboard (CR-009 / P2-01)** — Phase 2, billable, and blocked on the tracker import anyway
+- **CRM (CR-001/007 / P3-01)** — Phase 3. Same underlying need as the dashboard: multi-branch oversight
+- **Checklist content rewrite (CR-008)** — Phase 2; we do form, the RMA does content
+- M6 / M7 / M8 build work — after M4b/M5b
+- ⛔ **Switching either scenario ON** — until the Make Core plan exists
 
 ## Client-side pending — 2 Aug: almost everything closed
 
@@ -80,6 +108,9 @@ roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supp
 ✅ **M9 MAILBOX VERIFIED END-TO-END 3 Aug (D-149)** — Run-once returned a real inbox message with full body.
 Connection, scopes and read access all proven. Nothing outstanding on this item.
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
+**➡️ The live outstanding balance now lives in `CLIENT-ASKS.md` — read it, not this section.**
+✅ **Gmail OAuth was NEVER needed** (D-271): `Yale's Gmail connection` already exists on `visa.lodgement@`
+with `gmail.modify`, client-created, valid to Jan 2027. **M4b and M5b are buildable today.**
 
 ## ✅ THREE-AGENT PARALLEL AUDIT — 2 Aug (artifacts · client record · document consistency)
 **Headline: nothing the client sent is lost.** All 143 client files exist; `access/` ↔ `assets/samples/` match
