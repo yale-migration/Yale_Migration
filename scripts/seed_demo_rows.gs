@@ -17,19 +17,25 @@
  * The DEMO- prefix in column A also stops master_codes.gs from burning real code numbers,
  * because that script only fills a code where column A is blank.
  *
- * ── v2, 13 Aug ────────────────────────────────────────────────────────────────
- * v1 failed with a bare "Exception: 485 only. Blank for every other visa type."
- * Cause: MASTER's 10 dropdowns are setAllowInvalid(false), so ONE illegal value
- * rejects the entire setValues() block, and Sheets reports whichever rule's help
- * text it reached first — which named a column that was not the problem.
- * The actual offender was 'REY'; column L's list holds 'Rey'. Case-sensitive.
- *
- * v2 therefore PRE-FLIGHTS every value against the sheet's own live validation
- * lists and prints exactly which row, column and value is wrong BEFORE writing
- * anything. An opaque throw can no longer happen.
+ * ── history, 13 Aug ──────────────────────────────────────────────────────────
+ * v1  threw "Exception: 485 only. Blank for every other visa type." — column X's
+ *     help text, but X was not the fault. The offender was 'REY'; column L's list
+ *     holds 'Rey'. Dropdown matching is case-sensitive, and Sheets reports whichever
+ *     rule's help text it reaches first, NOT the rule that failed.
+ * v2  fixed 'Rey' and added a pre-flight. It still failed, and taught two more things:
+ *       · the pre-flight only understood VALUE_IN_LIST / VALUE_IN_RANGE, so a rule of
+ *         any other kind was skipped — "pre-flight passed" was a FALSE pass;
+ *       · setValues() is LAZY. The write, and therefore the validation, happens at
+ *         flush(). Our flush sat outside the try/catch, so the exception escaped and
+ *         the row-by-row fallback never ran — leaving a PARTIAL write behind.
+ * v3  writes one row at a time with flush INSIDE the try, so a bad row is skipped and
+ *     named while the rest still land. Column X (Skills Authority) is left blank on
+ *     every row: it is the one column whose rule we cannot fully read, and no
+ *     dashboard view uses it. inspectValidation() now dumps every rule on demand.
  *
  * RUN:  MASTER → Extensions → Apps Script → Run → seedDemoRows
  *       to undo:                                Run → removeDemoRows
+ *       to diagnose a rejection:                Run → inspectValidation
  */
 
 var SEED_TAB    = 'MASTER';
@@ -63,28 +69,29 @@ function seedDemoRows() {
   }
   Logger.log('Pre-flight passed — every value is legal for its dropdown.');
 
-  // ---- write ----
-  var start = sh.getLastRow() + 1;
-  try {
-    sh.getRange(start, 1, rows.length, rows[0].length).setValues(rows);
-  } catch (e) {
-    // should be unreachable after pre-flight; if it happens, name the exact row
-    Logger.log('Block write failed (' + e.message + '). Retrying row by row to find the culprit…');
-    var written = 0;
-    for (var i = 0; i < rows.length; i++) {
-      try {
-        sh.getRange(start + written, 1, 1, rows[i].length).setValues([rows[i]]);
-        written++;
-      } catch (e2) {
-        Logger.log('  ✖ ' + rows[i][0] + ' rejected: ' + e2.message);
-      }
+  // ---- write, ONE ROW AT A TIME ----
+  // setValues() is lazy: the write — and therefore the validation check — actually
+  // happens at flush(). A flush outside the try/catch means the exception escapes and
+  // the fallback never runs, which is exactly what happened on the v2 attempt.
+  // So: one row, one flush, both inside the try. A rejected row is skipped and named;
+  // the rest still land, so the dashboard gets data even if something is off.
+  var written = 0, failed = [];
+  for (var i = 0; i < rows.length; i++) {
+    try {
+      sh.getRange(sh.getLastRow() + 1, 1, 1, rows[i].length).setValues([rows[i]]);
+      SpreadsheetApp.flush();               // inside the try — this is where it throws
+      written++;
+    } catch (e) {
+      failed.push(rows[i][0] + ' — ' + e.message);
     }
-    Logger.log(written + ' of ' + rows.length + ' rows written.');
-    return;
   }
 
-  SpreadsheetApp.flush();
-  Logger.log(rows.length + ' demo rows added, starting at row ' + start + '.');
+  if (failed.length) {
+    Logger.log('⚠️ ' + failed.length + ' row(s) rejected:');
+    failed.forEach(function (f) { Logger.log('  ✖ ' + f); });
+    Logger.log('Run inspectValidation() to see exactly which rule is doing it.');
+  }
+  Logger.log(written + ' of ' + rows.length + ' demo rows added.');
   Logger.log('Open the DASHBOARD tab. Expected headline numbers:');
   Logger.log('  14 clients · 12 open · 4 going quiet · 1 granted · 4 no folder · 6 no checklist');
   Logger.log('REMOVE BEFORE THE REAL IMPORT:  Run → removeDemoRows');
@@ -105,6 +112,34 @@ function removeDemoRows() {
   }
   SpreadsheetApp.flush();
   Logger.log(removed + ' demo rows removed. MASTER holds only real clients now.');
+}
+
+/**
+ * Diagnostic — dumps every validation rule on MASTER so a rejection can never be a
+ * mystery again. Run it any time a write is refused. Reads only; changes nothing.
+ */
+function inspectValidation() {
+  var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
+  if (!sh) { Logger.log('No tab named "' + SEED_TAB + '".'); return; }
+
+  Logger.log('Validation rules on ' + SEED_TAB + ' row 2:');
+  var headers = sh.getRange(1, 1, 1, 25).getValues()[0];
+  for (var col = 1; col <= 25; col++) {
+    var dv = sh.getRange(2, col).getDataValidation();
+    var letter = String.fromCharCode(64 + col);
+    if (!dv) { Logger.log('  ' + letter + ' ' + headers[col - 1] + ' — no rule'); continue; }
+    var type = String(dv.getCriteriaType());
+    var vals = dv.getCriteriaValues().map(function (v) {
+      if (Object.prototype.toString.call(v) === '[object Array]') return v.join(' | ');
+      if (v && typeof v.getA1Notation === 'function') return 'range ' + v.getA1Notation();
+      return String(v);
+    }).join('  ~  ');
+    Logger.log('  ' + letter + ' ' + headers[col - 1] +
+               '\n      type: ' + type +
+               '\n      values: ' + vals +
+               '\n      allowInvalid: ' + dv.getAllowInvalid() +
+               '\n      help: ' + (dv.getHelpText() || '(none)'));
+  }
 }
 
 /* -------------------------------------------------------------- pre-flight */
@@ -170,7 +205,7 @@ function demoRows_() {
   return [
     // ---- open, contacted recently ---------------------------------------------
     r_('001','CL-101','ANJALI SHARMA',     B,'0412 000 101','demo101@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(3),  B, ago_(40),'Referral', F,B,'VETASSESS','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
+       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(3),  B, ago_(40),'Referral', F,B,B,'485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
     r_('002','CL-102','MARIA SANTOS',      B,'0412 000 102','demo102@example.com','Onshore','482','Main',
        'BRISBANE','FILIPINO','Rey','Documents Complete',P,B,B,B, ago_(2), B, ago_(35),'Facebook', F,B,B,'482_SKILLS-IN-DEMAND.pdf'),
     r_('003','CL-103','HARPREET SINGH',    B,'0412 000 103','demo103@example.com','Onshore','189','Main',
@@ -184,7 +219,7 @@ function demoRows_() {
 
     // ---- going quiet — these four should shade red in view 4 -------------------
     r_('007','CL-107','RAJESH KUMAR',      B,'0412 000 107','demo107@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(25), ago_(11), ago_(48),'Walk-in', B,B,'TRA',B),
+       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(25), ago_(11), ago_(48),'Walk-in', B,B,B,B),
     r_('008','CL-108','ANA CRUZ',          B,'0412 000 108','demo108@example.com','Onshore','820/801','Main',
        'BRISBANE','FILIPINO','Rey','Documents Pending',P,B,B,B, ago_(19), ago_(5), ago_(44),'Phone', B,B,B,B),
     r_('009','CL-109','SIMRAN KAUR',       B,'0412 000 109','demo109@example.com','Onshore','491','Main',
@@ -194,13 +229,13 @@ function demoRows_() {
 
     // ---- variants, so the visa mix is not all "Main" ---------------------------
     r_('011','CL-111','DEV SHARMA','ANJALI SHARMA','0412 000 111','demo111@example.com','Onshore','485','Dependent',
-       'BRISBANE','INDIAN','Star','Documents Pending',P,B,B,B, ago_(12), B, ago_(40),'Referral', F,B,'VETASSESS',B),
+       'BRISBANE','INDIAN','Star','Documents Pending',P,B,B,B, ago_(12), B, ago_(40),'Referral', F,B,B,B),
     r_('012','CL-112','LIWAYWAY DELA CRUZ','JOSE REYES','0412 000 112','demo112@example.com','Onshore','500','Subsequent Entrant',
        'BRISBANE','FILIPINO','Rey','Documents Complete',P,B,B,B, ago_(4), B, ago_(30),'WhatsApp', F,B,B,B),
 
     // ---- decided, so the outcomes view is not empty ----------------------------
     r_('013','CL-113','PRIYA MEHTA',       B,'0412 000 113','demo113@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Closed','Granted', ago_(9), B, B, ago_(9), B, ago_(150),'Website', F,B,'TRA','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
+       'BRISBANE','INDIAN','RJ','Closed','Granted', ago_(9), B, B, ago_(9), B, ago_(150),'Website', F,B,B,'485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
     r_('014','CL-114','CARLO BAUTISTA',    B,'0412 000 114','demo114@example.com','Offshore','500','Main',
        'BRISBANE','FILIPINO','Rey','Closed','Refused', B, B,'Insufficient financial capacity evidence', ago_(14), B, ago_(120),'Facebook', B,B,B,B)
   ];

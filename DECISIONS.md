@@ -2848,3 +2848,32 @@ The QUERY blocks were already correct (`N is null or N = 'Pending'`); only the K
 Now fixed, and the two coverage tiles are scoped to open matters so closed files cannot inflate them.
 
 **This is exactly what an empty dashboard hides:** a broken formula and a correct one both render 0.
+
+## D-293 | `setValues()` is LAZY — validation fires at `flush()`, so a try/catch around the write is useless
+Follow-on from D-292. The v2 seeder logged **"Pre-flight passed"** and then threw anyway, at the line
+*after* the guarded write. Two separate defects, both worth keeping:
+
+**1 · The pre-flight was a false pass.** `allowedFor_()` handled `VALUE_IN_LIST` and `VALUE_IN_RANGE`
+and returned `null` for anything else — and `null` meant *"no rule, skip this column"*. Any rule of a
+different kind was therefore **silently exempted from checking**. A validator that cannot read a rule
+must report *"cannot verify"*, never *"passed"*. Treating unknown as clean is how a check becomes
+theatre.
+
+**2 · `setValues()` does not write when you call it.** Apps Script batches; the write — and with it
+the data-validation check — happens at **`SpreadsheetApp.flush()`**. Our `flush()` sat *outside* the
+`try`, so the exception bypassed the catch entirely, the row-by-row fallback never ran, and some rows
+had already landed. **The result was the partial write we had explicitly designed against.**
+> **Rule: any `try` guarding a Sheets write must contain the `flush()`.** Otherwise the guard is
+> attached to the wrong statement and the failure surfaces somewhere you are not looking.
+
+**v3 fix:** one row per iteration, `setValues()` + `flush()` both inside the try. A rejected row is
+skipped and named; every other row still lands, so the dashboard gets data even when something is off.
+Added `inspectValidation()`, which dumps criteria type, values, `allowInvalid` and help text for all
+25 columns — a rejection can never be a guessing game again.
+
+**Column X dropped from the demo data.** It is the only column whose rule we cannot fully read, and
+**no dashboard view references it.** Fighting a constraint that buys us nothing is not engineering.
+X remains fully in play for M4's real checklist selection — this is a demo-data decision only.
+
+**Cost of the whole detour: three runs and no client impact.** Worth it — it surfaced the KPI defect
+in D-292 that would otherwise have reached Robinder as three tiles permanently reading zero.
