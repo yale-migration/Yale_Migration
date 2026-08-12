@@ -2818,3 +2818,33 @@ switching the first two modules on. Raise it when M6/M9 are ready, with M3/M4 al
 evidence, exactly as D-273 intended.
 
 **Status change:** A-01 🔴 blocking go-live → 🟢 needed for M6/M9 later.
+
+## D-292 | Strict dropdowns make `setValues()` all-or-nothing — and the error names the wrong column
+`seedDemoRows` v1 failed with a bare `Exception: 485 only. Blank for every other visa type.`
+That help text belongs to **column X (Skills Authority)**. X was not the problem.
+
+**Actual cause:** `'REY'`. Column L's list is
+`['Robinder','Inder','Gayatri','Priyanka','Fiza','RJ','Star','Rey','Cristelle','Unassigned']` —
+**`'Rey'`, not `'REY'`.** Dropdown matching is case-sensitive.
+
+**Two things worth keeping:**
+1. **`setAllowInvalid(false)` DOES block Apps Script writes**, not only typing. One illegal value in a
+   14×25 block rejects **all 350 cells** — the write is atomic. (Nothing was written, so MASTER stayed
+   clean; the failure was safe, just opaque.)
+2. **Sheets reports whichever rule's help text it reaches first, not the rule that failed.** X was the
+   only one of the ten dropdowns with `setHelpText`, so its message surfaced for a violation two
+   columns away. Chasing that message would have wasted the session.
+
+**Fix, and the general pattern:** `seedDemoRows` v2 pre-flights every value against the sheet's own
+live validation lists (`getDataValidation().getCriteriaValues()`) and prints *row · column · value ·
+allowed* for each violation **before writing anything**. A block write into validated columns should
+always be preceded by a validation read — never trust the exception to tell you where the fault is.
+
+**Second defect, found only because demo data existed — the reason for seeding at all:**
+the DASHBOARD's `Going quiet`, `Folder missing` and `Checklist missing` tiles counted rows where
+`Visa Outcome` was **blank**. But the dropdown offers `Pending`, and real rows use it — so every one of
+those three tiles would have read **0 against real client data** while looking perfectly healthy.
+The QUERY blocks were already correct (`N is null or N = 'Pending'`); only the KPI formulas were wrong.
+Now fixed, and the two coverage tiles are scoped to open matters so closed files cannot inflate them.
+
+**This is exactly what an empty dashboard hides:** a broken formula and a correct one both render 0.

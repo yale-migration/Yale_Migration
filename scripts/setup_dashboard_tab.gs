@@ -122,13 +122,22 @@ function title_(sh) {
 function kpis_(sh) {
   var labels = ['Clients on file', 'Open matters', 'Going quiet', 'Granted', 'Folder missing', 'Checklist missing'];
   var d = "'" + DATA_TAB + "'!";
+  // A matter is OPEN when its outcome is blank OR "Pending". Both must be counted:
+  // the dropdown offers "Pending" and real rows use it, while automation-created rows
+  // leave it blank. Counting only blanks under-reported every operational tile.
+  var open = function (extra) {
+    return '=COUNTIFS(' + d + 'A2:A,"<>",' + extra + d + 'N2:N,"")' +
+           '+COUNTIFS(' + d + 'A2:A,"<>",' + extra + d + 'N2:N,"Pending")';
+  };
+  var quiet = d + 'S2:S,"<"&TODAY(),' + d + 'S2:S,"<>",';
+
   var formulas = [
     '=COUNTA(' + d + 'A2:A)',
-    '=COUNTIFS(' + d + 'A2:A,"<>",' + d + 'N2:N,"")+COUNTIFS(' + d + 'A2:A,"<>",' + d + 'N2:N,"Pending")',
-    '=COUNTIFS(' + d + 'A2:A,"<>",' + d + 'S2:S,"<"&TODAY(),' + d + 'S2:S,"<>",' + d + 'N2:N,"")',
+    open(''),                                  // open matters
+    open(quiet),                               // open AND overdue for follow-up
     '=COUNTIF(' + d + 'N2:N,"Granted")',
-    '=COUNTIFS(' + d + 'A2:A,"<>",' + d + 'V2:V,"")',
-    '=COUNTIFS(' + d + 'A2:A,"<>",' + d + 'Y2:Y,"")'
+    open(d + 'V2:V,"",'),                      // open with no folder yet
+    open(d + 'Y2:Y,"",')                       // open with no checklist yet
   ];
 
   sh.getRange(4, 1, 1, 6).setValues([labels])

@@ -17,38 +17,81 @@
  * The DEMO- prefix in column A also stops master_codes.gs from burning real code numbers,
  * because that script only fills a code where column A is blank.
  *
- * RUN:  MASTER → Extensions → Apps Script → paste → Run → seedDemoRows
- *       to undo:                                    Run → removeDemoRows
+ * ── v2, 13 Aug ────────────────────────────────────────────────────────────────
+ * v1 failed with a bare "Exception: 485 only. Blank for every other visa type."
+ * Cause: MASTER's 10 dropdowns are setAllowInvalid(false), so ONE illegal value
+ * rejects the entire setValues() block, and Sheets reports whichever rule's help
+ * text it reached first — which named a column that was not the problem.
+ * The actual offender was 'REY'; column L's list holds 'Rey'. Case-sensitive.
+ *
+ * v2 therefore PRE-FLIGHTS every value against the sheet's own live validation
+ * lists and prints exactly which row, column and value is wrong BEFORE writing
+ * anything. An opaque throw can no longer happen.
+ *
+ * RUN:  MASTER → Extensions → Apps Script → Run → seedDemoRows
+ *       to undo:                                Run → removeDemoRows
  */
 
 var SEED_TAB    = 'MASTER';
 var DEMO_PREFIX = 'DEMO-';
 var FOLDER_STUB = 'https://onedrive.live.com/?id=DEMO';
 
+/** Columns carrying a dropdown, and their human names — used by the pre-flight. */
+var CHECK_COLS = {
+  7: 'G Location', 8: 'H Visa Type', 9: 'I Visa Variant', 10: 'J Office', 11: 'K Team',
+  12: 'L Consultant', 13: 'M Stage', 14: 'N Outcome', 21: 'U Source', 24: 'X Skills Authority'
+};
+
 function seedDemoRows() {
-  var ss = SpreadsheetApp.getActive();
-  var sh = ss.getSheetByName(SEED_TAB);
+  var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
   if (!sh) { Logger.log('ABORTED — no tab named "' + SEED_TAB + '".'); return; }
 
   if (countDemo_(sh) > 0) {
-    Logger.log('Demo rows are already present. Run removeDemoRows() first if you want a clean reseed.');
+    Logger.log('Demo rows are already present. Run removeDemoRows() first for a clean reseed.');
     return;
   }
 
   var rows = demoRows_();
-  var start = sh.getLastRow() + 1;
-  sh.getRange(start, 1, rows.length, rows[0].length).setValues(rows);
-  SpreadsheetApp.flush();
 
+  // ---- pre-flight: check every value against the sheet's OWN validation lists ----
+  var problems = preflight_(sh, rows);
+  if (problems.length) {
+    Logger.log('ABORTED — ' + problems.length + ' value(s) would be rejected by MASTER\'s dropdowns.');
+    Logger.log('Nothing was written. Fix these and re-run:');
+    problems.forEach(function (p) { Logger.log('  • ' + p); });
+    return;
+  }
+  Logger.log('Pre-flight passed — every value is legal for its dropdown.');
+
+  // ---- write ----
+  var start = sh.getLastRow() + 1;
+  try {
+    sh.getRange(start, 1, rows.length, rows[0].length).setValues(rows);
+  } catch (e) {
+    // should be unreachable after pre-flight; if it happens, name the exact row
+    Logger.log('Block write failed (' + e.message + '). Retrying row by row to find the culprit…');
+    var written = 0;
+    for (var i = 0; i < rows.length; i++) {
+      try {
+        sh.getRange(start + written, 1, 1, rows[i].length).setValues([rows[i]]);
+        written++;
+      } catch (e2) {
+        Logger.log('  ✖ ' + rows[i][0] + ' rejected: ' + e2.message);
+      }
+    }
+    Logger.log(written + ' of ' + rows.length + ' rows written.');
+    return;
+  }
+
+  SpreadsheetApp.flush();
   Logger.log(rows.length + ' demo rows added, starting at row ' + start + '.');
-  Logger.log('Open the DASHBOARD tab — every view should now have numbers in it.');
-  Logger.log('Expected: 14 clients · 12 open · 4 going quiet · 1 granted · 6 without a folder · 7 without a checklist.');
+  Logger.log('Open the DASHBOARD tab. Expected headline numbers:');
+  Logger.log('  14 clients · 12 open · 4 going quiet · 1 granted · 4 no folder · 6 no checklist');
   Logger.log('REMOVE BEFORE THE REAL IMPORT:  Run → removeDemoRows');
 }
 
 function removeDemoRows() {
-  var ss = SpreadsheetApp.getActive();
-  var sh = ss.getSheetByName(SEED_TAB);
+  var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
   if (!sh) { Logger.log('ABORTED — no tab named "' + SEED_TAB + '".'); return; }
 
   var last = sh.getLastRow();
@@ -58,16 +101,47 @@ function removeDemoRows() {
   var removed = 0;
   // bottom-up, so deleting a row never shifts the ones still to check
   for (var i = codes.length - 1; i >= 0; i--) {
-    if (String(codes[i][0]).indexOf(DEMO_PREFIX) === 0) {
-      sh.deleteRow(i + 2);
-      removed++;
-    }
+    if (String(codes[i][0]).indexOf(DEMO_PREFIX) === 0) { sh.deleteRow(i + 2); removed++; }
   }
   SpreadsheetApp.flush();
   Logger.log(removed + ' demo rows removed. MASTER holds only real clients now.');
 }
 
-/* ------------------------------------------------------------------ data */
+/* -------------------------------------------------------------- pre-flight */
+
+/** The allowed values for a column, read live from the sheet. null = no dropdown. */
+function allowedFor_(sh, col) {
+  var dv = sh.getRange(2, col).getDataValidation();
+  if (!dv) return null;
+  var type = dv.getCriteriaType();
+  var vals = dv.getCriteriaValues();
+  if (type === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) return vals[0];
+  if (type === SpreadsheetApp.DataValidationCriteria.VALUE_IN_RANGE) {
+    return vals[0].getValues().map(function (r) { return r[0]; })
+                  .filter(function (v) { return v !== '' && v !== null; });
+  }
+  return null;
+}
+
+function preflight_(sh, rows) {
+  var problems = [];
+  Object.keys(CHECK_COLS).forEach(function (key) {
+    var col     = Number(key);
+    var allowed = allowedFor_(sh, col);
+    if (!allowed) return;                       // no dropdown on this column
+    rows.forEach(function (row) {
+      var v = row[col - 1];
+      if (v === '' || v === null) return;       // blank is always acceptable
+      if (allowed.indexOf(v) === -1) {
+        problems.push(row[0] + ' · ' + CHECK_COLS[key] + ' · "' + v +
+                      '" is not allowed. Allowed: ' + allowed.join(' | '));
+      }
+    });
+  });
+  return problems;
+}
+
+/* ------------------------------------------------------------------- data */
 
 function countDemo_(sh) {
   var last = sh.getLastRow();
@@ -86,49 +160,49 @@ function ago_(n) {
 }
 
 /**
- * A–Y, 25 columns:
- * A code · B their id · C name · D party2 · E phone · F email · G location · H visa · I variant
- * J office · K team · L consultant · M stage · N outcome · O grant · P expiry · Q refusal
- * R last contact · S next due · T date added · U source · V folder · W notes · X authority · Y checklist
+ * A–Y, 25 columns.
+ * Every dropdown value below is copied EXACTLY from setup_master_sheet.gs — note
+ * 'Rey' not 'REY', and 'Pending' rather than blank for an undecided outcome.
+ * Skills Authority (X) is filled ONLY on 485 rows, per that column's own rule.
  */
 function demoRows_() {
-  var F = FOLDER_STUB, B = '';
+  var F = FOLDER_STUB, B = '', P = 'Pending';
   return [
-    // ---- open, healthy contact -------------------------------------------------
-    r_('001','CL-101','ANJALI SHARMA',    B,'0412 000 101','demo101@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Documents Pending','',B,B,B, ago_(3),  B, ago_(40),'Referral', F, B,'VETASSESS','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
-    r_('002','CL-102','MARIA SANTOS',     B,'0412 000 102','demo102@example.com','Onshore','482','Main',
-       'BRISBANE','FILIPINO','REY','Documents Complete','',B,B,B, ago_(2), B, ago_(35),'Facebook', F, B, B,'482_SKILLS-IN-DEMAND.pdf'),
-    r_('003','CL-103','HARPREET SINGH',   B,'0412 000 103','demo103@example.com','Onshore','189','Main',
-       'BRISBANE','INDIAN','RJ','Ready for Lodgement','',B,B,B, ago_(1), B, ago_(60),'Website', F, B,'Engineers Australia','189_SKILLED-INDEPENDENT.pdf'),
-    r_('004','CL-104','JOSE REYES',       B,'0412 000 104','demo104@example.com','Offshore','500','Main',
-       'BRISBANE','FILIPINO','REY','Lodged','',B,B,B, ago_(5), B, ago_(70),'Instagram', F, B, B,'500_STUDENT-OFFSHORE.pdf'),
-    r_('005','CL-105','NEHA PATEL',       B,'0412 000 105','demo105@example.com','Onshore','190','Main',
-       'BRISBANE','INDIAN','Star','Lodged','',B,B,B, ago_(6), B, ago_(85),'Referral', F, B,'ACECQA','190_SKILLED-NOMINATED.docx'),
-    r_('006','CL-106','GRACE MENDOZA',    B,'0412 000 106','demo106@example.com','Onshore','407','Main',
-       'BRISBANE','FILIPINO','REY','Lodged','',B,B,B, ago_(4), B, ago_(52),'WhatsApp', F, B, B,'407_TRAINING.pdf'),
+    // ---- open, contacted recently ---------------------------------------------
+    r_('001','CL-101','ANJALI SHARMA',     B,'0412 000 101','demo101@example.com','Onshore','485','Main',
+       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(3),  B, ago_(40),'Referral', F,B,'VETASSESS','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
+    r_('002','CL-102','MARIA SANTOS',      B,'0412 000 102','demo102@example.com','Onshore','482','Main',
+       'BRISBANE','FILIPINO','Rey','Documents Complete',P,B,B,B, ago_(2), B, ago_(35),'Facebook', F,B,B,'482_SKILLS-IN-DEMAND.pdf'),
+    r_('003','CL-103','HARPREET SINGH',    B,'0412 000 103','demo103@example.com','Onshore','189','Main',
+       'BRISBANE','INDIAN','RJ','Ready for Lodgement',P,B,B,B, ago_(1), B, ago_(60),'Website', F,B,B,'189_SKILLED-INDEPENDENT.pdf'),
+    r_('004','CL-104','JOSE REYES',        B,'0412 000 104','demo104@example.com','Offshore','500','Main',
+       'BRISBANE','FILIPINO','Rey','Lodged',P,B,B,B, ago_(5), B, ago_(70),'Instagram', F,B,B,'500_STUDENT-OFFSHORE.pdf'),
+    r_('005','CL-105','NEHA PATEL',        B,'0412 000 105','demo105@example.com','Onshore','190','Main',
+       'BRISBANE','INDIAN','Star','Lodged',P,B,B,B, ago_(6), B, ago_(85),'Referral', F,B,B,'190_SKILLED-NOMINATED.docx'),
+    r_('006','CL-106','GRACE MENDOZA',     B,'0412 000 106','demo106@example.com','Onshore','407','Main',
+       'BRISBANE','FILIPINO','Rey','Lodged',P,B,B,B, ago_(4), B, ago_(52),'WhatsApp', F,B,B,'407_TRAINING.pdf'),
 
-    // ---- going quiet — these should shade red on the dashboard -----------------
-    r_('007','CL-107','RAJESH KUMAR',     B,'0412 000 107','demo107@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Documents Pending','',B,B,B, ago_(25), ago_(11), ago_(48),'Walk-in', B, B,'TRA', B),
-    r_('008','CL-108','ANA CRUZ',         B,'0412 000 108','demo108@example.com','Onshore','820/801','Main',
-       'BRISBANE','FILIPINO','REY','Documents Pending','',B,B,B, ago_(19), ago_(5), ago_(44),'Phone', B, B, B, B),
-    r_('009','CL-109','SIMRAN KAUR',      B,'0412 000 109','demo109@example.com','Onshore','491','Main',
-       'TOWNSVILLE','INDIAN','RJ','Documents Pending','',B,B,B, ago_(31), ago_(17), ago_(66),'Referral', B, B,'VETASSESS', B),
-    r_('010','CL-110','MARK VILLANUEVA',  B,'0412 000 110','demo110@example.com','Onshore','189','Main',
-       'TOWNSVILLE','FILIPINO','Star','Documents Pending','',B,B,B, ago_(16), ago_(2), ago_(38),'Email', B, B, B, B),
+    // ---- going quiet — these four should shade red in view 4 -------------------
+    r_('007','CL-107','RAJESH KUMAR',      B,'0412 000 107','demo107@example.com','Onshore','485','Main',
+       'BRISBANE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(25), ago_(11), ago_(48),'Walk-in', B,B,'TRA',B),
+    r_('008','CL-108','ANA CRUZ',          B,'0412 000 108','demo108@example.com','Onshore','820/801','Main',
+       'BRISBANE','FILIPINO','Rey','Documents Pending',P,B,B,B, ago_(19), ago_(5), ago_(44),'Phone', B,B,B,B),
+    r_('009','CL-109','SIMRAN KAUR',       B,'0412 000 109','demo109@example.com','Onshore','491','Main',
+       'TOWNSVILLE','INDIAN','RJ','Documents Pending',P,B,B,B, ago_(31), ago_(17), ago_(66),'Referral', B,B,B,B),
+    r_('010','CL-110','MARK VILLANUEVA',   B,'0412 000 110','demo110@example.com','Onshore','189','Main',
+       'TOWNSVILLE','FILIPINO','Star','Documents Pending',P,B,B,B, ago_(16), ago_(2), ago_(38),'Email', B,B,B,B),
 
     // ---- variants, so the visa mix is not all "Main" ---------------------------
-    r_('011','CL-111','DEV SHARMA',       'ANJALI SHARMA','0412 000 111','demo111@example.com','Onshore','485','Dependent',
-       'BRISBANE','INDIAN','Star','Documents Pending','',B,B,B, ago_(12), B, ago_(40),'Referral', F, B,'VETASSESS', B),
+    r_('011','CL-111','DEV SHARMA','ANJALI SHARMA','0412 000 111','demo111@example.com','Onshore','485','Dependent',
+       'BRISBANE','INDIAN','Star','Documents Pending',P,B,B,B, ago_(12), B, ago_(40),'Referral', F,B,'VETASSESS',B),
     r_('012','CL-112','LIWAYWAY DELA CRUZ','JOSE REYES','0412 000 112','demo112@example.com','Onshore','500','Subsequent Entrant',
-       'BRISBANE','FILIPINO','REY','Documents Complete','',B,B,B, ago_(4), B, ago_(30),'WhatsApp', F, B, B, B),
+       'BRISBANE','FILIPINO','Rey','Documents Complete',P,B,B,B, ago_(4), B, ago_(30),'WhatsApp', F,B,B,B),
 
     // ---- decided, so the outcomes view is not empty ----------------------------
-    r_('013','CL-113','PRIYA MEHTA',      B,'0412 000 113','demo113@example.com','Onshore','485','Main',
-       'BRISBANE','INDIAN','RJ','Lodged','Granted', ago_(9), B, B, ago_(9), B, ago_(150),'Website', F, B,'TRA','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
-    r_('014','CL-114','CARLO BAUTISTA',   B,'0412 000 114','demo114@example.com','Offshore','500','Main',
-       'BRISBANE','FILIPINO','REY','Lodged','Refused', B, B,'Insufficient financial capacity evidence', ago_(14), B, ago_(120),'Facebook', B, B, B, B)
+    r_('013','CL-113','PRIYA MEHTA',       B,'0412 000 113','demo113@example.com','Onshore','485','Main',
+       'BRISBANE','INDIAN','RJ','Closed','Granted', ago_(9), B, B, ago_(9), B, ago_(150),'Website', F,B,'TRA','485_INDIVIDUAL_MASTERS-BACHELORS.pdf'),
+    r_('014','CL-114','CARLO BAUTISTA',    B,'0412 000 114','demo114@example.com','Offshore','500','Main',
+       'BRISBANE','FILIPINO','Rey','Closed','Refused', B, B,'Insufficient financial capacity evidence', ago_(14), B, ago_(120),'Facebook', B,B,B,B)
   ];
 }
 
