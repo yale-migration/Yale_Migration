@@ -142,6 +142,70 @@ function inspectValidation() {
   }
 }
 
+/* ------------------------------------------------------------------ repair */
+
+/**
+ * ONE-CLICK REPAIR + RESEED. Run this.
+ *   1. reports what validation sits on column Y
+ *   2. strips it — Y is "Checklist Filed", a free-text done-marker; it should have none
+ *   3. clears every data row from MASTER (it holds no real clients yet)
+ *   4. reseeds the 14 demo rows
+ */
+function repairAndReseed() {
+  clearChecklistFiledValidation();
+  resetMasterRows();
+  seedDemoRows();
+}
+
+/**
+ * Column Y inherited column X's Skills Authority dropdown.
+ * setup_m4_checklist_map.gs creates Y with insertColumnsAfter(), and Sheets copies
+ * formatting AND data validation from the column to the left — which was X.
+ * So "Checklist Filed" has been silently carrying a 5-value dropdown that rejects
+ * every filename M4 puts in it. Read-only writes through the Sheets API (i.e. Make)
+ * are unaffected, which is why M4's 8 runs never errored — but any Apps Script write
+ * or manual entry is refused. Strip it.
+ */
+function clearChecklistFiledValidation() {
+  var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
+  if (!sh) { Logger.log('No tab named "' + SEED_TAB + '".'); return; }
+
+  var col = 25;                                    // Y — Checklist Filed
+  var dv  = sh.getRange(2, col).getDataValidation();
+  if (!dv) { Logger.log('Column Y already has no validation rule — nothing to strip.'); return; }
+
+  Logger.log('Column Y is carrying a rule that does not belong to it:');
+  Logger.log('   type: ' + dv.getCriteriaType());
+  Logger.log('   help: ' + (dv.getHelpText() || '(none)'));
+  sh.getRange(2, col, sh.getMaxRows() - 1, 1).clearDataValidations();
+  SpreadsheetApp.flush();
+  Logger.log('✅ Stripped. "Checklist Filed" is free text again, as M4 expects.');
+}
+
+/**
+ * Clears every data row from MASTER. Safe right now — MASTER holds no real clients
+ * (the dashboard read 0 before any seeding). Logs everything it deletes first, so
+ * there is a record if anything unexpected is in there.
+ */
+function resetMasterRows() {
+  var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
+  if (!sh) { Logger.log('No tab named "' + SEED_TAB + '".'); return; }
+
+  var last = sh.getLastRow();
+  if (last < 2) { Logger.log('MASTER already has no data rows.'); return; }
+
+  var n = last - 1;
+  var seen = sh.getRange(2, 1, n, 3).getValues();
+  Logger.log('Removing ' + n + ' row(s) from MASTER:');
+  seen.forEach(function (r, i) {
+    Logger.log('   row ' + (i + 2) + ': ' + (r[0] || '(no code)') + ' · ' + (r[2] || '(no name)'));
+  });
+
+  sh.deleteRows(2, n);
+  SpreadsheetApp.flush();
+  Logger.log('✅ MASTER is empty and ready for a clean seed.');
+}
+
 /* -------------------------------------------------------------- pre-flight */
 
 /** The allowed values for a column, read live from the sheet. null = no dropdown. */

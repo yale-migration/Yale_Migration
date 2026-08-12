@@ -2877,3 +2877,42 @@ X remains fully in play for M4's real checklist selection — this is a demo-dat
 
 **Cost of the whole detour: three runs and no client impact.** Worth it — it surfaced the KPI defect
 in D-292 that would otherwise have reached Robinder as three tiles permanently reading zero.
+
+## D-294 | 🔴 REAL DEFECT — column Y silently inherited column X's dropdown, and a failed write burned real client codes
+Two production findings, both surfaced only because we insisted on putting data in front of the
+dashboard before the client did.
+
+### 1 · `Checklist Filed` (Y) is carrying `Skills Authority` (X)'s validation rule
+**Evidence, unambiguous:** the v3 seeder writes row by row. Exactly seven rows were rejected —
+DEMO-001…006 and 013 — and **those are precisely the seven with a value in column Y.** Every accepted
+row has Y blank. The rejection message was X's help text (*"485 only. Blank for every other visa
+type."*), which is why two earlier sessions chased the wrong column.
+
+**Cause:** `setup_m4_checklist_map.gs` creates Y with `insertColumnsAfter()`. **Google Sheets copies
+formatting *and data validation* from the column to the left** — which was X. So Y has been carrying a
+5-value dropdown (`ACECQA | TRA | VETASSESS | Engineers Australia | Not required…`) that rejects every
+checklist filename M4 is designed to write there.
+
+**Why M4's 8 runs never errored:** writes through the **Sheets API** (Make) do not enforce data
+validation; only the UI and Apps Script do. So the automation path was never affected — but **manual
+entry and any Apps Script write to that column have been silently refused all along**, and the cells
+carry invalid-data flags. Fixed by `clearChecklistFiledValidation()`.
+
+> **General rule: `insertColumnsAfter()` inherits the left neighbour's validation.** Any script that
+> adds a column must explicitly `clearDataValidations()` on it unless a rule is intended.
+
+### 2 · The v2 partial write burned real `YM-2026-#####` codes
+The dashboard read **16 clients** after the v3 run added only 7 — so nine orphan rows existed.
+`removeDemoRows()` could not see them because their column A does **not** start with `DEMO-`.
+
+**Chain:** v2's block write committed partially (D-293) → those rows had a name in C but a blank code
+in A → `master_codes.gs` runs every 5 minutes and issues a code to any row with a name and no valid
+code → **nine real sequence numbers were consumed by wreckage.** The `DEMO-` prefix was designed to
+prevent exactly this, and a partial write defeated it by leaving column A empty.
+
+**Lesson:** a guard that depends on a value being present fails open when the write that would have
+placed it dies halfway. Prefer guards that fail closed. Cleanup added as `resetMasterRows()`, which
+logs every row it deletes before deleting it.
+
+**Impact of the burned codes: cosmetic only.** `YM-2026-#####` is a sequence, not a count; gaps are
+invisible to the client and nothing references the missing numbers. Not worth resetting the counter.
