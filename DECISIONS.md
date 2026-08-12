@@ -2741,3 +2741,45 @@ morning?" — a snapshot with 208 revisions can still be abandoned.
 
 **New ask A-14:** the link to the Google Sheet they use now. Until we have it, the import source is
 unknown and the dashboard has nothing real to sit on.
+
+## D-290 | ⚠️ PARTIAL REVERSAL OF D-271 — Make's Gmail draft module needs a WIDER scope than we have
+**Verified 13 Aug against the live API, before building anything:**
+
+`connections_get(9452213)` returns exactly 5 scopes on `Yale's Gmail connection` (`visa.lodgement@`):
+`userinfo.profile` · `userinfo.email` · `openid` · **`gmail.modify`** · **`gmail.readonly`**
+
+`app-module_get(google-email, ActionCreateDraft)` — checked on **both v1 and v2** — declares:
+```
+"parameters":[{"name":"account","type":"account:google",
+               "options":{"scope":["https://mail.google.com/"]}}]
+```
+**`https://mail.google.com/` is not among our five.** Make filters the connection picker by declared
+scope, so the existing connection will not be selectable in a Create-a-Draft module.
+
+**What D-271 got right, and must not be re-litigated:** the connection exists, the client created it, it
+is valid to 29 Jan 2027, and asking for a *brand-new* Gmail OAuth would have been a repeat ask. That
+still holds.
+
+**What D-271 got wrong:** *"`gmail.modify` permits both send and draft, so no further authorisation is
+needed for M4b/M5b."* True of the **Gmail API**. False of **Make's module**, which hard-requires the
+full-mailbox scope regardless of what the underlying API would accept. **A capability check on the
+vendor API is not a capability check on the connector.** G1 now covers both layers.
+
+**Consequence:** M4b and M5b are NOT buildable today. They need one client click — a *reauthorize* on
+the existing connection with the extra scope ticked, exactly the flow completed on 31 Jul (D-97). This
+is a scope extension, not a new connection, and must be framed that way so it does not read as asking
+twice.
+
+**Transparency note for the client conversation:** `https://mail.google.com/` also permits *sending*.
+We only ever create drafts (D-234: *"prepare and check first before sending"*), and the AI-never-sends
+rule is unchanged. Say so plainly rather than letting them discover a send permission we never use.
+
+**Alternative considered and rejected for now — Apps Script `GmailApp.createDraft()`:** zero Make
+operations, zero scenario slots against the Free plan's cap of 2. But a bound script runs as its
+authoriser, so drafts would land in `project1@` rather than `visa.lodgement@` where the team actually
+works. Installing it under `visa.lodgement@` needs a client click too — same friction, worse mailbox.
+Revisit only if the scope extension is refused.
+
+**Sequencing decision:** do NOT send a separate ask. A-14 (their live Google Sheet link) is already
+outstanding with the team, and the cutover conversation with Robinder is coming regardless. Bundle the
+reauthorize into that one session — two clicks, one interruption (G5).
