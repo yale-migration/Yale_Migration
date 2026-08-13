@@ -254,11 +254,15 @@ function preflight_(sh, rows) {
 
 /* ------------------------------------------------------------------- data */
 
+/** Same durable marker as removeDemoRows — the email, not the code (D-296). Matching on
+ *  the prefix alone would report 0 once the code engine has renamed the rows, and
+ *  seedDemoRows would then happily seed a second copy on top of the first. */
 function countDemo_(sh) {
   var last = sh.getLastRow();
   if (last < 2) return 0;
-  return sh.getRange(2, 1, last - 1, 1).getValues().filter(function (r) {
-    return String(r[0]).indexOf(DEMO_PREFIX) === 0;
+  return sh.getRange(2, 1, last - 1, 6).getValues().filter(function (r) {
+    return String(r[0]).indexOf(DEMO_PREFIX) === 0 ||
+           String(r[5]).toLowerCase().indexOf('@example.com') > -1;
   }).length;
 }
 
