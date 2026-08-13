@@ -1,13 +1,34 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-08-11 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
+**Updated:** 2026-08-13 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
 
 ---
 
 ## The one-line truth
 
-**Three modules are built, proven against live client data, and running on the client's own account.
-The demo has been sent. The system is not yet switched on.**
+**Four deliverables are built and proven against data — M3, M4a, M5a and the DASHBOARD.
+Everything that does not depend on the client is finished. ONE link is blocking everything that does.**
+
+## 🔴 THE ONE BLOCKER — A-14
+
+Their `Engaged Client Tracker.xlsx` is **abandoned** (D-289, team reply 12 Aug: *"we are not using
+it"*). They monitor in a **Google Sheet we have never seen.** Until we have the link:
+schema reconciliation → import → real dashboard numbers → cutover date are all stalled.
+Everything else is done or unblocked. **Chased twice. Read `CUTOVER-PLAN.md` before starting M2.**
+
+## ✅ A-01 IS NO LONGER A BLOCKER (D-291, 13 Aug)
+
+Verified in the live Make UI: the Free plan offers `Daily`, **`Weekdays (Mon-Fri)`**, `Weekly`,
+`Specified dates` and **Advanced scheduling → add more schedules**. The 15-minute floor applies only
+to *At regular intervals*, and it is a **minimum**.
+
+| Schedule | Runs/mo each | M3+M4 baseline | +20 clients | Total | vs 1,000 |
+|---|---|---|---|---|---|
+| Every 15 min *(the assumption we costed for 8 days)* | 2,880 | 5,760 | +260 | 6,020 | ❌ 6× over |
+| **Weekdays 09:00 · 13:00 · 17:00** | 66 | 132 | +260 | **~392** | ✅ ~600 spare |
+
+**M3 and M4 can go live on Free.** The paid plan is still needed for M6/M9 — Free caps *active
+scenarios* at 2 and M3+M4 is exactly two — so raise it then, with both already running as the evidence.
 
 ## What the client can see working right now
 
@@ -30,11 +51,31 @@ triggers are owned by `project1@` (D-262/D-264).
 | **M3** intake → folders | ✅ **Complete** | 3 folder sets · both teams · sanitization · error handlers · idempotent |
 | **M4a** checklist select + file | ✅ **Complete** | 485/482/820-801 proven · real files 422 KB & 97.9 KB · recovery path works |
 | **M5a** dormant detection | ✅ **Complete** | 4 runs · granted files excluded · **ran itself 6:15am 10 Aug** |
+| **DASHBOARD** (P2-01 preview) | ✅ **Complete & proven** | 6 views + 6 KPIs · **all 6 headline numbers matched prediction exactly** (D-295) · 0 Make ops |
 | **Shipped to the client** | ✅ **Demo video sent** | first client-visible delivery |
 
-**Honest read:** ~17 of 40 build-hours ≈ **43%**. The foundation is finished and every remaining module
+**Honest read:** ~21 of 40 build-hours ≈ **53%**. The foundation is finished and every remaining module
 reads from a data layer that now works. What is done is genuinely done — proven from execution output, not
 assumed.
+
+### The dashboard was proven the hard way, and it mattered
+`seed_demo_rows.gs` puts 14 removable `DEMO-###` matters into MASTER so the views can be checked against
+data. **Four separate defects were invisible at zero rows and obvious at fourteen:**
+1. **KPI tiles counted only blank outcomes**, not `Pending` — three tiles would have read 0 forever
+   against real data while looking healthy (D-292)
+2. **`Checklist Filed` (Y) had silently inherited `Skills Authority` (X)'s dropdown** via
+   `insertColumnsAfter()` — blocking every manual and Apps Script write to that column since it was
+   created. Make was unaffected (the Sheets API ignores validation), which is why 8 clean M4 runs never
+   surfaced it (D-294)
+3. **Dates rendered as serials** (`46216`) — QUERY output carries no number format (D-295)
+4. 🔴 **`820/801` silently vanished** — QUERY coerces a mixed-type column to one type and nulls the rest,
+   so partner and employer-sponsored lines would have disappeared from the visa mix (D-295)
+
+> **Never show a client a report that has not been run against data.** An empty dashboard renders a
+> broken formula and a correct one identically.
+
+⚠️ **The 14 demo rows are still in MASTER.** `removeDemoRows()` takes them out — that is step 2 of
+`CUTOVER-PLAN.md` and must happen before the real import.
 
 ## What is actually left — named plainly
 
@@ -42,9 +83,9 @@ assumed.
 schedule costs ~2,880 operations/month EACH against a 1,000 free allowance — that is the Make Core plan
 (A-01), and Sharjeel has chosen to hold that ask until the tracker import and dashboard make the value
 self-evident (D-273).
-**Operations used this month: 477 of 1,000** (M3 dev 399 · M4 27 · leftovers 43 · misc 8).
-**Next build: the ~48-row tracker import** — needs nobody's permission and unlocks the real dormant list
-plus the dashboard.
+**Operations used this month: 481 of 1,000** (M3 dev 399 · M4 27 · leftovers 43 · M9 1 · TMP reads 11).
+**Next build: the import — but from their LIVE Google Sheet, not the abandoned `.xlsx` (D-289).**
+Blocked on A-14 only. Native Sheets→Sheets, ~2 operations, and a **cutover**, not an import.
 
 ---
 
@@ -54,7 +95,8 @@ plus the dashboard.
 |---|---|---|
 | ~~1 — SHIP THE DEMO~~ | idempotency proof · delete test folders · record + send | ✅ done 5 Aug |
 | ~~2 — HARDEN M3~~ | error handlers · sanitization · routing · full test matrix | ✅ done 5 Aug (D-207…D-217) |
-| **3 — M4 / M5 onward** 🎯 | M4a ✅ · M5a ✅ · **next: tracker import**, then M4b/M5b | in progress |
+| ~~3 — M4 / M5~~ | M4a ✅ · M5a ✅ | ✅ done 11 Aug |
+| **4 — DASHBOARD + CUTOVER** 🎯 | dashboard ✅ · **next: A-14 → schema reconcile → import → cutover** | blocked on A-14 |
 
 M3's patterns became the standard — M4 and M5 reused them and were built in a fraction of the time.
 
@@ -145,4 +187,10 @@ because the column list and folder tree were duplicated across files.
 ## The question to answer every session
 
 **"What can the client actually see working?"**
-Today: nothing. Until that changes, it is the only priority.
+
+Today, 13 Aug: **a demo video of folders being created; a checklist library that selects itself; a
+dormancy alert running unattended every morning; and an operations dashboard with six live views.**
+That is a real answer for the first time.
+
+**What they cannot see yet: their own clients in it.** That is A-14, and it is the only thing left
+worth chasing.
