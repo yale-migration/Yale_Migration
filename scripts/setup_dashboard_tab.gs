@@ -78,6 +78,10 @@ function buildDashboard() {
       " and R is not null order by R asc limit 15" +
       " label A 'Code', C 'Client', L 'Consultant', R 'Last contact', M 'Stage'", 18);
   quietHighlight_(sh, quietStart + 3);
+  // QUERY output carries no number format, so a date arrives as its serial (46216).
+  // Column 4 of this view is Last contact — format it, or the most human column on
+  // the whole dashboard reads as a five-digit number.
+  sh.getRange(quietStart + 3, 4, 15, 1).setNumberFormat('d mmm yyyy');
 
   r = block_(sh, r, '5 · OUTCOMES',
       'Every matter that has reached a decision.',
@@ -85,11 +89,17 @@ function buildDashboard() {
       " group by N order by count(A) desc limit 8" +
       " label N 'Outcome', count(A) 'Matters'", 11);
 
+  // Visa Type is a MIXED-TYPE column: '485', '189', '500' look numeric while '820/801',
+  // 'SBS', 'Nomination', 'Bridging' are text. QUERY forces one type per column and nulls
+  // the minority — which is why 820/801 appeared as a blank row with a count beside it.
+  // Fix: build a virtual range where the column is text, so nothing is silently dropped.
+  var t = function (c) { return "ARRAYFORMULA(TO_TEXT('" + DATA_TAB + "'!" + c + "2:" + c + "))"; };
   r = block_(sh, r, '6 · VISA MIX',
       'What the practice actually works on, open matters only.',
-      "select H, count(A) where A is not null and " + OPEN +
-      " group by H order by count(A) desc limit 15" +
-      " label H 'Visa type', count(A) 'Open matters'", 17);
+      "select Col1, count(Col3) where Col3 <> '' and (Col2 = '' or Col2 = 'Pending')" +
+      " group by Col1 order by count(Col3) desc limit 15" +
+      " label Col1 'Visa type', count(Col3) 'Open matters'", 17,
+      '{' + t('H') + ',' + t('N') + ',' + t('A') + '}');
 
   footer_(sh, r);
 
@@ -169,7 +179,7 @@ function kpis_(sh) {
  * `reserve` is how many rows this block owns — every QUERY carries a LIMIT so its
  * output can never spill into the block below it.
  */
-function block_(sh, row, heading, note, query, reserve) {
+function block_(sh, row, heading, note, query, reserve, customRange) {
   sh.getRange(row, 1, 1, 6).merge()
     .setValue(heading)
     .setFontSize(11).setFontWeight('bold').setFontColor('#ffffff')
@@ -179,7 +189,7 @@ function block_(sh, row, heading, note, query, reserve) {
   sh.getRange(row + 1, 1, 1, 6).merge()
     .setValue(note).setFontSize(9).setFontColor(MUTED).setFontStyle('italic');
 
-  var range = "'" + DATA_TAB + "'!A2:" + LAST_COL;
+  var range = customRange || ("'" + DATA_TAB + "'!A2:" + LAST_COL);
   sh.getRange(row + 2, 1).setFormula(
     '=IFERROR(QUERY(' + range + ',"' + query.replace(/"/g, '""') + '",0),"Nothing to show yet")'
   );

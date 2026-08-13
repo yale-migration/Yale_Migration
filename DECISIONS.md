@@ -2916,3 +2916,33 @@ logs every row it deletes before deleting it.
 
 **Impact of the burned codes: cosmetic only.** `YM-2026-#####` is a sequence, not a count; gaps are
 invisible to the client and nothing references the missing numbers. Not worth resetting the counter.
+
+## D-295 | ✅ DASHBOARD PROVEN AGAINST DATA — and the data found two more defects
+`repairAndReseed` ran clean: column Y's inherited rule confirmed as `VALUE_IN_LIST` with X's help text
+and stripped (D-294 hypothesis correct), 16 orphan rows removed — **`YM-2026-00001` … `00016`, i.e.
+sixteen real codes burned, not nine** — and 14 of 14 demo rows written.
+
+**Every headline number matched the prediction exactly: `14 · 12 · 4 · 1 · 4 · 6`.**
+All three grouped views cross-check to 12 open matters independently:
+Brisbane/Filipino 5 + Brisbane/Indian 5 + Townsville/Filipino 1 + Townsville/Indian 1 · Documents
+Pending 6 + Lodged 3 + Documents Complete 2 + Ready for Lodgement 1 · Rey 5 + RJ 4 + Star 3.
+The four intended rows — DEMO-007/008/009/010 — shade red and sort to the top.
+
+**Two defects only visible with data in the sheet:**
+
+**1 · `Last contact` rendered as `46216`.** QUERY output carries **no number format**, so dates arrive
+as serials. The single most human column on the dashboard read as a five-digit number. Fixed by
+setting `d mmm yyyy` on that output column.
+
+**2 · 🔴 `820/801` vanished — shown as a blank row with a count beside it.** `Visa Type` is a
+**mixed-type column**: `485`, `189`, `500` parse as numbers while `820/801`, `SBS`, `Nomination`,
+`Skills Assessment`, `EOI`, `ART`, `Bridging` are text. **Google QUERY coerces a column to one type
+and nulls the minority.** With their real spread this would have silently erased whole visa lines from
+the mix — and partner and employer-sponsored matters are exactly the categories Robinder cares about
+for branch performance. Fixed by querying a virtual range built with `ARRAYFORMULA(TO_TEXT(...))`.
+
+**The general lesson, and the reason the seed was worth three failed runs:**
+> An empty dashboard renders a broken formula and a correct one identically. Three separate defects —
+> the Pending/blank KPI miss (D-292), the unformatted dates, and the type-coerced visa column — were
+> all invisible at zero rows and all obvious at fourteen. **Never show a client a report that has not
+> been run against data.**
