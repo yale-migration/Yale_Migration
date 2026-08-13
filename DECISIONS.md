@@ -2981,3 +2981,35 @@ check is kept as a second condition for the first five minutes after a seed.
 **Also fixed this pass:** `setNumberFormat` on a QUERY spill range does not survive — the spilled
 result carries its own formatting. `Last contact` was still rendering as `46216` after the previous
 "fix". The reliable answer is QUERY's own **`format R 'd mmm yyyy'`** clause inside the query string.
+
+## D-297 | ✅ A-15 WAS A FALSE BLOCKER — M4b and M5b are buildable today, no client involvement
+I recorded (D-290) that Make's *Create a Draft* module needs `https://mail.google.com/` and that our
+connection only holds `gmail.modify`, so M4b/M5b were blocked pending a reauthorize click. **Verified
+from primary sources today. That was wrong.**
+
+**Evidence, three independent confirmations:**
+
+1. **`connections_get(9452213)` — the actual scope strings**, not a count:
+   `gmail.modify` · `gmail.readonly` · `userinfo.profile` · `userinfo.email` · `openid`
+   Valid to **29 Jan 2027**, created by the client (`authorId 8767171`), on `visa.lodgement@`.
+2. **Google's own requirement:** `users.drafts.create` accepts `gmail.modify`. It does **not** require
+   the full-access `https://mail.google.com/` scope.
+3. **The decisive one — Make's module schemas.** `ActionCreateDraft` declares
+   `"x-fetch": {"type":"google-restricted"}`. So does **`TriggerNewEmail`** — and TriggerNewEmail
+   **already runs on connection 9452213** (M9, 1 execution, 0 errors, returned a real inbox message
+   with full body, D-149). Identical connection requirement, already proven in production.
+   `google-restricted` is Make's internal type name for the Gmail connection we hold.
+
+**A-15 is closed. Nothing is needed from the client for the email modules.**
+
+**This is D-271 repeating, and that is the part worth recording.** In July I nearly asked Robinder to
+authorise a Gmail connection he had already authorised, because a stale note was carried forward for
+three weeks without re-checking. The gate added then was: *run `connections_list` and read the actual
+scopes before any access request.* **I ran `connections_list` — and stopped at `scopesCnt: 5`.**
+
+> **`connections_list` returns a scope COUNT. `connections_get` returns the scope STRINGS.**
+> A count is not a verification. The gate has to name the call that actually answers the question,
+> or it gets satisfied by the call that merely looks like it does.
+
+**Cost of the error:** M4b/M5b sat marked "blocked" for two days, and A-15 was queued to be asked of
+the client on the cutover call — a request for permission he had already granted in January.

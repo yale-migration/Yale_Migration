@@ -24,8 +24,10 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
 - **G7 DECISION IDS FROM MAX, NOT COUNT** — `grep -c` produced 7 duplicate D-numbers once.
 - **G8 SEARCH THE WHOLE TREE, NOT THE TIDY ONE** — a curated folder is not the library. And **a filename is
   not evidence of content — open the file** (D-223/D-224).
-- 🔴 **BEFORE ANY ACCESS REQUEST: run `connections_list` and read the actual scopes** (D-271). We nearly
-  asked Robinder to authorise Gmail he had already authorised on 1 Aug.
+- 🔴 **BEFORE ANY ACCESS REQUEST: run `connections_get` — NOT `connections_list`** (D-271, D-297).
+  `connections_list` returns `scopesCnt` (a number); **`connections_get` returns the scope strings.**
+  We nearly asked Robinder twice for access he already had — the second time *after* adding this gate,
+  because a count looked like a verification.
 
 **Standing rule: a spec is not a deliverable.** Always be able to answer *"what can the client see working?"*
 
@@ -68,8 +70,9 @@ still had five production blockers. Working ≠ production-ready. Apply it to M4
   scenarios* at 2, and M3+M4 is exactly two.
 - 🔴 **The ONE blocker is A-14** — the link to the Google Sheet they actually use. Their
   `Engaged Client Tracker.xlsx` is **abandoned** (D-289); importing it would have loaded dead data.
-- 🟠 **A-15** — Make's Create-a-Draft module needs `https://mail.google.com/`; our connection has only
-  `gmail.modify` (D-290). Blocks M4b/M5b. One reauthorize click, bundled with the cutover call.
+- ✅ **A-15 WITHDRAWN (D-297)** — it was never real. `gmail.modify` covers `drafts.create`, and
+  `TriggerNewEmail` already runs on that connection with the same declared requirement.
+  **M4b/M5b need nothing from the client.**
 - ⚠️ **This is a CUTOVER, not an import** — read `CUTOVER-PLAN.md` before touching M2.
 **481 of 1,000 ops used.** Read `PRODUCTION-READINESS.md` and `CLIENT-ASKS.md`.
 
