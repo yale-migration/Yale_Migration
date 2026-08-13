@@ -76,11 +76,12 @@ function buildDashboard() {
       'Open files sorted by last contact. Anything shaded red has not been contacted in over 14 days.',
       "select A, C, L, R, M where A is not null and " + OPEN +
       " and R is not null order by R asc limit 15" +
-      " label A 'Code', C 'Client', L 'Consultant', R 'Last contact', M 'Stage'", 18);
+      " label A 'Code', C 'Client', L 'Consultant', R 'Last contact', M 'Stage'" +
+      " format R 'd mmm yyyy'", 18);
   quietHighlight_(sh, quietStart + 3);
-  // QUERY output carries no number format, so a date arrives as its serial (46216).
-  // Column 4 of this view is Last contact — format it, or the most human column on
-  // the whole dashboard reads as a five-digit number.
+  // Dates arrive from QUERY as serials (46216). setNumberFormat on the spill range does
+  // NOT survive — the spilled result carries its own formatting. QUERY's own `format`
+  // clause above is the reliable fix; this is a belt-and-braces second pass.
   sh.getRange(quietStart + 3, 4, 15, 1).setNumberFormat('d mmm yyyy');
 
   r = block_(sh, r, '5 · OUTCOMES',

@@ -2946,3 +2946,38 @@ for branch performance. Fixed by querying a virtual range built with `ARRAYFORMU
 > the Pending/blank KPI miss (D-292), the unformatted dates, and the type-coerced visa column — were
 > all invisible at zero rows and all obvious at fourteen. **Never show a client a report that has not
 > been run against data.**
+
+## D-296 | 🔴 The `DEMO-` prefix guard never worked — `master_codes.gs` overwrites it within 5 minutes
+Visible in the 13 Aug 19:32 dashboard screenshot: view 4 lists **`YM-2026-00009` · SIMRAN KAUR** and
+**`YM-2026-00007` · RAJESH KUMAR** — rows seeded as `DEMO-009` and `DEMO-007`.
+
+**Cause — I misread the code engine.** I wrote (D-293, and in the seeder's own header) that
+`master_codes.gs` "only fills a code where column A is blank". It does not. The real test is:
+
+```js
+var hasCode = CODE_RE.test(String(codes[i][0]).trim());   // /^YM-\d{4}-\d{5}$/
+if (!hasName || hasCode) continue;                        // → anything NOT a valid code gets one
+```
+
+`DEMO-001` fails that regex, so the 5-minute trigger treats the row as uncoded and **overwrites the
+prefix with a real sequence number**. The guard was inverted from the day it was written.
+
+**Two consequences:**
+1. **`removeDemoRows()` silently stopped working** — it matched on a prefix that no longer exists. It
+   would have reported "0 demo rows removed" while 14 fake clients sat in MASTER, and
+   `CUTOVER-PLAN.md` step 2 depends on that function. **This would have put demo clients into the
+   client's live dashboard on cutover day.**
+2. More real codes consumed. Cosmetic — a sequence, not a count — but the count is now ~30, not 16.
+
+**Fix:** match on the **email**, not the code. `@example.com` is reserved for documentation and
+testing by RFC 2606, no script writes to column F, and no real client will ever have one. The prefix
+check is kept as a second condition for the first five minutes after a seed.
+
+**The wider lesson, and it is the same one as D-294:**
+> **A guard is only as good as the reading of the code it guards against.** I asserted the code
+> engine's behaviour twice — in D-293 and in the script header — without opening `master_codes.gs`.
+> Three lines of it would have shown the regex. Verify the mechanism, do not restate the assumption.
+
+**Also fixed this pass:** `setNumberFormat` on a QUERY spill range does not survive — the spilled
+result carries its own formatting. `Last contact` was still rendering as `46216` after the previous
+"fix". The reliable answer is QUERY's own **`format R 'd mmm yyyy'`** clause inside the query string.

@@ -14,8 +14,12 @@
  *   - 🔴 REMOVE IT BEFORE THE CUTOVER IMPORT (CUTOVER-PLAN.md step 2)
  *
  * SAFE: M3 and M4 are both INACTIVE, so nothing here creates folders or copies files.
- * The DEMO- prefix in column A also stops master_codes.gs from burning real code numbers,
- * because that script only fills a code where column A is blank.
+ *
+ * 🔴 THE DEMO- CODE DOES NOT SURVIVE. master_codes.gs runs every 5 minutes and treats ANY
+ * value that is not a valid YM-2026-##### as "needs a code" — so it OVERWRITES DEMO-001
+ * with a real code. The prefix is a label for the first five minutes, nothing more.
+ * The durable marker is the EMAIL (@example.com, reserved by RFC 2606). removeDemoRows()
+ * matches on that. See D-296.
  *
  * ── history, 13 Aug ──────────────────────────────────────────────────────────
  * v1  threw "Exception: 485 only. Blank for every other visa type." — column X's
@@ -104,11 +108,19 @@ function removeDemoRows() {
   var last = sh.getLastRow();
   if (last < 2) { Logger.log('Nothing to remove — sheet is empty.'); return; }
 
-  var codes = sh.getRange(2, 1, last - 1, 1).getValues();
+  // 🔴 DO NOT match on the DEMO- code alone. master_codes.gs treats ANY value that is not
+  // a valid YM-2026-##### as "uncoded" and overwrites it — so within 5 minutes of seeding,
+  // every DEMO-001 has already been replaced by a real code. The prefix guard was built on
+  // a wrong reading of that script (D-296).
+  // The durable marker is the EMAIL: example.com is reserved for testing (RFC 2606) and no
+  // script touches column F, so it survives.
+  var rows = sh.getRange(2, 1, last - 1, 6).getValues();   // A..F
   var removed = 0;
   // bottom-up, so deleting a row never shifts the ones still to check
-  for (var i = codes.length - 1; i >= 0; i--) {
-    if (String(codes[i][0]).indexOf(DEMO_PREFIX) === 0) { sh.deleteRow(i + 2); removed++; }
+  for (var i = rows.length - 1; i >= 0; i--) {
+    var isDemo = String(rows[i][0]).indexOf(DEMO_PREFIX) === 0 ||
+                 String(rows[i][5]).toLowerCase().indexOf('@example.com') > -1;
+    if (isDemo) { sh.deleteRow(i + 2); removed++; }
   }
   SpreadsheetApp.flush();
   Logger.log(removed + ' demo rows removed. MASTER holds only real clients now.');
