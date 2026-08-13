@@ -118,9 +118,18 @@ by-product rather than surveillance:** (A) WhatsApp Business Cloud API ⭐, (B) 
 lines and a consent announcement, (C) company-owned handsets + MDM (note: MDM gives device control,
 **not** call content).
 
-**Est.** A: 2–4 weeks incl. Meta verification, tens of $/mo · B: 3–5 weeks incl. number porting,
-~USD $120–180/mo for 6 seats · C: 1 week, free on their existing Workspace · +3–5 days each for
-dashboard integration · policy pack 1–2 days **plus his lawyer's review**.
+**Est. — prices verified against vendor pages 13 Aug 2026:**
+- A · WhatsApp Business Cloud API — 2–4 wks (Meta verification is most of it). ⚠️ **No public Australia
+  rate**; needs a BSP quote. 🔴 **Correction to earlier note:** the free 24-hour service window is
+  ending — Meta split *service* into its own category on 1 Jul 2026 and **starts charging from
+  1 Oct 2026** at utility/auth rates. Still small at their volume, but no longer free.
+- B · VoIP — 3–5 wks incl. number porting. **Aircall Essentials USD $30/user/mo, 3-user minimum;
+  RingCentral Core USD $20/user/mo annual or $30 monthly** (both ✅ vendor pages, USD not AUD).
+  ~USD $120–180/mo for 6 seats. ⚠️ **Aircall's "unlimited" is US/Canada — Australian calls may be
+  charged on top.** Confirm before signing.
+- C · MDM — 1 wk, free on their existing Google Workspace.
+- Dashboard integration +3–5 days each · policy pack 1–2 days **plus his lawyer's review**.
+- Make Core (needed later for M6/M9, not this): **USD $9/mo annual, $12/mo monthly** ✅ vendor page.
 
 **DISPOSITION: Phase 2. Logged, not quoted, not started.** ⛔ Do not begin before the MVP cutover —
 all of it reads from a data layer that has not yet met their real client list. If he proceeds against

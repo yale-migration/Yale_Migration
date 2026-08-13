@@ -1,265 +1,243 @@
-# CALL NOTES — Robinder, 13 Aug
+# CALL NOTES — Robinder, 13 Aug 2026
 
-Two things to talk about:
-1. Phone monitoring software
-2. Where the MVP and dashboard are up to
-
-Read this once. Everything you need is in short lines you can say out loud.
+Short points. Pick what you need and say it.
 
 ---
 
 # PART 1 — PHONE MONITORING
 
-## What he asked
+## ❌ WHAT WE CANNOT DO
 
-> *"Softwares for phones which can monitor activity / calls / msgs — can they go on the dashboard?"*
+**Spy apps on staff phones — mSpy, FlexiSPY, that type. Not possible.**
 
-## What he actually wants
+Five reasons. Say two or three, not all five.
 
-He is opening branches. He cannot see what his staff are doing.
+**1. Sharing the recording is the crime, not the recording**
+- In Queensland a staff member CAN record their own call
+- But **sharing it is a separate offence** unless the other person agreed
+- 👉 **A dashboard is sharing.** The exact thing he asked for is the illegal part
 
-He has asked this **four times now** in different words:
-- 19 Jul — "I want a CRM"
-- 3 Aug — "run the CRM demo so our other branches can start"
-- 6 Aug — "I want a dashboard, I want to run multiple branches"
-- 13 Aug — "monitoring software for phones"
+**2. Staff can sue him personally**
+- New law started **10 June 2025**
+- Anyone can now sue directly for invasion of privacy
+- 👉 **Being a small business does not protect him** — this law works separately
 
-**Same problem every time. He is not trying to spy on people. He wants to know his clients are being looked after.**
+**3. In the Philippines it is a crime**
+- Everyone on the call must agree — **even the person recording**
+- 👉 **Up to 6 years jail.** He has an office coming there
+- One policy cannot cover Brisbane and Manila
 
-That is good news, because spying is illegal and the real answer is cheap.
+**4. He is a Migration Agent**
+- Call recordings hold client passports and personal details
+- These spy companies have been hacked before
+- 👉 He holds around **150 clients' passports.** Not worth it
 
----
-
-## The 3 legal facts (say these)
-
-### 1. Recording is legal. Sharing it is not.
-
-In Queensland, a staff member CAN record their own call.
-But **sharing that recording is a separate offence** unless the other person agreed.
-
-👉 **A dashboard is sharing.** So the exact thing he asked for is the illegal part.
-
-### 2. Staff can now sue him personally
-
-A new law started **10 June 2025**.
-Anyone can now sue directly for invasion of privacy.
-
-Putting software on someone's personal phone is exactly what it covers.
-
-👉 **Being a small business does not protect him.** This law works separately.
-
-### 3. In the Philippines it is a crime
-
-Philippines law needs **everyone** on the call to agree — even the person recording.
-
-👉 **Up to 6 years in jail.**
-He has told us a Philippines office is coming. One policy cannot cover both countries.
-
-### Also worth one line
-
-He is a Registered Migration Agent. Call recordings contain client passports and personal details.
-Those spy apps have been hacked before. **He holds ~150 clients' passports. Not worth the risk.**
+**5. His team**
+- The day one staff member finds it, he loses them
+- And it gets around the industry
 
 ---
 
-## ❌ What we will not do
+## ✅ WHAT WE CAN DO — THE PLAN
 
-**Spy apps on personal phones** — mSpy, FlexiSPY, that type.
-
-Simple reasons:
-- Illegal on a phone the business does not own
-- He can be sued personally
-- Criminal in the Philippines
-- Those companies get hacked
-- The day one staff member finds it, he loses his team
-
----
-
-## ✅ What we can do — 3 options
-
-### ⭐ Option A — WhatsApp Business (best one)
-
-His team already uses WhatsApp all day.
-
-- Every message is saved **in the business system**, not on someone's phone
-- The client can see it is a business account, so nothing is hidden
-- Goes straight onto the dashboard
-- If a consultant leaves, the chat history stays
-
-**Cost:** very small. Tens of dollars a month, not hundreds.
-**Time:** 2 to 4 weeks. Most of that is waiting for Meta to approve the account.
-
-⚠️ **One catch:** that phone number stops working in the normal WhatsApp app. The team uses a shared inbox instead. He needs to agree to that first.
-
-### Option B — Business phone lines
-
-Company numbers instead of personal mobiles.
-
-- The line says *"this call may be recorded"* → **that is the client agreeing**, which fixes the legal problem
-- Who called, how long, who missed it → all on the dashboard
-- Can be turned off for any client who does not want it
-
-**Cost:** about **USD $120–180 a month** for 6 people.
-**Time:** 3 to 5 weeks. Moving existing numbers takes 2–4 weeks on its own.
-
-### Option C — Company phones + management software
-
-Only legal way to control the actual phone.
-
-- Business buys the phones, written policy, staff told
-- Already free inside their Google Workspace
-
-🔴 **Important — tell him this clearly:** this does **NOT** read calls or messages. It only manages the phone (lock it, wipe it if lost, control apps). Anyone who says otherwise is selling him something else.
-
----
-
-## 🎯 The one line to give him
+### The idea, in one line
 
 > **"Don't watch the staff. Move the client conversations into the business."**
 
-If calls and WhatsApps go through company channels, he sees everything he wants — response times, who is answering, what is being missed — **as a side effect.**
+If calls and WhatsApps go through **company channels** instead of personal phones, he sees everything he wants **automatically** — who answered, how fast, what got missed, per branch.
 
-No spying. No policy fight. No legal risk. And cheaper.
+No spying. No legal risk. Cheaper. And more useful.
 
-**Order to do it in:** WhatsApp first → phone lines second → company phones only if he buys handsets.
+### Step 1 — WhatsApp Business ⭐ start here
+
+- His team already uses WhatsApp all day
+- Messages get saved **in the business system**, not on someone's phone
+- Client sees it is a business account → **nothing is hidden, consent is built in**
+- Goes straight on the dashboard
+- Staff member leaves → **chat history stays**
+
+⚠️ **One catch to tell him:** that number stops working in the normal WhatsApp app. Team uses a shared inbox instead. He must agree to this first.
+
+### Step 2 — Business phone lines
+
+- Company numbers instead of personal mobiles
+- Line says *"this call may be recorded"* → **that is the client agreeing.** This is what makes it legal to share
+- Who called, how long, who missed it → on the dashboard
+- Can be switched off for any client who says no
+
+⚠️ Moving existing numbers takes **2–4 weeks**. Not during a lodgement week.
+
+### Step 3 — Company phones (only if he buys handsets)
+
+- Business owns the phone → the only legal way to control a device
+- Already **free** inside their Google Workspace
+
+🔴 **Say this clearly:** this does **NOT** read calls or messages. It only manages the phone — lock it, wipe it if lost, control apps. Anyone who says otherwise is selling him something else.
 
 ---
 
-## Money and time (do NOT say numbers on the call)
+## 💰 COSTS — checked today
 
-| Option | Time | Monthly cost |
+✅ = checked on the company's own page · ⚠️ = needs a real quote
+
+| What | Cost | Checked? |
 |---|---|---|
-| A · WhatsApp Business | 2–4 weeks | tens of $ |
-| B · Phone lines | 3–5 weeks | ~USD $120–180 for 6 |
-| C · Company phones | 1 week | free on Workspace |
-| Put it on the dashboard | +1 week each | free |
+| **WhatsApp Business** | small — likely **under $100/mo** at their volume | ⚠️ **no public Australia price.** Need a quote |
+| **Aircall** phone system | **USD $30 per person/month**, Essentials. Minimum 3 people | ✅ their pricing page |
+| **RingCentral** phone system | **USD $20 per person/month** paid yearly, **$30** monthly | ✅ their pricing page (USD, not AUD) |
+| **6 staff on phones** | roughly **USD $120–180/month** | ✅ from the above |
+| **Company phone management** | **free** on their Google Workspace | ✅ |
+| **Our build work** | Phase 2 — quote in writing | — |
 
-**All of this is Phase 2. Extra work, extra cost.**
-Say: *"Let me put it in writing for you."* Never quote on a call.
+### 🔴 Two honest warnings on price
 
-⛔ **Nothing starts before the MVP switchover.**
+**1. WhatsApp is getting more expensive.** Replies used to be free inside 24 hours. From **1 October 2026** Meta starts charging for those too. Still small money, but it is no longer free. **Australia's rate is not published publicly** — we need a quote from a provider.
 
----
+**2. Aircall's "unlimited calls" is US and Canada.** Australian calls may be charged on top. Must confirm before signing.
 
-## Things that catch people out (mention 3–4, not all)
-
-1. 🔴 **Philippines** — criminal there, fine here. Needs two different rules.
-2. 🔴 **Sharing the recording** is the offence, not the recording.
-3. 🔴 **Staff can sue** since June 2025.
-4. **Clients must be told too** — not just staff.
-5. **Personal phones** — if someone quits, you cannot wipe their own phone.
-6. **A client says no to recording** — must be able to switch it off.
-7. **Recordings can be used against him** in a complaint. Keeping everything can backfire.
-8. **WhatsApp number change** — leaves the normal app. Agree first.
-9. **Moving phone numbers** takes 2–4 weeks. Not during a lodgement week.
-10. **Staff trust** — announce it as a client service system, not monitoring.
+**👉 On the call, say: "roughly a hundred to two hundred dollars a month, and I'll confirm exactly in writing."** Do not commit to a number.
 
 ---
 
-## If he pushes for spy apps anyway
+## ⏱ HOW LONG
+
+| Step | Time | Why |
+|---|---|---|
+| WhatsApp Business | **2–4 weeks** | mostly waiting for Meta to approve |
+| Phone lines | **3–5 weeks** | moving numbers takes 2–4 weeks |
+| Company phones | **1 week** | just setup |
+| Put it on the dashboard | **+1 week each** | |
+| Written policy | 1–2 days | 🔴 **his lawyer must check it** |
+
+⛔ **Nothing starts before the MVP switchover.** All of it reads from the same data, and that data is not in yet.
+
+---
+
+## If he still wants spy apps
 
 Say the advice once. Then:
-
 - Put it in writing
-- Log it
+- We log it
 - **His lawyer signs off before we build anything**
 
 It is his business and his decision.
 
 ---
 
-# PART 2 — PROGRESS
+# PART 2 — DASHBOARD PROGRESS
 
-## What works right now
+## ✅ It is built and tested
 
-| Thing | What it does | Status |
-|---|---|---|
-| **Client codes** | Type a name → code appears by itself | ✅ running now |
-| **Folders** | Right folders appear in OneDrive, link comes back | ✅ built & tested |
-| **Checklists** | Picks the right checklist and files it | ✅ built & tested |
-| **Quiet client alert** | Every morning, flags anyone not contacted | ✅ running now |
-| **Dashboard** | 6 live views, opens on his phone | ✅ built & tested |
+**Six views, one screen, opens on his phone:**
 
-**About half the build is done.** Everything that does not need something from him is finished.
-
-⚠️ Say **"built and tested, switching on at cutover"** — not "running" — for folders and checklists.
-
-## What the dashboard shows him
-
-1. **How each branch is doing** ← what he keeps asking for
+1. **How each branch is doing** ← the thing he keeps asking for
 2. **Where matters are stuck**
 3. **Who is carrying the most work**
-4. **Clients going quiet** — red after 14 days
+4. **Clients going quiet** — turns red after 14 days
 5. **Granted vs refused**
 6. **What visa types they actually do**
 
-Plus 6 big numbers at the top.
+Plus **six big numbers** across the top, including two that watch the system itself — *folders missing* and *checklists missing* go red when something has been skipped.
 
-**It is a tab inside the sheet.** No new login. Nothing to install. Free to run.
+## Why it is good
 
-**And it is properly tested** — we put 14 fake clients in and checked every number by hand. That found 4 real faults, including partner visas quietly disappearing from one view. All fixed.
+- **It is a tab inside their own sheet** — no new login, nothing to install
+- **Updates itself** — nobody keeps it up to date by hand
+- **Costs nothing to run**
+- **Replaces their `48hr Alert` column**, which has been broken with an error for months
 
----
+## It was properly tested
 
-## 🔴 The one thing stopping us
+We put **14 fake clients** in and checked every number by hand.
+
+That found **4 real faults** that were invisible while the sheet was empty — including partner visas (820/801) silently disappearing from one view.
+
+**All four fixed.** An empty report and a broken report look exactly the same, so we never show one that has not been tested with data in it.
+
+## 🔴 What is missing — his real clients
+
+The dashboard works. **It just has nothing real in it yet.**
 
 **We need the link to the Google Sheet his team uses now.**
 
-His team told us on 12 Aug they stopped using the old tracker. Good thing we asked — we would have loaded dead clients into the system.
+- His team told us on **12 Aug** they stopped using the old tracker
+- Good thing we asked — we would have loaded dead clients into the system
+- **Asked twice. No reply.**
 
-Asked twice, no reply. Until we get it we cannot:
-- check if their sheet has a column ours is missing
-- move his clients across
-- show real numbers
-- pick a switchover date
+Until we get it we cannot: check their columns, move his clients across, show real numbers, or pick a switchover date.
 
-## ⚠️ Say this — it is a switchover, not a copy
+---
 
-His team is typing in that sheet every day.
+# PART 3 — MVP PROGRESS
 
-**If we copy the clients over and they keep using the old sheet, we end up with two sheets and both go wrong.** Nothing breaks loudly. It just quietly goes out of date, and the first person to notice is a client being chased for documents they already sent.
+## Where it stands: **about half done**
 
-**The fix needs him:**
-> On a date he picks, the old sheet becomes **view-only**. After that there is one place to type. We keep the old one forever as a record.
+**Everything that does not need something from him is finished.**
 
-**He picks the date and tells the team.** That is the only bit we cannot do.
+| Thing | What it does | Status |
+|---|---|---|
+| **Client codes** | Type a name → code appears by itself | ✅ **running now** |
+| **Folders** | Right folders appear in OneDrive, link comes back to the sheet | ✅ built & tested |
+| **Checklists** | Picks the right checklist and files it in the folder | ✅ built & tested |
+| **Quiet client alert** | Every morning, flags anyone not contacted | ✅ **running now** |
+| **Dashboard** | 6 live views | ✅ built & tested |
+| Client emails | Draft checklist + chase emails for review | ⏸️ needs 1 click from him |
+| Enquiry capture | WhatsApp / Facebook enquiries into the sheet | ⏸️ after switchover |
+| Email reading | Spot Department letters and deadlines | ⏸️ after switchover |
 
-## After we get the link
+⚠️ **Say "built and tested, switching on at cutover"** for folders and checklists. **Do not say "running".** They are deliberately switched off until his real clients are in.
+
+## 💰 Good news on cost
+
+We thought the automation needed a paid plan. **It does not.**
+
+- Running it **3 times a day** instead of every 15 minutes fits inside the **free** allowance
+- A folder appears within a few hours instead of instantly — nobody will notice
+- A paid plan is needed later for the email part: **USD $9/month paid yearly, or $12 monthly** ✅ *(checked on Make's pricing page)*
+
+## After we get the sheet link
 
 | Step | Time |
 |---|---|
-| Check their columns vs ours | half a day |
-| Move the clients across | half a day |
+| Check their columns against ours | half a day |
+| Move his clients across | half a day |
 | Send him a check report | half a day |
 | Dashboard live with real numbers | same day |
-| Switchover date | **his call** |
+| **Switchover date** | **his call** |
 | Turn folders + checklists on | 1 hour |
 
 **About 3 days of work once we have the link.**
 
-## 💰 Good news
+---
 
-We thought the automation needed a paid plan. **It does not.**
+# PART 4 — WHAT WE NEED FROM HIM
 
-Running it 3 times a day instead of every 15 minutes fits inside the free allowance. A folder appears within a few hours instead of instantly — nobody will notice.
+**1. 🔴 The Google Sheet link** — team asked twice, no reply. Everything waits on this.
 
-A paid plan is needed later for the email part. **About AUD $12–20 a month, not now.**
+**2. A switchover date** — and he tells the team
 
-## One small ask
+> His team types in that sheet every day. If we copy the clients over and they keep using the old sheet, **we end up with two sheets and both go wrong.** Nothing breaks loudly — it just quietly goes out of date, and the first person to notice is a client being chased for documents they already sent.
+>
+> **Fix:** on a date he picks, the old sheet becomes **view-only**. One place to type. We keep the old one forever as a record.
+>
+> **Only he can do this** — it is his team.
 
-**The current staff list.** Mershe Ventura is answering our questions but is not on any list we have. The consultant field is a locked dropdown, so anyone missing cannot be picked.
+**3. The current staff list** — Mershe Ventura is answering our questions but is on no list we hold. The consultant field is a locked dropdown, so anyone missing cannot be picked.
+
+**4. One click** — a permission tick so the system can draft client emails for review. Two minutes, on the call if he wants.
 
 ---
 
-# DO NOT SAY
+# ❌ DO NOT SAY
 
-- ❌ Any Phase 2 price → *"Let me put it in writing"*
-- ❌ A switchover date → not until we see their sheet
-- ❌ "Folders are running" → say **"built and tested, switching on at cutover"**
-- ❌ Anything about the old tracker → closed, done, do not reopen
+- ❌ **Any final price** → *"I'll confirm in writing"*
+- ❌ **A switchover date** → not until we see their sheet
+- ❌ **"Folders are running"** → say *"built and tested, switching on at cutover"*
+- ❌ **Anything about the old tracker** → closed, done, do not reopen
 
 ---
 
-⚖️ **Not legal advice.** This is research so the conversation is informed. Anything that records a conversation needs his lawyer to check the policy first.
+⚖️ **Not legal advice.** Research so the conversation is informed. Anything that records a call needs his lawyer to check the policy first.
 
-*Full detail, sources and all 12 edge cases: see git history for the long version of this file.*
+**Prices checked 13 Aug 2026:** [Aircall](https://aircall.io/pricing/) · [RingCentral](https://tech.co/business-phone-systems/ringcentral-pricing-guide) · [Make](https://www.make.com/en/pricing) · [WhatsApp rates](https://blueticks.co/blog/whatsapp-business-api-pricing-2026)
+**Law:** [QLD Invasion of Privacy Act](https://www.legislation.qld.gov.au/view/whole/html/current/act-1971-050) · [Privacy tort — OAIC](https://www.oaic.gov.au/privacy/your-privacy-rights/more-privacy-rights/statutory-tort-for-serious-invasions-of-privacy) · [Philippines RA 4200](https://www.respicio.ph/commentaries/anti-wiretapping-law-in-the-philippines-ra-4200)
