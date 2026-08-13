@@ -79,10 +79,9 @@ data. **Four separate defects were invisible at zero rows and obvious at fourtee
 
 ## What is actually left — named plainly
 
-**Nothing in the build is blocked by us.** Both scenarios sit INACTIVE because switching on a 15-minute
-schedule costs ~2,880 operations/month EACH against a 1,000 free allowance — that is the Make Core plan
-(A-01), and Sharjeel has chosen to hold that ask until the tracker import and dashboard make the value
-self-evident (D-273).
+**Nothing in the build is blocked by us.** Both scenarios sit INACTIVE by choice, not by constraint —
+they go on at cutover with the `Weekdays (Mon-Fri)` 3×/day schedule proven above (D-291). Switching them
+on before the real client list is in would only create folders for demo rows.
 **Operations used this month: 481 of 1,000** (M3 dev 399 · M4 27 · leftovers 43 · M9 1 · TMP reads 11).
 **Next build: the import — but from their LIVE Google Sheet, not the abandoned `.xlsx` (D-289).**
 Blocked on A-14 only. Native Sheets→Sheets, ~2 operations, and a **cutover**, not an import.
@@ -102,17 +101,18 @@ M3's patterns became the standard — M4 and M5 reused them and were built in a 
 
 ## 🎯 THE ONLY ACTIVE THING
 
-> ### ✅ 5 Aug — M3 IS COMPLETE AND PROVEN (D-197 … D-219)
-> Every branch has executed against the client's live drive: **SET 1 · SET 2 · SET 3 + 820/801 nesting ·
-> Filipino team · Indian team · hostile characters · 4 rows in one run · unroutable safely blocked ·
-> idempotent re-run = 0 bundles.** Routing, sanitization and error handling are all built and verified.
-> Cost measured: **10 ops/client** (SET 1/2), **13** (SET 3).
-> **Blocking go-live: only the Make Core plan (B5).** Both schedules stay OFF until it's bought.
+> ### 🔴 13 Aug — WAITING ON ONE LINK (A-14)
+> Their live Google Sheet. It gates **all four** of: schema reconciliation (do they have a column MASTER
+> lacks?), the import, real dashboard numbers, and the cutover date. Chased twice with the team.
+> ⛔ **Do NOT import from `Engaged Client Tracker.xlsx`** — abandoned, dead data (D-289).
+> ⛔ **Do NOT let M3/M4 run over the 14 demo rows** — `removeDemoRows()` first.
+> **Read `CUTOVER-PLAN.md` before writing a line of M2.** This is a migration of a running system, and
+> the failure mode is two sheets being edited at once, not data loss.
 
-> ### 🎯 NEXT: IMPORT THE ~48 REAL CLIENT MATTERS
-> Needs nobody's permission. Turns M5a's dormant list from `0` into the real 16-day and 71-day gaps, and is
-> the hard dependency for the dashboard Robinder asked for. **~2 Make operations** using Bulk Add Rows.
-> ⛔ Do NOT let M3/M4 create 48 folders yet — that is ~670 operations against 523 remaining.
+> ### UNBLOCKED, buildable the moment A-15 lands
+> **M4b / M5b** — checklist and chase emails drafted into `visa.lodgement@`. Needs one reauthorize
+> click: Make's Create-a-Draft module requires `https://mail.google.com/` and the connection holds only
+> `gmail.modify` (D-290). Bundle it with the cutover call — do not send it as a separate ask.
 
 
 ~~T3.1 idempotency proof~~ ✅ **PASSED 5 Aug** (D-207) — second run returned 0 bundles.
