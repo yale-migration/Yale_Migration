@@ -91,3 +91,37 @@ signed MVP (M1–M11). CLAUDE.md standing rule: new client requests get logged a
 **Hard dependency: the ~48-row tracker import.** A dashboard over 5 test rows shows nothing and would
 undo the impression the demo just built. Est. **6–10h**, billable — see `PHASE-2-3-BACKLOG.md` P2-01.
 **Dependency:** meaningful only once the ~48 active matters are imported (M2 deferred item).
+
+## CR-010 — Phone monitoring software (raised by client 13 Aug, WhatsApp)
+**His words:** *"I want some advice on having some softwares for phones which can monitor activity /
+calls / msgs and if they can be integrated on the dashboard."*
+
+**🔑 SAME DRIVER, FOURTH TIME.** CR-001 (CRM, 19 Jul) → CR-007 (CRM demo in parallel, *"so our other
+branches will start working on it"*, 3 Aug) → CR-009 (dashboard for multiple branches, 6 Aug) →
+CR-010. He is opening branches and cannot see what his staff are doing. Every one of these reads from
+the same data layer.
+
+**POSITION: decline device monitoring, offer channel capture.** Full research, law, tools, costs,
+timeframes and 12 edge cases in **`CALL-BRIEF-phone-monitoring.md`**. Headlines:
+- **QLD IPA 1971 s43** permits a party to record their own conversation, but **s45 makes *sharing* it
+  a separate offence** without consent — and a dashboard is sharing. The liability is in exactly the
+  feature he asked for.
+- **Statutory tort of serious invasion of privacy, in force 10 June 2025** — staff can sue directly,
+  and it is **independent of the Privacy Act, so the small-business exemption is no shield**.
+- **Philippines RA 4200 is all-party consent and binds participants** (*Ramirez v CA*), up to 6 years.
+  With a Philippines office coming (D-230), one monitoring policy cannot cover both countries.
+- **MARA Code** — call recordings are client PII; vendor and data location are a professional-conduct
+  question. Consumer spy vendors (mSpy breach) are unacceptable for a firm holding ~150 passports.
+
+**What we offer instead — move client conversations into business channels, so oversight is a
+by-product rather than surveillance:** (A) WhatsApp Business Cloud API ⭐, (B) VoIP with recorded
+lines and a consent announcement, (C) company-owned handsets + MDM (note: MDM gives device control,
+**not** call content).
+
+**Est.** A: 2–4 weeks incl. Meta verification, tens of $/mo · B: 3–5 weeks incl. number porting,
+~USD $120–180/mo for 6 seats · C: 1 week, free on their existing Workspace · +3–5 days each for
+dashboard integration · policy pack 1–2 days **plus his lawyer's review**.
+
+**DISPOSITION: Phase 2. Logged, not quoted, not started.** ⛔ Do not begin before the MVP cutover —
+all of it reads from a data layer that has not yet met their real client list. If he proceeds against
+the advice, that is his call: put the advice in writing, log it, and require his lawyer's sign-off.
