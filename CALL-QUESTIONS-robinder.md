@@ -1,3 +1,12 @@
+> ⚠️ **SUPERSEDED 14 Aug — use `VOICE-MESSAGE-robinder.md`.**
+> Robinder was unavailable for a call, so this became a voice note: five questions, not twenty-three.
+> Their team then sent their real client tracker (D-300), which **answered five of the questions below
+> outright** — where clients are recorded, real client data for the demo, their stages, their
+> consultants, and the sheet link. **Asking any of those now would show we did not read what they sent.**
+> Kept for the reasoning and for the in-person conversation whenever it happens.
+
+---
+
 # QUESTIONS FOR ROBINDER — call 14 Aug
 
 Read them out as written. The *(why)* line is for you, don't say it.
