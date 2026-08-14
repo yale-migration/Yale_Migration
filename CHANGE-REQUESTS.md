@@ -158,6 +158,12 @@ becomes relevant if CR-010 (phone monitoring) ever proceeds, since Premium inclu
 tenant-owned storage needs planning: our Make OneDrive connection (id 9279810) is bound to the personal
 account and **will break at the migration**. Scope it before he clicks buy.
 **DISPOSITION: advise free (30 minutes, goodwill, closes CR-003). The migration itself is Phase 2, quoted.**
+**14 Aug — full guide written: `GUIDE-microsoft-365-purchase.md` (D-301).** Two findings that change
+the advice: (a) 🔴 the setup wizard's "set as primary email" step **would kill their Google Workspace
+mail** — verify by TXT only, never touch MX; (b) **Google Workspace Business Standard+ already
+includes Shared Drives**, so he may be able to fix the personal-account problem for $0 — we still
+recommend M365 on migration cost, but he must be told. Also: **shared mailboxes are free**, and the
+licensed-user list **answers A-16**.
 
 ## CR-012 — Role-based dashboard + client portal (client answered 14 Aug — see D-298)
 Supersedes CR-009 in scope. Clients see their own matter · managers see their branch · Robinder sees all.

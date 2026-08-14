@@ -3144,3 +3144,47 @@ Stage 1 alone is enough for a real demo.
 **`DATA SHEET.xlsx` (~200 rows)** is the cold-call log: `Date · Name · Phone · Staff Assigned ·
 Enquiry · Remarks`. **It is the source for the "new enquiries this week" view** we had marked
 unsourced. Name is often blank — those are genuine cold calls, not broken rows.
+
+## D-301 | 🔴 The M365 purchase has an email-killing step in it — and he may not need to buy at all
+Robinder asked us to guide the Microsoft 365 purchase (CR-011). Researched against Microsoft's own
+docs and Australian pricing today. Full guide: **`GUIDE-microsoft-365-purchase.md`**.
+
+### The landmine
+`yalemigration.com.au` mail is **Google Workspace** (MX = `aspmx.l.google.com`, verified D-76).
+**A domain's MX can point at only ONE mail system.** Microsoft's own walkthrough for adding a Google
+Workspace domain ends at *"set your domain as the primary email for your users"* — **that step, or any
+MX change, stops every Yale address receiving mail**, including `visa.lodgement@` where the Department
+sends s56 letters.
+
+**Safe path, three rules:** verify by **TXT only** · **never** change MX · **never** "set as primary
+email". Google keeps mail, Microsoft takes files/Teams/desktop Office. Supported and common — just not
+what the wizard nudges you toward.
+
+### He may already own the fix — say so
+The actual problem is CR-003: ~150 clients' passports on one **personal** Microsoft account.
+**Google Workspace Business Standard and above already include Shared Drives** — company-owned storage.
+If Yale is already on Standard+, that is solvable for **$0**.
+
+**We still recommend buying M365 Business Standard**, and the reason is migration cost, not features:
+personal OneDrive → OneDrive for Business is same-vendor and our Make modules survive with a
+re-authorisation, whereas OneDrive → Google Drive is a cross-vendor move **plus a rebuild of M3/M4's
+storage layer**. **But he must be told the cheaper option exists.** Not telling him would be advice
+that serves us, not him. **Ask which Workspace plan they are on.**
+
+### Pricing, verified (AUD, per user/month, ex GST, annual commitment, post-1 July 2026)
+Basic **~$9.00** · **Standard ~$18.70** ⭐ · Premium **~$32.90**.
+Basic is a false economy — no desktop Office for a document-heavy practice. Premium only pays off if
+he issues company devices (relevant only if CR-010 proceeds).
+**Billing:** annual paid yearly = base · annual paid monthly = **+5%** · monthly commitment = **+20%**,
+cancel any time. **7-day cancellation window** for a prorated refund.
+**Advice: start monthly** — a few dollars more, no 12-month lock while the migration is unproven.
+**💡 Shared mailboxes (`info@`, `visa.lodgement@`) are FREE up to 50GB — only humans need licences.**
+~11 people → ≈ **AUD $206/month + GST**.
+
+### Consequences for us
+1. 🔴 **Make's OneDrive connection is authenticated as `sharry00010@gmail.com` — ours.** Disclose it
+   NOW, while he is already buying. It converts a handover problem into a natural next step.
+2. **Migration breaks the automation while it runs.** Re-point the connection · update every folder ID
+   in M3/M4 · re-mirror the 28 checklists · re-test. Budget half to a full day and book it.
+3. ✅ **The licensed-user list answers A-16** — staff emails, the current blocker on the manager view.
+   The M365 purchase and the dashboard unblock each other.

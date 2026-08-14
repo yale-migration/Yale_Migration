@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 276K /     3146 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 276K /     3190 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-14 17:57
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-14 18:30
 
 | # | Decision |
 |---|---|
@@ -297,3 +297,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-14 17:5
 | **D-298** | 🔴 A-04 ANSWERED — role-based access ends the spreadsheet dashboard, and A-14 was chasing the wrong file |
 | **D-299** | 🔒 THE DATABASE QUESTION, SETTLED — Google Sheet now, Postgres at the portal, Microsoft NEVER |
 | **D-300** | 🔑 THEIR REAL CLIENT DATABASE FOUND — and it explains everything we could not explain |
+| **D-301** | 🔴 The M365 purchase has an email-killing step in it — and he may not need to buy at all |

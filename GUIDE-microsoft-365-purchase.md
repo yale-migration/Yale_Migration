@@ -1,0 +1,231 @@
+# MICROSOFT 365 — PURCHASE GUIDE FOR YALE MIGRATION
+**Prepared 14 Aug 2026.** Every price and every step verified against Microsoft's own pages today.
+Sources at the bottom. Not legal or tax advice — GST and deductibility are for his accountant.
+
+---
+
+# 🔴 READ THIS FIRST — the one thing that can break their email
+
+**Yale's email runs on Google Workspace.** We confirmed this from public DNS — `yalemigration.com.au`
+points at `aspmx.l.google.com`.
+
+> **A domain's MX record can only point at ONE mail system.**
+> If the Microsoft setup wizard is allowed to change the MX record, **every Yale email address stops
+> receiving mail immediately** — including `visa.lodgement@`, which is where the Department sends s56
+> letters.
+
+Microsoft's own setup walkthrough ends with *"set your domain as the primary email for your users."*
+**That step is the one that kills their email.** It is presented as a normal part of setup.
+
+## ✅ The safe path — three rules
+
+| Rule | Why |
+|---|---|
+| **1. Verify the domain with a TXT record ONLY** | proves ownership, changes nothing |
+| **2. NEVER change the MX record** | this is the switch that breaks email |
+| **3. NEVER "set as primary email" for a user** | same switch, different button |
+
+Follow those three and Google keeps delivering mail exactly as it does today, while Microsoft handles
+files, Teams and desktop Office. **This combination is supported and common.** It just is not what
+the wizard nudges you toward.
+
+**Tell Robinder in one sentence:** *"When Microsoft asks to change your MX records, say no. That's the
+one step that would stop your email."*
+
+---
+
+# 🤔 BEFORE HE SPENDS ANYTHING — one question worth asking
+
+**He may already own the fix.**
+
+The real problem we are solving is that ~150 clients' passports sit on **one person's personal
+Microsoft account** with no company control, no admin oversight, and no way to remove access when
+someone leaves (CR-003).
+
+**Google Workspace Business Standard and above already include Shared Drives** — company-owned
+storage where files belong to the business, not a person. If Yale is already on Standard or Plus,
+that problem can be solved for **$0 extra**.
+
+### So the honest comparison
+
+| | **Buy Microsoft 365** | **Use Google Shared Drives** |
+|---|---|---|
+| Extra cost | ~$18.70/user/month | **$0** if already on Business Standard+ |
+| Vendors | 2 (Google mail + Microsoft files) | **1** |
+| Moving the ~1,436 folders | personal OneDrive → OneDrive for Business — **same vendor, straightforward** | OneDrive → Google Drive — **cross-vendor, harder** |
+| Our automation | Make keeps its OneDrive modules, just re-authorised | **M3 and M4 storage layer rebuilt** (a few hours) |
+| Desktop Word / Excel / Outlook | ✅ included | ❌ Google Docs only |
+| Risk to email | manageable, see rules above | none |
+
+**My recommendation: buy Microsoft 365 Business Standard.** The migration is far simpler when the
+files stay within Microsoft, our automation survives with a re-authorisation instead of a rebuild, and
+a document-heavy migration practice genuinely wants desktop Word.
+
+**But he should know the alternative exists.** If cost matters more than convenience, Google Shared
+Drives is cheaper and tidier long-term. **Question to ask: which Google Workspace plan are you on?**
+
+---
+
+# 💰 WHAT IT COSTS — Australian pricing, verified today
+
+**Per user, per month, excluding GST, on an annual commitment.** These reflect the 1 July 2026 increase.
+
+| Plan | AUD | Email | Desktop Office | 1TB OneDrive | Teams | Device management |
+|---|---|---|---|---|---|---|
+| Business Basic | **~$9.00** | ✅ | ❌ web only | ✅ | ✅ | ❌ |
+| ⭐ **Business Standard** | **~$18.70** | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Business Premium | **~$32.90** | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+### ⭐ Recommended: **Business Standard**
+
+- **Basic is a false economy.** No desktop Word or Excel. A practice that produces checklists, forms
+  and statutory declarations all day will resent it within a week.
+- **Premium is only worth it if he issues company laptops or phones.** It adds Intune device
+  management — which becomes relevant only if the phone-monitoring conversation (CR-010) ever
+  proceeds. Not today.
+
+### How the billing options actually work — this catches people
+
+| Option | Price | Locked in? |
+|---|---|---|
+| **Annual commitment, paid yearly** | base price — **cheapest** | 12 months |
+| Annual commitment, paid monthly | base **+5%** | 12 months |
+| Monthly commitment | base **+20%** | cancel any time |
+
+**There is a 7-day cancellation window** on a new subscription for a prorated refund. After that, an
+annual commitment runs its term.
+
+**Advice:** start on **monthly commitment** for the first month even at +20%. It costs a few dollars
+more and it means that if the folder migration turns up a surprise, he is not locked in for a year.
+Switch to annual once it is settled.
+
+### How many licences
+
+Roughly **11 people** appear across their roster and tracker: Robinder, Priyanka, RJ, Inder, Star,
+Rey, Gayatri, Fiza, Cristelle, Mershe, Manali. **Confirm the real number with him.**
+
+**💡 Money-saving point most people miss:** shared addresses like `info@`, `visa.lodgement@` and
+`workvisa.bne@` can be **shared mailboxes**, which are **free** in Microsoft 365 (up to 50GB) and do
+**not** need a paid licence. Only real humans need licences.
+
+At 11 licences on Business Standard: **≈ AUD $206/month + GST ≈ $2,470/year.**
+
+---
+
+# 🛒 HOW TO BUY — step by step
+
+## Step 1 · Decide the number
+Count only people, not shared addresses. Licences can be added later at any time.
+
+## Step 2 · Buy direct from Microsoft
+Go to **microsoft.com/en-au/microsoft-365/business** → Business Standard → *Buy now*.
+
+**Buy direct, not through a reseller.** A CSP partner adds a middle layer for support Yale does not
+need at this size, and it complicates who owns the tenant.
+
+## Step 3 · Create the tenant
+He will be asked for a company name and a temporary address like `yalemigration.onmicrosoft.com`.
+
+🔴 **This account must be created by ROBINDER, on his own machine, with his own details.**
+It becomes the owner of every client file the business holds. **It must never be created under a
+staff member's personal account** — that is exactly the problem we are fixing.
+
+## Step 4 · Add the domain — ⚠️ THE CAREFUL BIT
+Admin centre → **Settings → Domains → Add domain** → `yalemigration.com.au`.
+
+**Choose "Add a TXT record to verify ownership."**
+
+- ✅ Add **only** the TXT record to DNS
+- ⛔ **Decline every prompt to add or change MX records**
+- ⛔ **Skip "set as primary email"** for every user
+- ⛔ If it offers to "set up email," **say no**
+
+Verification usually completes in minutes; DNS can take up to 48 hours.
+
+## Step 5 · Create the users
+Add each staff member. Their Microsoft sign-in can be their normal work address — **that does not
+move their mail**, as long as steps in 4 were followed.
+
+## Step 6 · Turn on OneDrive for Business
+Each licensed user gets 1TB. This is the company-owned storage that replaces the personal account.
+
+## Step 7 · ⛔ STOP — do not move any files yet
+**Talk to us first.** Moving the folders is the actual project, and it breaks our automation for the
+duration. See below.
+
+---
+
+# 🔧 WHAT WE NEED AFTER HE BUYS
+
+## From him
+
+| # | What | Why |
+|---|---|---|
+| 1 | Confirmation the tenant is created **in the company's name** | it owns all client files |
+| 2 | The list of licensed users + their new sign-ins | feeds the `STAFF` tab and the dashboard's access control — **this also answers A-16** |
+| 3 | An admin invite for us, or a screen-share slot | to connect Make to the new storage |
+| 4 | A date for the folder migration | it needs a quiet window |
+
+## What we do
+
+| # | Task | Effort | Impact |
+|---|---|---|---|
+| 1 | Re-point Make's OneDrive connection at the company tenant | 30 min | 🔴 **folder automation stops until this is done** |
+| 2 | Update every folder ID in M3 and M4 | 1–2 h | new drive means new IDs everywhere |
+| 3 | Re-mirror the 28 canonical checklists | 30 min | M4 copies from this library |
+| 4 | Re-test M3 and M4 end to end | 1 h | non-negotiable before going live again |
+| 5 | Migrate ~1,436 client folders | **half to full day** | the real work |
+
+## 🔴 The honest warning to give him
+
+> **"Buying the licences takes ten minutes. Moving your fourteen hundred client folders is a proper
+> job, and while we move them the folder automation has to be switched off. Let's plan a day for it
+> rather than doing it piecemeal."**
+
+## And the disclosure that goes with it
+
+The Make connection to their OneDrive currently authenticates as **`sharry00010@gmail.com` — our
+account, not theirs.** This is the last thing we hold that should be his.
+
+**Say it now, while he is already buying M365.** It turns a handover problem into a natural next step.
+If he discovers it later, it looks like it was hidden.
+
+---
+
+# ✅ THE ORDER TO DO IT IN
+
+```
+1. Check which Google Workspace plan they are on   ← may make this unnecessary
+2. Confirm the licence count (people only)
+3. Buy Business Standard, monthly commitment to start
+4. Create the tenant — ROBINDER's own account
+5. Add the domain with TXT ONLY  ⛔ never touch MX
+6. Create users, turn on OneDrive for Business
+7. ⛔ STOP — book the migration day with us
+8. We re-point Make, update IDs, re-test
+9. Migrate the folders
+10. Switch the automation back on
+```
+
+**Steps 1–6 he can do alone. Step 7 onward is ours.**
+
+---
+
+# 📌 THE FIVE THINGS TO SAY, IF NOTHING ELSE
+
+1. **"When Microsoft asks to change your MX records, say no."** ← the email-breaking step
+2. **"Business Standard, about $18.70 per person plus GST."** Basic has no desktop Word.
+3. **"Shared addresses like info@ don't need a paid licence — they're free."**
+4. **"Create it in the company's name, on your own account."**
+5. **"Don't move any files until we've planned the day."**
+
+---
+
+## Sources — all checked 14 Aug 2026
+
+- [Microsoft 365 Business plans and pricing](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-plans-and-pricing)
+- [Add your Google Workspace domain — Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-365/admin/moveto-microsoft-365/add-google-domain?view=o365-worldwide)
+- [Connect your domain to Microsoft 365 — Microsoft Learn](https://learn.microsoft.com/en-us/microsoft-365/admin/moveto-microsoft-365/connect-domain-tom365?view=o365-worldwide)
+- [Microsoft 365 pricing Australia 2026 in AUD](https://frontrowtech.com.au/insights/microsoft-365-pricing-australia-2026)
+- [Australian pricing changes from 1 July 2026](https://www.ottoit.com.au/blog/microsoft-365-pricing-changes-australia-july-2026/)
+- [Google Workspace plan comparison — Shared Drives](https://workspace.google.com/pricing)
