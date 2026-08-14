@@ -134,3 +134,34 @@ lines and a consent announcement, (C) company-owned handsets + MDM (note: MDM gi
 **DISPOSITION: Phase 2. Logged, not quoted, not started.** ⛔ Do not begin before the MVP cutover —
 all of it reads from a data layer that has not yet met their real client list. If he proceeds against
 the advice, that is his call: put the advice in writing, log it, and require his lawyer's sign-off.
+
+## CR-011 — Microsoft 365 purchase guidance (client asked 14 Aug)
+Robinder wants to buy Microsoft 365 and asked us to advise on which plan and how.
+
+**Say yes, and treat it as a win, not a distraction.** It closes **CR-003** — the governance problem we
+logged on 25 Jul, where ~150 clients' passports and police checks sit under **one individual's personal
+Microsoft account**. Business licences move that to company-owned OneDrive for Business with admin
+control, retention, and offboarding. That is worth more to him than any dashboard.
+
+**Australian pricing, per user per month ex GST, annual commitment, after the 1 July 2026 increase:**
+| Plan | AUD/user/mo | Gets him |
+|---|---|---|
+| Business Basic | ~$9.00 | web/mobile Office, business email, Teams, 1TB OneDrive |
+| **Business Standard** | **~$18.70** | + full desktop Office apps ← **recommended** |
+| Business Premium | ~$32.90 | + device management and advanced security |
+
+**Recommend Business Standard.** Basic has no desktop Word/Excel, which a document-heavy migration
+practice will resent within a week. Premium is only worth it if he issues company laptops/phones — which
+becomes relevant if CR-010 (phone monitoring) ever proceeds, since Premium includes Intune.
+
+⚠️ **Migration is the real work, not the purchase.** Moving ~1,436 folders off a personal account onto
+tenant-owned storage needs planning: our Make OneDrive connection (id 9279810) is bound to the personal
+account and **will break at the migration**. Scope it before he clicks buy.
+**DISPOSITION: advise free (30 minutes, goodwill, closes CR-003). The migration itself is Phase 2, quoted.**
+
+## CR-012 — Role-based dashboard + client portal (client answered 14 Aug — see D-298)
+Supersedes CR-009 in scope. Clients see their own matter · managers see their branch · Robinder sees all.
+**This is CR-001 (the CRM) arriving in full, with the access model finally specified.**
+🔴 **Not deliverable in a Google Sheet.** Staged: Sheet tab (done) → Looker Studio for staff (~1–2 wks,
+free, real row-level security) → custom Next.js + Supabase portal for clients (Phase 3, 40–80h).
+**Log, quote after MVP go-live. Do not absorb.**

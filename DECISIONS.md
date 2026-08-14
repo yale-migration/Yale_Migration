@@ -3013,3 +3013,49 @@ scopes before any access request.* **I ran `connections_list` — and stopped at
 
 **Cost of the error:** M4b/M5b sat marked "blocked" for two days, and A-15 was queued to be asked of
 the client on the cutover call — a request for permission he had already granted in January.
+
+## D-298 | 🔴 A-04 ANSWERED — role-based access ends the spreadsheet dashboard, and A-14 was chasing the wrong file
+Robinder answered the dashboard questions on 14 Aug, six days after we asked. Three things landed at once
+and two of them change the plan.
+
+### 1 · Their Google Sheet is a COLD-CALLING LIST — phone numbers, not clients
+Two weeks of A-14 chasing was aimed at a file that was never the client database. Combined with D-289
+(`Engaged Client Tracker.xlsx` abandoned), the honest conclusion is:
+> **They may have no live client database at all.** Files live in ~1,436 OneDrive folders; status lives in
+> people's heads and inboxes.
+
+**This is good news, not bad.** It removes the entire cutover risk from `CUTOVER-PLAN.md` — there is no
+running system to migrate off, no two-sheets-diverging problem, no freeze date to negotiate. **MASTER
+becomes their first real client database.** That is a stronger position to sell and a simpler one to build.
+🔴 **Must confirm before relying on it:** *"Where is a client recorded today, from first contact to grant?"*
+
+### 2 · Role-based access — the requirement the Sheet cannot meet
+- clients see **their own matter**
+- branch managers see **their own branch only**
+- Robinder sees **all branches**
+
+**Google Sheets cannot do per-row, per-viewer access.** Permissions are per-file or per-protected-range.
+Every workaround (per-branch tabs, IMPORTRANGE into split files) leaks the moment someone gets a link, and
+none of it extends to clients at all. **The DASHBOARD tab stays — but it is a director-only artefact.**
+
+Verified alternatives, cheapest first:
+| Option | RBAC | Client portal | Cost | Verdict |
+|---|---|---|---|---|
+| **Looker Studio** | ✅ real — *"Filter by viewer's email"*, unauthorised rows are never returned to the report | ❌ email-by-email, no Workspace groups, every viewer needs a Google login | free | ✅ **staff layer** |
+| **AppSheet** | ✅ `USEREMAIL()` security filters | ⚠️ per-user licensing | $$ per user | fallback |
+| **Custom app** | ✅ Postgres row-level security — precisely what RLS exists for | ✅ | build cost | ✅ **client layer** |
+
+**Decision: stage it.** Sheet tab (done, director) → Looker Studio (staff, ~1–2 wks, free) → custom portal
+(clients, Phase 3). Per org policy the custom app is Next.js App Router + Supabase, and because it holds
+real client data it deploys to a **company Vercel team account and company Supabase — never a personal or
+free-tier host.**
+
+### 3 · Views + refresh, now specified
+active matters · ongoing · 1–2 week chase · deadlines · granted vs refused · **new enquiries this week** ·
+who is stuck at which stage. **Laptop primary, responsive on mobile. Hourly refresh.**
+Our built tab already covers stage, consultant, branch, dormancy, outcomes and visa mix. **Two genuine
+gaps: "new enquiries this week" (needs ENQUIRIES wired in) and "deadlines" (needs M9 — unbuilt).**
+🔴 Do not promise deadlines on the demo. It has no column and no source yet.
+
+**Also:** he wants to buy **Microsoft 365** and asked us to guide the purchase — logged as CR-011. Encourage
+it: it closes CR-003, where ~150 clients' passports sit on one personal Microsoft account.
