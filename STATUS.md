@@ -6,8 +6,8 @@
 
 ## The one-line truth
 
-**Four deliverables are built and proven against data — M3, M4a, M5a and the DASHBOARD.
-Everything that does not depend on the client is finished. ONE link is blocking everything that does.**
+**Four deliverables are built and proven — M3, M4a, M5a and the DASHBOARD. Their real client database
+has been found (~460 records). The only thing still blocking is staff emails for the manager view.**
 
 ## ✅ A-14 CLOSED 14 Aug — WE HAVE THEIR REAL CLIENT DATABASE (D-300)
 
@@ -94,8 +94,9 @@ data. **Four separate defects were invisible at zero rows and obvious at fourtee
 they go on at cutover with the `Weekdays (Mon-Fri)` 3×/day schedule proven above (D-291). Switching them
 on before the real client list is in would only create folders for demo rows.
 **Operations used this month: 481 of 1,000** (M3 dev 399 · M4 27 · leftovers 43 · M9 1 · TMP reads 11).
-**Next build: the import — but from their LIVE Google Sheet, not the abandoned `.xlsx` (D-289).**
-Blocked on A-14 only. Native Sheets→Sheets, ~2 operations, and a **cutover**, not an import.
+**Next build: staged import from `REYWARD JAKE M GAMOL-2026.xlsx` (D-300).** Start with their own
+`SUMMARY OF CLIENTS` tab — 47 clean, curated rows, enough for a real demo. Then monthly tabs
+newest-first (six schema variants — map per tab, never once). ⛔ Never columns D/E of `JRP`.
 
 ---
 
@@ -106,21 +107,23 @@ Blocked on A-14 only. Native Sheets→Sheets, ~2 operations, and a **cutover**, 
 | ~~1 — SHIP THE DEMO~~ | idempotency proof · delete test folders · record + send | ✅ done 5 Aug |
 | ~~2 — HARDEN M3~~ | error handlers · sanitization · routing · full test matrix | ✅ done 5 Aug (D-207…D-217) |
 | ~~3 — M4 / M5~~ | M4a ✅ · M5a ✅ | ✅ done 11 Aug |
-| **4 — DASHBOARD + CUTOVER** 🎯 | dashboard ✅ · **next: A-14 → schema reconcile → import → cutover** | blocked on A-14 |
+| **4 — DASHBOARD + IMPORT** 🎯 | dashboard ✅ · real database found ✅ · **next: staged import → STAFF tab → Looker** | needs A-16 for the manager view only |
 
 M3's patterns became the standard — M4 and M5 reused them and were built in a fraction of the time.
 
 ## 🎯 THE ONLY ACTIVE THING
 
-> ### 🔴 13 Aug — WAITING ON ONE LINK (A-14)
-> Their live Google Sheet. It gates **all four** of: schema reconciliation (do they have a column MASTER
-> lacks?), the import, real dashboard numbers, and the cutover date. Chased twice with the team.
-> ⛔ **Do NOT import from `Engaged Client Tracker.xlsx`** — abandoned, dead data (D-289).
-> ⛔ **Do NOT let M3/M4 run over the 14 demo rows** — `removeDemoRows()` first.
-> **Read `CUTOVER-PLAN.md` before writing a line of M2.** This is a migration of a running system, and
-> the failure mode is two sheets being edited at once, not data loss.
+> ### 🎯 14 Aug — STAGE 1 IMPORT: 47 real clients, then the demo is real
+> Their own `SUMMARY OF CLIENTS` tab is clean and curated — `DATE · NAME · CONTACT · TYPE OF
+> APPLICATION · STATUS · EXPIRATION OF THE NEW VISA`. **Import that first.** It needs nothing from
+> anyone and turns the dashboard from sample data into their business.
+> ⛔ `removeDemoRows()` FIRST — real and demo rows must never share a screenshot.
+> ⛔ Never import `JRP` columns D/E — 73 clients' plaintext passwords (D-300).
+> ⚠️ Add the 5 missing MASTER columns first: Medical · Occupation · AFP Status · Fees · Requirements.
+> ✅ **`CUTOVER-PLAN.md` is largely moot** — there is no running system to freeze, only a spreadsheet
+> nobody can roll up.
 
-> ### UNBLOCKED, buildable the moment A-15 lands
+> ### UNBLOCKED — build now, nothing needed from the client
 > **M4b / M5b** — checklist and chase emails drafted into `visa.lodgement@`. Needs one reauthorize
 > click: Make's Create-a-Draft module requires `https://mail.google.com/` and the connection holds only
 > `gmail.modify` (D-290). Bundle it with the cutover call — do not send it as a separate ask.
