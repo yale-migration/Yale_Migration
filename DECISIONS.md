@@ -3099,3 +3099,48 @@ in no plan until now.** It also finally gives the `Assigned Consultant` dropdown
 - **"New enquiries this week"** → needs **M6** (Meta/WhatsApp capture). Unbuilt.
 - **"Deadlines"** → needs **M9** (reading Department email). Unbuilt.
 Both are on the roadmap. **Neither can appear on today's demo.** Say so plainly.
+
+## D-300 | 🔑 THEIR REAL CLIENT DATABASE FOUND — and it explains everything we could not explain
+Two files arrived from the team on 14 Aug. Full audit in **`DATA-AUDIT-their-real-tracker.md`**.
+🔴 Both live OUTSIDE this repo, in `SOP'S/` root. `.gitignore` hardened as a second line of defence.
+
+**`REYWARD JAKE M GAMOL-2026.xlsx` — 25 tabs, ~460 client records. This is it.** A-14 is answered and
+should be closed: it was never the Google Sheet (a cold-call list) and never the abandoned `.xlsx`.
+
+### The finding that reframes the project
+> **They file clients by the MONTH THEY ARRIVED, not by status.** A March client stays on the MARCH
+> tab forever, whatever happens next.
+
+That is why nobody at Yale could answer *"how many active files do you have"* — the answer is spread
+across eleven tabs with no way to roll it up. Their own `SUMMARY OF CLIENTS` tab (47 rows against
+~460 records) is a hand-built attempt to solve exactly this, covering about 10% of the file.
+**Their own data is the argument for MASTER.** One list, status as a column, month as a date.
+
+### 🔴 Security: 73 clients' portal passwords in plaintext
+The `JRP` tab has `USERNAME` and `PASSWORD` columns holding live client portal logins, with **one
+password reused across nearly every row**, in a spreadsheet that gets emailed around. Advise rotation
+and a password manager. **⛔ Columns D/E are never imported, copied or echoed. Not into MASTER, not
+into this repo, not into a message.**
+
+### Schema: MASTER is missing 5 fields their staff fill in daily
+`Medical` · `Qualifications` (= occupation: CHEF/ECE/IT/BACHELOR/PHD) · `AFP Application Status` ·
+`FEES` · `Requirements/pending`. The FEES column independently confirms **D-95 — payment gates
+progress**, so M5 must never chase documents when the real blocker is an unpaid invoice.
+Their `Skills Assessment` is a *status*; our column X is the *authority*. Keep both.
+
+### ✅ CORRECTION — "deadlines" is NOT unsourced (revises D-298)
+Every monthly tab carries **`Expiry Date` + `DAYS LEFT`**, maintained by hand. MASTER already has
+`Visa Expiry` (column P), and DAYS LEFT is a formula we compute rather than data they maintain.
+**Visa-expiry deadlines are buildable today.** Only *s56* deadlines need M9. Two different deadlines —
+D-298 conflated them. Say so on the call: it is a materially better answer.
+
+### Import must be staged, never bulk
+Eleven monthly tabs carry **six schema variants** — MARCH has 3 extra columns, JUNE has
+`SIR ROBIN TO DO`, MAY's column A header is the typo `k`, JULY runs to row 1017 for ~65 records,
+**NOVEMBER has no Name header at all**. A single mapping would silently drop columns from five tabs.
+**Order: `SUMMARY OF CLIENTS` (47 clean rows) → monthly tabs newest-first → DATA SHEET → ENQUIRIES.**
+Stage 1 alone is enough for a real demo.
+
+**`DATA SHEET.xlsx` (~200 rows)** is the cold-call log: `Date · Name · Phone · Staff Assigned ·
+Enquiry · Remarks`. **It is the source for the "new enquiries this week" view** we had marked
+unsourced. Name is often blank — those are genuine cold calls, not broken rows.

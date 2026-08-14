@@ -9,3 +9,12 @@ docs/**/Team roster.docx
 docs/**/Model folder.docx
 docs/Answer to the questions..docx
 *.docx.pii
+
+# 🔴 CLIENT DATA — NEVER COMMIT (D-300)
+# Their live client tracker and enquiry log contain names, phones, emails AND
+# plaintext portal passwords. They live OUTSIDE this repo, in SOP'S/ root, and
+# must stay there. These patterns are a second line of defence only.
+/DATA SHEET.xlsx
+/*GAMOL*
+/*CLIENT TRACKER*
+/*DATA SHEET*

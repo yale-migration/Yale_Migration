@@ -10,7 +10,11 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 
 | # | Ask | Asked | Status |
 |---|---|---|---|
-| **A-14** | 🔴 **Link to the Google Sheet they use for monitoring TODAY** | 12 Aug, to the team | 🔴 **THE ONLY THING BLOCKING US.** Gates the schema reconciliation → import → real dashboard numbers → cutover date. No reply as of 13 Aug |
+| ~~A-14~~ | ~~Link to the sheet they use today~~ | 12 Aug | ✅ **CLOSED 14 Aug (D-300).** The team sent `REYWARD JAKE M GAMOL-2026.xlsx` — 25 tabs, ~460 client records, filed by month of arrival. **That is their real client database.** Also `DATA SHEET.xlsx`, ~200 rows, the cold-call log → feeds ENQUIRIES |
+| **A-16** | **Staff emails + which branch each belongs to** | 14 Aug | 🔴 **now the top blocker.** Their tracker has consultant *names* (`priyanka`/`RJ`/`inder`) but **no email anywhere**. Row-level security filters on email — no email, no manager view |
+| **A-17** | **Which of the ~460 records are still ACTIVE?** | 14 Aug | 🟠 cannot be told reliably from `ACTION`/`Notes`. Start with their own `SUMMARY OF CLIENTS` (47 curated rows) |
+| **A-18** | 🔴 **JRP tab holds 73 clients' portal passwords in plaintext, one password reused** | 14 Aug | 🔴 **advise rotation + password manager.** We never import or copy those columns |
+| **A-19** | **Is JRP (Job Ready Program, 4 steps, 73 clients) in scope or out?** | 14 Aug | 🟠 a whole workflow we did not know existed |
 
 ## 🟢 NO LONGER BLOCKING
 
