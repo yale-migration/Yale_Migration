@@ -3059,3 +3059,43 @@ gaps: "new enquiries this week" (needs ENQUIRIES wired in) and "deadlines" (need
 
 **Also:** he wants to buy **Microsoft 365** and asked us to guide the purchase — logged as CR-011. Encourage
 it: it closes CR-003, where ~150 clients' passports sit on one personal Microsoft account.
+
+## D-299 | 🔒 THE DATABASE QUESTION, SETTLED — Google Sheet now, Postgres at the portal, Microsoft NEVER
+Asked directly after Robinder said he wants to buy Microsoft 365. Decided so it is not relitigated.
+
+### The answer
+| Phase | Database | Why |
+|---|---|---|
+| **Now → ~12 months** | **Google Sheet (MASTER)** | Everything already reads it. Free. 150 active + room for thousands. Staff can open and fix a row without asking anyone — which matters more than elegance at this size |
+| **When the client portal is built (Phase 3)** | **Postgres via Supabase** | Row-level security is the only honest way to let a client see their own matter and nothing else. The Sheet then becomes a staff view over it, or retires |
+| **Ever** | ❌ **Microsoft** | see below |
+
+### 🔴 Microsoft 365 is storage and email. It is NOT the database. Do not let it become one.
+The live risk: he buys M365, someone says *"put it all in SharePoint,"* and we rebuild everything.
+
+Three reasons that is wrong:
+1. **Their mail is Google Workspace** (verified by MX, D-76) and **their automation is Make + Google
+   Sheets**. Moving the database to Microsoft splits the estate across three vendors instead of two.
+2. **M3, M4, M5 and the dashboard all read Google Sheets.** A SharePoint/Dataverse move is a rebuild of
+   every module already finished and proven — for zero new capability.
+3. **SharePoint Lists do not solve the actual requirement.** Per-item permissions exist but are a known
+   performance and administration trap at scale, and they still cannot give an external client a clean
+   portal login. If we are going to move for row-level security, move to the thing designed for it.
+
+**What M365 IS for, and it is genuinely valuable:** business email on the domain, and **OneDrive for
+Business to replace the personal account holding ~150 clients' passports** (CR-003). Encourage the
+purchase. Keep it away from the data layer.
+
+### ⚠️ One schema change the manager view needs — not yet built
+Looker Studio's row-level security filters on an **email field inside the data**. MASTER has no such
+column, and putting a list of authorised emails on every client row would be unmaintainable.
+
+**Design: a new `STAFF` tab** — `email · name · branch · role` — blended with MASTER on `Office`.
+Robinder's row carries all branches; a manager's carries one. **Small, but it is real work and it was
+in no plan until now.** It also finally gives the `Assigned Consultant` dropdown a single source
+(A-13), instead of a hand-maintained list.
+
+### Two dashboard views still have no data source
+- **"New enquiries this week"** → needs **M6** (Meta/WhatsApp capture). Unbuilt.
+- **"Deadlines"** → needs **M9** (reading Department email). Unbuilt.
+Both are on the roadmap. **Neither can appear on today's demo.** Say so plainly.
