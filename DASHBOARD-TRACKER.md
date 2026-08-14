@@ -67,6 +67,16 @@ and every viewer needs a Google login. Fine for ~10 staff. Unworkable for ~150 c
 
 ---
 
+## 🔗 LIVE DESIGN PROTOTYPE
+**https://claude.ai/code/artifact/e21c10b5-4de1-4b41-8ac2-62102e6838ec**
+Working role switcher — Director / Brisbane manager / Townsville manager / **Client**. Opens on a
+phone, no login. Sample data, footnoted as such. Built to answer the question he could not picture:
+*what does each person actually see?* Competitive reasoning in `COMPETITOR-ANALYSIS-dashboards.md`.
+
+**Design decision from the research (D-302):** the page opens with **"Needs you today"** — expiring
+visas, files gone quiet, the document queue — above every chart. Competitor dashboards open on
+charts; a practice owner opens one to find out what needs them.
+
 ## ✅ BUILT AND PROVEN
 
 **`scripts/setup_dashboard_tab.gs`** — DASHBOARD tab inside MASTER. 6 views + 6 KPI tiles.

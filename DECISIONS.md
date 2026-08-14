@@ -3188,3 +3188,44 @@ cancel any time. **7-day cancellation window** for a prorated refund.
    in M3/M4 · re-mirror the 28 checklists · re-test. Budget half to a full day and book it.
 3. ✅ **The licensed-user list answers A-16** — staff emails, the current blocker on the manager view.
    The M365 purchase and the dashboard unblock each other.
+
+## D-302 | Competitor research — where we already win, and the one gap that matters
+Full write-up: **`COMPETITOR-ANALYSIS-dashboards.md`**. Prototype:
+https://claude.ai/code/artifact/e21c10b5-4de1-4b41-8ac2-62102e6838ec
+
+⚠️ **Playwright / browser automation is NOT available in this session** — no tool here can log into a
+competitor product and click its real dashboard. Agentcis and ImmiLedger both **403 automated fetch**.
+CRM4Agencies was read in full. Everything on Agentcis comes from independent reviews. **Recorded so
+nobody later mistakes review-derived claims for verified ones.**
+
+**CRM4Agencies — the anchor, confirmed on their own page: AUD $3,500 setup + $600/month, 2–6 week
+implementation ≈ $25,100 over three years.** They have leads, templates, visa tracking, appointments,
+invoicing, reminders and role-based access. **They have NO client portal and NO document checklists** —
+they do document *storage*. We already beat them on the exact thing Yale asked for first: M4 *selects*
+the right checklist from 28 files by visa type, location, dependants and skills authority.
+
+**Agentcis** is genuinely ahead on the client portal and commission tracking. **WIDEN AI** advertises
+*"AI email classification · smart reply drafting · client intake automation · visa deadline
+tracking"* — **that is M9, M6 and the deadline engine.** Someone is already selling our roadmap; the
+differentiation window on AI email triage is closing.
+
+### 🎯 The finding to build the pitch on
+**Not one competitor advertises dormancy detection.** Discovery found real files quiet for **16 and
+71 days**, and their own `48hr Alert` has been broken with a `#REF!` for months. Nobody sells *"we
+tell you who you have forgotten."* It is Yale's actual pain, it is already built and running, and it
+is ours to own. **Lead with it, not with charts.**
+
+### Design change made off the research
+> Competitor dashboards open on charts. A practice owner opens a dashboard to answer *"what needs me
+> today."*
+
+The prototype now opens with a **"Needs you today"** band — visas expiring inside 14 days, files quiet
+21+ days, the document queue — each with counts and real names, charts below. Plus week-on-week
+movement on every KPI. That is the difference between a dashboard opened daily and one opened once.
+
+### Stack for the real build (matches house defaults)
+Next.js App Router · shadcn/ui · **Tremor** for charts — *went fully free and open-source in 2026,
+backed by Vercel, 300+ copy-paste blocks* · Supabase (Postgres RLS = exactly the client/manager/
+director model) · **company Vercel + company Supabase, never a personal or free-tier host.**
+⛔ **No GitHub immigration repo gets forked.** The ones found are US-focused and unmaintained, and
+would import a data model we now understand better than they do. Read NextCRM for structure only.
