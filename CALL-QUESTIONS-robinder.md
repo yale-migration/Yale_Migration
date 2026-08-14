@@ -4,20 +4,6 @@ Read them out as written. The *(why)* line is for you, don't say it.
 
 ---
 
-# 1 · THE BIG ONE — ask this first
-
-### ❓ "Where do you record a client today? From the first phone call all the way to the grant?"
-
-*(why: their old tracker is abandoned, and the Google Sheet turns out to be just phone numbers for cold calling. So we may be building their FIRST real client list. That changes everything — and it's good news, not bad.)*
-
-**Follow-ups if he's vague:**
-
-- "So if I asked you right now how many active files you have — where would you look?"
-- "Does each consultant keep their own list, or is there one shared place?"
-- "How do you know when someone hasn't been contacted in two weeks?"
-
----
-
 # ⚠️ BEFORE THE CALL — 5 minutes, do this or the demo can fail
 
 **1. Can Robinder actually OPEN the MASTER sheet?**
@@ -29,6 +15,20 @@ Real client names and fake ones must never appear in the same screenshot.
 
 **3. Re-run `buildDashboard`** with the latest script, and check the date column reads `19 Jul 2026`,
 not `46216`.
+
+---
+
+# 1 · THE BIG ONE — ask this first
+
+### ❓ "Where do you record a client today? From the first phone call all the way to the grant?"
+
+*(why: their old tracker is abandoned, and the Google Sheet turns out to be just phone numbers for cold calling. So we may be building their FIRST real client list. That changes everything — and it's good news, not bad.)*
+
+**Follow-ups if he's vague:**
+
+- "So if I asked you right now how many active files you have — where would you look?"
+- "Does each consultant keep their own list, or is there one shared place?"
+- "How do you know when someone hasn't been contacted in two weeks?"
 
 ---
 
