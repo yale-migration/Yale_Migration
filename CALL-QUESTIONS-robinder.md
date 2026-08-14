@@ -180,6 +180,26 @@ Right now the automation reaches his OneDrive through **`sharry00010@gmail.com` 
 
 ---
 
+# 7 · GOING LIVE — nobody has asked him these yet
+
+### ❓ "When do you actually want this switched on and running for real?"
+
+*(why: the folder and checklist automation is built and sitting switched off. There is no old system to migrate off any more, so the only thing stopping go-live is him saying go. Get a date or a trigger — "once my clients are in", "start of next month", whatever he says.)*
+
+### ❓ "Who on your team owns this day to day?"
+
+*(why: we need ONE named person. Right now Mershe answers questions and you decide — that works for a build, not for a live system. Someone has to be the person who fixes a stuck row and who we train.)*
+
+### ❓ "How do you want your team trained — a session on a call, or a short video they can rewatch?"
+
+*(why: this is the last piece of the MVP and it needs scheduling. A video is better for a team across branches; a live session is better if they will have questions.)*
+
+### ❓ "Does 9am, 1pm and 5pm suit for when the automation runs?"
+
+*(why: 10 seconds to ask, and it is the schedule we are about to set. Brisbane time, weekdays only.)*
+
+---
+
 # ❌ DON'T SAY
 
 - ❌ **Any price for our work** → *"I'll put it in writing"*
