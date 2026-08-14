@@ -18,6 +18,20 @@ Read them out as written. The *(why)* line is for you, don't say it.
 
 ---
 
+# ⚠️ BEFORE THE CALL — 5 minutes, do this or the demo can fail
+
+**1. Can Robinder actually OPEN the MASTER sheet?**
+It lives on `project1@`. If he has never opened it, he will hit a permission wall live on the call.
+**Check now** — send him the link and ask him to confirm it opens. If not, share it to his email first.
+
+**2. Remove the demo rows** — `removeDemoRows()`.
+Real client names and fake ones must never appear in the same screenshot.
+
+**3. Re-run `buildDashboard`** with the latest script, and check the date column reads `19 Jul 2026`,
+not `46216`.
+
+---
+
 # 2 · FOR THE DEMO TODAY — ask early, you need it during the call
 
 ### ❓ "Can you send me 8 to 10 real clients you're working on right now?"
@@ -112,6 +126,32 @@ You've already given us the list. **Two of them we need to talk about.**
 
 ---
 
+# 5b · 🔴 TELL HIM THIS — it goes with the Microsoft purchase
+
+### The OneDrive connection is currently on MY personal Microsoft account
+
+Right now the automation reaches his OneDrive through **`sharry00010@gmail.com` — my account, not his.**
+
+**Say it plainly, before he buys anything:**
+
+> *"One thing you should know. The folder automation currently connects through my own Microsoft login, because that's how we got it working quickly. That needs to move onto your company account — and buying Microsoft 365 is exactly the right moment to do it. If we don't move it, the day I hand this over the folders stop being created."*
+
+*(why: this is the last thing we still hold that should be his. Telling him now, while he's already buying M365, turns a handover problem into a natural next step. If we say nothing and he finds out later, it looks like we hid it.)*
+
+---
+
+# 5c · HOW MANY BRANCHES, ACTUALLY?
+
+### ❓ "How many offices do you have running today — and how many in six months?"
+
+*(why: he wants manager-sees-own-branch access. But today Brisbane is the only office — Townsville and Philippines are "a couple of months away". If it's one branch right now, we build the access system but there is nothing to separate yet. Better to know than to build a permission system for branches that don't exist.)*
+
+### ❓ "Who would be the manager in each branch?"
+
+*(why: "manager" has to be a real named person with an email, or the role is empty.)*
+
+---
+
 # 6 · IF THERE'S TIME
 
 ### ❓ "Your current staff list — Mershe isn't on the one I have."
@@ -126,6 +166,18 @@ You've already given us the list. **Two of them we need to talk about.**
 
 *(why: one of them also disagrees with your fee appendix — $2,000 vs $2,500. Worth catching before a client sees it.)*
 
+### ❓ "The auto-reply for new enquiries — happy for me to draft the wording and send it to you to approve?"
+
+*(why: A-10. Needed before the enquiry automation can go live. Asking now saves a round trip later.)*
+
+### ❓ "When we get to testing, can you give me 2 or 3 real client files to run end to end?"
+
+*(why: A-11. Not needed today — but flagging it now means it is not a surprise later.)*
+
+### ❓ "Of the CRMs you sent me — CRM4Agencies, Migration Manager, Agentcis — which one felt closest?"
+
+*(why: A-05, unanswered since 8 Aug. One word halves the discovery work on the client portal. And it tells you what he is comparing our price against — CRM4Agencies is about $3,500 setup plus $600 a month.)*
+
 ---
 
 # ❌ DON'T SAY
@@ -134,6 +186,14 @@ You've already given us the list. **Two of them we need to talk about.**
 - ❌ **"Folders are running"** → say *"built and tested, switching on when you're ready"*
 - ❌ **A date for the client portal** → too big, not scoped
 - ❌ **That deadlines are on the dashboard** → they are not
+
+---
+
+# 💰 NOT TODAY — but know where it sits
+
+**The final 50% ($840) is due on go-live.** Do not raise it on this call — nothing is switched on yet
+and it would land badly next to a Phase 2 conversation. **Raise it the day the automation goes live
+with his real clients in it.** That is the moment it is obviously earned.
 
 ---
 
