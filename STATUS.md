@@ -1,6 +1,6 @@
 # STATUS — single source of "where are we"
 
-**Updated:** 2026-08-13 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
+**Updated:** 2026-08-14 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
 
 ---
 
@@ -9,12 +9,23 @@
 **Four deliverables are built and proven against data — M3, M4a, M5a and the DASHBOARD.
 Everything that does not depend on the client is finished. ONE link is blocking everything that does.**
 
-## 🔴 THE ONE BLOCKER — A-14
+## ✅ A-14 CLOSED 14 Aug — WE HAVE THEIR REAL CLIENT DATABASE (D-300)
 
-Their `Engaged Client Tracker.xlsx` is **abandoned** (D-289, team reply 12 Aug: *"we are not using
-it"*). They monitor in a **Google Sheet we have never seen.** Until we have the link:
-schema reconciliation → import → real dashboard numbers → cutover date are all stalled.
-Everything else is done or unblocked. **Chased twice. Read `CUTOVER-PLAN.md` before starting M2.**
+The team sent **`REYWARD JAKE M GAMOL-2026.xlsx`** — 25 tabs, **~460 client records** — plus
+**`DATA SHEET.xlsx`**, ~200 rows of cold-call log. Full audit: `DATA-AUDIT-their-real-tracker.md`.
+Both files live in `SOP'S/` root, **outside this repo. Keep them there.**
+
+**The finding that reframes the project:** they file clients by the **month they arrived, not by
+status**. A March client stays on MARCH forever. That is why nobody at Yale can answer *"how many
+active files do you have"* — and their own `SUMMARY OF CLIENTS` tab (47 rows against ~460 records) is
+a hand-built attempt to solve it. **Their own data is the argument for MASTER.**
+
+🔴 **The `JRP` tab holds 73 clients' portal passwords in plaintext, one password reused.** Advise
+rotation. **Never import, copy or echo columns D/E.**
+
+### 🔴 The blocker is now A-16 — staff emails + branch
+Row-level security filters on email. Their tracker has names (`priyanka`/`RJ`/`inder`), no emails
+anywhere. **Nothing manager-level ships without it.** Dashboard workstream: `DASHBOARD-TRACKER.md`.
 
 ## ✅ A-01 IS NO LONGER A BLOCKER (D-291, 13 Aug)
 
