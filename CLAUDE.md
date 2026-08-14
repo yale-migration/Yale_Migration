@@ -32,13 +32,30 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
 **Standing rule: a spec is not a deliverable.** Always be able to answer *"what can the client see working?"*
 
 ## Session ritual (EVERY session in this folder)
-1. START: read **`STATUS.md`** (the single source of "where are we"), then **`CLIENT-ASKS.md`** (what we are
-   waiting on the client for), then the 🎯 ACTIVE task in `ROADMAP.md`, then the last 5 lines of
-   `CLIENT-LOG.md`.
-2. WORK: **the active task only** (G4), per `ARCHITECTURE.md` conventions.
-3. END: update `STATUS.md` (shipped vs specced — honestly) + `ROADMAP.md` statuses, append to
-   `CLIENT-LOG.md`/`DECISIONS.md`/`ACCESS.md` (G3), commit AND push:
-   `git add -A && git commit -m "<module>: <what changed>" && git push`.
+**START — read these four, in order, and nothing else until you know where you are:**
+1. **`STATUS.md`** — where we are
+2. **`CLIENT-ASKS.md`** — what we are waiting on the client for
+3. **`DASHBOARD-TRACKER.md`** — if the work touches the dashboard, this owns it end to end
+4. the 🎯 ACTIVE task in `ROADMAP.md`
+
+⛔ **NEVER read `DECISIONS.md` whole — it is 336K / 3,100+ lines and it will eat the session.**
+Use **`DECISIONS-INDEX.md`** (one line per decision) to find the D-number, then pull only that entry:
+`grep -A 25 "^D-297" DECISIONS.md`. Regenerate the index with `bash scripts/gen_decisions_index.sh`
+after appending.
+
+**WORK:** the active task only (G4), per `ARCHITECTURE.md`.
+
+**END — every session, no exceptions:**
+`STATUS.md` (shipped vs specced, honestly) · `ROADMAP.md` statuses · append `DECISIONS.md` +
+`gen_decisions_index.sh` · `CLIENT-LOG.md` same day (G3) · `DASHBOARD-TRACKER.md` if touched ·
+then `git add -A && git commit -m "<module>: <what changed>" && git push`.
+
+## 🔴 Client data — where it lives and where it must never go
+Their real client database is **`REYWARD JAKE M GAMOL-2026.xlsx`** (25 tabs, ~460 records) and their
+cold-call log is **`DATA SHEET.xlsx`** — both in `SOP'S/` root, **OUTSIDE this repo. Keep them there.**
+`.gitignore` is a second line of defence, not the control.
+⛔ **The `JRP` tab holds 73 clients' portal passwords in plaintext (columns D/E).** Never import, copy,
+echo or commit those columns. See `DATA-AUDIT-their-real-tracker.md` and D-300.
 
 ## Remote
 PRIVATE repo: https://github.com/m-sharjeel-saleem/Yale_Migration (origin/main, gh auth active).
