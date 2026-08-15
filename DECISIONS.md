@@ -3352,3 +3352,54 @@ Data Breaches scheme** under the Privacy Act.
 **It also raises the stakes on CR-011 (Microsoft 365):** a file like this on a personal Hotmail
 account, shared by link, is the exposure. Company-owned storage with admin control and audit is the
 minimum responsible answer.
+
+## D-307 | 🔑 TWELVE PROCESS-FLOW DIAGRAMS, NEVER OPENED — and one of them explains the Microsoft request
+`SOP'S 2/WORK FLOWS/` holds **12 PNG workflow charts**. Not one had been opened. They are not
+decoration — they are formal SOPs with numbered steps, roles, decision gates and QC checklists.
+
+### `INQUIRY WORK FLOW.png` — **SOP-CI-001**, 15 steps
+Four swimlanes: **Receptionist → Consultant → Registered Migration Agent → Systems.**
+Channels named: walk-in · telephone · email · WhatsApp · SMS · Facebook · website · referral.
+
+**What we did not have and now do:**
+- **Enquiry status vocabulary:** `Not Proceeding` · `Pending Decision` · `Lost Lead` (step 10B).
+  🔴 Our ENQUIRIES tab must use **these exact values**, not ones we invented.
+- **The lead-nurture cadence, specified:** *"Follow up within 7 days and again after 30 days unless
+  the client requests no further contact"* (10D). **M6 had no cadence. Now it does — 7 and 30.**
+- **Courtesy follow-up on a lost lead** (10C) — a step we would never have guessed.
+- Their SOP lists **"Client Management System (CMS)"** under Systems. **Their own process already
+  assumes a CRM exists.** CR-001 is not a new idea he had; it is a gap in his documented process.
+
+### `ANSWERING PHONE CALL WORK FLOW.png` — 13 steps + a 15-point QC checklist
+- **"Answer within three rings"** — a real, stated SLA.
+- Step 4: check the Client Enquiry Log **or CRM** before anything else.
+- Step 6 decision gate: **"Does the enquiry require migration advice?" → escalate to the RMA.**
+  ✅ This is exactly the compliance rule we built into our hard rules. **Their SOP already agrees
+  with us** — worth saying to Robinder, it validates the design.
+- Confirms: **Level 12, 241 Adelaide Street, Brisbane QLD 4000** · `+61 405 268 738`.
+
+### 🔴 THE FINDING THAT CHANGES THE M365 ADVICE
+That SOP's **TOOLS & SYSTEMS** panel names: *Telephone System · Client Enquiry Log · **CRM** ·
+**Microsoft Outlook** · **Microsoft Teams** · **Microsoft Excel***.
+
+**Their own written process assumes a Microsoft stack. Their actual mail is Google Workspace.**
+
+So when Robinder says he wants Microsoft 365, **he is not picking a vendor at random — he is trying to
+make reality match his documented SOPs.** D-301 advised *"keep email on Google, it works."* That advice
+is still technically sound, but it now contradicts his own process documents, and we must say so
+rather than let him discover it. **Ask him directly: do the SOPs describe where you are, or where you
+want to be?** If the answer is "where I want to be", the email question reopens and M9 changes
+platform.
+
+### The other ten, unopened, with what they cover
+`SKILLS ASSESSMENT` · `ENROLLMENT` · `STUDENT VISA` · `485 VISA` · `TOURIST VISA` · `GSM VISA SOP` ·
+`DEPENDENT VISA` · `407 WORK FLOW` · `482 VISA WORK FLOW` · `PARTNER VISA`.
+**Each is a per-visa process map.** They are the authoritative source for M3's folder sets and M4's
+checklist routing, and we built both from documents and conversation instead. **Read before any
+further stage or routing work.**
+
+### The process failure, stated plainly
+181 client files sit outside our repo. We audited the `.docx` and `.pdf` and **never once opened a
+`.png`** — because they looked like decoration. **A file type is not a relevance signal.** Combined
+with D-305 (a 1 MB workbook unopened for weeks), the pattern is the same: we audited what we expected
+to matter. `CLIENT-DATA-INVENTORY.md` now lists every file and its audit state, and is a required read.
