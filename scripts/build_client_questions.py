@@ -153,6 +153,27 @@ def main():
         out.append(p)
         print("wrote " + p)
 
+    # --- the facility: give them the form, not the homework -----------------
+    # Asking a busy team to "put F or I next to each of 40 names" means they
+    # first have to build the list. We already have it. Ship it filled in.
+    import csv as _csv
+    sheet = os.path.join(DATA, "Yale-client-list-to-complete.csv")
+    with io.open(sheet, "w", encoding="utf-8-sig", newline="") as fh:
+        w = _csv.writer(fh)
+        w.writerow(["Client name",
+                    "Team (F = Filipino / I = Indian)",
+                    "Office (leave blank if Brisbane, TSV if Townsville)",
+                    "Email address",
+                    "Surname (only where the name below is incomplete)"])
+        for n in names:
+            w.writerow([n, "", "", "", "" if len(n.split()) > 1 else "<-- needed"])
+    print("wrote " + sheet)
+
+    msg = TEAM_MESSAGE.replace("{{N_ACTIVE}}", str(len(names)))
+    mp = os.path.join(DATA, "SEND-3-team-covering-message.txt")
+    io.open(mp, "w", encoding="utf-8").write(msg)
+    print("wrote " + mp)
+
     prompt = PROMPT.replace("{{N_ACTIVE}}", str(len(names)))
     pp = os.path.join(DATA, "SEND-0-claude-pdf-prompt.txt")
     io.open(pp, "w", encoding="utf-8").write(prompt)
@@ -165,6 +186,31 @@ def main():
     print()
     print("These three files are OUTSIDE the repo and contain real client names.")
     print("Do not commit them. Open SEND-0-claude-pdf-prompt.txt and follow it.")
+
+
+TEAM_MESSAGE = """Hi team,
+
+Rather than keep sending you separate questions on here, I have put everything into one short
+document and emailed it across — subject "Yale Migration - a few gaps in the data".
+
+There are {{N_ACTIVE}} of your current clients involved. I have attached a spreadsheet with all their names
+already typed out and a few blank columns, so most of it is just filling in a letter or two rather
+than digging through sheets.
+
+Blank is a perfectly good answer anywhere you are not sure - I would rather have twenty rows right
+than forty rows guessed.
+
+Quick update while I am here: the folder and checklist automation is built and tested, and the
+dashboard is done. Nothing is switched on against your live clients yet - that only happens when
+Robinder gives the go-ahead.
+
+That document is everything I need from your side. Nothing else after this.
+
+Happy to jump on a call if anything is quicker to talk through.
+
+Thanks,
+Sharjeel
+"""
 
 
 PROMPT = """You are producing two PDF documents for a client of mine. I will paste the source
