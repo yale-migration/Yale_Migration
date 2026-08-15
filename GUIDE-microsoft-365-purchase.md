@@ -99,6 +99,28 @@ annual commitment runs its term.
 more and it means that if the folder migration turns up a surprise, he is not locked in for a year.
 Switch to annual once it is settled.
 
+### 🔑 BETTER ADVICE — start with 3 licences, not 11
+
+**Is buying this compulsory? No.** Nothing breaks if he does nothing. The system works today. This is
+a **governance** problem, not a functional one.
+
+**But the exposure is real:** ~1,436 client folders — passports, police checks — sit on **one
+individual's personal Microsoft account**. If that person leaves or that account is closed or
+compromised, the business loses its client files and has no admin route to recover them. As a
+Registered Migration Agent, that is Robinder's obligation, not an IT preference.
+
+**So: buy it, but small.** The problem is *ownership*, and ownership is fixed by the tenant existing —
+not by how many people are licensed.
+
+| | Licences | Cost/month | Fixes ownership? | Desktop Office for all? |
+|---|---|---|---|---|
+| **Start here** | **3** | **~$56 + GST** | ✅ yes | ❌ not yet |
+| Later | 11 | ~$206 + GST | ✅ | ✅ |
+
+Three licences — Robinder plus whoever manages the files — creates a company-owned tenant with
+company-owned storage. **Staff get added when they actually want desktop Word, not before.**
+This also de-risks the migration: prove it on a small tenant before committing eleven seats.
+
 ### How many licences
 
 Roughly **11 people** appear across their roster and tracker: Robinder, Priyanka, RJ, Inder, Star,
