@@ -131,4 +131,6 @@ caught a junk `SAMPLE` row heading for a real client folder.
 Then: update `WHERE-WE-STAND.md` · append `DECISIONS.md` (header **must** be `## D-NNN | Title` on ONE
 line, or the index silently skips it) + run `bash scripts/gen_decisions_index.sh` ·
 `CLIENT-LOG.md` same day · then
-`git add -A && git commit -m "<module>: <what changed>" && git push`
+`git add -A && git commit -m "<module>: <what changed>"`
+⛔ **COMMIT ONLY — do not `git push`.** `origin` is a personal GitHub account and this repo documents
+client data. Ask Sharjeel where it should live before anything leaves this machine (D-317).
