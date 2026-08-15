@@ -1,0 +1,435 @@
+{
+  "_fix_note": "E1 FIX (D-315). v1 was a LINEAR flow with the routability filter sitting on module 12. A row with Client Code + no Folder URL that failed that filter reached NO module at all, so column V stayed empty and the row matched the trigger on every run, forever. limit=5, so five such rows permanently starve M3. Townsville (Cristelle) and Marketing (Manali) rows hit this immediately because the filter only accepts Office=BRISBANE. v2 wraps the flow in a Router: route A is v1 unchanged, route B is the catch-all that stamps V so the row leaves the queue and a human can see why. Only exist/notexist/text:equal/text:notequal are used (D-255).",
+  "name": "YM-M3-folder-create",
+  "flow": [
+    {
+      "id": 2,
+      "mapper": {
+        "from": "drive",
+        "limit": "5",
+        "filter": [
+          [
+            { "a": "A", "o": "exist" },
+            { "a": "V", "o": "notexist" }
+          ]
+        ],
+        "sheetId": "MASTER",
+        "sortOrder": "asc",
+        "spreadsheetId": "1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+        "tableFirstRow": "A1:Z1",
+        "includesHeaders": true,
+        "valueRenderOption": "FORMATTED_VALUE",
+        "dateTimeRenderOption": "FORMATTED_STRING"
+      },
+      "module": "google-sheets:filterRows",
+      "version": 2,
+      "metadata": {
+        "restore": {
+          "expect": {
+            "from": { "label": "Select from My Drive" },
+            "orderBy": { "mode": "chose", "label": "Empty" },
+            "sheetId": { "mode": "chose", "label": "MASTER" },
+            "sortOrder": { "mode": "chose", "label": "Ascending" },
+            "spreadsheetId": { "mode": "chose", "label": "Yale Migration — MASTER DATABASE" },
+            "tableFirstRow": { "label": "A-Z" },
+            "includesHeaders": { "mode": "chose", "label": "Yes" },
+            "valueRenderOption": { "mode": "chose", "label": "Formatted value" },
+            "dateTimeRenderOption": { "mode": "chose", "label": "Formatted string" }
+          },
+          "parameters": {
+            "__IMTCONN__": {
+              "data": { "scoped": "true", "connection": "google" },
+              "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+            }
+          }
+        },
+        "designer": { "x": 0, "y": 0, "name": "Find new clients" }
+      },
+      "parameters": { "__IMTCONN__": 9501125 }
+    },
+    {
+      "id": 30,
+      "mapper": null,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "metadata": { "designer": { "x": 300, "y": 0 } },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 12,
+              "filter": {
+                "name": "Routable row (code, name, Brisbane, known team)",
+                "conditions": [
+                  [
+                    { "a": "{{2.`0`}}", "o": "exist" },
+                    { "a": "{{2.`2`}}", "o": "exist" },
+                    { "a": "{{2.`9`}}", "b": "BRISBANE", "o": "text:equal" },
+                    { "a": "{{2.`10`}}", "b": "FILIPINO", "o": "text:equal" }
+                  ],
+                  [
+                    { "a": "{{2.`0`}}", "o": "exist" },
+                    { "a": "{{2.`2`}}", "o": "exist" },
+                    { "a": "{{2.`9`}}", "b": "BRISBANE", "o": "text:equal" },
+                    { "a": "{{2.`10`}}", "b": "INDIAN", "o": "text:equal" }
+                  ]
+                ]
+              },
+              "mapper": {
+                "url": "/v1.0/drives/A0BABA3C2640082C/items/{{switch(2.`10`; \"FILIPINO\"; \"A0BABA3C2640082C!sbc920268db9044bdb12dd6072bf26d0f\"; \"INDIAN\"; \"A0BABA3C2640082C!529\")}}/children",
+                "body": "{\"name\":\"{{trim(replace(2.`0`; \"/[^A-Za-z0-9-]/g\"; \"\"))}} – {{trim(replace(replace(2.`2`; \"/[^A-Za-z0-9À-ÖØ-öø-ÿ '.,()-]/g\"; \" \"); \"/  +/g\"; \" \"))}}\",\"folder\":{},\"@microsoft.graph.conflictBehavior\":\"fail\"}",
+                "method": "POST",
+                "headers": [ { "key": "Content-Type", "value": "application/json" } ]
+              },
+              "module": "onedrive:makeApiCall",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 20,
+                  "mapper": {
+                    "from": "drive",
+                    "mode": "select",
+                    "values": { "Notes": "AUTO: client folder NOT created — {{12.error.message}}" },
+                    "sheetId": "MASTER",
+                    "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                    "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                    "includesHeaders": true,
+                    "useColumnHeaders": true,
+                    "valueInputOption": "USER_ENTERED"
+                  },
+                  "module": "google-sheets:updateRow",
+                  "version": 2,
+                  "metadata": {
+                    "restore": {
+                      "parameters": {
+                        "__IMTCONN__": {
+                          "data": { "scoped": "true", "connection": "google" },
+                          "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                        }
+                      }
+                    },
+                    "designer": { "x": 300, "y": 150, "name": "Log failure to Notes" }
+                  },
+                  "parameters": { "__IMTCONN__": 9501125 }
+                },
+                {
+                  "id": 21,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": { "designer": { "x": 450, "y": 150, "name": "Skip this bundle" } },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "qs": { "mode": "chose" },
+                    "method": { "mode": "chose", "label": "POST" },
+                    "headers": { "mode": "chose", "items": [ null ] }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": { "scoped": "true", "connection": "azure" },
+                      "label": "Yale's Microsoft connection (Muhammad Sharjeel <sharry00010@gmail.com>)"
+                    }
+                  }
+                },
+                "designer": { "x": 300, "y": 0, "name": "Create client folder (routed)" }
+              },
+              "parameters": { "__IMTCONN__": 9279810 }
+            },
+            {
+              "id": 15,
+              "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": { "Folder URL": "{{12.body.webUrl}}" },
+                "sheetId": "MASTER",
+                "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "includesHeaders": true,
+                "useColumnHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+              },
+              "module": "google-sheets:updateRow",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 26,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": { "designer": { "x": 600, "y": 150, "name": "Skip - retry next cycle" } },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "from": { "label": "My Drive" },
+                    "mode": { "label": "Search by path" },
+                    "sheetId": { "label": "MASTER" },
+                    "spreadsheetId": { "path": [ "Yale Migration — MASTER DATABASE" ] },
+                    "includesHeaders": { "label": "Yes" },
+                    "useColumnHeaders": { "label": "Yes" },
+                    "valueInputOption": { "mode": "chose", "label": "User entered" }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": { "scoped": "true", "connection": "google" },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": { "x": 600, "y": 0, "name": "Write folder link back" }
+              },
+              "parameters": { "__IMTCONN__": 9501125 }
+            },
+            {
+              "id": 13,
+              "mapper": {
+                "array": "{{split(switch(2.`7`; \"482\"; \"01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome\"; \"407\"; \"01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome\"; \"SBS\"; \"01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome\"; \"Nomination\"; \"01 Identity & Personal;02 Step 1 – Sponsorship;03 Step 2 – Nomination;04 Step 3 – Visa Lodgement;05 Dependents;06 Correspondence & Outcome\"; \"820/801\"; \"01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome\"; \"300\"; \"01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome\"; \"101\"; \"01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome\"; \"802\"; \"01 Applicant Documents;02 Sponsor Documents;03 Relationship Evidence;04 Forms & Lodgement;05 Correspondence & Outcome\"; \"01 Identity & Personal;02 Education & Employment;03 Financial;04 Dependents & Relationship;05 Forms & Lodgement;06 Correspondence & Outcome\"); \";\")}}"
+              },
+              "module": "builtin:BasicFeeder",
+              "version": 1,
+              "metadata": { "designer": { "x": 900, "y": 0, "name": "Folder set for this visa" } },
+              "parameters": {}
+            },
+            {
+              "id": 14,
+              "mapper": {
+                "url": "/v1.0/drives/A0BABA3C2640082C/items/{{12.body.id}}/children",
+                "body": "{\"name\":\"{{13.value}}\",\"folder\":{},\"@microsoft.graph.conflictBehavior\":\"fail\"}",
+                "method": "POST",
+                "headers": [ { "key": "Content-Type", "value": "application/json" } ]
+              },
+              "module": "onedrive:makeApiCall",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 22,
+                  "mapper": {
+                    "from": "drive",
+                    "mode": "select",
+                    "values": { "Notes": "AUTO: a sub-folder failed — {{14.error.message}}" },
+                    "sheetId": "MASTER",
+                    "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                    "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                    "includesHeaders": true,
+                    "useColumnHeaders": true,
+                    "valueInputOption": "USER_ENTERED"
+                  },
+                  "module": "google-sheets:updateRow",
+                  "version": 2,
+                  "metadata": {
+                    "restore": {
+                      "parameters": {
+                        "__IMTCONN__": {
+                          "data": { "scoped": "true", "connection": "google" },
+                          "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                        }
+                      }
+                    },
+                    "designer": { "x": 1200, "y": 150, "name": "Log failure to Notes" }
+                  },
+                  "parameters": { "__IMTCONN__": 9501125 }
+                },
+                {
+                  "id": 23,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": { "designer": { "x": 1350, "y": 150, "name": "Skip this bundle" } },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "qs": { "mode": "chose" },
+                    "method": { "mode": "chose", "label": "POST" },
+                    "headers": { "mode": "chose", "items": [ null ] }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": { "scoped": "true", "connection": "azure" },
+                      "label": "Yale's Microsoft connection (Muhammad Sharjeel <sharry00010@gmail.com>)"
+                    }
+                  }
+                },
+                "designer": { "x": 1200, "y": 0, "name": "Create sub-folder" }
+              },
+              "parameters": { "__IMTCONN__": 9279810 }
+            },
+            {
+              "id": 16,
+              "filter": {
+                "name": "Only Relationship Evidence",
+                "conditions": [
+                  [ { "a": "{{13.value}}", "b": "03 Relationship Evidence", "o": "text:equal" } ]
+                ]
+              },
+              "mapper": { "array": "{{split(\"820;801\"; \";\")}}" },
+              "module": "builtin:BasicFeeder",
+              "version": 1,
+              "metadata": { "designer": { "x": 1500, "y": 0, "name": "820 / 801 (partner only)" } },
+              "parameters": {}
+            },
+            {
+              "id": 17,
+              "mapper": {
+                "url": "/v1.0/drives/A0BABA3C2640082C/items/{{14.body.id}}/children",
+                "body": "{\"name\":\"{{16.value}}\",\"folder\":{},\"@microsoft.graph.conflictBehavior\":\"fail\"}",
+                "method": "POST",
+                "headers": [ { "key": "Content-Type", "value": "application/json" } ]
+              },
+              "module": "onedrive:makeApiCall",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 24,
+                  "mapper": {
+                    "from": "drive",
+                    "mode": "select",
+                    "values": { "Notes": "AUTO: 820/801 sub-folder failed — {{17.error.message}}" },
+                    "sheetId": "MASTER",
+                    "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                    "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                    "includesHeaders": true,
+                    "useColumnHeaders": true,
+                    "valueInputOption": "USER_ENTERED"
+                  },
+                  "module": "google-sheets:updateRow",
+                  "version": 2,
+                  "metadata": {
+                    "restore": {
+                      "parameters": {
+                        "__IMTCONN__": {
+                          "data": { "scoped": "true", "connection": "google" },
+                          "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                        }
+                      }
+                    },
+                    "designer": { "x": 1800, "y": 150, "name": "Log failure to Notes" }
+                  },
+                  "parameters": { "__IMTCONN__": 9501125 }
+                },
+                {
+                  "id": 25,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": { "designer": { "x": 1950, "y": 150, "name": "Skip this bundle" } },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "qs": { "mode": "chose" },
+                    "method": { "mode": "chose", "label": "POST" },
+                    "headers": { "mode": "chose", "items": [ null ] }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": { "scoped": "true", "connection": "azure" },
+                      "label": "Yale's Microsoft connection (Muhammad Sharjeel <sharry00010@gmail.com>)"
+                    }
+                  }
+                },
+                "designer": { "x": 1800, "y": 0, "name": "Create 820 / 801" }
+              },
+              "parameters": { "__IMTCONN__": 9279810 }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 31,
+              "filter": {
+                "name": "CATCH-ALL — cannot route this row",
+                "conditions": [
+                  [ { "a": "{{2.`0`}}", "o": "notexist" } ],
+                  [ { "a": "{{2.`2`}}", "o": "notexist" } ],
+                  [ { "a": "{{2.`9`}}", "b": "BRISBANE", "o": "text:notequal" } ],
+                  [
+                    { "a": "{{2.`10`}}", "b": "FILIPINO", "o": "text:notequal" },
+                    { "a": "{{2.`10`}}", "b": "INDIAN", "o": "text:notequal" }
+                  ]
+                ]
+              },
+              "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                  "Folder URL": "NEEDS ROUTING",
+                  "Notes": "AUTO: no folder created. This row needs Client Code (A), Full Name (C), Office (J) = BRISBANE, and Team (K) = FILIPINO or INDIAN — all in CAPITALS. This row had Office=\"{{2.`9`}}\" Team=\"{{2.`10`}}\". Fix the row, then DELETE the words NEEDS ROUTING from column V and it will be picked up on the next run."
+                },
+                "sheetId": "MASTER",
+                "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "includesHeaders": true,
+                "useColumnHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+              },
+              "module": "google-sheets:updateRow",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 32,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": { "designer": { "x": 450, "y": 300, "name": "Skip - retry next cycle" } },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "from": { "label": "My Drive" },
+                    "mode": { "label": "Search by path" },
+                    "sheetId": { "label": "MASTER" },
+                    "spreadsheetId": { "path": [ "Yale Migration — MASTER DATABASE" ] },
+                    "includesHeaders": { "label": "Yes" },
+                    "useColumnHeaders": { "label": "Yes" },
+                    "valueInputOption": { "mode": "chose", "label": "User entered" }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": { "scoped": "true", "connection": "google" },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": { "x": 300, "y": 300, "name": "CATCH-ALL — flag unroutable row" }
+              },
+              "parameters": { "__IMTCONN__": 9501125 }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "designer": { "orphans": [] },
+    "scenario": {
+      "dlq": false,
+      "slots": null,
+      "dataloss": false,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "roundtrips": 1,
+      "sequential": false,
+      "confidential": false,
+      "freshVariables": false,
+      "autoCommitTriggerLast": true
+    }
+  },
+  "scheduling": { "type": "indefinitely", "interval": 900 },
+  "interface": { "input": [], "output": [] }
+}

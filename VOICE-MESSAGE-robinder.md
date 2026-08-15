@@ -97,5 +97,7 @@ questions and about **75 seconds**, which is the sweet spot.
 | Go-live date | Set `Weekdays 09:00 / 13:00 / 17:00` and switch M3 + M4 on |
 | Microsoft count | Plan the tenant move and re-point our OneDrive connection |
 
-**None of this waits on him** — Stage 1 import (47 clean rows from their `SUMMARY OF CLIENTS` tab)
-can start today, plus M4b and M5b. See `DASHBOARD-TRACKER.md`.
+🔴 **CORRECTED 15 Aug (D-315).** ~~Stage 1 import (47 clean rows from `SUMMARY OF CLIENTS`) can start
+today~~ — **it cannot.** That tab is 47 names, 11 with a visa type, and **no file they have sent
+contains `Office` or `Team`, which is what M3 routes on** (A-25).
+**What genuinely waits on nobody: M4b and M5b.** See `WHERE-WE-STAND.md` §2.

@@ -1,6 +1,12 @@
-# STATUS — single source of "where are we"
+# STATUS — HISTORY ONLY
 
-**Updated:** 2026-08-14 · Read this FIRST every session, then **`CLIENT-ASKS.md`** (`PROCESS.md` ritual).
+> 🔴 **This file no longer owns "where are we". `WHERE-WE-STAND.md` does.**
+> Two files claiming to be the single source is exactly how a stale one gets believed (G6).
+> Frozen at **2026-08-14**. Kept for the narrative of how we got here; **do not act on it.**
+>
+> ⚠️ Known stale below: it recommends importing `SUMMARY OF CLIENTS` as *"47 clean, curated rows"*.
+> **That is wrong** — the tab is 47 names, 11 with a visa type (D-315). Import source is
+> `LODGEMENT JULY TO PRESENT` (42 rows), and it is blocked on **A-25**, not on operations.
 
 ---
 

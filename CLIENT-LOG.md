@@ -219,4 +219,14 @@ requested. | Message sent to team: re-share · manager roles + Mershe's email ·
 in scope. ⚠️ Which draft was actually sent is unconfirmed — if it claimed we lacked staff emails, a
 correction follow-up is required (D-310).
 
+2026-08-15 | internal (no client contact) | **E1 and E2 fixed in Make and verified live** — M3 and M4
+could each be permanently starved by a row they refused to touch; both now have a branch that always
+writes. Both scenarios remain **OFF**. Blueprint backups pulled live via MCP, so **we never need to ask
+the client or Sharjeel to export one again**. | **A-09 CLOSED without ever asking** — answered from our
+own fee workbook; its premise was wrong (D-315). | **A-25 OPENED — 🔴 blocks the import:** `Office` and
+`Team` exist in *no* file they have sent, and M3 routes on exactly those two fields. | **A-26 OPENED**
+(non-blocking): two fee-master discrepancies + the dated $2,028 quote page with Yale's bank details that
+M4 copies to every 500-dependent client. | ⚠️ A-17 corrected — `SUMMARY OF CLIENTS` is 47 names, not a
+client list; we had recommended it without opening it.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

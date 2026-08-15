@@ -115,7 +115,7 @@ Proven against 14 seeded rows on 13 Aug — **all six headline numbers matched p
 
 | # | Action | Owner | Blocked? |
 |---|---|---|---|
-| 1 | Import `SUMMARY OF CLIENTS` — 47 clean, curated rows | us | no ✅ |
+| 1 | ~~Import `SUMMARY OF CLIENTS` — 47 clean, curated rows~~ 🔴 **WRONG — CORRECTED 15 Aug (D-315).** That tab is **47 names**; only 11 carry a visa type. Import source is **`LODGEMENT JULY TO PRESENT` (42 rows)** via `scripts/build_pilot_import.py` | us | 🔴 **yes — A-25.** `Office`/`Team` exist in no file they have sent |
 | 2 | Re-run `buildDashboard` with the date + visa-mix fixes | Sharjeel | no ✅ |
 | 3 | `removeDemoRows()` before any real data lands | Sharjeel | no ✅ |
 | 4 | Add the 5 missing MASTER columns (D-300) | us | no ✅ |

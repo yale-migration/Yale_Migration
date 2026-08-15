@@ -63,6 +63,12 @@ Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
   relevance signal.**
 - 🔴 **Before ANY access request: `connections_get`, NOT `connections_list`.** List returns a *count*;
   get returns the *scope strings*. We nearly asked twice for access already granted (D-271, D-297).
+- 🔴 **G9 NOTHING GOES TO THE CLIENT THAT OUR OWN FILES CAN ANSWER.** Every ask we have sent and then
+  had to walk back followed the same shape: *we asked, then found we already held it, or that the
+  question was wrong.* A-09's premise was wrong (D-315). The roster was on disk for three weeks
+  (D-310). Before any ask leaves: **open the file that would answer it — and check it has the FIELDS,
+  not just the records.** A-17 sent us to a 47-row tab that is 36 rows of nothing but names, because
+  we recommended it without opening it. **Retracting an ask costs more credibility than asking late.**
 
 Full text of the gates: `PROCESS.md`.
 
@@ -101,7 +107,9 @@ broken formula and a correct one identically (D-292…D-296).
 | `docs/05-canonical-checklists/` | the ONLY set M4 may select from — 28 files, hash-recorded |
 
 ⛔ `scenarios/M4-checklist-file.blueprint.BROKEN-DO-NOT-RESTORE.json` — pre-D-255, would break silently.
-**There is currently no valid M4 backup.**
+✅ Valid backups exist for both scenarios, v1 and v2 (D-315). 🔑 **`scenarios_get` returns any blueprint
+over MCP and `scenarios_update` writes it back — never ask anyone to export one from the Make UI.**
+**Run `python3 scripts/verify_blueprints.py` before importing or editing either one.**
 
 ---
 

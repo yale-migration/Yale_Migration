@@ -3689,3 +3689,108 @@ not built.** Eight findings that change the build:
 **And the process point, third occurrence:** these were skipped as `.png` decoration, then reclassified
 as Phase-2 reading — **both judgements made without opening a file.** Rule now recorded in three
 places: **"not relevant" is a conclusion that requires opening the file.**
+
+---
+
+## D-315 | 🔧 E1 AND E2 FIXED IN PRODUCTION — plus four findings the fix work turned up
+**15 Aug 2026.**
+
+### What was actually wrong
+
+**E1 — M3 could be permanently starved by a row it refused to touch.**
+M3 was a **linear flow** with the routability filter sitting on module 12, not a router. The trigger
+takes `A exist AND V notexist`, limit 5. A row that passed the trigger but failed module 12's filter
+reached **no module at all** — so column V was never written, so it matched the trigger again on the
+next run, and the next, forever. Five such rows and M3 is dead: every cycle it fetches the same five
+and does nothing. No error. No log line. `dlqCount: 0`.
+🔑 **This was not hypothetical.** The staff roster (`ACCESS.md`) lists a **Townsville** office
+(Cristelle, `info.tsv@`) and a Marketing line (Manali). Module 12's filter only accepts
+`Office = BRISBANE`. Every Townsville client would have jammed M3 from the first import.
+
+**E2 — M4 had the same shape, twice.**
+(a) If `CHECKLIST MAP` had no row for a visa type that *is* in M4's router, module 3 returned zero
+bundles, modules 4 and 5 never ran, column Y stayed empty, and the row re-matched forever. **Visa 190
+is in the router; `setup_m4_checklist_map.gs` has 36 rows and no 190** — so this was live.
+(b) If the copy succeeded but module 5 failed, Y also stayed empty and M4 **re-copied the same
+checklist on every run**, piling duplicates into the client's folder.
+
+### What was done — applied to Make and verified live
+- **M3 v2** — flow wrapped in `builtin:BasicRouter` (id 30). Route A is v1 unchanged. Route B (id 31)
+  is a catch-all whose filter is the **exact logical complement** of the routable filter; it writes
+  `Folder URL = NEEDS ROUTING` plus a Notes line naming the two fields to fix and how to retry.
+- **M4 v2** — new **guard** module (id 11) inserted as the first module of route A, carrying the filter
+  moved off the lookup. It stamps `Checklist Filed = NO CHECKLIST MAPPED — review` **before** the
+  lookup, so the row always leaves the queue; module 5 overwrites it with the real filename on success.
+  Trigger also gained `V text:notequal "NEEDS ROUTING"` so M3-flagged rows never enter M4.
+- Guard writes **only** `Checklist Filed`, never `Notes` — module 5 cannot clean up a Notes line, so a
+  successful row would have kept a false warning.
+- **Cost:** +1 op per filed row in M4; 1 op once per unroutable row in M3.
+- Verified by `scripts/verify_blueprints.py` — **31/31**, including exhaustive proof that route A and
+  route B partition the input space (100 combinations for M3, 72 for M4): no row matches both, no row
+  matches neither. Then both were re-fetched from Make and confirmed byte-for-byte in intent.
+- ⚠️ **Both scenarios remain OFF.** `isActive: false`, `isinvalid: false`.
+
+**Backups now exist.** `M4-checklist-file.blueprint.json` was pulled **live via MCP** — post-D-255,
+zero `text:contains`. The claim "there is no valid M4 backup" is retracted. The committed M3 backup was
+diffed against live and is current. `scenarios_get` makes the "export it from the UI for me" ask
+obsolete — **we can pull any blueprint ourselves.**
+
+### Finding 1 — 🔴 the planned pilot source does not exist in usable form
+`CLIENT-ASKS` A-17 and `WHERE-WE-STAND` both said to start from their `SUMMARY OF CLIENTS` (47 rows).
+Opened it. It is **47 names**. Only **11** carry a visa type or status. No email, no office, no team,
+no consultant, no expiry. No merged cells — it really is that empty.
+Checked every alternative:
+
+| Source | Rows | Email | Office | Team | Consultant |
+|---|---|---|---|---|---|
+| `SUMMARY OF CLIENTS` | 47 | ✗ | ✗ | ✗ | ✗ |
+| `LODGEMENT JULY TO PRESENT` | 42 | ✗ | ✗ | ✗ | ✗ |
+| `REYWARD` → `AUGUST` | 44 | 3 of 44 | ✗ | ✗ | ✗ |
+| `LODGEMENTS` | 1,144 | ✗ | ✗ | ✗ | ✅ `Handled By` |
+
+🔑 **Office and Team exist in no file the client has sent** — and M3 routes on exactly those two
+fields. **E4 was the wrong diagnosis: the pilot was never blocked by operations, it is blocked by
+data.** → **A-25**.
+The usable source is `LODGEMENT JULY TO PRESENT` (real names, visa types, statuses, expiry).
+`scripts/build_pilot_import.py` maps it, derives `Location` for 500s from their own `CURRENT VISA`
+column, leaves `Client Code` blank for `master_codes.gs`, writes **outside the repo** to
+`client-data/pilot-import.csv`, and **prints the predicted M3/M4 outcome before the run** so a
+surprise is visible as a surprise. **Predicted: ~56 ops, not the ~130 assumed.**
+
+### Finding 2 — 🔴 subclass 186 is a real coverage gap
+`186` Employer Nomination appears in their live lodgement list **and** in their own fee master, but in
+**neither** MASTER's Visa Type dropdown **nor** M4's router. Six of 42 live rows (14%) are types M4
+cannot file: `186`, `600`, `PARTNER VISA` (ambiguous onshore/offshore), `Citizenship` ×2, `ART`.
+
+### Finding 3 — ✅ A-09 is closed, and its premise was wrong
+Opened our own `FEES AND INVOICE REFERENCE.xlsx` → `VISA AND PF FEE`: **21 visa lines**, Engagement +
+Professional + IMMI columns. That is the authoritative schedule. Then opened the two checklists A-09
+said conflicted with it:
+- **`500_ADDING-DEPENDENT.pdf`** — the `$2,028` is not a fee schedule. Page 3 is a **quote page**:
+  DHA main applicant `$2,000.00` + 1.4% card surcharge `$28.00`. Professional fee and engagement fee
+  are both `$0.00`.
+- **`407_TRAINING.docx`** — the `$4,060` is a **total cost of application** for the applicant side:
+  visa 430 + dependent 430 + medical 800 + English 0 + insurance 200 + professional 2,200. The sponsor
+  side totals 2,590 separately.
+**Neither number was ever an agency fee.** There was no conflict to resolve. Two small real
+discrepancies remain and are folded into one non-blocking ask: the 500 DHA charge reads `$2,000` on the
+quote page but `$2,500` in the fee master's IMMI column; and the fee master files `430` under
+*Professional Fee* for 407 when their own checklist shows `430` as the **visa application charge** and
+`2,200` as the professional fee. → **A-26**.
+
+### Finding 4 — ⚠️ one canonical checklist carries bank details and a dated quote
+Scanned all 28 files in `docs/05-canonical-checklists/` — the set **M4 copies into client folders**.
+Exactly one, `500_ADDING-DEPENDENT.pdf`, contains Yale's **BSB, account number and SWIFT**, a hard-coded
+`$2,028.00`, and `Date: 17/10/2025`. No client name, so it is a template rather than one person's
+invoice — but M4 ships that dated amount to **every** 500-adding-dependent client. Bank details going
+to a client are normal; a fixed 10-month-old figure presented as their quote is not. Not ours to
+change — it is their client-facing document and RMA territory. → **A-26**.
+
+### Rules this adds
+> **A filter that can silently match nothing is a filter that can loop forever.** Every branch that
+> can fail to write must have a sibling that always writes. Proved by exhaustive evaluation, not by
+> reading the JSON — `scripts/verify_blueprints.py` is the gate.
+
+> **Before asking the client for a file, open the file we already hold and check it has the columns we
+> need.** A-17 sent us to a 47-row tab that is 36 rows of nothing but names. G8 says open the file;
+> this adds: *and check it contains the fields, not just the records.*

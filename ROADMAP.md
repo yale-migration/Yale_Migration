@@ -233,3 +233,36 @@ Remaining, none blocking: ⬜ 2–3 test client files (M10) · ⬜ 👍 M6 auto-
 Quotes+Xero · deadline engine (blueprint = their S56 workbook) · QC gate · Looker dashboard · advanced AI
 (doc classify + rename) · enrolment tracker · refunds · extended visa lines · appointment booking · EOI
 points calculator · role routing · CRM face (AppSheet vs GoHighLevel) · storage/governance recommendation
+
+---
+
+# 🔴 CONTRACTED MVP ITEMS THAT WERE NEVER ON THIS LIST
+**Added 15 Aug 2026 (D-311 → D-315).** All five are inside Proposal v3 scope. None appeared in any
+tracking file, so none were built and none were counted. They are MVP work, not Phase 2.
+**~9 hours total against the 48h cap — see `HOURS-LEDGER.md`.**
+
+| # | Item | Hrs | State | The thing that decides it |
+|---|---|---|---|---|
+| **C-1** | **Client intake form** | 2 | ⬜ | 🔑 **Do not design one.** They already have `Client Enquiry Form` (D-314) and their SOP-CI-001 is built around it. Build to *their* form, or we ship a second form nobody fills in |
+| **C-2** | **Secure upload link** | 2 | ⬜ | Column **AD `Upload Link`** now exists in MASTER (`add_master_columns_z_to_ad.gs`). Needs the generator + the wording that goes to the client |
+| **C-3** | **Third-party responsible-party tracking** | 2 | ⬜ | Columns **AB `Third Party`** + **AC `Third Party Status`**. Their SOPs name employer · college · RTO · assessing authority as blockers on the client's own file |
+| **C-4** | **Received / missing status per client** | 2 | ⬜ | Columns **Z `Docs Received`** + **AA `Docs Outstanding`**. 🔑 **AA is what the M5b chase email lists** — without it M5b can only say "something is missing" |
+| **C-5** | **Referral + SMS enquiry channels** | 1 | ⬜ | **Not a column.** `Source` (U) already exists — it needs `Referral` and `SMS` added to its dropdown, plus a capture path for each |
+
+⚠️ **C-2 → C-4 depend on the five new MASTER columns.** Those go **STRICTLY RIGHT OF Y** — M4 addresses
+MASTER by numeric index, so a column inserted left of Y makes it file the wrong checklist and report
+success. `scripts/add_master_columns_z_to_ad.gs` enforces this and refuses to run if the shape is wrong.
+
+## Gaps found in the visa coverage itself (15 Aug)
+Reading their live `LODGEMENT JULY TO PRESENT` (42 rows) against M4's router:
+
+| Their value | Rows | Status |
+|---|---|---|
+| `186` Employer Nomination | 1 | 🔴 **GAP** — in their fee master and their live pipeline, but in **neither** MASTER's dropdown **nor** M4's router. A real subclass we simply do not handle |
+| `600` Tourist | 1 | ⬜ no checklist in the canonical set — out of scope unless A-19 says otherwise |
+| `PARTNER VISA` | 1 | ⚠️ ambiguous — 820/801 onshore or 309/100 offshore. Needs one word from them |
+| `Citizenship` | 2 | ⬜ not a visa application |
+| `ART` | 1 | ⬜ tribunal review, not a visa application |
+
+**6 of 42 live rows (14%) are things M4 cannot file.** Before the E2 guard they would have looped
+forever; now they land as `NEEDS REVIEW`. That is correct behaviour, not coverage.

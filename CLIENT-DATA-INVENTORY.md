@@ -97,9 +97,11 @@ Cross-referenced against the files, that resolves to **two lists, not one**:
 **They overlap.** A client who arrived in August is likely in both. **Deduplicate on name + visa type
 before importing anything**, or the dashboard double-counts.
 
-⚠️ Still unconfirmed: which of the two is authoritative, and whether `SUMMARY OF CLIENTS` (47) is a
-third curated view of the same people. **This is the question to ask — not "where do you track
-clients."**
+⚠️ Still unconfirmed: which of the two is authoritative (A-17).
+✅ **RESOLVED 15 Aug (D-315): `SUMMARY OF CLIENTS` is NOT a third curated view.** It is 47 names; only
+11 carry a visa type or status; no email, office, team, consultant or expiry.
+🔴 **`Office` and `Team` appear in NO file they have sent — and M3 routes on both (A-25).**
+**That is the question to ask — not "where do you track clients."**
 
 ---
 

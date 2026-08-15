@@ -10,8 +10,8 @@
 |---|---|---|---|
 | M1 | Discovery | ✅ **done** | ⚠️ reopened twice — see §4 |
 | M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
-| M3 | Intake → folders | ✅ **proven** | 3 folder sets, both teams, idempotent · **OFF** |
-| M4a | Checklist select + file | ✅ **proven** | 0 errors, real files copied · **OFF** |
+| M3 | Intake → folders | ✅ **proven + hardened** | 3 folder sets, both teams, idempotent · **v2 catch-all 15 Aug (E1)** · **OFF** |
+| M4a | Checklist select + file | ✅ **proven + hardened** | 0 errors, real files copied · **v2 guard 15 Aug (E2)** · **OFF** |
 | M4b | Checklist email draft | 🟢 **buildable now** | nothing needed from client (D-297) |
 | M5a | Dormancy detection | ✅ **running daily** | unattended since 10 Aug |
 | M5b | Chase email draft | 🟢 **buildable now** | manager + consultant (D-266) |
@@ -27,30 +27,41 @@
 ⛔ The former "53%" is retracted. **~47 of 48 contract hours are consumed**, the gap being ~16 hours
 of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
 
-**Ops: 481 / 1,000.** Both scenarios deliberately OFF.
+**Ops: 481 / 1,000 — 519 left, resets 25 Aug.** Both scenarios deliberately OFF.
+The 15 Aug fix work cost **0 ops** — blueprints were edited over MCP, never run.
+📌 A one-click reader scenario **`YM-TMP-read-checklist-map` (id 6959410)** is parked in Make, on-demand
+and inactive. Press **Run once** and it prints the live `CHECKLIST MAP` tab (1 op). Delete when done.
 
 ---
 
 # 2 · 🎯 RESUME HERE
 
-Nothing below is blocked. **In this order:**
+**REVISED 15 Aug after E1/E2 were fixed and the import source was actually opened (D-315).**
 
-| # | Task | Hrs | Why first |
-|---|---|---|---|
-🔴 **REVISED 15 Aug — three fixes must precede ANY import (D-311).**
+## ✅ Done this session — verified, not assumed
+| | What | Evidence |
+|---|---|---|
+| **E1** | M3 catch-all route — an unroutable row can no longer loop forever | applied via MCP, **re-fetched from Make and confirmed**; `verify_blueprints.py` 31/31 |
+| **E2** | M4 guard stamps the row **before** the lookup — an unmapped visa can no longer loop, and a failed write can no longer duplicate files | same |
+| **Backups** | `M4-checklist-file.blueprint.json` pulled **live**, post-D-255, zero `text:contains`. M3's committed backup diffed against live — current | ⛔ *"there is no valid M4 backup"* is **retracted** |
+| **A-09** | closed **without asking the client** — its premise was wrong | D-315 |
+| **E3** | `scripts/add_master_columns_z_to_ad.gs` written — refuses to run if MASTER's shape is not exactly as M4 expects | needs Sharjeel to run it |
+| **Pilot** | `scripts/build_pilot_import.py` — maps their real list, predicts the outcome, writes outside the repo | **~56 ops, not ~130** |
 
-| # | Task | Hrs | Why |
+## ▶ Next, in this order
+| # | Task | Hrs | Blocked? |
 |---|---|---|---|
-| **1** | 🔴 **M3 catch-all route for unroutable rows** | 0.5 | **E1** — rows with blank Office/Team match the trigger forever. Five of them and M3 dies silently. The import creates hundreds |
-| **2** | 🔴 **Reconcile `190`** across router / script / live MAP tab | 0.5 | **E2** — a 190 row loops forever eating a queue slot. Script (36 rows, no 190) has diverged from live |
-| **3** | 🔴 **Add 5 MASTER columns STRICTLY RIGHT OF Y** | 1 | **E3** — M4 addresses columns by *number*; inserting left of Y makes it file the wrong checklist with no error |
-| **4** | **10-row pilot import** — not 47 | 1 | **E4** — 519 ops left; 47 clients ≈ 611. Pilot ≈ 130 |
-| 5 | Visa-expiry deadline view | 1 | source exists |
-| 6 | `DATA SHEET` → ENQUIRIES using **their** status words | 2 | `Not Proceeding` · `Pending Decision` · `Lost Lead` (D-307) |
-| 7 | **M4b + M5b** | 3 | nothing needed from the client |
+| **1** | **Run `add_master_columns_z_to_ad.gs`** then `verifyMasterColumns()` | 0.25 | 🙋 Sharjeel — 2 min |
+| **2** | **Add a `190` row to CHECKLIST MAP** | 0.25 | 🙋 needs the live tab read. **No longer urgent — the E2 guard means a missing 190 flags for review instead of looping** |
+| **3** | 🔴 **10-row pilot import** | 1 | 🔴 **A-25** — `Office` and `Team` exist in no file they have sent, and M3 routes on both |
+| **4** | **M4b + M5b** email drafts | 3 | 🟢 **nothing needed from anyone.** ⚠️ testable only on seeded rows — real rows have no email (A-25) |
+| 5 | **C-1 … C-5** — the 5 contracted items now tracked in `ROADMAP.md` | 9 | 🟢 C-2/3/4 need step 1 first |
+| 6 | Visa-expiry deadline view | 1 | 🟢 source exists |
+| 7 | `DATA SHEET` → ENQUIRIES using **their** status words | 2 | 🟢 (D-307) |
 
 ⛔ **Do not switch M3/M4 on** until real clients are in and Robinder gives a date.
 ⛔ **Set the `Weekdays 09:00/13:00/17:00` schedule in the same action** — both are still on 15-min.
+🔑 **`scenarios_get` works over MCP — never ask anyone to export a blueprint from the Make UI again.**
 
 ---
 
@@ -63,7 +74,8 @@ Nothing below is blocked. **In this order:**
 |---|---|---|
 | **A-20** | **Re-share both sheets with `project1@yalemigration.com.au`** | access came to Sharjeel's personal Gmail; the automation runs as project1@ |
 | **A-16** | **MANAGER ROLES ONLY** — who manages each team · Mershe's email · is the roster current? | 🔑 **We already hold every staff email** (`access/Team roster.docx`, 26 Jul → `ACCESS.md`, D-310). The roster has no role column — that is the only gap |
-| **A-17** | **Which client list is live?** `LODGEMENT JULY TO PRESENT` (42) or `REYWARD` monthly tabs (~403)? They overlap | determines what every number means |
+| **A-17** | **Which client list is live?** `LODGEMENT JULY TO PRESENT` (42) or `REYWARD` monthly tabs (~403)? They overlap | determines what every number means. ⚠️ **`SUMMARY OF CLIENTS` is NOT a third option — it is 47 names, 11 with a visa type (D-315)** |
+| **A-25** | 🔴 **`Office` and `Team` per client — and client email addresses** | 🔴 **BLOCKS THE IMPORT.** M3 files every folder by Office + Team. **Neither column exists in any of the four workbooks.** Client email exists on 3 of 44 rows, so M4b/M5b cannot be tested on real data either (D-315) |
 | ~~A-21~~ | ✅ **CLOSED — answered from their own data (D-305/D-308).** `LODGEMENTS` has `Handled By`; in `STUDENTS.xlsx` **the consultant IS the tab name**. Rows inherit the consultant from their tab at import | — |
 
 ## 🟠 Shapes scope
@@ -92,9 +104,11 @@ need it"*) was never accepted or declined. **Decline it with a reason** — it h
   ~25 templates named that we do not hold · and they are **platform-agnostic**, correcting D-307
 - ⚠️ **Our own fee workbook is unopened** — `FEES AND INVOICE REFERENCE.xlsx` has a 26-row
   `VISA AND PF FEE` tab that likely closes A-09 with no client contact (D-312)
-- **5 CONTRACTED items missing from all tracking** (D-311): the **intake form** · the **secure upload
-  link** · third-party responsible-party tracking · received/missing status · Referral + SMS channels
-- **No valid M4 blueprint backup** — the committed one is quarantined as broken
+- ✅ **5 CONTRACTED items NOW TRACKED as C-1…C-5 in `ROADMAP.md`** (D-315) — intake form · secure upload
+  link · third-party tracking · received/missing status · Referral + SMS. **~9h, MVP scope, not Phase 2**
+- ✅ ~~No valid M4 blueprint backup~~ — **RETRACTED 15 Aug.** Pulled live via MCP, post-D-255, verified
+- 🔴 **Subclass `186` is a coverage gap** — in their live pipeline *and* their fee master, but in neither
+  MASTER's dropdown nor M4's router. 6 of 42 live rows (14%) are types M4 cannot file (D-315)
 
 ---
 

@@ -179,7 +179,7 @@ mixed live and closed matters is how you poison a new database on day one.
 
 | Stage | What | Why |
 |---|---|---|
-| **1** | **`SUMMARY OF CLIENTS` (47 rows)** — clean, consistent, already curated by them | fastest path to a real dashboard; it is their own shortlist of what matters |
+| ~~**1**~~ | 🔴 ~~**`SUMMARY OF CLIENTS` (47 rows)** — clean, consistent, already curated~~ **WRONG, CORRECTED 15 Aug (D-315).** Opened it: **47 names**, 11 with a visa type or status, no email/office/team/consultant/expiry. Use **`LODGEMENT JULY TO PRESENT` (42 rows)** instead | this row was written from the tab's *name and row count*, never from its contents |
 | **2** | **Monthly tabs, one at a time**, newest first (AUGUST → JULY → JUNE) | recent months are the live ones. Per-tab mapping handles the drift |
 | **3** | **`DATA SHEET.xlsx` → ENQUIRIES** | lights up "new enquiries this week" |
 | **4** | JRP · 500 OFFSHORE · 482407 | separate pipelines, decide in or out first |

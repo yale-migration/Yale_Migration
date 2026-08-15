@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 372K /     3691 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 316K /     3796 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 19:34
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 20:18
 
 | # | Decision |
 |---|---|
@@ -311,3 +311,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 19:3
 | **D-312** | ⚠️ I TRIAGED TWO ITEMS AS "LOW PRIORITY". BOTH WERE WRONG. Checked 15 Aug. |
 | **D-313** | ✅ "Hardiek Patel" identified — closes the last unknown from the audit |
 | **D-314** | ✅ ALL 12 WORKFLOW SOPs READ — gap closed. Full analysis in `CLIENT-SOP-WORKFLOWS.md` |
+| **D-315** | 🔧 E1 AND E2 FIXED IN PRODUCTION — plus four findings the fix work turned up |
