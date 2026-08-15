@@ -3444,3 +3444,35 @@ Total client-side records now visible across four workbooks: **~5,400.**
 roughly the same size as the visa business, and it is entirely outside the signed MVP.** M1–M11 cover
 visa matters. This is `P2-06` (enrolment tracker) at a scale we never estimated.
 🔴 **Do not absorb it. Quote it.**
+
+## D-309 | Two last checks before declaring the audit complete — one useful, one a warning
+**`Queries Gayatri` → `LOCATION` is the CLIENT's Australian state, not Yale's branch.**
+Values seen: `NSW`, `WA`. **It does not answer the branch question and must not be mapped to `Office`.**
+Mapping it would put clients in offices that do not exist. With Brisbane the only live office
+(D-230), **every imported row defaults to `Office = BRISBANE`** — an assumption to state, not a
+question to ask.
+Also in that tab: columns G/H/I hold **dated call attempts inline** — *"05/03: Called, No response"*,
+*"26/03: will call back"*. One column per attempt, free text. It is their follow-up history and it is
+parseable with effort, but it is not a field.
+
+## 🔴 `Inderpreet` (1,149 rows) IS NOT IMPORTABLE
+Column A jams everything into one cell: `Jaspal / Brisbane` · `Ahmad :61 479 160 542:Early chil` ·
+`AnuRee: 61 402 554 731`. **No headers, no delimiter discipline, name + phone + occupation + notes in
+a single field.** These are one person's private working notes, not a record system.
+
+**Do not promise to import it.** Any parser would produce confident garbage — the worst possible
+outcome for a first client-visible deliverable.
+
+### Import viability, stated honestly
+| Source | Records | Verdict |
+|---|---|---|
+| `LODGEMENT JULY TO PRESENT` | 42 | ✅ **clean — import first** |
+| `SUMMARY OF CLIENTS` | 47 | ✅ clean, already curated by them |
+| `REYWARD` monthly tabs | ~403 | 🟡 six schema variants — map per tab |
+| `DATA SHEET` | ~200 | 🟡 → ENQUIRIES |
+| `Queries Gayatri` | 1,236 | 🟡 structured enough, dated notes need parsing |
+| **`Inderpreet`** | **1,149** | ⛔ **free text. Not importable. Manual only** |
+
+**AUDIT COMPLETE.** Every spreadsheet in the tree has been opened and its structure recorded in
+`CLIENT-DATA-INVENTORY.md`. Remaining unread: 10 per-visa workflow PNGs — they inform M3/M4 stage and
+routing work, both already built and proven, so they are Phase-2 reading, logged not forgotten.
