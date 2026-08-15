@@ -2199,8 +2199,11 @@ path `/YALE MIGRATION - ONE SYSTEM/INFORMATION HUB/CLIENT DOCUMENT CHECKLISTS`. 
 D-249 | 🔴 PRE-UPLOAD SAFETY SCAN — two checklists are also FEE QUOTES. Never auto-send either |
 Scanned all 27 canonical files for banking/PII markers before publishing them to the client's live drive.
 One hit: `500_ADDING-DEPENDENT.pdf`.
-- **The bank details are Yale's OWN** — "Yale Migration and Education Consultants", ANZ, BSB 014286,
-  Sunnybank branch. It is their receiving account on an invoice. **Intentional, not a leak.**
+- **The bank details are Yale's OWN** — ANZ, in the company name, their receiving account on an
+  invoice. **Intentional, not a leak.** ⛔ **BSB digits redacted from this entry 15 Aug.** A BSB is a
+  public branch code, not a secret, and the account number and SWIFT were **never** in this repo — but
+  the no-secrets rule in `CLAUDE.md` is a bright line and bright lines do not have exceptions for
+  "probably fine". Verified never pushed: the commit was local-only. Run `bash scripts/repo_hygiene.sh`.
 - **The real risk is a hardcoded amount: `Total Amount Due $2,028.00`.** This document is a checklist AND a
   filled quote. Auto-sending it would bill every adding-a-dependent client the same figure regardless of
   their actual fee.
@@ -3819,8 +3822,8 @@ header before reading anything (D-306). It is re-runnable whenever a file arrive
 | **PHONE** | ✅ plentiful — `DATA SHEET` 392/395, `STUDENTS → Queries Gayatri` 370/386 |
 
 ### 🔑 But the conclusion for the import did not change — it got sharper
-Matched the **41 distinct active clients** (`LODGEMENT JULY TO PRESENT`, 42 rows, **`RODEL CLUTARIO`
-appears twice**) by normalised name against every other tab:
+Matched the **41 distinct active clients** (`LODGEMENT JULY TO PRESENT`, 42 rows — **one client is
+listed twice**; the generator now dedupes on a normalised name key) by normalised name against every other tab:
 
 | | |
 |---|---|
@@ -3854,3 +3857,57 @@ the sheet as a form for Robinder to fill in. The script also **deduplicates** on
 > checked every tab in every file" are different sentences. If a claim about a *set* is going to reach
 > the client, enumerate the set in code and let the code count — do not extrapolate from what was open
 > at the time. `scripts/audit_all_tabs.py` exists so this is cheap to redo, not a heroic effort.
+
+---
+
+## D-317 | 🧹 A HYGIENE GATE — because I put a client's name in the repo while writing about client PII
+**15 Aug 2026.**
+
+### What happened
+While documenting D-316 I wrote a real client's surname into two places: a code comment in
+`build_pilot_import.py` and the body of the D-316 entry itself. `CLAUDE.md` has said **"NO SECRETS in
+this repo — no keys, no passwords, no client PII"** since the beginning. I broke it in the same hour I
+was auditing the client's data-handling. It was caught by an ad-hoc grep I happened to run, **after the
+commit.** A rule with no check is a preference.
+
+Also found and redacted: **`BSB 014286`** in an older entry (line ~2202). Being accurate about severity —
+a BSB is a public branch code, not a secret; the **account number and SWIFT were never in the repo**,
+they exist only inside the client's own PDF. And the commit was **never pushed**. So: no exposure. But
+a bright line does not get an exception for *"probably fine"*, so the digits are gone.
+
+### The gate
+`scripts/repo_hygiene.py` — run before every commit and at session end. Now in the `CLAUDE.md` ritual.
+
+| Check | What it does |
+|---|---|
+| credential-shaped strings | BSB+digits · SWIFT · account numbers · API keys · bearer tokens · private keys · literal passwords. Skips lines that *discuss* credentials rather than containing one |
+| client full names | reads names **at runtime** from `../client-data/` (never hardcoded — that would put them in the repo) and greps every tracked text file |
+| tracked spreadsheets | flags one only if it actually holds email/phone data |
+| remote | prints the remote and warns if it is not a company GitHub org |
+
+🔑 **Two design decisions, both learned by getting them wrong first:**
+1. **Match the FULL name, never a single token.** The first version flagged `SHARMA` — a surname shared
+   by a real client and by our seeded demo data. A check that cries wolf trains everyone to ignore it.
+2. **A tracked spreadsheet is only a problem if it holds personal data.** The first version flagged the
+   two fee workbooks in `docs/`; both are price lists and a blank invoice template. Zero personal rows.
+
+### 🔴 What the gate caught immediately — a real bug in my own work
+**Their live `LODGEMENT JULY TO PRESENT` contains a row literally named `SAMPLE`.** It had already
+reached **row 1 of the pilot CSV**. Imported, it would have been issued a real client code and produced
+a real OneDrive folder named `YM-2026-##### – SAMPLE`. `build_pilot_import.py` now drops `JUNK_NAMES`.
+
+### ⚠️ And a bug I introduced fixing that one
+The first junk filter was `name in JUNK_NAMES or len(name.split()) < 2`. That silently dropped **11 real
+clients recorded with a first name only** — `PRINCE`, `Dev`, `Abhishek`, `Komalpreet` and seven more.
+Common in their data; these are people, not placeholders. **Dropping 11 of 42 real clients is worse than
+the problem being fixed.** They are now a separate `HELD BACK` bucket, reported by name, so Robinder can
+supply surnames. → folded into **A-25** as part (c).
+
+> **A filter written to remove junk will remove real records unless you look at what it removed.**
+> Print the skipped set, always. Silent exclusion looks identical to clean data.
+
+### ⚠️ Standing flag — the git remote is a personal account
+`origin` = **`github.com/m-sharjeel-saleem/Yale_Migration`**. Private ✅, last pushed 4 Aug, **52 commits
+behind local.** Company policy names **BrandRadar-AI · Roar-AI-Labs · Apex-AI-Clients** as the
+company-owned orgs, and this repo documents client data. **Nothing has been pushed and nothing will be
+without Sharjeel confirming the destination.** The gate prints this warning on every run.

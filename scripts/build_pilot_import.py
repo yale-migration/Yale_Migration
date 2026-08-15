@@ -90,6 +90,9 @@ UNMAPPED_NOTE = {
     "PARTNER VISA": "ambiguous - 820/801 onshore or 309/100 offshore?",
 }
 
+# Placeholder rows their staff leave in the live sheet. Not people.
+JUNK_NAMES = {"SAMPLE", "TEST", "DEMO", "EXAMPLE", "NAME", "N/A", "TBA", "XXX"}
+
 STATUS_MAP = {
     "LODGED": "Lodged",
     "PENDING": "Awaiting Decision",
@@ -140,12 +143,27 @@ def main():
             sys.exit("source column missing: " + name)
         idx[name] = header.index(name)
 
-    out, skipped, dupes, seen = [], [], [], set()
+    out, skipped, dupes, junk, partial, seen = [], [], [], [], [], set()
     for r in rows[1:]:
         name = norm(r[idx["NAME"]])
         if not name:
             continue
-        # Their list repeats at least one person (RODEL CLUTARIO x2). Importing
+        # Their live list contains a row literally named SAMPLE. Left in, it
+        # becomes a real client code and a real OneDrive folder called
+        # "YM-2026-##### - SAMPLE". Caught 15 Aug by scripts/repo_hygiene.sh,
+        # after it had already reached row 1 of the pilot CSV.
+        if name.strip().upper() in JUNK_NAMES:
+            junk.append(name)
+            continue
+        # Single-token names are REAL PEOPLE recorded with a first name only -
+        # common in their data. They are held back from the pilot rather than
+        # dropped: a OneDrive folder called "YM-2026-##### - Dev" is awkward to
+        # rename later. They are reported by name so Robinder can complete them.
+        # Do NOT fold these in with JUNK_NAMES; that silently loses 11 of 42.
+        if len(name.split()) < 2:
+            partial.append(name)
+            continue
+        # Their list repeats at least one person. Importing
         # a duplicate creates two client codes and two OneDrive folders for one
         # human, and the dashboard then double-counts them.
         key = " ".join(sorted(re.sub(r"[^A-Z ]", "", name.upper()).split()))
@@ -208,9 +226,20 @@ def main():
         print("Office/Team LEFT BLANK on purpose. The active list spans BOTH")
         print("teams (Gayatri+Inder=INDIAN, star=FILIPINO), so any single")
         print("guess is wrong for some rows. M3's catch-all will flag them.")
+    if junk:
+        print()
+        print("SKIPPED %d PLACEHOLDER row(s) - not people: %s"
+              % (len(junk), ", ".join(junk)))
+    if partial:
+        print()
+        print("HELD BACK %d REAL client(s) recorded with a first name only."
+              % len(partial))
+        print("   %s" % ", ".join(partial))
+        print("   These are people, not junk. Ask Robinder for their surnames,")
+        print("   then re-run - they will import normally.")
     if dupes:
         print()
-        print("SKIPPED %d duplicate name(s): %s" % (len(dupes), ", ".join(dupes)))
+        print("SKIPPED %d duplicate name(s) (deduped on a normalised key)" % len(dupes))
     # ---- predict what M3 and M4 will actually do with these rows ------------
     # "Never show a client a report that has not been run against data" applies
     # to imports too.  Say what the pilot will produce BEFORE it produces it,

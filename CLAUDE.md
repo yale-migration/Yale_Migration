@@ -29,6 +29,9 @@ Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
   PINs (D-306). **If a column name contains `password`, `username`, `OTP`, `PIN` or
   `security question`, it is excluded from every read, import, log line and message. No exceptions.**
 - **NO SECRETS in this repo** — no keys, no passwords, no client PII.
+  **Checked, not trusted: `python3 scripts/repo_hygiene.py` before every commit** (D-317).
+- ⚠️ **`origin` is a PERSONAL GitHub account, not a company org.** 52 commits unpushed.
+  **Never push without asking Sharjeel** — company orgs are BrandRadar-AI · Roar-AI-Labs · Apex-AI-Clients.
 
 **Professional**
 - **AI never auto-sends migration advice.** Only the RMA advises. Every draft routes to human review.
@@ -122,7 +125,10 @@ Looker Studio = staff dashboard · Next.js + Supabase = client portal (Phase 3, 
 
 ## Session end — every time, no exceptions
 
-Update `WHERE-WE-STAND.md` · append `DECISIONS.md` (header **must** be `## D-NNN | Title` on ONE line,
-or the index silently skips it) + run `bash scripts/gen_decisions_index.sh` ·
+🔴 **`python3 scripts/repo_hygiene.py` FIRST — it must say HYGIENE PASS before you commit.** It exists
+because I wrote a client's name into this repo while auditing client PII (D-317), and it immediately
+caught a junk `SAMPLE` row heading for a real client folder.
+Then: update `WHERE-WE-STAND.md` · append `DECISIONS.md` (header **must** be `## D-NNN | Title` on ONE
+line, or the index silently skips it) + run `bash scripts/gen_decisions_index.sh` ·
 `CLIENT-LOG.md` same day · then
 `git add -A && git commit -m "<module>: <what changed>" && git push`

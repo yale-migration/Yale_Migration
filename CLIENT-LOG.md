@@ -238,4 +238,13 @@ those 4 span **both teams** (Gayatri + Inder INDIAN, star FILIPINO), so the acti
 Also fixed our own tooling: `build_pilot_import.py` had hard-coded `TEAM=FILIPINO`, which would have
 misfiled Indian-team clients and reported success. Now blank by default.
 
+2026-08-15 | internal (no client contact) | **Hygiene gate added (D-317)** after I wrote a client's
+surname into the repo while auditing client PII. Redacted, never pushed. `scripts/repo_hygiene.py` now
+runs before every commit. It immediately caught two real bugs in my own work: their live list contains a
+row named **`SAMPLE`** which had reached row 1 of the pilot CSV and would have created a real client
+folder; and my first fix for it silently dropped **11 real clients recorded by first name only**. Both
+fixed, both reported by name now. ➜ **A-25 gains part (c): surnames for those 11.**
+⚠️ Standing flag: `origin` is a **personal** GitHub account, private, **52 commits unpushed**. Company
+policy names BrandRadar-AI / Roar-AI-Labs / Apex-AI-Clients. **Nothing pushed pending Sharjeel's call.**
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
