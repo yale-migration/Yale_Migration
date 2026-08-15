@@ -1,5 +1,5 @@
 # CLIENT ASKS — live register of every open question
-**Updated 10 Aug 2026.** One row per ask. Nothing is asked twice (G2); nothing is silently forgotten.
+**Updated 14 Aug 2026.** One row per ask. Nothing is asked twice (G2); nothing is silently forgotten.
 `CLIENT-LOG.md` is the chronological record — **this file is the outstanding balance.**
 
 Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answered · ⛔ withdrawn
@@ -33,8 +33,8 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 | ~~A-02~~ | ~~Correct Subclass 190 checklist~~ | 6 Aug · re-sent 7 Aug | ✅ **CLOSED 11 Aug (D-280).** Third version is correct — heading says 190, zero mentions of 491/189/regional, "+5 points state nomination". Filed as `190_SKILLED-NOMINATED.docx` |
 | ~~A-03~~ | ~~Gmail OAuth on `project1@`~~ | ✅ **WITHDRAWN — NOT NEEDED (D-271).** `Yale's Gmail connection` (id 9452213) already exists on `visa.lodgement@`, created by the client, valid to Jan 2027, with **`gmail.modify`** — which permits both send and draft-create. **M4b/M5b are buildable today.** |
 | A-03b | Which mailbox should checklist/chase **drafts** appear in — `visa.lodgement@` or `project1@`? | 11 Aug | 🟢 preference. Building on `visa.lodgement@` |
-| **A-15** | 🟠 **Reauthorize the EXISTING Gmail connection with the full-mailbox scope** — Make's Create-a-Draft module requires `https://mail.google.com/`; our connection has only `gmail.modify` (D-290) | 13 Aug | 🟠 **blocks M4b + M5b.** NOT a new connection and NOT a repeat ask — same reauthorize flow as 31 Jul (D-97), one extra checkbox. **Bundle with the cutover call, do not send separately** |
-| A-04 | **Dashboard requirements** — 6 questions | ~8 Aug | 🟠 **no answer.** Who opens it · top-3 views · phone or laptop · refresh rate · what to keep · anything else |
+| ~~A-15~~ | ~~Gmail reauthorize for Create-a-Draft~~ | 13 Aug | ⛔ **WITHDRAWN 14 Aug — never real (D-297).** `gmail.modify` covers `drafts.create`, and `TriggerNewEmail` already runs on that exact connection with the same declared requirement. **M4b/M5b need nothing from the client.** Do not ask |
+| ~~A-04~~ | ~~Dashboard requirements — 6 questions~~ | ~8 Aug | ✅ **ANSWERED 14 Aug (D-298).** Clients see own · managers see own branch · Robinder sees all · laptop-first but responsive · hourly refresh · views specified |
 | A-05 | **CRM** — which of CRM4Agencies / Migration Manager / Agentcis is closest | ~8 Aug | 🟠 no answer. One word halves Phase-3 discovery |
 | A-13 | **Updated staff list** — `Mershe Ventura` answered our tracker questions but is on no roster we hold (D-269) | 11 Aug | 🟠 `Assigned Consultant` is a locked dropdown; anyone missing cannot be selected at all |
 | ~~A-14~~ | *(promoted to the blocking table above)* | | |
@@ -52,7 +52,7 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 🔴 **`Engaged Client Tracker.xlsx` IS DEAD DATA (D-289).** Two weeks of discovery ran against a file they
 have since left. It is *not* the import source and must not be treated as one. Its column vocabulary
 survives in MASTER v2 — the concepts were right, the file was stale.
-**Superseded by A-14: get the link to the Google Sheet they use today.**
+**Superseded — their real database is `REYWARD JAKE M GAMOL-2026.xlsx` (D-300).**
 
 ---
 
