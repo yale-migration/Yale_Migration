@@ -1,130 +1,119 @@
-# Yale Migration Automation — Build Workspace
+# Yale Migration — automation build
 
-Client: Yale Migration and Education Consultants (Brisbane). Contact: Robinder (WhatsApp, Roman Urdu,
-short messages). Consultant: Muhammad Sharjeel Saleem. Engagement: MVP 48h (signed, paid), scope locked
-to Proposal v3 (19 Jul 2026) — see `../PROJECT-STATE.md` for full history.
+Client: **Yale Migration and Education Consultants**, Brisbane visa agency. Contact **Robinder Pal
+Singh**, MARN 1573959 (WhatsApp, Roman Urdu, short messages). Consultant: Muhammad Sharjeel Saleem.
+Engagement: **48h MVP, $1,680, 50/50, $840 received.** Scope = Proposal v3, 19 Jul 2026.
+⚠️ **Robinder came via Hardiek Patel, his brother-in-law, whose automation we built** (D-313). A
+referral inside a family network — mistakes travel beyond this engagement.
 
-## 🔴 READ `PROCESS.md` — its 8 gates are MANDATORY, not advice
-Each gate exists because a specific dated failure happened (31 Jul: an instruction to the client changed
-4 times in one day). Summary — the full rules are in `PROCESS.md`:
-- **G1 VERIFY-BEFORE-INSTRUCT** — no platform capability, UI path, permission model or limit reaches a
-  client-facing message until verified against a PRIMARY SOURCE **this session**. Memory does not count.
-  Prior chats do not count. Check public DNS before asking a client what platform they use.
-- **G2 SEARCH-OURSELVES-FIRST** — grep `DECISIONS.md`/`CLIENT-LOG.md`/`ACCESS.md` BEFORE asking the client
-  anything. the full decision history is recorded; asking what they already answered is the most credibility-damaging
-  thing we can do.
-- **G3 SAME-DAY OPERATIONAL LOG** — who set up what, on whose machine, who holds which credential, how the
-  client prefers to work → `ACCESS.md`, same day. Not just technical decisions.
-- **G4 ONE-FOCUS LOCK** — `ROADMAP.md` has exactly ONE 🎯 ACTIVE task. Anything else gets ONE LINE in the
-  right file and is dropped. Depth on the wrong thing looks identical to progress and is not.
-- **G5 CLIENT-MESSAGE GATE** — before sending: one ask only · every instruction verified · exact account
-  named · device stated if it matters · not a repeat · walk each click for dead-ends ·
-  **name the exact FILE, TAB and PATH** when referring to a document (D-267).
-- **G6 SINGLE SOURCE, NEVER RESTATE** — one authority per fact; copies drift and cause wrong builds.
-- **G7 DECISION IDS FROM MAX, NOT COUNT** — `grep -c` produced 7 duplicate D-numbers once.
-- **G8 SEARCH THE WHOLE TREE, NOT THE TIDY ONE** — a curated folder is not the library. And **a filename is
-  not evidence of content — open the file** (D-223/D-224).
-- 🔴 **BEFORE ANY ACCESS REQUEST: run `connections_get` — NOT `connections_list`** (D-271, D-297).
-  `connections_list` returns `scopesCnt` (a number); **`connections_get` returns the scope strings.**
-  We nearly asked Robinder twice for access he already had — the second time *after* adding this gate,
-  because a count looked like a verification.
+---
 
-**Standing rule: a spec is not a deliverable.** Always be able to answer *"what can the client see working?"*
+## 🔴 START HERE — read in this order, nothing else until you know where you are
 
-## Session ritual (EVERY session in this folder)
-**START — read these, in order, and nothing else until you know where you are:**
-0. 🔑 **`WHERE-WE-STAND.md`** — position, gaps, resume point. **Start here.**
-1. **`STATUS.md`** — longer history
+1. **`WHERE-WE-STAND.md`** — position, gaps, resume point. **This file owns "where are we".**
 2. **`CLIENT-ASKS.md`** — what we are waiting on the client for
-3. **`DASHBOARD-TRACKER.md`** — if the work touches the dashboard, this owns it end to end
-   **`CLIENT-DATA-INVENTORY.md`** — if the work touches client data, read this FIRST (G8)
-4. the 🎯 ACTIVE task in `ROADMAP.md`
+3. **`CLIENT-DATA-INVENTORY.md`** — before touching or asking for any client data
+4. `DASHBOARD-TRACKER.md` — if the work touches the dashboard
 
-⛔ **NEVER read `DECISIONS.md` whole — it is 336K / 3,100+ lines and it will eat the session.**
-Use **`DECISIONS-INDEX.md`** (one line per decision) to find the D-number, then pull only that entry:
-`grep -A 25 "^D-297" DECISIONS.md`. Regenerate the index with `bash scripts/gen_decisions_index.sh`
-after appending.
+⛔ **NEVER read `DECISIONS.md` whole — 350KB, it will eat the session.**
+Use `DECISIONS-INDEX.md` to find the number, then `grep -A 25 "^D-297" DECISIONS.md`.
+Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
 
-**WORK:** the active task only (G4), per `ARCHITECTURE.md`.
+---
 
-**END — every session, no exceptions:**
-`STATUS.md` (shipped vs specced, honestly) · `ROADMAP.md` statuses · append `DECISIONS.md` +
-`gen_decisions_index.sh` · `CLIENT-LOG.md` same day (G3) · `DASHBOARD-TRACKER.md` if touched ·
-then `git add -A && git commit -m "<module>: <what changed>" && git push`.
+## 🔴 HARD RULES — never break
 
-## 🔴 Client data — READ `CLIENT-DATA-INVENTORY.md` BEFORE ASKING FOR ANY FILE
-Twice we have asked the client for data already sitting on disk. **`YALE BRISBANE OFFICE WORK.xlsx`
-(1 MB, 30+ tabs, their real operational system) sat unread for weeks** while we chased other files —
-we knew its name from `PHASE-2-3-BACKLOG.md` and never opened it (D-305).
-All client files live in **`SOP'S/client-data/`**, **OUTSIDE this repo. Keep them there.**
-⛔ **~1,200 plaintext credentials across these workbooks — including ImmiAccount logins, clients'
-Gmail passwords, security questions, and staff phone PINs (D-306).** If a column name contains
-`password`, `username`, `OTP`, `PIN` or `security question`, it is excluded from every read, import
-and log line. **No exceptions. Never echo one, not even in a message to Sharjeel.**
+**Client data**
+- All client workbooks live in **`SOP'S/client-data/`**, OUTSIDE this repo. Keep them there.
+- ⛔ **~1,200 plaintext credentials** across those files, incl. **ImmiAccount logins** and staff phone
+  PINs (D-306). **If a column name contains `password`, `username`, `OTP`, `PIN` or
+  `security question`, it is excluded from every read, import, log line and message. No exceptions.**
+- **NO SECRETS in this repo** — no keys, no passwords, no client PII.
 
-## Remote
-PRIVATE repo: https://github.com/m-sharjeel-saleem/Yale_Migration (origin/main, gh auth active).
-docs/ is CURATED — never add: client PII files, third-party materials (Apex/Zap It samples),
-archive junk, `~$` lock files, anything from `99 ARCHIVE`.
+**Professional**
+- **AI never auto-sends migration advice.** Only the RMA advises. Every draft routes to human review.
+- **Everything is built in CLIENT-owned accounts.** We hold invited access only.
 
-## Hard rules (never break)
-- **NO SECRETS in this repo** — no API keys, no passwords, no client PII. The Claude key lives ONLY in
-  Make's connection. Client names/passports never get copied here.
-- **AI never auto-sends migration advice** — only the Registered Migration Agent advises (legal rule).
-  All AI drafts route to human review. Confidence thresholds → "Needs Review", never silent guesses.
-- **Everything is built in CLIENT-owned accounts** (their Make, their Sheet, their OneDrive, their
-  Anthropic billing). We hold invited access only.
-- **New client requests are NOT scope** — log them in `CHANGE-REQUESTS.md` (what/when) AND
-  `PHASE-2-3-BACKLOG.md` (estimate/dependency/commercial position), reply "Phase 2/3 list mein daal diya",
-  keep building the MVP. **Everything in the backlog is billable — quoted after go-live, never absorbed.**
-  ⚠️ Robinder's recurring ask is **multi-branch oversight** (CR-001 → CR-007 → CR-009). Three shapes, one
-  need. It is the largest revenue opportunity in the account — treat it as a headline, not a favour.
-- Client approvals arrive as WhatsApp 👍 — paste the message into `CLIENT-LOG.md` same day.
+**Commercial**
+- **New client requests are NOT scope** → log in `CHANGE-REQUESTS.md` + `PHASE-2-3-BACKLOG.md`, reply
+  *"Phase 2/3 list mein daal diya"*, keep building. **Never absorb. Quote before working.**
+- 🔴 **We already gave away ~16h of Phase 2/3 free** (`HOURS-LEDGER.md`). Do not repeat it.
+- ⚠️ Robinder's recurring ask is **multi-branch oversight** — CR-001 → 007 → 009 → 010 → 012. One
+  need, five shapes. Largest revenue opportunity in the account.
 
-## ⚠️ Before building or switching on ANY scenario
-**`DEFINITION-OF-DONE.md` — the 12-point gate every scenario must pass.** M3 ran successfully four times and
-still had five production blockers. Working ≠ production-ready. Apply it to M4–M9 too, not just M3.
+---
 
-## ⚠️ Current blocker status (14 Aug)
-**M3 ✅ · M4a ✅ · M5a ✅ · DASHBOARD ✅ — all built and proven against live client data.**
-- ✅ **A-01 downgraded (D-291):** `Weekdays (Mon-Fri)` + 3 fixed times = ~392 ops/mo against 1,000.
-  **M3 and M4 can go live on the Free plan.** Paid plan still needed for M6/M9 — Free caps *active
-  scenarios* at 2, and M3+M4 is exactly two.
-- ✅ **A-14 CLOSED** — we have all their data. **`YALE BRISBANE OFFICE WORK.xlsx` is the real
-  operational system** (D-305): 1,144 lodgements, a hand-run 7/14/28-day s56 ladder that is already
-  lapsing, EOI across six states, and a Philippines office already operating.
-- 🔴 **Blockers now: A-16** staff emails + branch · **A-20** live access was granted to
-  `sharry00010@gmail.com` but the automation runs as **`project1@yalemigration.com.au`** — needs
-  re-sharing · **A-17** two overlapping active lists (Jan-onward + Jul-onward) must be deduplicated.
-- ✅ **A-15 WITHDRAWN (D-297)** — it was never real. `gmail.modify` covers `drafts.create`, and
-  `TriggerNewEmail` already runs on that connection with the same declared requirement.
-  **M4b/M5b need nothing from the client.**
-- 🔴 **D-306 — ~1,200 plaintext credentials** incl. ImmiAccount. Advice only; never our custody.
-**481 of 1,000 ops used.** Read `CLIENT-DATA-INVENTORY.md`, `PRODUCTION-READINESS.md`, `CLIENT-ASKS.md`.
+## ⚠️ THE GATES — each exists because of a dated failure
 
-## File map
-- `STATUS.md` — where we are · `CLIENT-ASKS.md` — **what we are waiting on the client for**
-- `PROCESS.md` — the 8 gates · `PHASE-2-3-BACKLOG.md` — billable work beyond the MVP, with estimates
-- `ROADMAP.md` — module checklist with live statuses
-- `CLIENT-LOG.md` — chronological log of every client message/decision that matters
-- `CHANGE-REQUESTS.md` — new asks parked for Phase 2/3, dated
-- `DECISIONS.md` — architecture decisions + why (append-only)
-- `ARCHITECTURE.md` — system design, naming conventions, data contract
-- `ACCESS.md` — access inventory + status (no secrets)
-- **`CLIENT-DATA-INVENTORY.md`** — every client data file, what is in it, what must never be touched
-- `DASHBOARD-TRACKER.md` — the dashboard workstream end to end
-- `DECISIONS-INDEX.md` — one line per decision; use instead of reading DECISIONS.md
-- `PRODUCTION-READINESS.md` — blockers between 'it works' and 'it can be switched on'
-- `DEFINITION-OF-DONE.md` — the 12-point gate EVERY scenario must pass before going live
-- `scripts/` — Apps Script sources · `scenarios/` — Make blueprints (JSON, restorable) · `assets/samples/` —
-  client-provided samples (sanitized only)
-- **`docs/05-canonical-checklists/`** — the ONLY checklist set M4 may select from. 27 files, hash-recorded
-  in `MANIFEST.json`, mirrored to OneDrive `INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS` (D-242/D-247)
+- **G1 VERIFY BEFORE INSTRUCT** — no capability, UI path or limit reaches the client until verified
+  against a **primary source this session**. Memory does not count.
+- **G2 SEARCH OURSELVES FIRST** — before asking the client anything, grep `DECISIONS-INDEX` +
+  `CLIENT-LOG` + `ACCESS` **and `access/` + `New-docs/` — the folders they actually sent.**
+  🔴 A summary that omits something reads identically to a summary of something that never existed
+  (D-310: we asked for a staff roster we had held for three weeks).
+- **G3 SAME-DAY LOG** — `CLIENT-LOG.md` every day. A 13-day gap caused D-310.
+- **G4 ONE FOCUS** — one active task. Depth on the wrong thing looks like progress.
+- **G5 CLIENT MESSAGE GATE** — one ask · verified · exact account named · not a repeat ·
+  **name the exact FILE, TAB and PATH.**
+- **G6 SINGLE SOURCE** — one authority per fact. Copies drift and cause wrong builds.
+- **G7 DECISION IDs FROM MAX, NOT COUNT.**
+- **G8 OPEN THE FILE.** 🔴 *"Not relevant" is a conclusion that requires opening the file, never a
+  starting assumption.* Broken three times: a 1MB workbook known by name (D-305), twelve `.png` SOPs
+  (D-307), the fee master (D-312). **A filename is not evidence of content. A file type is not a
+  relevance signal.**
+- 🔴 **Before ANY access request: `connections_get`, NOT `connections_list`.** List returns a *count*;
+  get returns the *scope strings*. We nearly asked twice for access already granted (D-271, D-297).
 
-## Stack (decided, don't relitigate)
-Google Sheet = database · Make.com = connector/scenarios · OneDrive (personal, via Make connection) =
-client folders · Gmail via **Make↔Gmail OAuth** — ✅ **`Yale's Gmail connection` (id 9452213) ALREADY EXISTS**
-on `visa.lodgement@`, client-created, `gmail.modify` (can send AND draft), valid to Jan 2027. **No further
-authorisation is needed for M4b/M5b** (D-271). ⛔ NOT delegation (D-78/D-79/D-80) — + Claude API
-(Haiku classify / Sonnet draft) = email triage
-· Meta/WhatsApp Business = enquiry channels · Looker Studio = Phase 2 dashboard.
+Full text of the gates: `PROCESS.md`.
+
+---
+
+## ⚠️ Before building or switching on any scenario
+
+**`DEFINITION-OF-DONE.md`** — 12 points. M3 ran four times successfully and still had five production
+blockers. **Working ≠ production-ready.**
+
+**Make filter operators: only `exist` · `notexist` · `text:equal` · `text:notequal` work.**
+`text:contains` is accepted and then **evaluates false silently** (D-255).
+
+**Never show a client a report that has not been run against data** — an empty dashboard renders a
+broken formula and a correct one identically (D-292…D-296).
+
+---
+
+## 📁 File map
+
+| File | Owns |
+|---|---|
+| **`WHERE-WE-STAND.md`** | 🔑 position · gaps · resume point |
+| `CLIENT-ASKS.md` | outstanding balance with the client |
+| `CLIENT-DATA-INVENTORY.md` | every client file, what is in it, what is forbidden |
+| `CLIENT-SOP-WORKFLOWS.md` | their own 12 process SOPs — the spec for M5/M6/M7/M9 |
+| `DASHBOARD-TRACKER.md` | the dashboard workstream end to end |
+| `HOURS-LEDGER.md` | hours vs the 48h cap |
+| `DECISIONS-INDEX.md` → `DECISIONS.md` | why anything was decided |
+| `CHANGE-REQUESTS.md` · `PHASE-2-3-BACKLOG.md` | billable work beyond MVP |
+| `ACCESS.md` | access inventory **+ the staff email roster** |
+| `CLIENT-LOG.md` | chronological client record |
+| `ARCHITECTURE.md` · `PRODUCTION-READINESS.md` | design · blockers between works and can-switch-on |
+| `ROADMAP.md` | ⚠️ module list + contracted hours ONLY. Stale on everything else |
+| `scripts/` · `scenarios/` | Apps Script · Make blueprints |
+| `docs/05-canonical-checklists/` | the ONLY set M4 may select from — 28 files, hash-recorded |
+
+⛔ `scenarios/M4-checklist-file.blueprint.BROKEN-DO-NOT-RESTORE.json` — pre-D-255, would break silently.
+**There is currently no valid M4 backup.**
+
+---
+
+## Stack — decided, do not relitigate
+
+Google Sheet = database (**not** Microsoft — D-299) · Make.com = scenarios · OneDrive = client folders ·
+Gmail via Make OAuth on `visa.lodgement@` — **`gmail.modify` is sufficient, nothing needed from the
+client** (D-297) · Claude API = email triage · Meta/WhatsApp = enquiry channels ·
+Looker Studio = staff dashboard · Next.js + Supabase = client portal (Phase 3, **company hosting only**).
+
+## Session end — every time, no exceptions
+
+Update `WHERE-WE-STAND.md` · append `DECISIONS.md` + run `gen_decisions_index.sh` ·
+`CLIENT-LOG.md` same day · then
+`git add -A && git commit -m "<module>: <what changed>" && git push`
