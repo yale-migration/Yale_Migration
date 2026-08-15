@@ -36,6 +36,7 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
 1. **`STATUS.md`** — where we are
 2. **`CLIENT-ASKS.md`** — what we are waiting on the client for
 3. **`DASHBOARD-TRACKER.md`** — if the work touches the dashboard, this owns it end to end
+   **`CLIENT-DATA-INVENTORY.md`** — if the work touches client data, read this FIRST (G8)
 4. the 🎯 ACTIVE task in `ROADMAP.md`
 
 ⛔ **NEVER read `DECISIONS.md` whole — it is 336K / 3,100+ lines and it will eat the session.**
@@ -50,12 +51,15 @@ after appending.
 `gen_decisions_index.sh` · `CLIENT-LOG.md` same day (G3) · `DASHBOARD-TRACKER.md` if touched ·
 then `git add -A && git commit -m "<module>: <what changed>" && git push`.
 
-## 🔴 Client data — where it lives and where it must never go
-Their real client database is **`REYWARD JAKE M GAMOL-2026.xlsx`** (25 tabs, ~460 records) and their
-cold-call log is **`DATA SHEET.xlsx`** — both in `SOP'S/` root, **OUTSIDE this repo. Keep them there.**
-`.gitignore` is a second line of defence, not the control.
-⛔ **The `JRP` tab holds 73 clients' portal passwords in plaintext (columns D/E).** Never import, copy,
-echo or commit those columns. See `DATA-AUDIT-their-real-tracker.md` and D-300.
+## 🔴 Client data — READ `CLIENT-DATA-INVENTORY.md` BEFORE ASKING FOR ANY FILE
+Twice we have asked the client for data already sitting on disk. **`YALE BRISBANE OFFICE WORK.xlsx`
+(1 MB, 30+ tabs, their real operational system) sat unread for weeks** while we chased other files —
+we knew its name from `PHASE-2-3-BACKLOG.md` and never opened it (D-305).
+All client files live in `SOP'S/` root, **OUTSIDE this repo. Keep them there.**
+⛔ **~1,200 plaintext credentials across these workbooks — including ImmiAccount logins, clients'
+Gmail passwords, security questions, and staff phone PINs (D-306).** If a column name contains
+`password`, `username`, `OTP`, `PIN` or `security question`, it is excluded from every read, import
+and log line. **No exceptions. Never echo one, not even in a message to Sharjeel.**
 
 ## Remote
 PRIVATE repo: https://github.com/m-sharjeel-saleem/Yale_Migration (origin/main, gh auth active).
