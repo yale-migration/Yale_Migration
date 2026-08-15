@@ -23,8 +23,9 @@
 | M11 | Handover | ⬜ | 2 connections still ours |
 | — | **Dashboard** | ✅ built + prototype | not in MVP scope — goodwill |
 
-**Honest: ~21 of 40 build-hours ≈ 53%.** Unchanged — the last two days were audit, not build, and the
-audit was necessary.
+**Honest: ~26%** — 10.5 of 40 contracted build-hours, audited 15 Aug (D-311).
+⛔ The former "53%" is retracted. **~47 of 48 contract hours are consumed**, the gap being ~16 hours
+of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
 
 **Ops: 481 / 1,000.** Both scenarios deliberately OFF.
 

@@ -1,3 +1,11 @@
+> 🔴 **THIS FILE IS THE MODULE CHECKLIST ONLY. IT IS NOT "WHERE WE ARE."**
+> Frozen at v7 (31 Jul) and audited 15 Aug as the most contradictory file in the repo — it still shows
+> M3 "IN PROGRESS", the demo unsent, routing hardcoded and the Make paid plan as the go-live gate.
+> **All four are wrong and were fixed weeks ago.**
+> **For current state read `WHERE-WE-STAND.md`. For hours read `HOURS-LEDGER.md`.**
+> Only the contracted module list and hour figures below (M1–M11) are authoritative — those are
+> verified correct against Proposal v3.
+
 # ROADMAP — Yale Migration MVP (48h)
 Legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked · ⏸️ deferred by decision
 **v7 — 2026-07-31** (added FOCUS LOCK per PROCESS.md G4; corrected stale T2 detail that still described the

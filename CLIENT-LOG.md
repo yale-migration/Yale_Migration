@@ -183,3 +183,40 @@ three: the SBS/Nomination dropdown dead end that would have blocked every sponso
 gate demanding 5 folders when the build makes 6; and three of our own documents still claiming Robinder was
 blocking us when he completed the Gmail reauthorize on 31 Jul. Also: 3 client-PII files untracked from git,
 8 client answers promoted from PROJECT-STATE into DECISIONS, batch-level tracking recorded honestly in ACCESS.
+
+## ⚠️ BACKFILL 3–15 Aug, reconstructed 15 Aug
+🔴 **This log stopped on 2 Aug and 13 days went unrecorded.** That gap is the mechanism by which
+D-310 happened — the staff roster was sent 26 Jul, never transcribed, and five files then claimed we
+did not have it. Reconstructed below from DECISIONS entries, not from a live log. **Anything marked
+⚠️ is inferred and unverified.**
+
+2026-08-05 | ✅ DEMO SENT | 60–90s video of folder creation, first client-visible delivery. ⚠️ Send
+confirmed only by STATUS.md; no client acknowledgement recorded.
+2026-08-06 | docx (IN) | `New-docs/ANSWER.docx` — answers on checklists + skills authorities.
+Approved the Skills Authority column ("You can add a column on that one"). Confirmed prepare-and-check,
+never auto-send. Flagged their checklists as "not fully implemented" → CR-008.
+🔴 **Offered: "I can send you the tracker I we are using if you need it."** Never accepted, never
+declined. Still open as a courtesy debt.
+2026-08-06 | WhatsApp (IN) | Dashboard requested — driver clarified as multi-branch oversight → CR-009.
+Townsville/Philippines "in a couple of months" → D-230. ⚠️ Contradicted 14 Aug: `LAOAG FILES` (78
+records) shows the Philippines already operating.
+2026-08-07 | files (IN) | Subclass 190 checklist v2 — still wrong (contained 491).
+2026-08-11 | files (IN) | 190 v3 CORRECT, verified from primary source (D-280). Also
+`ANSWER-2 dashboard and tracker (Mershe Ventura)` — 48hr Alert answer: **"both the manager and
+consultant should be notified"** (D-266).
+2026-08-12 | WhatsApp (IN) | 🔑 **"with regards to that file. we are not using it… we are using the
+google sheets for our monitoring as of the moment"** → `Engaged Client Tracker.xlsx` declared dead
+(D-289). Two weeks of A-14 chasing had been aimed at the wrong file.
+2026-08-13 | WhatsApp (IN) | 🔑 Robinder: **"I want some advice on having some softwares for phones
+which can monitor activity / calls / msgs and if they can be integrated on the dashboard."** → CR-010.
+2026-08-14 | files (IN) | Team sent `DATA SHEET.xlsx` + `REYWARD JAKE M GAMOL-2026.xlsx` → D-300.
+Later `STUDENTS.xlsx` → D-308. Robinder by phone: **"we only track clients from January to now"**
+⚠️ no time or channel recorded. Also asked us to guide a Microsoft 365 purchase → CR-011.
+Dashboard answers received: clients see own · managers see own branch · Robinder sees all · laptop
+primary, mobile responsive · hourly refresh → CR-012 / D-298.
+2026-08-15 | access (IN) | Sheets shared — ⚠️ **to `sharry00010@gmail.com`, not `project1@`**. Re-share
+requested. | Message sent to team: re-share · manager roles + Mershe's email · is the education side
+in scope. ⚠️ Which draft was actually sent is unconfirmed — if it claimed we lacked staff emails, a
+correction follow-up is required (D-310).
+
+**⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

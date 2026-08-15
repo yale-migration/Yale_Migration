@@ -66,7 +66,9 @@ triggers are owned by `project1@` (D-262/D-264).
 | **DASHBOARD** (P2-01 preview) | ✅ **Complete & proven** | 6 views + 6 KPIs · **all 6 headline numbers matched prediction exactly** (D-295) · 0 Make ops |
 | **Shipped to the client** | ✅ **Demo video sent** | first client-visible delivery |
 
-**Honest read:** ~21 of 40 build-hours ≈ **53%**. The foundation is finished and every remaining module
+**Honest read: ~26%** — 10.5 of 40 contracted build-hours (D-311, audited 15 Aug).
+⛔ The former "53%" counted M2, M4 and M5 as complete when **each is missing its contracted half**.
+See `HOURS-LEDGER.md`. Ceiling on any defensible figure is 39%. The foundation is finished and every remaining module
 reads from a data layer that now works. What is done is genuinely done — proven from execution output, not
 assumed.
 
