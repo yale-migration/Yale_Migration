@@ -86,9 +86,10 @@ $2,000-vs-$2,500 with no client contact at all.
 need it"*) was never accepted or declined. **Decline it with a reason** — it holds credentials.
 
 ## 🔴 STILL OWED BY US, not by them
-- 🔴 **9 workflow PNGs unread — and they are MVP-relevant, not Phase 2 (D-312).** `485 VISA.png` alone
-  specifies M3+M4's contracted step 5 and names a **Client Quotation Template** and **Service
-  Agreement Template** we do not hold. **Read all 9 before M5/M6/M7/M9 work**
+- ✅ **ALL 12 workflow SOPs READ 15 Aug (D-314)** — full analysis in `CLIENT-SOP-WORKFLOWS.md`.
+  Findings: the intake form is their **`Client Enquiry Form`** (they have it) · **six roles, not two** ·
+  payment gates the folder · **s56 is in all 12** · **Partner 801 has a 2-year deadline nobody modelled** ·
+  ~25 templates named that we do not hold · and they are **platform-agnostic**, correcting D-307
 - ⚠️ **Our own fee workbook is unopened** — `FEES AND INVOICE REFERENCE.xlsx` has a 26-row
   `VISA AND PF FEE` tab that likely closes A-09 with no client contact (D-312)
 - **5 CONTRACTED items missing from all tracking** (D-311): the **intake form** · the **secure upload
@@ -149,5 +150,7 @@ Two files sat unread while we asked the client for data we already had.
 | Billable beyond MVP | `PHASE-2-3-BACKLOG.md` · `CHANGE-REQUESTS.md` |
 | Microsoft 365 | `GUIDE-microsoft-365-purchase.md` · `SCRIPT-m365-plan-answer.md` |
 | Competitors | `COMPETITOR-ANALYSIS-dashboards.md` |
+| **Their own process SOPs** | **`CLIENT-SOP-WORKFLOWS.md`** — all 12, the spec for M5/M6/M7/M9 |
+| Hours vs the 48h cap | `HOURS-LEDGER.md` |
 
 ⛔ **`DECISIONS.md` is 340 KB. Never read it whole.** Index first, then one entry.

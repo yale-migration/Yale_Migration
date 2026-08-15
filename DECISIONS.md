@@ -3660,3 +3660,32 @@ that engagement is how this project was won.**
   stranger evaluating us; a reference already sold.
 - 🔴 **Raises the cost of the D-310 class of error.** Being caught re-asking for something already
   supplied does not just cost this engagement — in a family referral chain it travels.
+
+## D-314 | ✅ ALL 12 WORKFLOW SOPs READ — gap closed. Full analysis in `CLIENT-SOP-WORKFLOWS.md`
+Read 15 Aug rather than documented as a gap for a third time. Every one is a formal SOP with numbered
+steps, named roles and QC checklists. **They are the client's own specification of the modules we have
+not built.** Eight findings that change the build:
+
+1. **The intake form is called `Client Enquiry Form` and they already have it.** It is the first noun
+   of contracted M3 and was missing from all tracking (D-311). **Ask for it — do not design it.**
+2. **Six roles, not two:** Consultant · RMA · **Skills Assessment Point Person** · **Processing
+   Officer** · **Education Provider** · Client. MASTER has one `Assigned Consultant` field; the RBAC
+   model assumes three.
+3. **Payment gates folder creation** — DEPENDENT step 2 quote → step 3 pay → step 4 register+folder.
+   Confirms D-95 from their side. M5 must not chase documents against an unpaid invoice.
+4. **s56 is a decision gate in ALL 12 workflows.** M9 is universal infrastructure, not a 485 feature.
+5. 🔑 **Partner 801 has a TWO-YEAR deadline** — *"contact client prior to the 2-year anniversary"*.
+   A live obligation on a matter that looks closed. Nothing in MASTER can hold it.
+6. **"Client Engagement Log" is their name for MASTER** — *"every client must be registered in the
+   Client Engagement Log to generate a Unique Client Code."* Use their term with them.
+7. ✅ **CORRECTS D-307:** every SOP reads **"Microsoft Office / Google Workspace"** — *both*. Only the
+   phone SOP lists Outlook/Teams alone. **They are platform-agnostic.** ⛔ Do not tell Robinder his
+   SOPs say Microsoft. Ask A-22 neutrally.
+8. **~25 templates named that we do not hold** — `Client Enquiry Form`, `Client Information Sheet`,
+   `Service Agreement Template`, `Client Quotation Template`, `Client Consent Form`, plus per-line
+   checklists. **We hold 28 visa checklists; M4 was specced against a document set we have a third
+   of.** This is a client ask — they have them.
+
+**And the process point, third occurrence:** these were skipped as `.png` decoration, then reclassified
+as Phase-2 reading — **both judgements made without opening a file.** Rule now recorded in three
+places: **"not relevant" is a conclusion that requires opening the file.**
