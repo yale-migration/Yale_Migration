@@ -56,6 +56,15 @@ function addMasterColumns() {
     var sh = SpreadsheetApp.openById(SHEET_ID).getSheetByName(TAB);
     if (!sh) { Logger.log('ABORT — no tab named ' + TAB); return; }
 
+    // ---- guard 0: getRange() throws past maxColumns, and a raw Apps Script
+    // stack trace is a much worse message than being told what is wrong.
+    if (sh.getMaxColumns() < ANCHOR_INDEX) {
+      Logger.log('ABORT — sheet has only ' + sh.getMaxColumns() +
+                 ' columns; expected at least ' + ANCHOR_INDEX + ' (through Y).');
+      Logger.log('This is not the MASTER tab we built. Stop and look.');
+      return;
+    }
+
     // ---- guard 1: the sheet must look exactly the way we think it does -----
     var lastCol = sh.getLastColumn();
     var headers = sh.getRange(1, 1, 1, Math.max(lastCol, ANCHOR_INDEX)).getValues()[0];
@@ -213,6 +222,14 @@ function verifyMasterColumns() {
   }
 
   // Can Apps Script actually write to them?  Y taught us to test this.
+  //
+  // Safe against master_codes.gs, checked 15 Aug — do not re-derive this:
+  //   * onEdit does not fire for script writes, only for a human typing.
+  //   * BUT master_codes.gs also runs on a 5-MINUTE TIMER, which can fire while
+  //     the scratch row exists. assignMissingCodes_() guards with
+  //     `if (!hasName || hasCode) continue;` and the scratch row leaves column C
+  //     (Full Name) empty, so it is skipped and no client code is burned.
+  // Keep the scratch write out of column C or that stops being true.
   Logger.log('=== write test (writes then clears a scratch row) ===');
   var row = sh.getLastRow() + 1;
   for (var k = 0; k < NEW_COLUMNS.length; k++) {

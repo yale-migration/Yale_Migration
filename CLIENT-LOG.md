@@ -229,4 +229,13 @@ own fee workbook; its premise was wrong (D-315). | **A-25 OPENED — 🔴 blocks
 M4 copies to every 500-dependent client. | ⚠️ A-17 corrected — `SUMMARY OF CLIENTS` is 47 names, not a
 client list; we had recommended it without opening it.
 
+2026-08-15 | internal (no client contact) | **Census of all 66 tabs (D-316)** after A-25 had already
+been sent. `Team` and `Office` confirmed absent **everywhere** — that part of the ask was right. But the
+supporting numbers were not: we said *"email on 3 of 44 rows"* from ONE tab; book-wide there are **~55
+client emails**. 🔑 **Of the 41 distinct active clients, 0 have an email and 4 have a consultant** — and
+those 4 span **both teams** (Gayatri + Inder INDIAN, star FILIPINO), so the active list is mixed.
+➜ **Short additive follow-up drafted** — not a retraction; it narrows the ask and reports the team mix.
+Also fixed our own tooling: `build_pilot_import.py` had hard-coded `TEAM=FILIPINO`, which would have
+misfiled Indian-team clients and reported success. Now blank by default.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

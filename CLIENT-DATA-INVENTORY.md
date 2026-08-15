@@ -100,7 +100,25 @@ before importing anything**, or the dashboard double-counts.
 ⚠️ Still unconfirmed: which of the two is authoritative (A-17).
 ✅ **RESOLVED 15 Aug (D-315): `SUMMARY OF CLIENTS` is NOT a third curated view.** It is 47 names; only
 11 carry a visa type or status; no email, office, team, consultant or expiry.
-🔴 **`Office` and `Team` appear in NO file they have sent — and M3 routes on both (A-25).**
+🔴 **`Office` and `Team` appear in NO tab of any workbook — and M3 routes on both (A-25).**
+
+## 📊 CENSUS — all 66 tabs opened 15 Aug (`scripts/audit_all_tabs.py`, D-316)
+Re-run it whenever a file arrives. It skips credential columns by header before reading anything.
+
+| Field | Present? | Best coverage |
+|---|---|---|
+| **Team** | ⛔ **nowhere** | — |
+| **Office** | ⛔ **nowhere** | the two `LOCATION` columns are Australian *states* and *ONSHORE/OFFSHORE* |
+| Email | ⚠️ scattered | `REYWARD → MARCH` **40/79**, JULY 17, `Copy of JRP LIST` 15 · ~55 clients total |
+| Consultant | ✅ rich | `LODGEMENTS` `Checked BY` **365/398**, `Handled By` 198 · `DATA SHEET` `Staff Assigned` **300/395** · 713 names |
+| Phone | ✅ rich | `DATA SHEET` 392/395 · `STUDENTS → Queries Gayatri` 370/386 |
+
+🔑 **None of it reaches the 42 active clients.** Matched by name: **0 of 41 have an email, 4 have a
+consultant.** The emails and consultant records belong to historical, JRP and education-side people.
+
+⚠️ **`Staff`** is the top value in both consultant columns (328 + 78) — a placeholder, not a person.
+⚠️ **`Nisha`** still appears in `Handled By` (14 rows) — former employee (D-124), exclude from routing.
+⚠️ **Their casing is inconsistent** (`Inder`/`inder`/`INDER`). Make's `text:equal` is case-SENSITIVE.
 **That is the question to ask — not "where do you track clients."**
 
 ---

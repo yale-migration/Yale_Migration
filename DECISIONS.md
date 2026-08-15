@@ -3794,3 +3794,63 @@ change — it is their client-facing document and RMA territory. → **A-26**.
 > **Before asking the client for a file, open the file we already hold and check it has the columns we
 > need.** A-17 sent us to a 47-row tab that is 36 rows of nothing but names. G8 says open the file;
 > this adds: *and check it contains the fields, not just the records.*
+
+---
+
+## D-316 | 📊 CENSUS OF ALL 66 TABS — the email/office/team question, answered properly
+**15 Aug 2026.** Supersedes the sampled claims in D-315.
+
+### Why this was needed
+D-315 stated *"Office and Team exist in no file they have sent"* and *"email exists on 3 of 44 rows."*
+**Both came from four tabs out of sixty-six.** That is a sample reported as a fact about the set — the
+same failure as D-305 (a workbook known by name, never opened) and D-307 (`.png` never opened), one
+level up. Worse, a message to the client had already gone out resting on it.
+`scripts/audit_all_tabs.py` now opens **every tab in every workbook**, skipping credential columns by
+header before reading anything (D-306). It is re-runnable whenever a file arrives.
+
+### What the census found — 66 tabs, 4 workbooks
+
+| Field | Verdict |
+|---|---|
+| **TEAM** | ⛔ **Does not exist. Not one column, in any tab, anywhere.** D-315's claim holds — now on a census |
+| **OFFICE** | ⛔ **Does not exist.** Two tabs have a `LOCATION` column and neither is the office: `STUDENTS → Queries Gayatri` holds **Australian states** (NSW 23 · Brisbane 13 · Melb 9 · Perth 9…), `REYWARD → GENERAL INQUIRY` holds **ONSHORE 42 / OFFSHORE 2** |
+| **EMAIL** | ⚠️ **D-315 WAS WRONG IN DETAIL.** Not "3 of 44" — **~55 distinct clients carry an email**, best coverage `REYWARD → MARCH` **40/79 (51%)**, then JULY 17, `Copy of JRP LIST` 15, APRIL 9, JUNE 8, JRP LIST 7, MAY 7, JANUARY 6 |
+| **CONSULTANT** | ⚠️ **Far richer than D-315 said.** `LODGEMENTS` `Checked BY` **365/398**, `Handled By` **198/398**; `DATA SHEET → Sheet1` **`Staff Assigned` 300/395**. **713 distinct names** carry a consultant somewhere |
+| **PHONE** | ✅ plentiful — `DATA SHEET` 392/395, `STUDENTS → Queries Gayatri` 370/386 |
+
+### 🔑 But the conclusion for the import did not change — it got sharper
+Matched the **41 distinct active clients** (`LODGEMENT JULY TO PRESENT`, 42 rows, **`RODEL CLUTARIO`
+appears twice**) by normalised name against every other tab:
+
+| | |
+|---|---|
+| active clients with an **email** anywhere | **0 of 41** |
+| active clients with a **consultant** anywhere | **4 of 41** — Gayatri ×2, Inder ×1, star ×1 |
+
+The ~55 emails and 713 consultant records **belong to other people** — historical lodgements, JRP
+candidates, the education side. **A-25 was the right question.** Only its supporting numbers were wrong.
+
+### 🔴 The finding that changed our own build
+Those four matched consultants map onto the roster as **Gayatri → INDIAN · Inder → INDIAN · star →
+FILIPINO**. **The active list spans BOTH teams.**
+`build_pilot_import.py` had `TEAM = "FILIPINO"` hard-coded for every row. That constant would have
+filed Indian-team clients into the Filipino directory **and reported success** — precisely the silent
+class of failure E1/E2 were fixed to eliminate, reintroduced by me in the tooling.
+**Fixed:** `--office` / `--team` are now explicit flags that **default to blank**. Blank is safe, not a
+dead end — M3's catch-all stamps `NEEDS ROUTING` with a note naming the two fields, so the rows sit in
+the sheet as a form for Robinder to fill in. The script also **deduplicates** on a normalised name key.
+
+### Also confirmed
+- **`Nisha` still appears in `LODGEMENTS → Handled By` (14 rows)** — a former employee (D-124). Must not
+  reach any dropdown or routing rule.
+- **`Staff`** is the most common value in both consultant columns (`Checked BY` 328, `Handled By` 78) —
+  a placeholder, not a person. Any consultant derivation must treat it as empty.
+- **Case chaos in their own data**: `Inder` 87 · `inder` 20 · `INDER` 12; `Gayatri` 25 · `GAYATRI` 14 ·
+  `gayatri` 10. Make's `text:equal` is case-SENSITIVE — normalise on import or routing silently fails.
+- **12 tabs carry credential columns.** Enumerated and skipped without ever being read.
+
+### The rule
+> **A sample is not a census, and it must never be reported as one.** "I checked the files" and "I
+> checked every tab in every file" are different sentences. If a claim about a *set* is going to reach
+> the client, enumerate the set in code and let the code count — do not extrapolate from what was open
+> at the time. `scripts/audit_all_tabs.py` exists so this is cheap to redo, not a heroic effort.

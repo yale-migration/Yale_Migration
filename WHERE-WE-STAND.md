@@ -1,5 +1,6 @@
 # WHERE WE STAND — 15 Aug 2026
-**The one file to read after a context reset.** Written after a full census of all 181 client files.
+**The one file to read after a context reset.** Written after a census of all 181 client files and,
+on 15 Aug, of **all 66 tabs inside the four workbooks** (`scripts/audit_all_tabs.py`, D-316).
 `STATUS.md` has the history; this is the position, the gaps, and the resume point.
 
 ---
@@ -75,7 +76,7 @@ and inactive. Press **Run once** and it prints the live `CHECKLIST MAP` tab (1 o
 | **A-20** | **Re-share both sheets with `project1@yalemigration.com.au`** | access came to Sharjeel's personal Gmail; the automation runs as project1@ |
 | **A-16** | **MANAGER ROLES ONLY** — who manages each team · Mershe's email · is the roster current? | 🔑 **We already hold every staff email** (`access/Team roster.docx`, 26 Jul → `ACCESS.md`, D-310). The roster has no role column — that is the only gap |
 | **A-17** | **Which client list is live?** `LODGEMENT JULY TO PRESENT` (42) or `REYWARD` monthly tabs (~403)? They overlap | determines what every number means. ⚠️ **`SUMMARY OF CLIENTS` is NOT a third option — it is 47 names, 11 with a visa type (D-315)** |
-| **A-25** | 🔴 **`Office` and `Team` per client — and client email addresses** | 🔴 **BLOCKS THE IMPORT.** M3 files every folder by Office + Team. **Neither column exists in any of the four workbooks.** Client email exists on 3 of 44 rows, so M4b/M5b cannot be tested on real data either (D-315) |
+| **A-25** | 🔴 **`Office` and `Team` per client — and an email source for the active 42** | 🔴 **BLOCKS THE IMPORT.** ✅ **Census of all 66 tabs, not a sample (D-316):** `Team` in **no tab anywhere**, `Office` likewise. **Of the 41 distinct active clients: 0 have an email, 4 have a consultant** — and those 4 are Gayatri + Inder (INDIAN) and star (FILIPINO), so **the list is MIXED**. ~55 client emails exist book-wide but belong to other people |
 | ~~A-21~~ | ✅ **CLOSED — answered from their own data (D-305/D-308).** `LODGEMENTS` has `Handled By`; in `STUDENTS.xlsx` **the consultant IS the tab name**. Rows inherit the consultant from their tab at import | — |
 
 ## 🟠 Shapes scope
@@ -91,9 +92,10 @@ and inactive. Press **Run once** and it prints the live `CHECKLIST MAP` tab (1 o
 
 ## 🟢 Later, already parked
 M6 wording 👍 · 2–3 test files · final $840 · M365 licence count
-⚠️ **Fee-quote conflict — open OUR OWN fee workbooks first.** `FEES AND INVOICE REFERENCE.xlsx` and
-`BREAKDOWN OF FEES_YALE MIGRATION.xlsx` are on disk and unopened; they may resolve $2,028 / $4,060 /
-$2,000-vs-$2,500 with no client contact at all.
+✅ **Fee-quote conflict — CLOSED 15 Aug without asking (A-09 → D-315).** Opened
+`FEES AND INVOICE REFERENCE.xlsx` → `VISA AND PF FEE` (21 lines) and both checklists. `$2,028` is a
+quote page (DHA 2,000 + 1.4% surcharge); `$4,060` is an applicant total cost. **Neither was ever an
+agency fee.** Two small leftovers + the dated quote page carrying Yale's bank details → **A-26**.
 ⚠️ **The TRA tracker Robinder offered on 6 Aug** (*"I can send you the tracker I we are using if you
 need it"*) was never accepted or declined. **Decline it with a reason** — it holds credentials.
 
@@ -102,8 +104,8 @@ need it"*) was never accepted or declined. **Decline it with a reason** — it h
   Findings: the intake form is their **`Client Enquiry Form`** (they have it) · **six roles, not two** ·
   payment gates the folder · **s56 is in all 12** · **Partner 801 has a 2-year deadline nobody modelled** ·
   ~25 templates named that we do not hold · and they are **platform-agnostic**, correcting D-307
-- ⚠️ **Our own fee workbook is unopened** — `FEES AND INVOICE REFERENCE.xlsx` has a 26-row
-  `VISA AND PF FEE` tab that likely closes A-09 with no client contact (D-312)
+- ✅ **Our own fee workbook is now opened — A-09 CLOSED (D-315).** `VISA AND PF FEE`, 21 visa lines,
+  is the authoritative schedule. Its premise was wrong; leftovers are in A-26
 - ✅ **5 CONTRACTED items NOW TRACKED as C-1…C-5 in `ROADMAP.md`** (D-315) — intake form · secure upload
   link · third-party tracking · received/missing status · Referral + SMS. **~9h, MVP scope, not Phase 2**
 - ✅ ~~No valid M4 blueprint backup~~ — **RETRACTED 15 Aug.** Pulled live via MCP, post-D-255, verified
