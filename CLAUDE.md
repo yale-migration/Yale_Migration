@@ -84,18 +84,22 @@ archive junk, `~$` lock files, anything from `99 ARCHIVE`.
 **`DEFINITION-OF-DONE.md` — the 12-point gate every scenario must pass.** M3 ran successfully four times and
 still had five production blockers. Working ≠ production-ready. Apply it to M4–M9 too, not just M3.
 
-## ⚠️ Current blocker status (13 Aug)
+## ⚠️ Current blocker status (14 Aug)
 **M3 ✅ · M4a ✅ · M5a ✅ · DASHBOARD ✅ — all built and proven against live client data.**
 - ✅ **A-01 downgraded (D-291):** `Weekdays (Mon-Fri)` + 3 fixed times = ~392 ops/mo against 1,000.
   **M3 and M4 can go live on the Free plan.** Paid plan still needed for M6/M9 — Free caps *active
   scenarios* at 2, and M3+M4 is exactly two.
-- 🔴 **The ONE blocker is A-14** — the link to the Google Sheet they actually use. Their
-  `Engaged Client Tracker.xlsx` is **abandoned** (D-289); importing it would have loaded dead data.
+- ✅ **A-14 CLOSED** — we have all their data. **`YALE BRISBANE OFFICE WORK.xlsx` is the real
+  operational system** (D-305): 1,144 lodgements, a hand-run 7/14/28-day s56 ladder that is already
+  lapsing, EOI across six states, and a Philippines office already operating.
+- 🔴 **Blockers now: A-16** staff emails + branch · **A-20** live access was granted to
+  `sharry00010@gmail.com` but the automation runs as **`project1@yalemigration.com.au`** — needs
+  re-sharing · **A-17** two overlapping active lists (Jan-onward + Jul-onward) must be deduplicated.
 - ✅ **A-15 WITHDRAWN (D-297)** — it was never real. `gmail.modify` covers `drafts.create`, and
   `TriggerNewEmail` already runs on that connection with the same declared requirement.
   **M4b/M5b need nothing from the client.**
-- ⚠️ **This is a CUTOVER, not an import** — read `CUTOVER-PLAN.md` before touching M2.
-**481 of 1,000 ops used.** Read `PRODUCTION-READINESS.md` and `CLIENT-ASKS.md`.
+- 🔴 **D-306 — ~1,200 plaintext credentials** incl. ImmiAccount. Advice only; never our custody.
+**481 of 1,000 ops used.** Read `CLIENT-DATA-INVENTORY.md`, `PRODUCTION-READINESS.md`, `CLIENT-ASKS.md`.
 
 ## File map
 - `STATUS.md` — where we are · `CLIENT-ASKS.md` — **what we are waiting on the client for**
@@ -106,6 +110,9 @@ still had five production blockers. Working ≠ production-ready. Apply it to M4
 - `DECISIONS.md` — architecture decisions + why (append-only)
 - `ARCHITECTURE.md` — system design, naming conventions, data contract
 - `ACCESS.md` — access inventory + status (no secrets)
+- **`CLIENT-DATA-INVENTORY.md`** — every client data file, what is in it, what must never be touched
+- `DASHBOARD-TRACKER.md` — the dashboard workstream end to end
+- `DECISIONS-INDEX.md` — one line per decision; use instead of reading DECISIONS.md
 - `PRODUCTION-READINESS.md` — blockers between 'it works' and 'it can be switched on'
 - `DEFINITION-OF-DONE.md` — the 12-point gate EVERY scenario must pass before going live
 - `scripts/` — Apps Script sources · `scenarios/` — Make blueprints (JSON, restorable) · `assets/samples/` —
