@@ -19,7 +19,13 @@
 
 var DATA_TAB  = 'MASTER';      // the tab holding client rows — headers in row 1, data from row 2
 var DASH_TAB  = 'DASHBOARD';
-var LAST_COL  = 'Y';           // MASTER runs A..Y (25 columns)
+// Deliberately 'Y', NOT the real last column. After add_master_columns_z_to_ad.gs
+// MASTER runs A..AD (30 columns), but Z..AD are workflow fields no dashboard view
+// reads. Every QUERY here is A2:Y, so the new columns simply fall outside — checked
+// 15 Aug, no view changed. Widen this only when a view actually needs Z..AD, and
+// re-read the Col1/Col2/Col3 references first: in the visa-mix query those are
+// positions inside a constructed {H,N,A} array, not offsets into this range.
+var LAST_COL  = 'Y';
 
 // Colours
 var NAVY   = '#1b3a5c';

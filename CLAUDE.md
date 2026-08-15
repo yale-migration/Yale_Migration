@@ -122,6 +122,7 @@ Looker Studio = staff dashboard · Next.js + Supabase = client portal (Phase 3, 
 
 ## Session end — every time, no exceptions
 
-Update `WHERE-WE-STAND.md` · append `DECISIONS.md` + run `gen_decisions_index.sh` ·
+Update `WHERE-WE-STAND.md` · append `DECISIONS.md` (header **must** be `## D-NNN | Title` on ONE line,
+or the index silently skips it) + run `bash scripts/gen_decisions_index.sh` ·
 `CLIENT-LOG.md` same day · then
 `git add -A && git commit -m "<module>: <what changed>" && git push`
