@@ -15,6 +15,8 @@ docs/Answer to the questions..docx
 # plaintext portal passwords. They live OUTSIDE this repo, in SOP'S/ root, and
 # must stay there. These patterns are a second line of defence only.
 /DATA SHEET.xlsx
+/client-data/
+client-data/
 /*GAMOL*
 /*CLIENT TRACKER*
 /*DATA SHEET*

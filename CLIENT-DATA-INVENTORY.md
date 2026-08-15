@@ -3,8 +3,10 @@
 what must never be touched. **Read this before asking the client for any data file** — twice now we
 have asked for something already sitting on disk.
 
-🔴 **Every file listed here lives in `SOP'S/` root — OUTSIDE this repo. Keep it that way.**
-`.gitignore` is a second line of defence, not the control.
+📁 **All four client workbooks now live in `SOP'S/client-data/`** (moved 15 Aug), with their own
+`00-READ-ME.md`. **OUTSIDE this repo — keep it that way.** `.gitignore` is a second line of defence,
+not the control. They were loose in `SOP'S/` root until 15 Aug, which is part of why one sat unread
+for weeks.
 
 ---
 

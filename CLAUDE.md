@@ -56,7 +56,7 @@ then `git add -A && git commit -m "<module>: <what changed>" && git push`.
 Twice we have asked the client for data already sitting on disk. **`YALE BRISBANE OFFICE WORK.xlsx`
 (1 MB, 30+ tabs, their real operational system) sat unread for weeks** while we chased other files —
 we knew its name from `PHASE-2-3-BACKLOG.md` and never opened it (D-305).
-All client files live in `SOP'S/` root, **OUTSIDE this repo. Keep them there.**
+All client files live in **`SOP'S/client-data/`**, **OUTSIDE this repo. Keep them there.**
 ⛔ **~1,200 plaintext credentials across these workbooks — including ImmiAccount logins, clients'
 Gmail passwords, security questions, and staff phone PINs (D-306).** If a column name contains
 `password`, `username`, `OTP`, `PIN` or `security question`, it is excluded from every read, import
