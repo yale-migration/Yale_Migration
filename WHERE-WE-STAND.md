@@ -86,7 +86,11 @@ $2,000-vs-$2,500 with no client contact at all.
 need it"*) was never accepted or declined. **Decline it with a reason** — it holds credentials.
 
 ## 🔴 STILL OWED BY US, not by them
-- **10 of 12 workflow PNGs unread** — the authoritative source for folder sets and checklist routing
+- 🔴 **9 workflow PNGs unread — and they are MVP-relevant, not Phase 2 (D-312).** `485 VISA.png` alone
+  specifies M3+M4's contracted step 5 and names a **Client Quotation Template** and **Service
+  Agreement Template** we do not hold. **Read all 9 before M5/M6/M7/M9 work**
+- ⚠️ **Our own fee workbook is unopened** — `FEES AND INVOICE REFERENCE.xlsx` has a 26-row
+  `VISA AND PF FEE` tab that likely closes A-09 with no client contact (D-312)
 - **5 CONTRACTED items missing from all tracking** (D-311): the **intake form** · the **secure upload
   link** · third-party responsible-party tracking · received/missing status · Referral + SMS channels
 - **No valid M4 blueprint backup** — the committed one is quarantined as broken

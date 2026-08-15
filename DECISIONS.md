@@ -3598,3 +3598,65 @@ per month, **not a backfill.** Decide the budget before writing a row.
   OneDrive call has a Notes-writing handler · `conflictBehavior: "fail"` on all three folder creates ·
   the accent-preserving sanitizer · idempotency proven on both · ops arithmetic (481/1,000) correct ·
   `M3-folder-create.blueprint.json` matches live exactly.
+
+## D-312 | ⚠️ I TRIAGED TWO ITEMS AS "LOW PRIORITY". BOTH WERE WRONG. Checked 15 Aug.
+I told Sharjeel the 10 unread workflow diagrams and our own fee workbooks were not MVP-relevant.
+**I asserted that without opening either.** Opening one of each disproved both claims in minutes.
+Same failure as D-305 and D-307 — a third time, after writing the rule.
+
+### `485 VISA.png` — 16 steps, and it specifies contracted MVP work
+**Step 5 — CLIENT ENGAGEMENT (Consultant):**
+> *"Register client, generate Unique Client Code, create electronic folder and send quotation,
+> Service Agreement and Graduate Visa Checklist."*
+
+**That single step is M3 + M4 as contracted**, and it names two artefacts we do not hold and have never
+logged: a **Client Quotation Template** and a **Service Agreement Template**. Both appear again in the
+sheet's own STANDARD TEMPLATES list. This is direct corroboration of D-311's finding that the
+**intake form** and the **document-request bundle** were dropped from tracking.
+
+**Step 14 → decision "REQUEST FOR FURTHER INFORMATION (s56) RECEIVED?" → RESPOND TO s56** — M9's
+trigger, drawn by them.
+**A third role exists that we never modelled: "Skills Assessment Point Person"** — separate from
+Consultant and RMA, owns skills-assessment applications and monitors outcomes. Our `Assigned
+Consultant` field cannot express it.
+**Their templates list** also names: Document Request Checklist · Financial Documents Checklist ·
+Genuine Student Checklist · English Language Checklist · Health & Character Checklist. We hold visa
+checklists only.
+
+🔑 **KEY SYSTEMS & TOOLS panel reads "Microsoft Office / Google Workspace"** — *both*, not Microsoft
+alone. **This materially softens D-307**, which read the phone SOP's Outlook/Teams list as evidence
+they intend to move to Microsoft. Across two SOPs they are platform-agnostic. **The A-22 question is
+still worth asking, but do not present it as "your SOPs say Microsoft".** They do not, consistently.
+
+### `FEES AND INVOICE REFERENCE.xlsx` — the fee master was on disk all along
+Three tabs: **`VISA AND PF FEE`** (26 rows — `Visa Subclass · Engagement Fee · Professional Fee ·
+IMMI Lodgement Fee · Total Fee (Est.) · IMMI Website Link · Notes`), `SKILLS ASSESSMENT FEE` (8),
+`INVOICE TEMPLATE`.
+
+**A-09 — the $2,028 / $4,060 / $2,000-vs-$2,500 conflict — is very likely answerable from this file
+with no client contact at all.** It has been in three folders since July. ⚠️ Not yet reconciled
+against the two checklists; that is a task, not a question.
+
+### The correction to the triage rule
+> **"Not MVP-relevant" is a conclusion, not a starting assumption.** It requires opening the file.
+> Three times now — a 1 MB workbook, twelve diagrams, and now these two — the thing we deprioritised
+> without reading contained contracted scope.
+
+**Revised: the remaining 9 workflow diagrams are MVP-relevant and must be read before M5, M6, M7 or
+M9 work.** They are the client's own specification of the modules we have not built.
+
+## D-313 | ✅ "Hardiek Patel" identified — closes the last unknown from the audit
+Robinder tagged the name in the 19 Jul CRM message and it was never explained (flagged by the
+client-communication audit as an unidentified stakeholder).
+
+**Sharjeel, 15 Aug: Hardiek Patel is Robinder's sister's husband. We built his automation previously —
+that engagement is how this project was won.**
+
+**Why it matters commercially, not just as a gap closed:**
+- This is a **referral account inside a family network.** Delivery quality here propagates directly to
+  the next referral. It also explains why Robinder extended trust — access, credentials, screen shares
+  — faster than a cold client would.
+- The tag on the CRM message means **he was looping in someone who had already seen our work.** Not a
+  stranger evaluating us; a reference already sold.
+- 🔴 **Raises the cost of the D-310 class of error.** Being caught re-asking for something already
+  supplied does not just cost this engagement — in a family referral chain it travels.
