@@ -1,3 +1,10 @@
+> 🔴 **DO NOT SEND AS WRITTEN — line about staff emails is FALSE (D-310).**
+> The client sent the full staff email roster on 26 Jul (`access/Team roster.docx`). Saying *"no email
+> addresses anywhere"* would be the fifth G2 failure and the most visible, because he would remember
+> sending it. Corrected wording is in `ACCESS.md`. Ask only for **manager roles** and **Mershe's email**.
+
+---
+
 # VOICE MESSAGE TO ROBINDER — 14 Aug 2026
 
 He is not available for a call. This replaces `CALL-QUESTIONS-robinder.md` for now.

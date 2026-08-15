@@ -105,7 +105,7 @@ Proven against 14 seeded rows on 13 Aug — **all six headline numbers matched p
 
 | # | Blocker | Impact |
 |---|---|---|
-| **A-16** | **Staff emails + branch mapping** | Row-level security filters on email. Their tracker has names (`priyanka`/`RJ`/`inder`), **no emails anywhere**. Nothing manager-level ships without this |
+| **A-16** | **Manager roles only** | 🔑 **Emails already held** — `access/Team roster.docx` 26 Jul → `ACCESS.md` (D-310). The roster has team and visa line but **no role column**, so we still cannot tell who is a manager. That, plus Mershe's email, is all that blocks the manager view |
 | **A-17** | Which of ~460 records are still active | Determines what the numbers actually mean |
 | — | **`STAFF` tab does not exist yet** | Ours to build. `email · name · branch · role`, blended with MASTER on Office. Also finally gives the consultant dropdown a single source (A-13) |
 

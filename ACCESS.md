@@ -130,3 +130,32 @@ machine, and who holds which credential.
 
 Revocation map (client can cut us off anytime): unshare sheets · remove Make member · remove Meta
 person · revoke the Make↔Gmail connection · rotate Claude key. This is by design — say it proudly if asked.
+
+## 🔑 STAFF EMAIL ROSTER — supplied by the client 26 Jul 2026
+**Source: `access/Team roster.docx`.** Recorded here 15 Aug after an audit found it had never been
+transcribed into any tracking file — while five of our own files simultaneously claimed *"no email
+anywhere"* (D-310). **This is the authority. Do not ask the client for it again.**
+
+| Team | Visa lines | Person | Email |
+|---|---|---|---|
+| **Indian** | 189 · 190 · 491 · 482 · 494 · 186 | Robinder | `info@yalemigration.com.au` |
+| | | Inder | `skilled.visa@yalemigration.com.au` |
+| | | *(unattributed)* | `Bne.skilled@yalemigration.com.au` |
+| | | *(unattributed)* | `migrate@yalemigration.com.au` |
+| | Student | Gayatri | `student2@yalemigration.com.au` |
+| | Student | Priyanka | `admissions@yalemigration.com.au` |
+| | Partner · graduate · visitor | Fiza | `office@yalemigration.com.au` |
+| **Filipino** | 189 · 190 · 491 · 482 · 494 · 186 | RJ | `philippines@yalemigration.com.au` |
+| | Student · graduate · partner | Star | `star@yalemigration.com.au` |
+| | Student · graduate · partner | Rey | `reynaldo@yalemigration.com.au` |
+| **Townsville** | all | Cristelle | `info.tsv@yalemigration.com.au` |
+| **Marketing** | — | Manali | `manali@yalemigration.com.au` |
+
+**What the roster does NOT give us — the genuine residual of A-16:**
+1. **No role column.** It shows team and visa line, never who is a *manager*. The manager view needs that.
+2. **Mershe Ventura is absent** — she has been answering our questions since 11 Aug (D-269).
+3. **Two unattributed mailboxes:** `Bne.skilled@` and `migrate@`. Aliases, shared mailboxes, or former
+   staff — unknown. ⚠️ Note we spent five days in July treating `workvisa.bne@` as an open client ask
+   when the answer was in a document we already held (D-94). **These two are the same trap, sitting in
+   the same document.**
+4. Three weeks old — worth confirming it is current, not re-requesting.

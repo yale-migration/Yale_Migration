@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 356K /     3478 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 360K /     3519 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 18:43
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 19:01
 
 | # | Decision |
 |---|---|
@@ -306,3 +306,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 18:4
 | **D-307** | 🔑 TWELVE PROCESS-FLOW DIAGRAMS, NEVER OPENED — and one of them explains the Microsoft request |
 | **D-308** | 🔑 `STUDENTS.xlsx` — and the answer to "who handles each client": IT IS THE TAB NAME |
 | **D-309** | Two last checks before declaring the audit complete — one useful, one a warning |
+| **D-310** | 🔴🔴 WE HAD THE STAFF EMAIL ROSTER SINCE 26 JULY — and five of our own files said we did not |

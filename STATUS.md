@@ -24,8 +24,9 @@ a hand-built attempt to solve it. **Their own data is the argument for MASTER.**
 rotation. **Never import, copy or echo columns D/E.**
 
 ### 🔴 The blocker is now A-16 — staff emails + branch
-Row-level security filters on email. Their tracker has names (`priyanka`/`RJ`/`inder`), no emails
-anywhere. **Nothing manager-level ships without it.** Dashboard workstream: `DASHBOARD-TRACKER.md`.
+Row-level security filters on email. 🔑 **We HAVE the emails** — `access/Team roster.docx`, sent by
+the client 26 Jul, now transcribed into `ACCESS.md` (D-310). The residual is only: **who is a
+manager** (the roster has no role column), **Mershe's email**, and whether it is still current. Dashboard workstream: `DASHBOARD-TRACKER.md`.
 
 ## ✅ A-01 IS NO LONGER A BLOCKER (D-291, 13 Aug)
 

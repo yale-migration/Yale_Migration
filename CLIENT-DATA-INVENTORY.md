@@ -114,7 +114,8 @@ clients."**
 - ✅ Enquiry source — `DATA SHEET.xlsx`
 
 ## Still need
-- 🔴 **A-16** staff emails + branch *(no email anywhere in any file)*
+- 🟠 **A-16 RESIDUAL ONLY** — we have the roster (`access/Team roster.docx`, 26 Jul → `ACCESS.md`).
+  Still needed: who is a **manager**, Mershe's email, confirm still current (D-310)
 - 🔴 **A-20** live access — **granted to `sharry00010@gmail.com`, but the automation runs as
   `project1@yalemigration.com.au`.** Needs re-sharing to the right account
 - 🟠 **A-17** which list is authoritative, and the Jan-vs-July overlap

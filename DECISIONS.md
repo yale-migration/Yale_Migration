@@ -3476,3 +3476,44 @@ outcome for a first client-visible deliverable.
 **AUDIT COMPLETE.** Every spreadsheet in the tree has been opened and its structure recorded in
 `CLIENT-DATA-INVENTORY.md`. Remaining unread: 10 per-visa workflow PNGs — they inform M3/M4 stage and
 routing work, both already built and proven, so they are Phase-2 reading, logged not forgotten.
+
+## D-310 | 🔴🔴 WE HAD THE STAFF EMAIL ROSTER SINCE 26 JULY — and five of our own files said we did not
+Found by the client-communication audit, 15 Aug. **The most serious record-keeping failure in the
+project**, and it was one message away from reaching the client.
+
+**`access/Team roster.docx`, sent by Robinder on 26 Jul**, contains every staff email address grouped
+by team and visa line: Robinder `info@` · Inder `skilled.visa@` · Gayatri `student2@` ·
+Priyanka `admissions@` · Fiza `office@` · RJ `philippines@` · Star `star@` · Rey `reynaldo@` ·
+Cristelle `info.tsv@` · Manali `manali@`, plus two unattributed mailboxes `Bne.skilled@` and `migrate@`.
+
+**It was never transcribed into any tracking file.** Grepping the tree for each address returns zero
+hits in any `.md`. Meanwhile these five files all asserted the opposite:
+`STATUS.md` ×2 · `CLIENT-DATA-INVENTORY.md` · `DASHBOARD-TRACKER.md` · `CLIENT-ASKS.md` (A-16) —
+and worst, **`VOICE-MESSAGE-robinder.md`, drafted to be read aloud to him:**
+> *"Your tracker has the names, Priyanka, RJ, Inder, but no email addresses anywhere."*
+
+**All three of those people have an email in the document he sent us.** He would have remembered
+sending it. This would have been the **fifth** instance of the G2 failure class (after Gmail ×2,
+OneDrive, `workvisa.bne@`, and the A-06/A-08 re-ask) and by far the most visible.
+
+**Why the earlier gates did not catch it.** G2 says *"grep DECISIONS/CLIENT-LOG/ACCESS before asking
+the client anything."* We did grep — **and the roster was in none of those three files.** D-16 records
+only the *shape* of the routing matrix, never the addresses. The gate pointed at an index that did not
+contain the answer, so a correct search returned a wrong conclusion.
+
+**Fixes applied 15 Aug:**
+1. Roster transcribed into `ACCESS.md` as the authority.
+2. All five false claims corrected.
+3. `VOICE-MESSAGE-robinder.md` marked **DO NOT SEND AS WRITTEN** at the top.
+4. **A-16 rescoped** from "staff emails" to its genuine residual: **who is a manager** (the roster has
+   no role column), **Mershe's email**, and whether it is still current.
+
+**Gate strengthened — G2 is not enough on its own:**
+> **Before asking the client for any DATA, grep `access/` and `New-docs/` — the folders they actually
+> sent — not only our own summaries.** A summary that omits something reads identically to a summary of
+> something that never existed. Same root cause as D-305 (a workbook we knew by name and never opened)
+> and D-307 (twelve diagrams we never opened because they were `.png`).
+
+**Also corrected in the same pass: A-21 is closed.** `LODGEMENTS` has `Handled By`, `LAOAG FILES` has
+`Counsellor`, and in `STUDENTS.xlsx` **the consultant is the tab name**. `CLIENT-ASKS.md` was still
+citing D-303, which D-305 and D-308 both overturn.
