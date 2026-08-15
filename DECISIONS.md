@@ -3517,3 +3517,84 @@ contain the answer, so a correct search returned a wrong conclusion.
 **Also corrected in the same pass: A-21 is closed.** `LODGEMENTS` has `Handled By`, `LAOAG FILES` has
 `Counsellor`, and in `STUDENTS.xlsx` **the consultant is the tab name**. `CLIENT-ASKS.md` was still
 citing D-303, which D-305 and D-308 both overturn.
+
+## D-311 | 🔴 THREE-AGENT AUDIT, 15 Aug — the consolidated correction
+Three parallel audits: contract-vs-delivery, client-communication record, and live-systems.
+Every headline below is a correction to something we were telling ourselves or the client.
+
+### The four that could have reached the client
+1. **🔴 The staff email roster was held since 26 Jul** — five files said otherwise, one was a script
+   to read aloud. Fixed, see **D-310**.
+2. **🔴 "53% complete" is not reconstructible.** Honest figure **~26%** (10.5 of 40 contracted hours).
+   The inflation came from counting M2, M4 and M5 as done when **each is missing its contracted half**:
+   M2 has zero records migrated · M4 built the filing (not contracted) and skipped the email + secure
+   upload link (contracted) · M5 has dormancy but no status columns, no day-3/7 chases, no
+   third-party tracking. Ceiling on any defensible number is 39%.
+3. **🔴 "Proven against live client data" is false** and sits in `CLAUDE.md`. It was proven in the
+   *live environment* against **14 fabricated `@example.com` rows**. Say instead: *"four components
+   built and proven, none switched on, their data not in the system yet."*
+4. **🔴 `STATUS.md` still carried the retracted D-290 Gmail claim.** Removed 15 Aug. Live scope check
+   confirms `gmail.modify` + `gmail.readonly` — D-297 stands, nothing is needed from the client.
+
+### Five CONTRACTED items missing from all tracking
+Not deferred, not logged as change requests — **absent**:
+**(a) the intake form** — *"Intake form → sheet row → client code → OneDrive folder"*, zero mentions
+anywhere; we silently substituted manual sheet entry · **(b) the secure upload link** in the checklist
+email · **(c) third-party responsible-party tracking** (school/insurer/embassy) · **(d) received/missing
+status per client** · **(e) Referral and SMS**, 2 of the contracted 8 enquiry channels.
+**(a) is the worst — it is the first noun in the module the client ranked highest.**
+
+### 🔴 No hours ledger existed. Created as `HOURS-LEDGER.md`
+Reconstruction: **~47 of 48 hours consumed, ~26% of contracted outcomes delivered.** The gap is
+**~16 hours of absorbed out-of-scope work** — dashboard, portal prototype, phone-monitoring research,
+M365 advisory, competitor analysis, security audit, checklist curation. **We did not overrun on
+contracted work; we gave away Phase 2/3.** Do not present it to the client as an overrun.
+
+### 🔴 The committed M4 blueprint is the BROKEN pre-D-255 version
+13 × `text:contains` + 1 × `text:notcontains` — operators that evaluate false silently. Committed
+12 Aug, the day *after* the live fix. **Restoring it would break every row with no error.**
+Quarantined 15 Aug as `...BROKEN-DO-NOT-RESTORE.json` with a warning file. **There is currently no
+valid M4 backup** until someone exports the live blueprint from the Make UI.
+
+### 🔴 FOUR EDGE CASES THAT FIRE ON THE NEXT PLANNED ACTION
+**E1 — unroutable rows permanently starve M3.** Trigger is `A exist AND V notexist`, `limit 5`.
+Module 12 requires `Office=BRISBANE` and `Team ∈ {FILIPINO,INDIAN}`. A row failing that is dropped
+*before* the error handler — nothing written to V or Notes — so it matches the trigger **forever**.
+**Once five such rows sit above the routable ones, M3 fetches the same five every run and dies
+silently**, burning 1 op per cycle. The import will produce hundreds of rows with blank Office/Team.
+**Fix before importing:** a catch-all route writing `UNROUTABLE` to Notes **and** a sentinel to V.
+
+**E2 — visa `190` is a black hole.** Router route A accepts `190`; route B's needs-review filter
+excludes it (`≠190`). If `CHECKLIST MAP` has no 190 row, the lookup returns 0 bundles, nothing runs,
+Y stays blank, and the row is re-selected **every run forever**, occupying a `limit 5` slot.
+⚠️ The *script* `setup_m4_checklist_map.gs` has 36 rows and no 190; D-285 records adding 190 to the
+*live* sheet. **Script and live sheet have diverged — re-running the script would delete the 190
+mapping.** Verify the live tab before touching either.
+
+**E3 — adding the 5 planned MASTER columns will silently break M4 and the dashboard.**
+M4 addresses columns by **numeric index** (`1.\`23\`` = X, `1.\`21\`` = V, `1.\`6\``, `1.\`7\``, `1.\`3\``)
+and by letter (`"Y" notexist`); the dashboard's six QUERYs address `A2:Y` by letter. **Inserting any
+column left of Y shifts every reference with no error** — M4 would file the wrong checklist.
+**Append strictly right of Y**, then re-verify indices and `LAST_COL`.
+
+**E4 — the import exceeds the operations budget.** **519 ops remain until 25 Aug** (cycle resets on
+the 25th, not the 1st; `gracePeriod: 0`, no auto-purchase). Stage 1 = 47 clients × ~13 ops ≈ **611 —
+over budget before it finishes.** Full 460-row backfill ≈ **6,000–6,200 ops**, six billing cycles, and
+at `limit 5` × 3 runs/day ≈ **31 working days**. The published "~392 ops/mo" models 20 *new* clients
+per month, **not a backfill.** Decide the budget before writing a row.
+
+### Also confirmed
+- **Both scenarios are still on `interval: 900` (15 min).** The Weekdays 3×/day schedule exists only
+  in prose. Set it at the same moment either is switched on, or the first day costs ~96 ops.
+- **Connection 9279810 authenticates as `sharry00010@gmail.com`** with `Files.ReadWrite.All`, is used
+  by **8 of 11 scenarios including both production ones**, and has **no expiry recorded** — Make will
+  give no warning when the token dies. Largest handover risk in the build.
+- **`m5_dormant_detector.gs` takes no lock** while bulk-rewriting columns S and W — lost-update risk
+  against M3/M4's Notes writes. `master_codes.gs` does take one.
+- **Client codes ARE reused after deletion** — `nextNumber_` maxes over surviving rows. The header
+  comment claiming otherwise is wrong, and `removeDemoRows()` (next planned action) creates exactly
+  this condition.
+- **What is genuinely sound:** both live blueprints use only the four proven operators · every M3
+  OneDrive call has a Notes-writing handler · `conflictBehavior: "fail"` on all three folder creates ·
+  the accent-preserving sanitizer · idempotency proven on both · ops arithmetic (481/1,000) correct ·
+  `M3-folder-create.blueprint.json` matches live exactly.
