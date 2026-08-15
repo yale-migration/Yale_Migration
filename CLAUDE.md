@@ -32,8 +32,9 @@ Each gate exists because a specific dated failure happened (31 Jul: an instructi
 **Standing rule: a spec is not a deliverable.** Always be able to answer *"what can the client see working?"*
 
 ## Session ritual (EVERY session in this folder)
-**START — read these four, in order, and nothing else until you know where you are:**
-1. **`STATUS.md`** — where we are
+**START — read these, in order, and nothing else until you know where you are:**
+0. 🔑 **`WHERE-WE-STAND.md`** — position, gaps, resume point. **Start here.**
+1. **`STATUS.md`** — longer history
 2. **`CLIENT-ASKS.md`** — what we are waiting on the client for
 3. **`DASHBOARD-TRACKER.md`** — if the work touches the dashboard, this owns it end to end
    **`CLIENT-DATA-INVENTORY.md`** — if the work touches client data, read this FIRST (G8)

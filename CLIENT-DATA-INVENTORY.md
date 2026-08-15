@@ -19,6 +19,18 @@ have asked for something already sitting on disk.
 | `EOI CALCULATOR.xlsx` | 13 KB | points calculator | ✅ P2-10 |
 | `BREAKDOWN OF FEES_YALE MIGRATION.xlsx` | 31 KB | fee breakdown *(2 copies)* | ✅ earlier |
 
+## 🖼 PROCESS DIAGRAMS — `SOP'S 2/WORK FLOWS/` (12 PNGs)
+**Formal SOPs with numbered steps, roles and QC checklists. Not decoration.**
+
+| Diagram | Read? | What it gives us |
+|---|---|---|
+| `INQUIRY WORK FLOW` | ✅ 14 Aug | **SOP-CI-001.** 15 steps · enquiry statuses `Not Proceeding`/`Pending Decision`/`Lost Lead` · **follow-up cadence 7 then 30 days** · their SOP already assumes a CRM |
+| `ANSWERING PHONE CALL WORK FLOW` | ✅ 14 Aug | 13 steps + 15-point QC list · "answer within 3 rings" · RMA escalation gate · 🔴 **TOOLS list names Outlook + Teams + Excel** |
+| `SKILLS ASSESSMENT` · `ENROLLMENT` · `STUDENT VISA` · `485 VISA` · `TOURIST VISA` · `GSM VISA SOP` · `DEPENDENT VISA` · `407 WORK FLOW` · `482 VISA WORK FLOW` · `PARTNER VISA` | ⬜ **unread** | per-visa process maps — **the authoritative source for M3 folder sets and M4 routing**, which we built from conversation instead |
+
+🔴 **We audited every `.docx` and `.pdf` and never opened a `.png`.** A file type is not a relevance
+signal (D-307).
+
 ---
 
 # 🔑 `YALE BRISBANE OFFICE WORK.xlsx` — the one that matters
