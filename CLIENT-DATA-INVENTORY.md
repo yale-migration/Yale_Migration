@@ -13,6 +13,7 @@ have asked for something already sitting on disk.
 | File | Size | What it is | Audited |
 |---|---|---|---|
 | **`YALE BRISBANE OFFICE WORK.xlsx`** | **1,034 KB** | 🔑 **their real operational system** — 30+ tabs | ✅ 14 Aug (D-305) |
+| **`STUDENTS.xlsx`** | **448 KB** | 🔑 education/admissions side — 9 tabs, ~3,600 records. **Tabs named after staff** (D-308) | ✅ 14 Aug (D-308) |
 | `REYWARD JAKE M GAMOL-2026.xlsx` | 290 KB | client tracker, 25 tabs, filed by month | ✅ 14 Aug (D-300) |
 | `DATA SHEET.xlsx` | 94 KB | cold-call / enquiry log, ~200 rows | ✅ 14 Aug (D-300) |
 | `FEES AND INVOICE REFERENCE.xlsx` | 110 KB | fee master *(3 copies across folders)* | ✅ earlier |

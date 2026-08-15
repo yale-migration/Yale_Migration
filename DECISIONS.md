@@ -3403,3 +3403,44 @@ further stage or routing work.**
 `.png`** — because they looked like decoration. **A file type is not a relevance signal.** Combined
 with D-305 (a 1 MB workbook unopened for weeks), the pattern is the same: we audited what we expected
 to matter. `CLIENT-DATA-INVENTORY.md` now lists every file and its audit state, and is a required read.
+
+## D-308 | 🔑 `STUDENTS.xlsx` — and the answer to "who handles each client": IT IS THE TAB NAME
+New file, **448 KB, 9 tabs, ~3,600 records.** The education/admissions side of the business — barely
+touched in our scope until now.
+
+| Tab | Records | What |
+|---|---|---|
+| **`Queries Gayatri`** | **1,236** | `Client · Contact · Visa · LOCATION · NOTES` — a huge enquiry log, 6× bigger than `DATA SHEET` |
+| **`Inderpreet`** | **1,149** | unheadered; a second consultant's own list |
+| `Only Admissions` | 859 | course · college · intake |
+| `Ongoing Admissions` | 151 | + `VISA END DATE`, `Payment` |
+| `Lodgements and Grants` | 97 | `Lodged Date · Grant Date · Course Date` |
+| `Colleges options and fees` | 92 | |
+| **`SV Ext. Gayatri`** | 70 | student visa extensions, per consultant |
+| `SOP Ref Sheet` | 49 | SOP-writing reference by college/course |
+| `Student visa Applications` | 14 | |
+
+### 🔑 THE FINDING — this closes A-21 and corrects D-303 again
+**Three tabs are named after individual staff: `Queries Gayatri`, `SV Ext. Gayatri`, `Inderpreet`.**
+
+> **They do not record the consultant in a column. The consultant IS the tab.**
+
+That single fact explains everything we could not explain:
+- why no monthly tab has a consultant column
+- why nobody at Yale can answer *"how many active files do you have"*
+- why per-branch and per-consultant reporting is impossible for them today
+- why `LODGEMENTS` has `Handled By` but the newer sheets dropped it — the per-person tabs replaced it
+
+**A-21 is answered from their own data. Stop asking who handles each client — ask instead: which
+consultant owns which tab.** Ownership must still be reconstructed at import: every row inherits the
+consultant from the tab it sits in. That is a mechanical rule, not a question.
+
+### Scope reality — say this plainly to Robinder
+Total client-side records now visible across four workbooks: **~5,400.**
+`YALE BRISBANE OFFICE WORK` ~2,900 · `STUDENTS` ~3,600 (overlapping) · `REYWARD` ~460 ·
+`DATA SHEET` ~200.
+
+**The education/admissions business (colleges, courses, intakes, SOP writing, admissions pipeline) is
+roughly the same size as the visa business, and it is entirely outside the signed MVP.** M1–M11 cover
+visa matters. This is `P2-06` (enrolment tracker) at a scale we never estimated.
+🔴 **Do not absorb it. Quote it.**
