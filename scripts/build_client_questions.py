@@ -183,6 +183,9 @@ ABSOLUTE RULES - these matter more than presentation:
    section is internal. DO NOT put it in the PDF. Stop the document before it.
 5. Everything above the first "## Yale Migration" heading is internal instructions to me. DO NOT
    put it in the PDF. The document starts at that heading.
+6. DO NOT add any pricing, cost, quoting, budget, hourly-rate, "additional scope" or commercial
+   language anywhere. None of it appears in the source and none of it belongs in these documents.
+   If a section reads to you like it is leading to a quote, leave it exactly as written.
 
 FORMATTING:
 - Clean, plain, professional. A4. Readable at a glance on a phone.

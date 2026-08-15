@@ -38,12 +38,15 @@ Going through your files I found whole pipelines nobody has mentioned:
 | **LAOAG** — your Philippines files | ~78 |
 | **Education / admissions** — `STUDENTS.xlsx` | ~3,600 records |
 
-The 48-hour MVP we agreed covers the **visa lodgement workflow**. These are separate processes with
-their own steps. **Which of them do you want inside the system?**
+What we are building covers the **visa lodgement workflow** end to end. Each of the above is a
+different process with its own steps, its own people and its own checklists — so none of them is
+inside the current build.
 
-I am not asking you to pay for all of them. I am asking which ones matter, so I can tell you what
-each would take. Right now they are simply not in the plan, and I would rather say that clearly than
-have you discover it later.
+**Which of these matter most to you?**
+
+Tell me the ones you actually want covered and I will come back with a proper plan for each — what
+it involves, how it fits with what is already built, and how long it takes. I would rather show you
+now what is in and what is out than have you find a gap later.
 
 ---
 
