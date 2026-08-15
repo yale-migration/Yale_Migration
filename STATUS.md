@@ -125,9 +125,8 @@ M3's patterns became the standard — M4 and M5 reused them and were built in a 
 > nobody can roll up.
 
 > ### UNBLOCKED — build now, nothing needed from the client
-> **M4b / M5b** — checklist and chase emails drafted into `visa.lodgement@`. Needs one reauthorize
-> click: Make's Create-a-Draft module requires `https://mail.google.com/` and the connection holds only
-> `gmail.modify` (D-290). Bundle it with the cutover call — do not send it as a separate ask.
+> **M4b / M5b** — checklist and chase emails drafted into `visa.lodgement@`. Live scope check 15 Aug
+> confirms `gmail.modify` covers `drafts.create`. **No client action of any kind (D-297).**
 
 
 ~~T3.1 idempotency proof~~ ✅ **PASSED 5 Aug** (D-207) — second run returned 0 bundles.
@@ -166,8 +165,10 @@ roster fully closed (Nisha = former employee) · full 482 + 485 s56 threads supp
 Connection, scopes and read access all proven. Nothing outstanding on this item.
 ⬜ Non-blocking: test files for M10 · M6 wording 👍 · walk-in sheet location · Make paid plan at go-live.
 **➡️ The live outstanding balance now lives in `CLIENT-ASKS.md` — read it, not this section.**
-✅ **Gmail OAuth was NEVER needed** (D-271): `Yale's Gmail connection` already exists on `visa.lodgement@`
-with `gmail.modify`, client-created, valid to Jan 2027. **M4b and M5b are buildable today.**
+✅ **Gmail needs NOTHING from the client** (D-271, D-297 — verified against live scopes 15 Aug:
+`gmail.modify` + `gmail.readonly`, valid to 29 Jan 2027). **M4b and M5b are buildable today.**
+⛔ Any text elsewhere claiming a reauthorize is needed is RETRACTED — it would re-ask for access he
+already granted.
 
 ## ✅ THREE-AGENT PARALLEL AUDIT — 2 Aug (artifacts · client record · document consistency)
 **Headline: nothing the client sent is lost.** All 143 client files exist; `access/` ↔ `assets/samples/` match
