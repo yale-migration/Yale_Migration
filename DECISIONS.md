@@ -3229,3 +3229,47 @@ backed by Vercel, 300+ copy-paste blocks* · Supabase (Postgres RLS = exactly th
 director model) · **company Vercel + company Supabase, never a personal or free-tier host.**
 ⛔ **No GitHub immigration repo gets forked.** The ones found are US-focused and unmaintained, and
 would import a data model we now understand better than they do. Read NextCRM for structure only.
+
+## D-303 | 🔴 Their tracker has NO consultant and NO branch column — two dashboard views have no source
+Checked every monthly tab (JANUARY, MARCH, JUNE, JULY, AUGUST) and `SUMMARY OF CLIENTS` by scanning
+all cells for the known staff names (RJ, Rey, Star, Priyanka, Inder, Gayatri, Fiza, Cristelle, Mershe,
+Manali, Robinder) and for office values (Brisbane, Townsville, Philippines).
+
+**Result: zero hits, on every tab.** Their client records carry name, contact, email, visa type,
+expiry, qualifications, requirements, skills assessment, AFP, fees, action and notes — **but nobody is
+recorded as owning the file, and no client is tied to an office.**
+
+### What this breaks
+| Dashboard view | Source | Status |
+|---|---|---|
+| **Branch performance** — his #1 ask, four times over | `Office` | 🔴 **no source** |
+| **Workload per consultant** | `Assigned Consultant` | 🔴 **no source** |
+| Stage · dormancy · outcomes · visa mix · expiry | present | ✅ fine |
+
+**The single view Robinder has asked for four times cannot be built from the data they gave us.**
+Every other view can. This had to be caught before the import, not after — importing 460 rows with two
+empty columns and then discovering the headline chart is blank would have been the worst possible
+outcome for the demo.
+
+**Note the irony, and use it:** they cannot report by branch **because they never recorded a branch.**
+That is not a criticism to make out loud — it is the argument for MASTER, where it is a required field
+from day one.
+
+**Mitigation while we wait:** with Brisbane as the only live office (Townsville and Philippines are
+months away, D-230), branch can default to `BRISBANE` for every imported row and be corrected later.
+**Consultant cannot be guessed** and must come from them. `DATA SHEET.xlsx` has `Staff Assigned` for
+*enquiries*, which may let us back-fill some — but only for clients who arrived through that log.
+
+## D-304 | 🔴 We have static exports, not live data — the two Google Sheets are still not shared with us
+Both links the team sent return **HTTP 401** to any fetch, and the Google Drive connector is not
+authenticated in this session. What we actually hold is **two `.xlsx` exports** — a snapshot of
+14 Aug, already going stale.
+
+**A dashboard cannot read a file on Sharjeel's laptop.** Every view depends on live data.
+
+**The ask is small and precise:** share both sheets with **`project1@yalemigration.com.au`** —
+**Viewer is enough**, we never need edit rights. That single click converts the whole thing from a
+one-off snapshot into a live feed, and it also lets `read_client_sheets.gs` read them directly.
+
+**Why this was nearly missed:** the exports were so useful (D-300) that "we have their data" felt
+true. **Having a copy of the data is not the same as having access to it.** Snapshot ≠ source.

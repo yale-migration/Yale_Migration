@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 340K /     3231 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 344K /     3275 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-14 20:16
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 13:42
 
 | # | Decision |
 |---|---|
@@ -299,3 +299,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-14 20:1
 | **D-300** | 🔑 THEIR REAL CLIENT DATABASE FOUND — and it explains everything we could not explain |
 | **D-301** | 🔴 The M365 purchase has an email-killing step in it — and he may not need to buy at all |
 | **D-302** | Competitor research — where we already win, and the one gap that matters |
+| **D-303** | 🔴 Their tracker has NO consultant and NO branch column — two dashboard views have no source |
+| **D-304** | 🔴 We have static exports, not live data — the two Google Sheets are still not shared with us |
