@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 344K /     3275 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 348K /     3354 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 13:42
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 14:25
 
 | # | Decision |
 |---|---|
@@ -301,3 +301,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 13:4
 | **D-302** | Competitor research — where we already win, and the one gap that matters |
 | **D-303** | 🔴 Their tracker has NO consultant and NO branch column — two dashboard views have no source |
 | **D-304** | 🔴 We have static exports, not live data — the two Google Sheets are still not shared with us |
+| **D-305** | 🔑 `YALE BRISBANE OFFICE WORK.xlsx` IS THE REAL OPERATIONAL SYSTEM — and we had it all along |
+| **D-306** | 🔴🔴 CRITICAL — ~1,200 credential records in plaintext, including government portal logins |

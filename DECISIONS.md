@@ -3273,3 +3273,82 @@ one-off snapshot into a live feed, and it also lets `read_client_sheets.gs` read
 
 **Why this was nearly missed:** the exports were so useful (D-300) that "we have their data" felt
 true. **Having a copy of the data is not the same as having access to it.** Snapshot ≠ source.
+
+## D-305 | 🔑 `YALE BRISBANE OFFICE WORK.xlsx` IS THE REAL OPERATIONAL SYSTEM — and we had it all along
+**1,034 KB, 30+ tabs, the largest spreadsheet in the tree. Never audited until 14 Aug.** It was
+referenced in `PHASE-2-3-BACKLOG.md` as *"their 'YALE BRISBANE OFFICE WORK' S56 tabs"* — so we knew
+the name and never opened the file. **G8 failure: we searched the tidy folder, not the whole tree.**
+
+**This is bigger and more operationally real than `REYWARD JAKE M GAMOL-2026.xlsx`.**
+
+### What is actually in it
+| Tab | Records | What it is |
+|---|---|---|
+| **`LODGEMENTS`** | **1,144** | the historical lodgement register — **has `Handled By` and `Checked BY`** |
+| **`s56`** | **1,181** | raw s56 data |
+| **`EOI LIST`** | 497 | expressions of interest |
+| **`Copy of JRP LIST`** | 323 | Job Ready Program |
+| **`immis`** | 268 | 🔴 see D-306 |
+| **`S56S57ART NEW SHEET`** | **191** | 🔑 **the s56 deadline tracker — with `7 DAYS · 14 DAYS · 28 DAYS` columns** |
+| `WORK VISA NEW` / `WORK VISA` | 118 / 66 | employer-sponsored pipeline |
+| `All EOIs` / `WA` / `QLD` / `SA` / `Victoria` | 124/111/88/25/6 | per-state EOI tracking |
+| `Tourist Visa` | 104 | visitor visas |
+| `JRP LIST` / `JRP 2 List` / `TRA-JRP LIST NEW` | 106/62/39 | more JRP |
+| `LAOAG FILES` | 78 | 🔑 **Philippines office is already operating** |
+| `FINALIZATION` | 77 | student admissions pipeline |
+| **`LODGEMENT JULY TO PRESENT`** | **42** | 🔑 **the recent active list Sharjeel was told about** |
+| `Nishas TASKS` | 81 | ⚠️ a **former employee's** task list, still live in the file |
+| `LODGEMENTS DUE 2024` | 16 | has `Handled By` |
+| `ART` | 7 | refusals / appeals |
+
+### 🔴 THIS CORRECTS D-303 — the consultant field DOES exist
+D-303 concluded "no consultant column anywhere" from `REYWARD` alone. **Wrong.**
+`LODGEMENTS` has **`Handled By`** (values: `Robin`, `Nisha`, `RJ`) and **`Checked BY`** (`Staff`, `RJ`).
+`LODGEMENTS DUE 2024` has `Handled By`. `LAOAG FILES` has `Counsellor`.
+**Still true:** `LODGEMENT JULY TO PRESENT` — the most recent tab — has **no** Handled By. So ownership
+was tracked historically and **stopped being tracked recently.** That is a better, truer finding, and
+it is a stronger argument for MASTER than "they never tracked it."
+
+### 🔑 s56 deadlines are NOT unsourced — they already run this
+`S56S57ART NEW SHEET`: `DATE RECEIVED · 7 DAYS · 14 DAYS · 28 DAYS · S56/S57 REQUIREMENT ·
+ACTION TAKE · STATUS · DAYS LAPSED`. STATUS values `Monitor` / `Update Needed` / `Done`.
+**They already built the 7/14/28-day ladder by hand** — exactly what D-58 specced.
+🔴 And notes contain **"FIRST S56 LAPSED AND LETTER ATTACHED"** on multiple rows — **they are already
+missing statutory deadlines.** That is the single most valuable thing to automate in the entire
+engagement, and their own file proves the need.
+
+### Workstreams we did not know existed
+EOI tracking across **six states** · Tourist visas · ART appeals · student admissions/finalisation ·
+college list · employer documents · withdrawals. **None of these are in the MVP scope.**
+
+## D-306 | 🔴🔴 CRITICAL — ~1,200 credential records in plaintext, including government portal logins
+Far more serious than the JRP passwords found in D-300. **In one spreadsheet that is emailed around:**
+
+| Tab | Records | What is exposed |
+|---|---|---|
+| **`immis`** | **268** | 🔴 **`account · password · gmail password`** — **ImmiAccount logins** (Department of Home Affairs) **plus clients' Gmail passwords** |
+| `JRP LIST` | 106 | passwords **+ `Security questions`** |
+| `Copy of JRP LIST` | 323 | usernames + passwords |
+| `JRP 2 List` / `TRA-JRP LIST NEW` | 62 / 39 | usernames + passwords |
+| `All EOIs` + 4 state tabs | ~354 | `EOI PASSWORD` per state portal |
+| `eca password` | 61 | assessment portal |
+| **`YALE COMPUTER AND PRINTER LOGS`** | 15 | 🔴 **staff `COMPUTER PIN/PASSWORDS` and `PHONE PASSWORD/PATTERN`** |
+
+**Why ImmiAccount makes this different in kind:** it is the Australian Government portal where visa
+applications are lodged. Unauthorised access is not a private-sector password problem — it is a
+matter that touches the Department, the **MARA Code of Conduct**, and potentially the **Notifiable
+Data Breaches scheme** under the Privacy Act.
+
+**Our position — unchanged and absolute:**
+- ⛔ **Never import, copy, echo, screenshot or commit any credential column.** Not to MASTER, not to
+  this repo, not into a message.
+- ✅ **Flag it once, clearly, privately to Robinder.** Not in the team group — that names whoever
+  maintains the file.
+- ✅ Recommend: treat every password in it as **already exposed**, rotate the critical ones
+  (ImmiAccount first), and move credentials to a password manager.
+- 🔴 **This is advice, not a service we deliver.** We are not their security consultant and must not
+  take custody of the remediation.
+
+**It also raises the stakes on CR-011 (Microsoft 365):** a file like this on a personal Hotmail
+account, shared by link, is the exposure. Company-owned storage with admin control and audit is the
+minimum responsible answer.
