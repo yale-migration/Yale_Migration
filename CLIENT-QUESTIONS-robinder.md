@@ -31,7 +31,7 @@ Robinder — a short update first, then four things only you can answer.
 | | |
 |---|---|
 | **Client folders** | A new client in the sheet gets their full folder set created automatically, in the right team's directory, with the right sub-folders for their visa type |
-| **Checklists** | The system picks the correct checklist for the visa — 28 of them — and files it into that client's folder. Tested, no errors |
+| **Checklists** | The system picks the correct checklist for the visa — {{N_CHECKLISTS}} of them, across every visa line you handle — and files it into that client's folder. Tested, no errors |
 | **Quiet-file check** | Runs every day, flags matters where nothing has moved |
 | **Dashboard** | Built and tested — branch performance, where matters are stuck, who is carrying the most work, who has gone quiet, granted vs refused. Opens on a phone, updates itself, nobody maintains it |
 

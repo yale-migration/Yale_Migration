@@ -84,7 +84,7 @@ of your live data.
 | File | Tab | Client rows |
 |---|---|---|
 | `YALE BRISBANE OFFICE WORK` | `LODGEMENT JULY TO PRESENT` | 42 rows *(= {{N_ACTIVE}} people, after one duplicate and the `SAMPLE` row)* |
-| `REYWARD JAKE M GAMOL-2026` | monthly tabs, `JANUARY` → `NOVEMBER` | ~403 |
+| `REYWARD JAKE M GAMOL-2026` | monthly tabs, `JANUARY` → `NOVEMBER` | {{N_REY_ROWS}} rows *(= about {{N_REY_PEOPLE}} people — a lot of names repeat month to month)* |
 
 Someone who came in during August is probably in both. Which should the system treat as the live
 client list — or are both live, with one being history?

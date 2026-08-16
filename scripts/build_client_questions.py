@@ -127,6 +127,30 @@ def main():
                             with_email.add(norm(r[nj]).upper())
                             break
 
+    # --- the other client list, counted not remembered ----------------------
+    rey = os.path.join(DATA, "REYWARD JAKE M GAMOL-2026.xlsx")
+    rey_rows, rey_people = 0, set()
+    if os.path.exists(rey):
+        wbr = openpyxl.load_workbook(rey, read_only=True, data_only=True)
+        for m in ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY",
+                  "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER"]:
+            if m not in wbr.sheetnames:
+                continue
+            rws = list(wbr[m].iter_rows(values_only=True))
+            hi = 0
+            for i, rr in enumerate(rws[:8]):
+                if sum(1 for c in rr if isinstance(c, str) and c.strip()) >= 3:
+                    hi = i
+                    break
+            # three tabs label the name column k / CLIENT NAME / Column 1,
+            # so take column A rather than trusting the header
+            for rr in rws[hi + 1:]:
+                v = rr[0] if rr else None
+                if isinstance(v, str) and v.strip() and not re.fullmatch(r"[\d./-]+", v.strip()):
+                    rey_rows += 1
+                    rey_people.add(" ".join(sorted(re.sub(r"[^A-Z ]", "", v.upper()).split())))
+        wbr.close()
+
     subs = {
         "{{DATE}}": date.today().strftime("%d %B %Y"),
         "{{N_ACTIVE}}": str(len(names)),
@@ -135,6 +159,11 @@ def main():
         "{{N_PARTIAL}}": str(len(partial)),
         "{{PARTIAL_NAMES}}": "> " + ", ".join(partial) if partial else "> (none)",
         "{{TEAM_EVIDENCE}}": "Gayatri, Inder and Star",
+        "{{N_REY_ROWS}}": str(rey_rows),
+        "{{N_REY_PEOPLE}}": str(len([x for x in rey_people if x])),
+        "{{N_CHECKLISTS}}": str(len([f for f in os.listdir(
+            os.path.join(ROOT, "docs", "05-canonical-checklists"))
+            if f.lower().endswith((".pdf", ".docx")) and not f.startswith("REF_")])),
     }
 
     out = []
