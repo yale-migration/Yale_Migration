@@ -83,7 +83,7 @@ to one with a partner or dependent included. If I get it wrong, the client recei
 with your name on it. I will not guess it — `Y` or `N` per row.
 
 **6. For the 485 clients — which skills assessing authority?**
-`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}}** 485 clients on this list and I have marked each of them in the sheet. The 485 checklist is different for each authority, so without this the
+`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}}** 485 clients on this list — your own `TYPE OF VISA APPLICATION` column shows which, and I have flagged them in the attached copy too. The 485 checklist is different for each authority, so without this the
 system cannot file a 485 at all — it will flag them for someone to do by hand.
 
 **7. {{N_PARTIAL_CAP}} of them are recorded with a first name only.**
