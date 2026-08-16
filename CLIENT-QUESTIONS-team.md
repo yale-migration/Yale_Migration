@@ -25,9 +25,12 @@ Nothing is switched on against your live clients yet; that happens only when Rob
 to ask you general questions. These are narrow ones. Most are a single word.
 
 📎 **Attached: `Yale-client-list-to-complete.csv`** — your {{N_ACTIVE}} current clients, already typed out,
-with four blank columns. Filling that in answers questions 1 to 4 in one go. Open it in Excel or
-Google Sheets, fill what you know, leave the rest blank, send it back. **Blank is a fine answer** —
-I would rather have 20 rows right than 40 rows guessed.
+with nine blank columns. **That one sheet answers questions 1 to 6.** Open it in Excel or Google
+Sheets, fill in what you know, send it back.
+
+**If you only fill three columns, make them `1 Team`, `2 Consultant` and `3 Email`** — those three
+are what actually stop the system running. Everything after column 3 improves it; those three switch
+it on. **Blank is a fine answer** — I would much rather have 20 rows right than 40 rows guessed.
 
 ---
 
@@ -45,23 +48,38 @@ document. That is half of what it does.*
 The system files each client's folder under **Brisbane – Filipino Team** or **Brisbane – Indian Team**.
 There is no team column in any sheet, so I cannot work it out. From the consultants I can see
 **{{TEAM_EVIDENCE}}** against a few of them, which suggests it is **mixed** rather than one team.
-Just `F` or `I` in the attached sheet is enough.
+Just `F` or `I` in **column 1** of the attached sheet is enough.
 
 **3. Is anyone on the list Townsville rather than Brisbane?**
 If any belong to Cristelle's office, mark them `TSV`.
 
-**4. {{N_PARTIAL}} of them are recorded with a first name only.**
+**4. Who is looking after each one?** *(column 2)*
+The dashboard shows how the work is spread across the team and who has clients going quiet — both of
+those are grouped by consultant. Your `LODGEMENTS` tab has a `Handled By` column, but this newer list
+does not, and I could only match 4 of the {{N_ACTIVE}} by name. Without it two of the dashboard views sit empty.
+
+**5. Is there anyone else on the application?** *(column 4 — just `Y` or `N`)*
+This one has real consequences. The system sends a **different checklist** to a single applicant than
+to one with a partner or dependent included. If I get it wrong, the client receives the wrong document
+with your name on it. I will not guess it — `Y` or `N` per row.
+
+**6. For the 485 clients — which skills assessing authority?** *(column 5)*
+`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **five 485s** on the list and I have
+marked them in the sheet. The 485 checklist is different for each authority, so without this the
+system cannot file a 485 at all — it will flag them for someone to do by hand.
+
+**7. {{N_PARTIAL}} of them are recorded with a first name only.** *(column 9)*
 {{PARTIAL_NAMES}}
 Could I get surnames? I have held these back rather than create a client folder with half a name on it.
 
-**5. There is a row called `SAMPLE`.**
+**8. There is a row called `SAMPLE`.**
 Looks like a test row someone left in the sheet. I am leaving it out — just confirm that is right.
 
 ---
 
 ### Part 2 — one sharing change
 
-**6. Please re-share these two files with `project1@yalemigration.com.au` — Viewer is enough:**
+**9. Please re-share these two files with `project1@yalemigration.com.au` — Viewer is enough:**
 
 | File |
 |---|
@@ -79,7 +97,7 @@ of your live data.
 
 ### Part 3 — which list should the system treat as current?
 
-**7. Two lists overlap:**
+**10. Two lists overlap:**
 
 | File | Tab | Client rows |
 |---|---|---|
@@ -95,39 +113,69 @@ client list — or are both live, with one being history?
 
 I already have the roster you sent on **26 July**, so I am not asking for it again. Four gaps:
 
-**8. Who is a manager?**
+**11. Who is a manager?**
 The roster gives team and visa line but not role. In the dashboard a manager sees their whole branch
 and a consultant sees only their own clients — so I need to know which names are managers.
 
-**9. Two addresses on the roster have no name against them.**
+**12. Two addresses on the roster have no name against them.**
 `Bne.skilled@yalemigration.com.au` and `migrate@yalemigration.com.au` — whose are these, and are they
 still in use?
 
-**10. Mershe Ventura.**
+**13. Mershe Ventura.**
 Mershe replied to our tracker questions on 11 August but is not on the roster. What is Mershe's email
 address and team?
 
-**11. Anyone joined or left since 26 July?**
+**14. Anyone joined or left since 26 July?**
 *(I have Nisha down as no longer with you — still correct?)*
 
 ---
 
-### Part 5 — two quick checks in your own fee sheet
+### Part 5 — two things about how you record work
+
+**15. What do your status words actually mean?**
+`LODGEMENT JULY TO PRESENT` uses **LODGED**, **PENDING**, **DRAFTED** and **WITHDRAWN**. I need to be
+sure I am reading them the way you do, because every number on the dashboard is built on it. In
+particular — does **PENDING** mean *"we have not lodged it yet"*, or *"lodged, waiting on the
+department"*? Those are opposite ends of the process and 12 of your clients are sitting on that word.
+
+**16. Do you have your own file or client reference number?**
+The system generates its own code (`YM-2026-00001`) but if you already use a reference of your own I
+will store it alongside, so your sheets and the system can always be matched up.
+
+---
+
+### Part 6 — who should be able to open the dashboard?
+
+**17. Which people get access, and at what level?**
+- **Consultants** see only their own clients
+- **Managers** see their whole branch
+- **You / Robinder** see everything
+
+The dashboard identifies people by their **Google login**, so anyone who needs access must sign in
+with their `@yalemigration.com.au` account. Just tell me the names and which of the three levels
+each one gets — and flag anyone who does *not* have a Google login, because they will not be able to
+open it at all.
+
+---
+
+### Part 7 — two quick checks in your own fee sheet
 
 Not urgent, but I want the system using your correct figures rather than mine.
 
-**12. Student 500 government charge.**
+**18. Student 500 government charge.**
 `FEES AND INVOICE REFERENCE` lists it as **$2,500**. The quote page inside your own 500 dependent
 checklist uses **$2,000**. Which is current?
 
-**13. The 407 row looks like a column slip.**
+**19. The 407 row looks like a column slip.**
 The fee sheet has **$430** under *Professional Fee*, but your 407 checklist shows $430 as the
 **government visa charge** and $2,200 as the professional fee. Worth a look.
 
 ---
 
 **That is everything — there is nothing else I need from you to finish this.**
-Questions **1, 2 and 6** unblock the most; the rest can follow whenever you get to them.
+**If you are short of time, do these three and nothing else:**
+**columns 1, 2 and 3 of the attached sheet** (team · consultant · email), and **question 9** (the
+re-share). Those three switch the system on. Everything else makes it better.
 
 If it is quicker to talk any of it through, I am happy to jump on a call at whatever time suits.
 

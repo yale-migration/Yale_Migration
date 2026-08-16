@@ -3965,3 +3965,52 @@ leave our access in place until we confirm — and that he can remove it wheneve
 Yale-owned Microsoft 365 tenant is the real fix and is already logged (CR-011, `GUIDE-microsoft-365-purchase.md`).
 This swap is not that migration — it removes **our** personal account from the critical path, which is
 the part we are responsible for.
+
+---
+
+## D-319 | 🔴 COMPLETENESS AUDIT — four MASTER columns the build reads and no question asked for
+**16 Aug 2026.** The team document was "complete" and it was not. Found by working backwards from
+what the code reads, rather than forwards from what we remembered asking.
+
+### Method
+Previous rounds audited the *document*. This round audited the *system*: every MASTER column, against
+every module and every dashboard view that reads it, against whether any source can populate it.
+A question list built from memory will always be missing the things nobody wrote down.
+
+### What was missing — all four are silent failures, not errors
+
+| Col | Read by | Coverage | What happens if it stays blank |
+|---|---|---|---|
+| **L Assigned Consultant** | dashboard *workload by consultant* (line 78) **and** the chase list (line 85) | **4 of 40** | Two of the six dashboard views render empty. The dashboard looks built and says nothing |
+| **R Last Contact** | the chase list **and** the M5 dormancy engine | **0 of 40** | M5 has nothing to measure elapsed time from. It is described as "running daily" — against real imported rows it would flag everyone or no one |
+| **X Skills Authority** | M4 route A **requires** it for every 485 | **0 of 40** | All **4** 485 clients fall to `NEEDS REVIEW`. Not broken, but M4 does nothing for them |
+| **D Party 2 Name** | M4's lookup: `if(1.\`3\` = emptystring; "N"; "Y")` picks column B of `CHECKLIST MAP` | **0 of 40** | 🔴 **The worst one.** D decides INDIVIDUAL vs DEPENDENT checklist. Blank when it should not be = **the wrong document, filed successfully, into the client's folder, under the RMA's name.** No error anywhere. **22 of the 42 rows are 500s** |
+
+Plus two assumptions that were about to become dashboard numbers:
+- **M Processing Stage** — their words are `LODGED` / `PENDING` / `DRAFTED` / `WITHDRAWN`. Our import
+  maps `PENDING → Awaiting Decision`. **If `PENDING` means "not lodged yet", that is backwards**, and
+  it applies to 12 rows. Never confirmed. Now question 15.
+- **Dashboard access** — Looker Studio row-level security filters on the **viewer's Google login**.
+  We had asked who is a *manager* but never *who gets access at all*, nor whether every one of them
+  has a Google account. Someone without one cannot open it. Now question 17.
+
+And one small one: **B Their Client ID** — if they already use a file reference, store it, so their
+sheets and ours can always be reconciled. Now question 16.
+
+### What changed
+- The attached sheet went from 4 answer columns to **9**, ordered most-useful-first, with the four
+  485 rows and the eleven incomplete names **pre-flagged** so nobody has to work out where to look.
+- Document went from 13 questions to **19**, across seven parts, numbered straight through.
+- Closing line now names the three columns and the one question that actually switch the system on,
+  because a document that says everything matters says nothing matters.
+
+### The rule
+> **Audit the system, not the document.** "Have we asked everything?" is unanswerable by re-reading
+> the questions. It is answerable by listing every field the code reads, finding its source, and
+> letting the empty cells name themselves. A missing question never announces itself — it shows up
+> later as a dashboard view that is silently empty, or the wrong checklist in a client's folder.
+
+⚠️ Also caught: the PDF generated on 16 Aug was built from the **pre-fix** source. It still carried
+`all 66 tabs` alongside `66 email addresses`, and `~403` where the verified figure is 402 rows / 247
+people. The formatting instructions had been applied to stale text. **Regenerate after every source
+change** — a good-looking PDF is not a current one.

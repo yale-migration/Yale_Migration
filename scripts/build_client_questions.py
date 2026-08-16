@@ -83,7 +83,8 @@ def main():
     # --- the active list -----------------------------------------------------
     hdr, rows = load(SRC, TAB)
     j = hdr.index("NAME")
-    names, partial, seen = [], [], set()
+    vj = hdr.index("TYPE OF VISA APPLICATION")
+    names, partial, seen, visa_of = [], [], set(), {}
     for r in rows:
         n = norm(r[j])
         if not n or n.upper() in JUNK:
@@ -93,6 +94,7 @@ def main():
             continue
         seen.add(key)
         names.append(n)
+        visa_of[n] = norm(r[vj]) if vj < len(r) else ""
         if len(n.split()) < 2:
             partial.append(n)
 
@@ -186,16 +188,36 @@ def main():
     # Asking a busy team to "put F or I next to each of 40 names" means they
     # first have to build the list. We already have it. Ship it filled in.
     import csv as _csv
+    # Every column here exists because something in the build reads it:
+    #   Team        -> M3 routes the folder (no source anywhere, D-316)
+    #   Consultant  -> dashboard "workload by consultant" AND the chase list
+    #   Email       -> M4b checklist email, M5b chase email
+    #   Dependent   -> M4 picks INDIVIDUAL vs DEPENDENT checklist. Get this
+    #                  wrong and the client receives the wrong document.
+    #   Skills auth -> M4 cannot file ANY 485 checklist without it
+    #   Last contact-> the chase list and the dormancy engine have nothing to
+    #                  measure from without it
+    # Ordered most-useful-first so a half-finished sheet is still worth having.
     sheet = os.path.join(DATA, "Yale-client-list-to-complete.csv")
     with io.open(sheet, "w", encoding="utf-8-sig", newline="") as fh:
         w = _csv.writer(fh)
-        w.writerow(["Client name",
-                    "Team (F = Filipino / I = Indian)",
-                    "Office (leave blank if Brisbane, TSV if Townsville)",
-                    "Email address",
-                    "Surname (only where the name below is incomplete)"])
+        w.writerow(["Client name", "Visa (from your sheet)",
+                    "1. Team  F=Filipino  I=Indian",
+                    "2. Consultant looking after them",
+                    "3. Email address",
+                    "4. Anyone else on the application?  Y / N",
+                    "5. Skills authority (485 only)  TRA / VETASSESS / ACECQA / MASTERS",
+                    "6. Date you last spoke to them",
+                    "7. Contact number",
+                    "8. Office (blank = Brisbane, TSV = Townsville)",
+                    "9. Surname (only where needed)"])
         for n in names:
-            w.writerow([n, "", "", "", "" if len(n.split()) > 1 else "<-- needed"])
+            v = visa_of.get(n, "")
+            w.writerow([n, v, "", "", "",
+                        "",
+                        "<-- needed" if v.startswith("485") else "n/a",
+                        "", "", "",
+                        "<-- needed" if len(n.split()) < 2 else ""])
     print("wrote " + sheet)
 
     msg = TEAM_MESSAGE.replace("{{N_ACTIVE}}", str(len(names)))
@@ -223,8 +245,11 @@ Rather than keep sending you separate questions on here, I have put everything i
 document and emailed it across — subject "Yale Migration - a few gaps in the data".
 
 There are {{N_ACTIVE}} of your current clients involved. I have attached a spreadsheet with all their names
-already typed out and a few blank columns, so most of it is just filling in a letter or two rather
-than digging through sheets.
+already typed out and blank columns next to them, so most of it is filling in a letter or a name
+rather than digging through sheets. That one sheet covers most of the document.
+
+If you are short of time, the three columns that matter are TEAM, CONSULTANT and EMAIL - those three
+are what actually stop the system running. Everything after that just makes it better.
 
 Blank is a perfectly good answer anywhere you are not sure - I would rather have twenty rows right
 than forty rows guessed.
@@ -242,8 +267,8 @@ Sharjeel
 """
 
 
-PROMPT = """You are producing two PDF documents for a client of mine. I will paste the source
-markdown for each one after this prompt.
+PROMPT = """You are producing a PDF document for a client of mine. I will paste the source markdown
+after this prompt.
 
 ABSOLUTE RULES - these matter more than presentation:
 
@@ -273,11 +298,29 @@ FORMATTING:
 
 CONTEXT so you pitch the tone right:
 - The reader is a busy Australian migration agency. English is a second language for several of
-   them. Short sentences. No idioms.
-- Document 1 goes to the operations team who maintain the spreadsheets. It is a work list they
-   tick through. {{N_ACTIVE}} clients are involved.
-- Document 2 goes to the agency owner, a Registered Migration Agent. It is four decisions. Keep it
-   to a single page if you can without shrinking the text.
+  them. Short sentences. No idioms.
+- This is a work list they tick through. {{N_ACTIVE}} of their clients are involved, and a spreadsheet
+  is attached that answers questions 1 to 8 in one go.
+
+LAYOUT - these raise the reply rate, so treat them as requirements:
+a. PRIORITY. Questions 1, 2, 4 and 9 are the ones that unblock the build. Mark those four
+   visually - a coloured left border or a light tint behind the block. Everything else stays
+   plain. A reader skimming for 20 seconds must be able to see which four matter.
+b. ANSWER SPACE MATCHED TO THE QUESTION:
+   - Questions 2, 3, 4, 5, 6, 7 are answered in the attached spreadsheet. Give them NO ruled
+     lines. Put a small italic note instead: "answer in the attached sheet". Ruled lines there
+     cause people to answer twice, or to answer in the PDF and never open the sheet.
+   - Questions 8, 11, 12, 13, 14, 16, 18, 19 - one ruled line each.
+   - Questions 1, 10, 15, 17 - three ruled lines, they are open-ended.
+   - Question 9 - one line, it is an action not a question.
+c. THE ATTACHMENT CALLOUT. The paragraph beginning "Attached:
+   Yale-client-list-to-complete.csv" must be a bordered or tinted box on its own, not a normal
+   paragraph. It is the single thing that makes the rest quick to answer.
+d. Aim for 3 pages. Reduce vertical whitespace before you reduce type size, and never go below
+   10.5pt body text. Do not leave a final page that is mostly empty - rebalance instead.
+e. Question numbers run 1 to 19 straight through seven parts. They must not restart per part.
+f. Keep the closing "If you are short of time" block visually distinct - it is the summary of
+   what matters.
 
 Produce them as two separate PDFs. Ask me before doing anything the rules above do not cover.
 """
