@@ -38,6 +38,14 @@ SRC = os.path.join(DATA, "YALE BRISBANE OFFICE WORK.xlsx")
 TAB = "LODGEMENT JULY TO PRESENT"
 
 JUNK = {"SAMPLE", "TEST", "DEMO", "EXAMPLE", "NAME", "N/A", "TBA", "XXX"}
+
+# Visa lines M4 can actually file a checklist for. Must stay in step with
+# VISA_MAP in build_pilot_import.py and with M4's router (D-315).
+VISA_MAP = {"500", "482", "485", "190", "485 DEPENDENT", "491 DEPENDENT"}
+
+
+def supported(v):
+    return v.strip().upper() in VISA_MAP
 EMAIL_RX = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
 
 BOOKS = ["YALE BRISBANE OFFICE WORK.xlsx", "REYWARD JAKE M GAMOL-2026.xlsx",
@@ -170,6 +178,10 @@ def main():
         "{{PARTIAL_NAMES}}": "> " + ", ".join(partial) if partial else "> (none)",
         "{{TEAM_EVIDENCE}}": "Gayatri, Inder and Star",
         "{{N_485}}": word(len([n for n in names if visa_of.get(n, "").startswith("485")])),
+        "{{N_UNSUPPORTED}}": word(len([n for n in names
+                                        if not supported(visa_of.get(n, ""))])).capitalize(),
+        "{{UNSUPPORTED_LIST}}": ", ".join(sorted({visa_of.get(n, "") for n in names
+                                                  if not supported(visa_of.get(n, ""))})),
         "{{N_REY_ROWS}}": str(rey_rows),
         "{{N_REY_PEOPLE}}": str(len([x for x in rey_people if x])),
         "{{N_CHECKLISTS}}": str(len([f for f in os.listdir(
@@ -230,6 +242,11 @@ def main():
                     "9. Surname (only where needed)"])
         for n in names:
             v = visa_of.get(n, "")
+            # Say so on the row itself. Six of these are visa lines the build has
+            # no checklist for; if the team fills them in and those clients never
+            # appear, it reads as the system failing rather than as scope.
+            if v and not supported(v):
+                v = v + "  (no checklist yet)"
             w.writerow([n, v, "", "", "",
                         "",
                         "<-- needed" if v.startswith("485") else "n/a",

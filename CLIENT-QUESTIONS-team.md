@@ -93,6 +93,13 @@ Could I get surnames? I have held these back rather than create a client folder 
 **8. There is a row called `SAMPLE`.**
 Looks like a test row someone left in the sheet. I am leaving it out — just confirm that is right.
 
+> ⚠️ **One thing you should know before you fill anything in.** {{N_UNSUPPORTED}} of the {{N_ACTIVE}} are visa lines
+> the system does not have a checklist for yet — **{{UNSUPPORTED_LIST}}**. What we agreed covers the
+> visa lodgement workflow, and those sit outside it. I have marked them in the attached copy.
+> **Please still fill their rows in** — I will keep them in the list and flag them for someone to handle
+> by hand, so nobody quietly falls off. If you want any of those lines covered properly, tell me and I
+> will talk it through with Robinder.
+
 ---
 
 ### Part 2 — one sharing change
