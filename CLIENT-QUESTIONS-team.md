@@ -26,11 +26,10 @@ to ask you general questions. These are narrow ones. Most are a single word.
 
 ## The quickest way to answer most of this
 
-**Questions 1 to 7 are all the same shape** — a piece of information that is missing per client. There
-are two ways to give it to me and **you should pick whichever is less work for you.**
+**Questions 1 to 7 are all the same thing** — one piece of information missing per client. Rather than
+answer them one by one, the fastest way is to put them straight into the sheet you already keep.
 
-**Option A — add the columns to your own sheet.** *(my suggestion)*
-In `LODGEMENT JULY TO PRESENT`, add these three columns to the right of the ones you already have:
+**In `LODGEMENT JULY TO PRESENT`, please add three columns on the right:**
 
 | New column | What goes in it |
 |---|---|
@@ -38,23 +37,19 @@ In `LODGEMENT JULY TO PRESENT`, add these three columns to the right of the ones
 | `CONSULTANT` | who is looking after them |
 | `EMAIL` | the client's email address |
 
-Three more if you have them easily: `DEPENDENT` (`Y`/`N`), `SKILLS AUTHORITY` (485 clients only),
-`LAST CONTACT` (a date).
+**Those three are the ones that matter.** Three more if they are easy: `DEPENDENT` (`Y`/`N`),
+`SKILLS AUTHORITY` (485 clients only), `LAST CONTACT` (a date).
 
-**Why I would rather you did it this way:** it stays in your sheet, so you are not typing anything
-twice, and every client you add from now on has those fields from the start. Once the sheet is shared
-(question 9) I read it directly and never have to ask again. **Adding columns on the right does not
-affect anything else in that tab.**
+**Why in your sheet rather than a form from me:** you are not typing anything twice, every client you
+add from now on has the fields from the start, and once the sheet is shared with me (question 9) I
+read it directly — so I never have to come back and ask again. Adding columns on the right changes
+nothing else in the tab.
 
-**Option B — the attached spreadsheet.** *(if you would rather not touch the live sheet)*
-📎 `Yale-client-list-to-complete.csv` — your {{N_ACTIVE}} clients already typed out with the blank columns
-ready. Fill it in, send it back, and I will do the rest.
+**Blank is a fine answer.** I would much rather have 20 rows right than 40 rows guessed.
 
----
-
-**Either way: if you only manage three fields, make them `TEAM`, `CONSULTANT` and `EMAIL`.** Those
-three are what actually stop the system running — the rest just makes it better. **Blank is a fine
-answer.** I would much rather have 20 rows right than 40 rows guessed.
+*If you would rather not edit the live sheet, there is a copy attached
+(`Yale-client-list-to-complete.csv`) with the {{N_ACTIVE}} names already typed out and the columns ready —
+fill that in instead and send it back. Either works.*
 
 ---
 

@@ -258,19 +258,19 @@ def main():
 
 TEAM_MESSAGE = """Hi team,
 
-Rather than keep sending you separate questions on here, I have put everything into one short
-document and emailed it across - subject "Yale Migration - a few gaps in the data".
+Rather than keep sending separate questions on here, I have put everything into one short document
+and emailed it across - subject "Yale Migration - a few gaps in the data".
 
-Most of it comes down to three pieces of information that are missing per client: which TEAM handles
-them, which CONSULTANT is looking after them, and their EMAIL address. None of those exist as columns
-in any sheet at the moment.
+Most of it comes down to three things missing per client: which TEAM handles them, which CONSULTANT
+is looking after them, and their EMAIL address. None of those exist as columns in any sheet right now.
 
-Easiest thing, if you are happy to: add those three columns to your own LODGEMENT JULY TO PRESENT tab.
-Then it stays in your sheet, you are not typing anything twice, and every new client has those fields
-from the start. Adding columns on the right does not affect anything else in the tab.
+Easiest way by far: add those three columns on the right of your LODGEMENT JULY TO PRESENT tab and
+fill them in there. Nothing gets typed twice, every new client has the fields from the start, and once
+the sheet is shared with me I can read it directly instead of asking again. Adding columns on the
+right does not affect anything else in the tab.
 
-If you would rather not touch the live sheet, I have attached a spreadsheet with all {{N_ACTIVE}} names
-already typed out and the columns ready to fill in - whichever is less work for you.
+There is a copy attached with all {{N_ACTIVE}} names typed out if you would rather not edit the live sheet -
+either is fine.
 
 Blank is a perfectly good answer anywhere you are not sure. I would rather have twenty rows right than
 forty rows guessed.
