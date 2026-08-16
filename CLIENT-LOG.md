@@ -247,4 +247,16 @@ fixed, both reported by name now. ➜ **A-25 gains part (c): surnames for those 
 ⚠️ Standing flag: `origin` is a **personal** GitHub account, private, **52 commits unpushed**. Company
 policy names BrandRadar-AI / Roar-AI-Labs / Apex-AI-Clients. **Nothing pushed pending Sharjeel's call.**
 
+2026-08-16 | team (OUT) | 📤 **SENT — the consolidated data document.** Email + PDF (`YM-DQ-e573`,
+19 questions, 7 parts) + `Yale-client-list-to-complete.csv` (40 clients, 9 answer columns), followed by
+a short WhatsApp nudge to the group. Robinder is in that group and was tagged for the OneDrive item.
+**Asks now with the client:** A-25 (team/consultant/email per client) · A-20 (re-share both workbooks to
+`project1@`) · A-16 + A-13 (manager roles, two unnamed roster addresses, Mershe) · A-17 (which list is
+live) · A-26 (two fee-sheet figures) · **NEW: status-word meaning, their own client reference, dashboard
+access list, and the OneDrive re-authorisation.**
+🔑 **The document told them plainly that six of the 40 are visa lines we have no checklist for** —
+186, 600, ART, Citizenship, PARTNER VISA — so those clients not appearing later reads as scope, not
+failure. It also plants the Phase-2 conversation with no money word in it.
+⛔ **A-18 (the ~1,200 plaintext credentials) was deliberately NOT sent** — it goes on the call.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
