@@ -198,9 +198,17 @@ The fee sheet has **$430** under *Professional Fee*, but your 407 checklist show
 ---
 
 **That is everything — there is nothing else I need from you to finish this.**
-**If you are short of time, do these three and nothing else:**
-**columns 1, 2 and 3 of the attached sheet** (team · consultant · email), and **question 9** (the
-re-share). Those three switch the system on. Everything else makes it better.
+
+**If you are short of time, do these two things and nothing else:**
+**the `TEAM`, `CONSULTANT` and `EMAIL` columns**, and **question 9** (the re-share). Those switch the
+system on. Everything else just makes it better.
+
+### How to send the answers back
+
+- **Questions 1 to 7** → in your sheet, or the attached copy. Nothing to write here.
+- **Questions 8 to 19** → just reply to this email and put the number next to your answer.
+  *"10 — use the July list. 11 — Inder and RJ are the managers."* That is enough. No need to write
+  them out neatly, and no need to answer all of them at once.
 
 If it is quicker to talk any of it through, I am happy to jump on a call at whatever time suits.
 
