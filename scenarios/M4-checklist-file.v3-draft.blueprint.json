@@ -1,0 +1,757 @@
+{
+  "name": "YM-M4-checklist-file",
+  "flow": [
+    {
+      "id": 1,
+      "mapper": {
+        "from": "drive",
+        "limit": "5",
+        "filter": [
+          [
+            {
+              "a": "A",
+              "o": "exist"
+            },
+            {
+              "a": "V",
+              "o": "exist"
+            },
+            {
+              "a": "V",
+              "b": "NEEDS ROUTING",
+              "o": "text:notequal"
+            },
+            {
+              "a": "Y",
+              "o": "notexist"
+            }
+          ]
+        ],
+        "sheetId": "MASTER",
+        "sortOrder": "asc",
+        "spreadsheetId": "1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+        "tableFirstRow": "A1:Z1",
+        "includesHeaders": true,
+        "valueRenderOption": "FORMATTED_VALUE",
+        "dateTimeRenderOption": "FORMATTED_STRING"
+      },
+      "module": "google-sheets:filterRows",
+      "version": 2,
+      "metadata": {
+        "restore": {
+          "expect": {
+            "from": {
+              "label": "Select from My Drive"
+            },
+            "sheetId": {
+              "mode": "chose",
+              "label": "MASTER"
+            },
+            "sortOrder": {
+              "mode": "chose",
+              "label": "Ascending"
+            },
+            "spreadsheetId": {
+              "mode": "chose",
+              "label": "Yale Migration — MASTER DATABASE"
+            },
+            "tableFirstRow": {
+              "label": "A-Z"
+            },
+            "includesHeaders": {
+              "mode": "chose",
+              "label": "Yes"
+            }
+          },
+          "parameters": {
+            "__IMTCONN__": {
+              "data": {
+                "scoped": "true",
+                "connection": "google"
+              },
+              "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+            }
+          }
+        },
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Clients needing a checklist"
+        }
+      },
+      "parameters": {
+        "__IMTCONN__": 9501125
+      }
+    },
+    {
+      "id": 2,
+      "mapper": null,
+      "module": "builtin:BasicRouter",
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 11,
+              "filter": {
+                "name": "Checklist exists AND key fields present",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "485",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "{{1.`23`}}",
+                      "o": "exist"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "500",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "{{1.`6`}}",
+                      "o": "exist"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "482",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "SBS",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "Nomination",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "407",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "820/801",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "189",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "190",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "491",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "494",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "802",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "101",
+                      "o": "text:equal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "417",
+                      "o": "text:equal"
+                    }
+                  ]
+                ]
+              },
+              "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                  "Checklist Filed": "NO CHECKLIST MAPPED — review"
+                },
+                "sheetId": "MASTER",
+                "rowNumber": "{{1.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "includesHeaders": true,
+                "useColumnHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+              },
+              "module": "google-sheets:updateRow",
+              "version": 2,
+              "onerror": [
+                {
+                  "id": 33,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": {
+                    "designer": {
+                      "x": 450,
+                      "y": 20,
+                      "name": "Skip this bundle"
+                    }
+                  },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "google"
+                      },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 450,
+                  "y": -150,
+                  "name": "GUARD — claim the row before lookup"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9501125
+              }
+            },
+            {
+              "id": 3,
+              "mapper": {
+                "from": "drive",
+                "limit": "1",
+                "filter": [
+                  [
+                    {
+                      "a": "A",
+                      "b": "{{1.`7`}}",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "B",
+                      "b": "{{if(1.`3` = emptystring; \"N\"; \"Y\")}}",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "C",
+                      "b": "{{switch(1.`7`; \"485\"; 1.`23`; \"500\"; 1.`6`; emptystring)}}",
+                      "o": "text:equal"
+                    }
+                  ]
+                ],
+                "sheetId": "CHECKLIST MAP",
+                "sortOrder": "asc",
+                "spreadsheetId": "1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "tableFirstRow": "A1:Z1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+              },
+              "module": "google-sheets:filterRows",
+              "version": 2,
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "from": {
+                      "label": "Select from My Drive"
+                    },
+                    "sheetId": {
+                      "mode": "chose",
+                      "label": "CHECKLIST MAP"
+                    },
+                    "spreadsheetId": {
+                      "mode": "chose",
+                      "label": "Yale Migration — MASTER DATABASE"
+                    },
+                    "tableFirstRow": {
+                      "label": "A-Z"
+                    },
+                    "includesHeaders": {
+                      "mode": "chose",
+                      "label": "Yes"
+                    }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "google"
+                      },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 600,
+                  "y": -150,
+                  "name": "Look up the right checklist"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9501125
+              }
+            },
+            {
+              "id": 4,
+              "mapper": {
+                "url": "/v1.0/drives/A0BABA3C2640082C/items/A0BABA3C2640082C!s78266e65226d4b9ebed382720c437f2c:/{{3.`3`}}:/copy",
+                "body": "{\"parentReference\":{\"driveId\":\"A0BABA3C2640082C\",\"id\":\"{{substring(1.`21`; indexOf(1.`21`; \"&id=\") + 4)}}\"}}",
+                "method": "POST",
+                "headers": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              },
+              "module": "onedrive:makeApiCall",
+              "onerror": [
+                {
+                  "id": 7,
+                  "mapper": {
+                    "from": "drive",
+                    "mode": "select",
+                    "values": {
+                      "Notes": "AUTO: checklist copy FAILED — {{4.error.message}}",
+                      "Checklist Filed": "COPY FAILED — review"
+                    },
+                    "sheetId": "MASTER",
+                    "rowNumber": "{{1.`__ROW_NUMBER__`}}",
+                    "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                    "includesHeaders": true,
+                    "useColumnHeaders": true,
+                    "valueInputOption": "USER_ENTERED"
+                  },
+                  "module": "google-sheets:updateRow",
+                  "version": 2,
+                  "metadata": {
+                    "restore": {
+                      "parameters": {
+                        "__IMTCONN__": {
+                          "data": {
+                            "scoped": "true",
+                            "connection": "google"
+                          },
+                          "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                        }
+                      }
+                    },
+                    "designer": {
+                      "x": 900,
+                      "y": 20,
+                      "name": "Log failure to Notes"
+                    }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": 9501125
+                  }
+                },
+                {
+                  "id": 8,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": {
+                    "designer": {
+                      "x": 1050,
+                      "y": 20,
+                      "name": "Skip this bundle"
+                    }
+                  },
+                  "parameters": {}
+                }
+              ],
+              "version": 2,
+              "metadata": {
+                "restore": {
+                  "expect": {
+                    "qs": {
+                      "mode": "chose"
+                    },
+                    "method": {
+                      "mode": "chose",
+                      "label": "POST"
+                    },
+                    "headers": {
+                      "mode": "chose",
+                      "items": [
+                        null
+                      ]
+                    }
+                  },
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "azure"
+                      },
+                      "label": "Yale's Microsoft connection (Muhammad Sharjeel <sharry00010@gmail.com>)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 900,
+                  "y": -150,
+                  "name": "Copy checklist into client folder"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9279810
+              }
+            },
+            {
+              "id": 5,
+              "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                  "Checklist Filed": "{{3.`3`}}"
+                },
+                "sheetId": "MASTER",
+                "rowNumber": "{{1.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "includesHeaders": true,
+                "useColumnHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+              },
+              "module": "google-sheets:updateRow",
+              "onerror": [
+                {
+                  "id": 9,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": {
+                    "designer": {
+                      "x": 1200,
+                      "y": 20,
+                      "name": "Skip this bundle"
+                    }
+                  },
+                  "parameters": {}
+                }
+              ],
+              "version": 2,
+              "metadata": {
+                "restore": {
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "google"
+                      },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 1200,
+                  "y": -150,
+                  "name": "Mark checklist filed"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9501125
+              }
+            },
+            {
+              "id": 12,
+              "filter": {
+                "name": "Client has an email address",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.`5`}}",
+                      "o": "exist"
+                    }
+                  ]
+                ]
+              },
+              "mapper": {
+                "folder": "DRAFT",
+                "to": [
+                  "{{1.`5`}}"
+                ],
+                "subject": "Your document checklist – subclass {{1.`7`}} application",
+                "html": "<p>Dear {{1.`2`}},</p><p>Thank you for choosing Yale Migration and Education Consultants.</p><p>Please find attached the document checklist for your subclass {{1.`7`}} application &ndash; <strong>{{3.`3`}}</strong></p><p>Please send the listed documents through at your convenience. If anything on the list is unclear, reply to this email and we will talk it through with you.</p><p>Your reference for this matter is <strong>{{1.`0`}}</strong> &ndash; please quote it in any correspondence.</p><p>Kind regards,<br>Yale Migration and Education Consultants<br>Level 12, 241 Adelaide Street, Brisbane QLD 4000</p>"
+              },
+              "module": "google-email:ActionCreateDraft",
+              "version": 1,
+              "onerror": [
+                {
+                  "id": 13,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": {
+                    "designer": {
+                      "x": 1500,
+                      "y": 20,
+                      "name": "Skip - filing already succeeded"
+                    }
+                  },
+                  "parameters": {}
+                }
+              ],
+              "metadata": {
+                "restore": {
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "google-email"
+                      },
+                      "label": "Yale's Gmail connection (visa.lodgement@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 1500,
+                  "y": -150,
+                  "name": "Draft the checklist email"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9452213
+              }
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 6,
+              "filter": {
+                "name": "Cannot file — needs review",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "485",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "500",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "482",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "SBS",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "Nomination",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "407",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "820/801",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "189",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "190",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "491",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "494",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "802",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "101",
+                      "o": "text:notequal"
+                    },
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "417",
+                      "o": "text:notequal"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "485",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "{{1.`23`}}",
+                      "o": "notexist"
+                    }
+                  ],
+                  [
+                    {
+                      "a": "{{1.`7`}}",
+                      "b": "500",
+                      "o": "text:equal"
+                    },
+                    {
+                      "a": "{{1.`6`}}",
+                      "o": "notexist"
+                    }
+                  ]
+                ]
+              },
+              "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                  "Notes": "AUTO: checklist NOT filed. Check Visa Type (H), Skills Authority (X) for 485, Location (G) for 500. File manually if no checklist exists for this visa.",
+                  "Checklist Filed": "NEEDS REVIEW"
+                },
+                "sheetId": "MASTER",
+                "rowNumber": "{{1.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+                "includesHeaders": true,
+                "useColumnHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+              },
+              "module": "google-sheets:updateRow",
+              "onerror": [
+                {
+                  "id": 10,
+                  "mapper": {},
+                  "module": "builtin:Ignore",
+                  "version": 1,
+                  "metadata": {
+                    "designer": {
+                      "x": 750,
+                      "y": 150,
+                      "name": "Skip this bundle"
+                    }
+                  },
+                  "parameters": {}
+                }
+              ],
+              "version": 2,
+              "metadata": {
+                "restore": {
+                  "parameters": {
+                    "__IMTCONN__": {
+                      "data": {
+                        "scoped": "true",
+                        "connection": "google"
+                      },
+                      "label": "Muhammad's Google connection (project1@yalemigration.com.au)"
+                    }
+                  }
+                },
+                "designer": {
+                  "x": 600,
+                  "y": 150,
+                  "name": "Cannot file — flag for review"
+                }
+              },
+              "parameters": {
+                "__IMTCONN__": 9501125
+              }
+            }
+          ]
+        }
+      ],
+      "version": 1,
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "designer": {
+      "orphans": []
+    },
+    "scenario": {
+      "dlq": false,
+      "dataloss": false,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "roundtrips": 1,
+      "sequential": false,
+      "confidential": false,
+      "freshVariables": false,
+      "autoCommitTriggerLast": true
+    }
+  },
+  "scheduling": {
+    "type": "indefinitely",
+    "interval": 900
+  },
+  "interface": {
+    "input": [],
+    "output": []
+  },
+  "_fix_note": "M4b (D-321). Adds the checklist email DRAFT after the checklist is filed. Identifiers verified by creating throwaway scenario 6967000, not by reading docs: google-email:ActionCreateDraft version 1, __IMTCONN__ 9452213 (visa.lodgement@), folder DRAFT. The filter means no client email = no draft and no error. onerror Ignore means a failed draft can never break the filing chain. DRAFT ONLY - never ActionSendEmail. Only the RMA advises; every draft waits for a human to read and send. Cost: +1 op per filed row, route A goes 4 -> 5."
+}

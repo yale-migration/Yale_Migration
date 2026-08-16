@@ -259,4 +259,9 @@ access list, and the OneDrive re-authorisation.**
 failure. It also plants the Phase-2 conversation with no money word in it.
 ⛔ **A-18 (the ~1,200 plaintext credentials) was deliberately NOT sent** — it goes on the call.
 
+2026-08-16 | internal (no client contact) | **M4b built and applied** — when M4 files a checklist it now
+drafts the covering email to the client in `visa.lodgement@`. **Draft only, never sends** — enforced by
+the verifier, not by memory. Guarded on the client email existing, so a missing address means no draft
+and no error. M4 remains **OFF**. Gmail connection confirmed alive and auto-refreshing (D-321).
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

@@ -220,6 +220,56 @@ check("visa 190 reaches route A (so the guard stamps it even with no MAP row)",
 check("visa 600 (Tourist) falls to NEEDS REVIEW, not into a loop",
       ev_filter(routeB[0]["filter"], {"{{1.`7`}}": "600", "{{1.`23`}}": "", "{{1.`6`}}": ""}))
 
+# ===================================================================== M4b
+print("\n=== M4b  checklist email draft  (v3) ===")
+import os as _os
+_v3 = _os.path.join(SCEN, "M4-checklist-file.v3-draft.blueprint.json")
+if not _os.path.exists(_v3):
+    print("  SKIP - v3 not present")
+else:
+    m4b = load("M4-checklist-file.v3-draft.blueprint.json")
+    ops = []
+    walk_ops(m4b, ops)
+    bad = sorted(set(ops) - LEGAL_OPS)
+    check("only the 4 working Make operators are used", not bad, f"illegal: {bad}" if bad else "")
+    seen = []
+    ids(m4b, seen)
+    check("module ids are unique", len(seen) == len(set(seen)),
+          f"dupes: {[i for i in set(seen) if seen.count(i) > 1]}")
+
+    rA = m4b["flow"][1]["routes"][0]["flow"]
+    d = rA[-1]
+    check("draft is the LAST module of route A", d["id"] == 12
+          and d["module"] == "google-email:ActionCreateDraft")
+    check("draft runs AFTER the checklist is filed", rA[-2]["id"] == 5)
+    check("draft uses the verified module version 1", d["version"] == 1)
+    check("draft uses the Gmail connection 9452213",
+          d["parameters"].get("__IMTCONN__") == 9452213)
+    check("draft is guarded on the client email existing",
+          d["filter"]["conditions"] == [[{"a": "{{1.`5`}}", "o": "exist"}]])
+    check("draft has an onerror Ignore - filing must not break",
+          any(e["module"] == "builtin:Ignore" for e in d["onerror"]))
+    # The rule that matters most: only the RMA advises.
+    mods = []
+    def _m(n):
+        if isinstance(n, dict):
+            if "module" in n and isinstance(n["module"], str):
+                mods.append(n["module"])
+            for v in n.values():
+                _m(v)
+        elif isinstance(n, list):
+            for v in n:
+                _m(v)
+    _m(m4b)
+    check("NOTHING sends email - draft only, never ActionSendEmail",
+          not any("SendEmail" in x for x in mods), f"found {[x for x in mods if 'Send' in x]}")
+    check("draft folder is DRAFT", d["mapper"]["folder"] == "DRAFT")
+    check("draft addresses the client, not a hardcoded address",
+          d["mapper"]["to"] == ["{{1.`5`}}"])
+    body = d["mapper"]["subject"] + d["mapper"]["html"]
+    check("no unresolved mapping braces in the body",
+          "{{}}" not in body and body.count("{{") == body.count("}}"))
+
 # ---------------------------------------------------- connections must not drift
 print("\n=== connections ===")
 for name, blob in [("M3", m3), ("M4", m4)]:

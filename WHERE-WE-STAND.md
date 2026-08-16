@@ -6,8 +6,8 @@
 
 # 1 · THE ONE-LINE POSITION
 
-**The consolidated data document went to the client today. Nothing from us is blocked by it.**
-M4b is fully specced with every identifier verified (D-321) and is the next thing to build.
+**The consolidated data document went to the client today, and M4b is built.**
+Nothing of ours is blocked. The next build is **M5b**, which needs a routing decision first (§5).
 
 ---
 
@@ -19,7 +19,7 @@ M4b is fully specced with every identifier verified (D-321) and is the next thin
 | M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard (E2, D-315) · **OFF** |
-| M4b | Checklist email draft | 🟢 **specced, every id verified — BUILD THIS NEXT** | D-321 |
+| M4b | Checklist email draft | ✅ **BUILT 16 Aug — applied to M4, verified live** | D-321 · **OFF** · draft only, never sends |
 | M5a | Dormancy detection | ✅ running daily | **Apps Script, not Make.** Zero ops |
 | M5b | Chase email draft | 🟠 **blocked by a plan limit, not by data** | see §5 |
 | M6 | Enquiry capture | 🟠 spec'd, unbuilt | cadence 7 + 30 days (D-307) |
@@ -71,8 +71,8 @@ prompt** (D-320) — that is how the check got defeated.
 
 | # | Task | Hrs | Blocked? |
 |---|---|---|---|
-| **1** | 🟢 **M4b — checklist email draft.** Full spec + every verified identifier in **D-321** | 2 | **nothing.** ⚠️ testable on seeded rows only — no real client has an email yet |
-| **2** | 🟠 **M5b — chase email draft.** Decide the route first (§5) | 2 | plan limit, not data |
+| ~~1~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
+| **1** | 🟠 **M5b — chase email draft.** Decide the route first (§5) | 2 | plan limit, not data |
 | **3** | **Suppress dormancy on imported rows** until first contact — else 40 false alarms on day 3 | 0.5 | 🟢 (D-321) |
 | **4** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | C-2/3/4 need the MASTER columns run first |
 | **5** | Visa-expiry deadline view | 1 | 🟢 source exists |

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 400K /     4126 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 340K /     4137 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 15:42
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 15:50
 
 | # | Decision |
 |---|---|

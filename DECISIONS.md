@@ -4124,3 +4124,14 @@ panel, not as a numbered question, so it is the field most likely to come back e
 Two throwaway scenarios are parked, both on-demand and inactive, both 0 ops:
 `6959410 YM-TMP-read-checklist-map` · `6967000 YM-TMP-verify-draft-module`. **Delete both** once M4b
 is applied.
+
+### ✅ APPLIED 16 Aug
+M4b is live in scenario 6867537, route A, module 12, after `Mark checklist filed`. Re-fetched from
+Make and confirmed: `usedPackages` now includes `google-email`, `isinvalid: false`, `isActive: false`.
+`verify_blueprints.py` extended to 43 checks — including **"NOTHING sends email — draft only, never
+ActionSendEmail"**, which is now enforced by the gate rather than by anyone remembering.
+Backup: `scenarios/M4-checklist-file.v3-draft.blueprint.json`.
+
+⚠️ **Known manual step:** the draft says *"please find attached"* but does not attach the checklist —
+the consultant attaches it from the client's folder before sending. Auto-attaching needs an extra
+OneDrive download module (+1 op) and is a candidate for later, not a defect.
