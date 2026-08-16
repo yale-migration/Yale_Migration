@@ -25,7 +25,7 @@ Nothing is switched on against your live clients yet; that happens only when Rob
 to ask you general questions. These are narrow ones. Most are a single word.
 
 📎 **Attached: `Yale-client-list-to-complete.csv`** — your {{N_ACTIVE}} current clients, already typed out,
-with nine blank columns. **That one sheet answers questions 1 to 6.** Open it in Excel or Google
+with nine blank columns. **That one sheet answers questions 1 to 7.** Open it in Excel or Google
 Sheets, fill in what you know, send it back.
 
 **If you only fill three columns, make them `1 Team`, `2 Consultant` and `3 Email`** — those three
@@ -50,8 +50,8 @@ There is no team column in any sheet, so I cannot work it out. From the consulta
 **{{TEAM_EVIDENCE}}** against a few of them, which suggests it is **mixed** rather than one team.
 Just `F` or `I` in **column 1** of the attached sheet is enough.
 
-**3. Is anyone on the list Townsville rather than Brisbane?**
-If any belong to Cristelle's office, mark them `TSV`.
+**3. Is anyone on the list Townsville rather than Brisbane?** *(column 8)*
+If any belong to Cristelle's office, mark them `TSV` — otherwise leave it blank and I will read it as Brisbane.
 
 **4. Who is looking after each one?** *(column 2)*
 The dashboard shows how the work is spread across the team and who has clients going quiet — both of
@@ -64,8 +64,8 @@ to one with a partner or dependent included. If I get it wrong, the client recei
 with your name on it. I will not guess it — `Y` or `N` per row.
 
 **6. For the 485 clients — which skills assessing authority?** *(column 5)*
-`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **five 485s** on the list and I have
-marked them in the sheet. The 485 checklist is different for each authority, so without this the
+`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}} 485s** on the list and I have
+marked each of them in the sheet. The 485 checklist is different for each authority, so without this the
 system cannot file a 485 at all — it will flag them for someone to do by hand.
 
 **7. {{N_PARTIAL}} of them are recorded with a first name only.** *(column 9)*

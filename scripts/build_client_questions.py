@@ -161,6 +161,7 @@ def main():
         "{{N_PARTIAL}}": str(len(partial)),
         "{{PARTIAL_NAMES}}": "> " + ", ".join(partial) if partial else "> (none)",
         "{{TEAM_EVIDENCE}}": "Gayatri, Inder and Star",
+        "{{N_485}}": str(len([n for n in names if visa_of.get(n, "").startswith("485")])),
         "{{N_REY_ROWS}}": str(rey_rows),
         "{{N_REY_PEOPLE}}": str(len([x for x in rey_people if x])),
         "{{N_CHECKLISTS}}": str(len([f for f in os.listdir(
