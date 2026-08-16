@@ -13,12 +13,36 @@
  * Closed matters are skipped entirely — never chase a granted or withdrawn file.
  * Idempotent: rewrites the same values, so running twice changes nothing.
  * NO getUi() — it hangs when run from the editor (D-245). Read the Execution log.
+ *
+ * ==================== THE IMPORT BASELINE — READ BEFORE EDITING ====================
+ * The 40 clients coming over from `LODGEMENT JULY TO PRESENT` are LIVE, IN-FLIGHT matters
+ * that Yale has been working for weeks. Their contact history lives in WhatsApp and in
+ * people's heads — it is in no column we can read, so `Last Contact` imports BLANK.
+ *
+ * Without a baseline the rule above reads blank as "never contacted", sets due = import
+ * date + 3, and on day three flags ALL FORTY as dormant on the client's own dashboard.
+ * Every one of those alerts is false, and the day count printed next to it — "no contact
+ * for 3 days" — is a claim about their contact history that we cannot support.
+ *
+ * So: a row whose `Last Contact` is blank AND whose `Date Added` is on or before
+ * IMPORT_BASELINE is a HISTORICAL file, not a new intake. It gets CHASE_IMPORTED days
+ * measured from the baseline, and a note that states what we actually know — that no
+ * contact is LOGGED — never a day count we invented.
+ *
+ * A genuinely new client added after the baseline still gets the 3-day rule, unchanged.
+ *
+ * 🔴 Set IMPORT_BASELINE to the date the pilot import runs. Leave it '' until then:
+ *    blank disables the whole branch and behaviour is exactly what it is today.
+ * ===================================================================================
  */
 var COL = { NAME:3, STAGE:13, OUTCOME:14, LAST_CONTACT:18, NEXT_DUE:19, DATE_ADDED:20, NOTES:23 };
 var FIRST_ROW   = 2;
 var CHASE_FIRST = 3;    // days after intake if never contacted
 var CHASE_NEXT  = 7;    // days after the last contact
 var TZ          = 'Australia/Brisbane';   // their clock, not ours (D-163)
+
+var IMPORT_BASELINE  = '';   // 'yyyy-MM-dd' on import day. '' = branch off, today's behaviour.
+var CHASE_IMPORTED   = 14;   // grace from the baseline before an imported file is called dormant
 
 // A matter is CLOSED when either of these says so — never chase these.
 var CLOSED_STAGES   = ['Closed'];
@@ -43,7 +67,12 @@ function updateFollowUps() {
   var notes    = notesRng.getValues();
 
   var today = startOfDay_(new Date());
-  var open = 0, dormant = 0, skipped = 0;
+  var baseline = parseBaseline_(IMPORT_BASELINE);
+  if (IMPORT_BASELINE && !baseline) {
+    Logger.log('ABORT: IMPORT_BASELINE "' + IMPORT_BASELINE + '" is not a yyyy-MM-dd date.');
+    return;   // a mistyped baseline must stop the run, not silently fall back to day-3
+  }
+  var open = 0, dormant = 0, skipped = 0, imported = 0;
 
   for (var i = 0; i < n; i++) {
     if (!String(names[i][0]).trim()) continue;                       // blank row
@@ -60,14 +89,22 @@ function updateFollowUps() {
     var touch = startOfDay_(toDate_(hadContact ? contacts[i][0] : added[i][0]));
     if (!touch) { skipped++; continue; }                             // no usable date — leave alone
 
-    var dueDate = addDays_(touch, hadContact ? CHASE_NEXT : CHASE_FIRST);
+    // Historical file from the import: blank Last Contact, and it predates the baseline.
+    // We do not know when it was last touched, so we never print a day count for it.
+    var isImported = !hadContact && baseline && touch <= baseline;
+
+    var dueDate = isImported ? addDays_(baseline, CHASE_IMPORTED)
+                             : addDays_(touch, hadContact ? CHASE_NEXT : CHASE_FIRST);
     due[i][0] = fmt_(dueDate);
     open++;
+    if (isImported) imported++;
 
     var days = Math.floor((today - touch) / 86400000);
     notes[i][0] = stripDormant_(notes[i][0]);
     if (dueDate < today) {
-      var msg = 'DORMANT: no contact for ' + days + ' days';
+      var msg = isImported
+        ? 'DORMANT: no contact logged since go-live'
+        : 'DORMANT: no contact for ' + days + ' days';
       notes[i][0] = notes[i][0] ? msg + ' | ' + notes[i][0] : msg;
       dormant++;
     }
@@ -77,6 +114,12 @@ function updateFollowUps() {
   notesRng.setValues(notes);
   SpreadsheetApp.flush();
   Logger.log('Open matters: ' + open + ' | DORMANT: ' + dormant + ' | closed or skipped: ' + skipped);
+  Logger.log(baseline
+    ? 'Import baseline ' + fmt_(baseline) + ' — ' + imported +
+      ' historical file(s) on the ' + CHASE_IMPORTED + '-day grace, due ' +
+      fmt_(addDays_(baseline, CHASE_IMPORTED))
+    : 'Import baseline NOT SET — every blank Last Contact is treated as a new intake (3-day rule). ' +
+      'Set IMPORT_BASELINE on import day or the imported files all flag on day 3.');
 }
 
 /** Highlights every overdue row orange. Run once — the formatting then maintains itself. */
@@ -107,9 +150,33 @@ function toDate_(v) {
   return isNaN(d.getTime()) ? null : d;
 }
 function startOfDay_(d) { if (!d) return null; var x = new Date(d); x.setHours(0,0,0,0); return x; }
+
+/**
+ * Strict. Built from components on purpose — do NOT route this through toDate_().
+ *   new Date('2026-08-20') parses as UTC MIDNIGHT, so west of Greenwich the baseline
+ *   silently lands a day early, and every imported file gets one day less grace.
+ *   new Date('20 August 2026') also parses "successfully", so loose parsing means a
+ *   typo in a format we never intended is accepted instead of stopping the run.
+ * Returns null for anything that is not exactly yyyy-MM-dd and a real calendar date.
+ */
+function parseBaseline_(s) {
+  s = String(s || '').trim();
+  if (!s) return null;
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (!m) return null;
+  var y = +m[1], mo = +m[2], d = +m[3];
+  var dt = new Date(y, mo - 1, d);
+  dt.setHours(0, 0, 0, 0);
+  // rejects 2026-02-31 and friends, which Date silently rolls forward into March
+  if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return null;
+  return dt;
+}
 function addDays_(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
 function fmt_(d) { return Utilities.formatDate(d, TZ, 'yyyy-MM-dd'); }
+// Must strip BOTH note forms. Miss one and the notes column grows a new DORMANT line
+// every single day the detector runs — the same row, stacked, until nobody reads it.
 function stripDormant_(note) {
   var s = String(note || '');
-  return s.replace(/DORMANT: no contact for \d+ days( \| )?/g, '').trim();
+  return s.replace(/DORMANT: (no contact for \d+ days|no contact logged since go-live)( \| )?/g, '')
+          .trim();
 }

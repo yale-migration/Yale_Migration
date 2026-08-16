@@ -4135,3 +4135,70 @@ Backup: `scenarios/M4-checklist-file.v3-draft.blueprint.json`.
 ⚠️ **Known manual step:** the draft says *"please find attached"* but does not attach the checklist —
 the consultant attaches it from the client's folder before sending. Auto-attaching needs an extra
 OneDrive download module (+1 op) and is a candidate for later, not a defect.
+
+## D-322 | M5b routes through M4, not a third scenario — and needs an exact-match flag column
+
+**16 Aug 2026.** M5b (the document-chase email draft) had no home. Settling it.
+
+**The constraint, restated:** Make Free caps ACTIVE scenarios at 2 (`license.scenarios: 2`,
+verified). M3 and M4 are those two. M5a is Apps Script running as `project1@` and cannot create a
+draft inside `visa.lodgement@`, so it cannot do the job itself.
+
+**Options weighed**
+
+| Option | Verdict |
+|---|---|
+| Third Make scenario | ⛔ impossible on Free |
+| Wait for Make Core (~$9/mo) | ⛔ raising money on the first project, before anything is switched on. Explicitly ruled out |
+| Apps Script drafts from `project1@` | ⛔ free and easy, but the draft lands in the wrong mailbox. The consultant works out of `visa.lodgement@`; a chase sitting somewhere else is a chase nobody sends |
+| Merge M3+M4 into one scenario, M5b takes the freed slot | 🟠 works, but refactors **two** proven scenarios to ship one new thing |
+| **Fold M5b into M4 as router route C** | ✅ **CHOSEN.** M3 untouched. One scenario changes, and it is the one already being changed |
+
+**What this forces: M4's trigger must widen.** Today it selects `Y notexist` — checklist not yet
+filed. That is the exact complement of the rows needing a chase, which have their checklist filed
+already. So the trigger becomes two OR-groups, and `tableFirstRow` widens `A1:Z1` → `A1:AE1`.
+🔑 **Widening the range does not move any index** — positions are counted from A, so 0-25 are
+unchanged and AE is 30. The existing mappings are untouched.
+
+**Why a new column AE `Chase Flag` and not something already in the sheet**
+
+Make has to *select* the dormant rows, and it cannot:
+- `Notes` already carries `DORMANT: ...`, but **`text:contains` is accepted and then evaluates
+  false silently** (D-255). Route C would simply never fire, and nothing would report an error.
+  This is the same shape as D-311/316/320/321: a signal that looks like evidence and isn't.
+- `Next Follow-up Due` is a date, and the four operators that work — `exist` / `notexist` /
+  `text:equal` / `text:notequal` — cannot compare dates.
+
+So M5a writes an exact string `text:equal` can match. One column, machine-owned, nobody types in it.
+
+**The state machine — all three transitions are required**
+
+```
+blank    -> CHASE     M5a, the day a matter goes overdue   (only when currently blank)
+CHASE    -> DRAFTED   M4 route C, immediately after creating the draft
+anything -> blank     M5a, when contact is logged / the matter closes / no longer overdue
+```
+
+Drop `CHASE -> DRAFTED` and M4 redrafts the same email three times a weekday forever, 1 op each.
+Drop `-> blank` and no file can ever be chased twice.
+
+**Also decided in the same breath: the import baseline (was the open "40 false alarms" risk).**
+`IMPORT_BASELINE` + `CHASE_IMPORTED = 14` in `m5_dormant_detector.gs`. A row with a blank
+`Last Contact` whose `Date Added` is on or before the baseline is a HISTORICAL file, not a new
+intake: 14 days' grace from the baseline, and a note that says `no contact logged since go-live`
+rather than a day count we cannot support. New intakes after the baseline keep the 3-day rule.
+Baseline `''` disables the branch entirely, so it is safe to leave in place before the import.
+
+**Two real defects found by testing it rather than reading it** (`scripts/test_m5_dormancy.js`,
+24 checks, runs the shipped `.gs` under node with the Google runtime stubbed — not a re-implementation):
+1. The rule fires on **day 4, not day 3.** The test is `dueDate < today`, so due == today is not
+   yet overdue. Five of our own files said "day 3".
+2. `new Date('2026-08-20')` parses as **UTC midnight.** In any timezone west of Greenwich
+   `startOfDay_` would have resolved it to the 19th and quietly shortened everyone's grace by a
+   day. Replaced with `parseBaseline_()`, which builds the date from components, demands exactly
+   `yyyy-MM-dd`, rejects impossible dates like `2026-02-31`, and **aborts the whole run** rather
+   than falling back to the 3-day rule. `'20 August 2026'` parses fine in JS — loose parsing would
+   have accepted a format we never intended.
+
+**Blocked on:** `scripts/add_chase_flag_column_ae.gs` being run against MASTER. Until AE exists,
+M4 v4 is not built — the route has nothing to select on.

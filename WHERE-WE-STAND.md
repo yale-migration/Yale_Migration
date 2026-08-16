@@ -6,8 +6,9 @@
 
 # 1 · THE ONE-LINE POSITION
 
-**The consolidated data document went to the client today, and M4b is built.**
-Nothing of ours is blocked. The next build is **M5b**, which needs a routing decision first (§5).
+**MASTER now carries all 30 columns (Z–AD run and verified 22/22), M4b is built, and M5b's
+routing is decided (D-322).** The only thing between us and M4 v4 is **one 60-second script run**:
+`scripts/add_chase_flag_column_ae.gs`, which adds column AE. Everything else on our side is moving.
 
 ---
 
@@ -20,8 +21,8 @@ Nothing of ours is blocked. The next build is **M5b**, which needs a routing dec
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard (E2, D-315) · **OFF** |
 | M4b | Checklist email draft | ✅ **BUILT 16 Aug — applied to M4, verified live** | D-321 · **OFF** · draft only, never sends |
-| M5a | Dormancy detection | ✅ running daily | **Apps Script, not Make.** Zero ops |
-| M5b | Chase email draft | 🟠 **blocked by a plan limit, not by data** | see §5 |
+| M5a | Dormancy detection | ✅ running daily · **import baseline added 16 Aug** | **Apps Script, not Make.** Zero ops. 24/24 in `test_m5_dormancy.js` |
+| M5b | Chase email draft | 🟠 **routing DECIDED (D-322)** — M4 router route C | needs column AE first. Not a plan blocker any more |
 | M6 | Enquiry capture | 🟠 spec'd, unbuilt | cadence 7 + 30 days (D-307) |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
 | M8 | Follow-up engine | ⬜ not started | nurtures leads over ENQUIRIES. Not M5 |
@@ -71,10 +72,10 @@ prompt** (D-320) — that is how the check got defeated.
 
 | # | Task | Hrs | Blocked? |
 |---|---|---|---|
-| ~~1~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
-| **1** | 🟠 **M5b — chase email draft.** Decide the route first (§5) | 2 | plan limit, not data |
-| **2** | **Suppress dormancy on imported rows** until first contact — else 40 false alarms on day 3 | 0.5 | 🟢 (D-321) |
-| **3** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | C-2/3/4 need the MASTER columns run first |
+| ~~—~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
+| ~~—~~ | ✅ **Dormancy on imported rows — DONE 16 Aug (D-322).** `IMPORT_BASELINE` + 14-day grace. Found two real defects doing it: the rule fires **day 4 not day 3**, and the baseline parsed as **UTC midnight** | — | 24/24 |
+| **1** | 🟠 **M4 v4 = M5b as router route C** (D-322). Widen the trigger to two OR-groups + `A1:AE1`, add the chase-draft route, extend the partition proof 2 routes → 3 | 2 | 🔴 **needs `add_chase_flag_column_ae.gs` run against MASTER** |
+| **2** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | 🟢 **UNBLOCKED — Z–AD are live as of 16 Aug** |
 | **4** | Visa-expiry deadline view | 1 | 🟢 source exists |
 | **5** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
@@ -96,9 +97,12 @@ the connection's identity changes.
 the same minute. ⚠️ Unverified: that Graph resolves `/v1.0/drives/{id}/items/...` identically for a
 guest-granted account. Test while both still work.
 
-**2. M5b has nowhere to run.** Free plan caps **active** scenarios at **2**; M3 + M4 are those two.
-M5a is Apps Script and cannot write to `visa.lodgement@`. Decide: fold into an existing scenario ·
-leave it off until Make Core (~$9/mo) · or draft from `project1@` (free, wrong sender).
+**2. ~~M5b has nowhere to run.~~ ✅ RESOLVED 16 Aug (D-322).** It becomes **route C inside M4** —
+M3 is untouched, no third scenario, no paid plan, and the draft still lands in `visa.lodgement@`.
+Cost: M4's trigger widens to two OR-groups and `tableFirstRow` goes `A1:Z1` → `A1:AE1`.
+🔑 **Widening moves no index** — positions count from A, so 0–25 are unchanged and AE is 30.
+⛔ Route C **must** write `AE = DRAFTED <date>` after drafting, or M4 redrafts the same email three
+times a weekday forever.
 
 **3. Subclass `186` is a coverage gap.** In their live pipeline *and* their own fee master, but in
 neither MASTER's dropdown nor M4's router.
@@ -133,6 +137,7 @@ a visa type. We recommended it once without opening it (D-315).
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
+| `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 
 🔑 **`scenarios_get` / `scenarios_update` work over MCP** — never ask anyone to export a blueprint.

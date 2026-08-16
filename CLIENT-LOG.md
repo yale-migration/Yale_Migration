@@ -264,4 +264,19 @@ drafts the covering email to the client in `visa.lodgement@`. **Draft only, neve
 the verifier, not by memory. Guarded on the client email existing, so a missing address means no draft
 and no error. M4 remains **OFF**. Gmail connection confirmed alive and auto-refreshing (D-321).
 
+2026-08-16 | internal (no client contact) | **MASTER extended to 30 columns.** Sharjeel ran
+`add_master_columns_z_to_ad.gs` as `project1@` — `WROTE 6`, then `verifyMasterColumns()` returned
+**22/22**: Z–AD present in order, no inherited validation, all five accept a script write, and the
+five indices M4 reads (G/H/V/X/Y) confirmed unmoved. **C-2/3/4 are unblocked.**
+
+2026-08-16 | internal (no client contact) | **M5b routing decided (D-322)** — it becomes route C
+inside M4 rather than a third scenario, so no paid plan is raised with the client. **Dormancy import
+baseline shipped**, which closes the "40 false alarms on day 3" risk. Testing the detector rather
+than reading it found two real defects: the rule fires on **day 4, not day 3**, and the baseline
+string parsed as **UTC midnight** — west of Greenwich every imported file would have lost a day of
+grace. Both fixed; `node scripts/test_m5_dormancy.js` is **24/24**.
+
+⛔ **A-18 (the plaintext credentials) — Sharjeel has parked the conversation for now.** Not withdrawn,
+not raised with Robinder. It stays open in `CLIENT-ASKS.md` and is still verbal-only when it happens.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
