@@ -73,10 +73,10 @@ prompt** (D-320) — that is how the check got defeated.
 |---|---|---|---|
 | ~~1~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
 | **1** | 🟠 **M5b — chase email draft.** Decide the route first (§5) | 2 | plan limit, not data |
-| **3** | **Suppress dormancy on imported rows** until first contact — else 40 false alarms on day 3 | 0.5 | 🟢 (D-321) |
-| **4** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | C-2/3/4 need the MASTER columns run first |
-| **5** | Visa-expiry deadline view | 1 | 🟢 source exists |
-| **6** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
+| **2** | **Suppress dormancy on imported rows** until first contact — else 40 false alarms on day 3 | 0.5 | 🟢 (D-321) |
+| **3** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | C-2/3/4 need the MASTER columns run first |
+| **4** | Visa-expiry deadline view | 1 | 🟢 source exists |
+| **5** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
 
 ⛔ **Do not switch M3/M4 on** until real clients are in and Robinder gives a date.
@@ -129,7 +129,7 @@ a visa type. We recommended it once without opening it (D-315).
 | Command | What it does |
 |---|---|
 | `python3 scripts/repo_hygiene.py` | 🔴 **before every commit.** Secrets, client PII, tracked spreadsheets, remote warning (D-317) |
-| `python3 scripts/verify_blueprints.py` | 31 checks. Proves M3/M4 routes partition their input — no row matches both, none matches neither |
+| `python3 scripts/verify_blueprints.py` | **43 checks.** Proves M3/M4 routes partition their input — no row matches both, none matches neither |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
