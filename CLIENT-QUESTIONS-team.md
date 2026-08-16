@@ -162,9 +162,16 @@ open it at all.
 
 Not urgent, but I want the system using your correct figures rather than mine.
 
-**18. Student 500 government charge.**
-`FEES AND INVOICE REFERENCE` lists it as **$2,500**. The quote page inside your own 500 dependent
-checklist uses **$2,000**. Which is current?
+**18. Student 500 government charge — two of your files disagree with the third.**
+
+| File | Says |
+|---|---|
+| `BREAKDOWN OF FEES_YALE MIGRATION` → `500 visa` | **$2,000** + 1.4% surcharge = $2,028 |
+| `500_ADDING-DEPENDENT` checklist, quote page | **$2,028** — the same figure |
+| `FEES AND INVOICE REFERENCE` → `VISA AND PF FEE` | **$2,500** |
+
+Two of them agree, so I suspect `FEES AND INVOICE REFERENCE` is just out of date — but I would rather
+you confirm than have me pick.
 
 **19. The 407 row looks like a column slip.**
 The fee sheet has **$430** under *Professional Fee*, but your 407 checklist shows $430 as the
