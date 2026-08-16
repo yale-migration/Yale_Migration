@@ -24,13 +24,37 @@ Nothing is switched on against your live clients yet; that happens only when Rob
 **What I need from you.** I went through every tab of the four files you sent so that I would not have
 to ask you general questions. These are narrow ones. Most are a single word.
 
-📎 **Attached: `Yale-client-list-to-complete.csv`** — your {{N_ACTIVE}} current clients, already typed out,
-with nine blank columns. **That one sheet answers questions 1 to 7.** Open it in Excel or Google
-Sheets, fill in what you know, send it back.
+## The quickest way to answer most of this
 
-**If you only fill three columns, make them `1 Team`, `2 Consultant` and `3 Email`** — those three
-are what actually stop the system running. Everything after column 3 improves it; those three switch
-it on. **Blank is a fine answer** — I would much rather have 20 rows right than 40 rows guessed.
+**Questions 1 to 7 are all the same shape** — a piece of information that is missing per client. There
+are two ways to give it to me and **you should pick whichever is less work for you.**
+
+**Option A — add the columns to your own sheet.** *(my suggestion)*
+In `LODGEMENT JULY TO PRESENT`, add these three columns to the right of the ones you already have:
+
+| New column | What goes in it |
+|---|---|
+| `TEAM` | `F` for Filipino, `I` for Indian |
+| `CONSULTANT` | who is looking after them |
+| `EMAIL` | the client's email address |
+
+Three more if you have them easily: `DEPENDENT` (`Y`/`N`), `SKILLS AUTHORITY` (485 clients only),
+`LAST CONTACT` (a date).
+
+**Why I would rather you did it this way:** it stays in your sheet, so you are not typing anything
+twice, and every client you add from now on has those fields from the start. Once the sheet is shared
+(question 9) I read it directly and never have to ask again. **Adding columns on the right does not
+affect anything else in that tab.**
+
+**Option B — the attached spreadsheet.** *(if you would rather not touch the live sheet)*
+📎 `Yale-client-list-to-complete.csv` — your {{N_ACTIVE}} clients already typed out with the blank columns
+ready. Fill it in, send it back, and I will do the rest.
+
+---
+
+**Either way: if you only manage three fields, make them `TEAM`, `CONSULTANT` and `EMAIL`.** Those
+three are what actually stop the system running — the rest just makes it better. **Blank is a fine
+answer.** I would much rather have 20 rows right than 40 rows guessed.
 
 ---
 
@@ -48,26 +72,26 @@ document. That is half of what it does.*
 The system files each client's folder under **Brisbane – Filipino Team** or **Brisbane – Indian Team**.
 There is no team column in any sheet, so I cannot work it out. From the consultants I can see
 **{{TEAM_EVIDENCE}}** against a few of them, which suggests it is **mixed** rather than one team.
-Just `F` or `I` in **column 1** of the attached sheet is enough.
+Just `F` or `I` against each name — in your own sheet or the attached one.
 
-**3. Is anyone on the list Townsville rather than Brisbane?** *(column 8)*
+**3. Is anyone on the list Townsville rather than Brisbane?**
 If any belong to Cristelle's office, mark them `TSV` — otherwise leave it blank and I will read it as Brisbane.
 
-**4. Who is looking after each one?** *(column 2)*
+**4. Who is looking after each one?**
 The dashboard shows how the work is spread across the team and who has clients going quiet — both of
 those are grouped by consultant. Your `LODGEMENTS` tab has a `Handled By` column, but this newer list
 does not, and I could only match 4 of the {{N_ACTIVE}} by name. Without it two of the dashboard views sit empty.
 
-**5. Is there anyone else on the application?** *(column 4 — just `Y` or `N`)*
+**5. Is there anyone else on the application?** *(just `Y` or `N` per client)*
 This one has real consequences. The system sends a **different checklist** to a single applicant than
 to one with a partner or dependent included. If I get it wrong, the client receives the wrong document
 with your name on it. I will not guess it — `Y` or `N` per row.
 
-**6. For the 485 clients — which skills assessing authority?** *(column 5)*
+**6. For the 485 clients — which skills assessing authority?**
 `TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}}** 485 clients on this list and I have marked each of them in the sheet. The 485 checklist is different for each authority, so without this the
 system cannot file a 485 at all — it will flag them for someone to do by hand.
 
-**7. {{N_PARTIAL_CAP}} of them are recorded with a first name only.** *(column 9)*
+**7. {{N_PARTIAL_CAP}} of them are recorded with a first name only.**
 {{PARTIAL_NAMES}}
 Could I get surnames? I have held these back rather than create a client folder with half a name on it.
 

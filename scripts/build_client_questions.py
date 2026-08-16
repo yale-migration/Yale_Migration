@@ -259,17 +259,21 @@ def main():
 TEAM_MESSAGE = """Hi team,
 
 Rather than keep sending you separate questions on here, I have put everything into one short
-document and emailed it across — subject "Yale Migration - a few gaps in the data".
+document and emailed it across - subject "Yale Migration - a few gaps in the data".
 
-There are {{N_ACTIVE}} of your current clients involved. I have attached a spreadsheet with all their names
-already typed out and blank columns next to them, so most of it is filling in a letter or a name
-rather than digging through sheets. That one sheet covers most of the document.
+Most of it comes down to three pieces of information that are missing per client: which TEAM handles
+them, which CONSULTANT is looking after them, and their EMAIL address. None of those exist as columns
+in any sheet at the moment.
 
-If you are short of time, the three columns that matter are TEAM, CONSULTANT and EMAIL - those three
-are what actually stop the system running. Everything after that just makes it better.
+Easiest thing, if you are happy to: add those three columns to your own LODGEMENT JULY TO PRESENT tab.
+Then it stays in your sheet, you are not typing anything twice, and every new client has those fields
+from the start. Adding columns on the right does not affect anything else in the tab.
 
-Blank is a perfectly good answer anywhere you are not sure - I would rather have twenty rows right
-than forty rows guessed.
+If you would rather not touch the live sheet, I have attached a spreadsheet with all {{N_ACTIVE}} names
+already typed out and the columns ready to fill in - whichever is less work for you.
+
+Blank is a perfectly good answer anywhere you are not sure. I would rather have twenty rows right than
+forty rows guessed.
 
 Quick update while I am here: the folder and checklist automation is built and tested, and the
 dashboard is done. Nothing is switched on against your live clients yet - that only happens when
