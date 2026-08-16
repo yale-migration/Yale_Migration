@@ -6,9 +6,10 @@
 
 # 1 · THE ONE-LINE POSITION
 
-**MASTER now carries all 30 columns (Z–AD run and verified 22/22), M4b is built, and M5b's
-routing is decided (D-322).** The only thing between us and M4 v4 is **one 60-second script run**:
-`scripts/add_chase_flag_column_ae.gs`, which adds column AE. Everything else on our side is moving.
+**M5b is BUILT AND LIVE.** MASTER carries all 31 columns (Z–AD 22/22, AE 11/11), and M4 v4 is
+applied to the live scenario with route C drafting the document-chase email into `visa.lodgement@`.
+**Nothing on our side is blocked.** The only external dependency left is the team's reply
+(`TEAM`/`CONSULTANT`/`EMAIL`), which gates the pilot import and nothing else.
 
 ---
 
@@ -22,7 +23,7 @@ routing is decided (D-322).** The only thing between us and M4 v4 is **one 60-se
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard (E2, D-315) · **OFF** |
 | M4b | Checklist email draft | ✅ **BUILT 16 Aug — applied to M4, verified live** | D-321 · **OFF** · draft only, never sends |
 | M5a | Dormancy detection | ✅ running daily · **import baseline added 16 Aug** | **Apps Script, not Make.** Zero ops. 24/24 in `test_m5_dormancy.js` |
-| M5b | Chase email draft | 🟠 **routing DECIDED (D-322)** — M4 router route C | needs column AE first. Not a plan blocker any more |
+| M5b | Chase email draft | ✅ **BUILT + APPLIED 16 Aug — M4 v4 route C** | D-322 · **OFF** · draft only. Partition proved over **1,008 row shapes** |
 | M6 | Enquiry capture | 🟠 spec'd, unbuilt | cadence 7 + 30 days (D-307) |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
 | M8 | Follow-up engine | ⬜ not started | nurtures leads over ENQUIRIES. Not M5 |
@@ -74,10 +75,10 @@ prompt** (D-320) — that is how the check got defeated.
 |---|---|---|---|
 | ~~—~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
 | ~~—~~ | ✅ **Dormancy on imported rows — DONE 16 Aug (D-322).** `IMPORT_BASELINE` + 14-day grace. Found two real defects doing it: the rule fires **day 4 not day 3**, and the baseline parsed as **UTC midnight** | — | 24/24 |
-| **1** | 🟠 **M4 v4 = M5b as router route C** (D-322). Widen the trigger to two OR-groups + `A1:AE1`, add the chase-draft route, extend the partition proof 2 routes → 3 | 2 | 🔴 **needs `add_chase_flag_column_ae.gs` run against MASTER** |
-| **2** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | 🟢 **UNBLOCKED — Z–AD are live as of 16 Aug** |
-| **4** | Visa-expiry deadline view | 1 | 🟢 source exists |
-| **5** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
+| ~~—~~ | ✅ **M4 v4 / M5b — DONE 16 Aug.** Trigger widened to two OR-groups + `A1:AE1`, route C added, routes A+B closed against chase rows. Applied live, re-fetched, matches the file | — | verifier **31 → 76 checks** |
+| **1** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | 🟢 **UNBLOCKED — Z–AE are live as of 16 Aug** |
+| **2** | Visa-expiry deadline view | 1 | 🟢 source exists |
+| **3** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
 
 ⛔ **Do not switch M3/M4 on** until real clients are in and Robinder gives a date.
@@ -97,12 +98,11 @@ the connection's identity changes.
 the same minute. ⚠️ Unverified: that Graph resolves `/v1.0/drives/{id}/items/...` identically for a
 guest-granted account. Test while both still work.
 
-**2. ~~M5b has nowhere to run.~~ ✅ RESOLVED 16 Aug (D-322).** It becomes **route C inside M4** —
-M3 is untouched, no third scenario, no paid plan, and the draft still lands in `visa.lodgement@`.
-Cost: M4's trigger widens to two OR-groups and `tableFirstRow` goes `A1:Z1` → `A1:AE1`.
-🔑 **Widening moves no index** — positions count from A, so 0–25 are unchanged and AE is 30.
-⛔ Route C **must** write `AE = DRAFTED <date>` after drafting, or M4 redrafts the same email three
-times a weekday forever.
+**2. ~~M5b has nowhere to run.~~ ✅ CLOSED 16 Aug (D-322) — built and applied.** Route C inside M4.
+No third scenario, no paid plan, draft still lands in `visa.lodgement@`.
+⚠️ **The one thing still untested:** no row has ever carried `AE = CHASE` in anger. The partition is
+proved on paper over 1,008 row shapes and the module identifiers are the same ones M4b already runs,
+but route C has not executed once. **It gets its first real run in the pilot, not before.**
 
 **3. Subclass `186` is a coverage gap.** In their live pipeline *and* their own fee master, but in
 neither MASTER's dropdown nor M4's router.
@@ -133,7 +133,7 @@ a visa type. We recommended it once without opening it (D-315).
 | Command | What it does |
 |---|---|
 | `python3 scripts/repo_hygiene.py` | 🔴 **before every commit.** Secrets, client PII, tracked spreadsheets, remote warning (D-317) |
-| `python3 scripts/verify_blueprints.py` | **43 checks.** Proves M3/M4 routes partition their input — no row matches both, none matches neither |
+| `python3 scripts/verify_blueprints.py` | **76 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
@@ -145,7 +145,9 @@ a visa type. We recommended it once without opening it (D-315).
 ⚠️ `validate_module_configuration` gives a **false** "connection not found in options" for Gmail
 9452213 — it says the same for a module that provably runs (D-321). Do not trust that negative.
 
-🧹 **Delete when M4b is applied:** scenarios `6959410` and `6967000`, both on-demand, inactive, 0 ops.
+✅ **Throwaways `6959410` and `6967000` deleted 16 Aug.** One on-demand leftover remains:
+`6839607 YM-TMP-list-application-forms` — inactive, so it does not count against the 2-active cap.
+**Ops still 481/1000** — the whole of 16 Aug cost zero, blueprints edited over MCP and never run.
 
 ---
 

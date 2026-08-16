@@ -35,7 +35,8 @@
  *    blank disables the whole branch and behaviour is exactly what it is today.
  * ===================================================================================
  */
-var COL = { NAME:3, STAGE:13, OUTCOME:14, LAST_CONTACT:18, NEXT_DUE:19, DATE_ADDED:20, NOTES:23 };
+var COL = { NAME:3, STAGE:13, OUTCOME:14, LAST_CONTACT:18, NEXT_DUE:19, DATE_ADDED:20, NOTES:23,
+            CHASE_FLAG:31 };   // AE — the handshake with M4 route C (D-322)
 var FIRST_ROW   = 2;
 var CHASE_FIRST = 3;    // days after intake if never contacted
 var CHASE_NEXT  = 7;    // days after the last contact
@@ -47,6 +48,25 @@ var CHASE_IMPORTED   = 14;   // grace from the baseline before an imported file 
 // A matter is CLOSED when either of these says so — never chase these.
 var CLOSED_STAGES   = ['Closed'];
 var CLOSED_OUTCOMES = ['Granted', 'Refused', 'Withdrawn'];
+
+/**
+ * ---- THE AE HANDSHAKE WITH M4 ROUTE C (D-322) --------------------------------
+ * M4 cannot find dormant rows on its own: `text:contains` on Notes evaluates FALSE
+ * silently (D-255) and no working operator compares dates. So this detector raises
+ * an exact flag and M4 matches it with text:equal.
+ *
+ *   blank    -> CHASE     here, the day a matter goes overdue  — ONLY when blank
+ *   CHASE    -> DRAFTED   M4 route C, after it creates the draft
+ *   anything -> blank     here, when the matter stops being overdue or closes
+ *
+ * 🔴 THE "ONLY WHEN BLANK" IS LOAD-BEARING. Set it unconditionally and a row that
+ * M4 has already stamped DRAFTED goes back to CHASE the next morning, and M4 drafts
+ * the same email again — every weekday, forever, 2 operations a time.
+ *
+ * DRAFTED, NO EMAIL and CHASE DRAFT FAILED are all left alone while a matter stays
+ * overdue: each one means a human still has something in front of them.
+ */
+var FLAG_CHASE = 'CHASE';
 
 function updateFollowUps() {
   var sh = SpreadsheetApp.getActive().getSheetByName('MASTER');
@@ -66,13 +86,21 @@ function updateFollowUps() {
   var due      = dueRange.getValues();
   var notes    = notesRng.getValues();
 
+  // AE may not exist yet on a sheet that has not had add_chase_flag_column_ae.gs run.
+  // Degrade to exactly the old behaviour rather than throwing — dormancy detection is
+  // useful on its own, and a half-migrated sheet must not lose its daily run.
+  var hasFlag  = sh.getLastColumn() >= COL.CHASE_FLAG &&
+                 String(sh.getRange(1, COL.CHASE_FLAG).getValue()).trim() === 'Chase Flag';
+  var flagRng  = hasFlag ? sh.getRange(FIRST_ROW, COL.CHASE_FLAG, n, 1) : null;
+  var flags    = hasFlag ? flagRng.getValues() : null;
+
   var today = startOfDay_(new Date());
   var baseline = parseBaseline_(IMPORT_BASELINE);
   if (IMPORT_BASELINE && !baseline) {
     Logger.log('ABORT: IMPORT_BASELINE "' + IMPORT_BASELINE + '" is not a yyyy-MM-dd date.');
     return;   // a mistyped baseline must stop the run, not silently fall back to day-3
   }
-  var open = 0, dormant = 0, skipped = 0, imported = 0;
+  var open = 0, dormant = 0, skipped = 0, imported = 0, raised = 0;
 
   for (var i = 0; i < n; i++) {
     if (!String(names[i][0]).trim()) continue;                       // blank row
@@ -81,13 +109,18 @@ function updateFollowUps() {
         contains_(CLOSED_OUTCOMES, outcomes[i][0])) {
       due[i][0]   = '';                                              // closed: clear any stale date
       notes[i][0] = stripDormant_(notes[i][0]);
+      if (hasFlag) flags[i][0] = '';   // a granted file must never sit flagged for chasing
       skipped++;
       continue;
     }
 
     var hadContact = !!String(contacts[i][0]).trim();
     var touch = startOfDay_(toDate_(hadContact ? contacts[i][0] : added[i][0]));
-    if (!touch) { skipped++; continue; }                             // no usable date — leave alone
+    if (!touch) {
+      if (hasFlag) flags[i][0] = '';   // no usable date = we cannot say it is overdue
+      skipped++;
+      continue;
+    }
 
     // Historical file from the import: blank Last Contact, and it predates the baseline.
     // We do not know when it was last touched, so we never print a day count for it.
@@ -107,13 +140,24 @@ function updateFollowUps() {
         : 'DORMANT: no contact for ' + days + ' days';
       notes[i][0] = notes[i][0] ? msg + ' | ' + notes[i][0] : msg;
       dormant++;
+      // Raise the flag ONLY from blank. DRAFTED / NO EMAIL / CHASE DRAFT FAILED all
+      // mean a human already has this in front of them — overwriting any of those
+      // with CHASE makes M4 draft the same email again on the next run.
+      if (hasFlag && !String(flags[i][0]).trim()) { flags[i][0] = FLAG_CHASE; raised++; }
+    } else if (hasFlag) {
+      flags[i][0] = '';                // not overdue: nothing is pending, whatever it said
     }
   }
 
   dueRange.setValues(due);
   notesRng.setValues(notes);
+  if (hasFlag) flagRng.setValues(flags);
   SpreadsheetApp.flush();
   Logger.log('Open matters: ' + open + ' | DORMANT: ' + dormant + ' | closed or skipped: ' + skipped);
+  Logger.log(hasFlag
+    ? 'AE Chase Flag: ' + raised + ' newly raised to CHASE for M4 route C'
+    : 'AE Chase Flag: COLUMN NOT PRESENT — no chase emails will be drafted. ' +
+      'Run add_chase_flag_column_ae.gs.');
   Logger.log(baseline
     ? 'Import baseline ' + fmt_(baseline) + ' — ' + imported +
       ' historical file(s) on the ' + CHASE_IMPORTED + '-day grace, due ' +

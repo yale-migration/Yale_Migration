@@ -4202,3 +4202,47 @@ Baseline `''` disables the branch entirely, so it is safe to leave in place befo
 
 **Blocked on:** `scripts/add_chase_flag_column_ae.gs` being run against MASTER. Until AE exists,
 M4 v4 is not built — the route has nothing to select on.
+
+### D-322 — APPLIED 16 Aug, and the thing the audit caught
+
+**Applied live to scenario 6867537.** Re-fetched and compared field by field against
+`scenarios/M4-checklist-file.v4-chase.blueprint.json` — identical. `isinvalid: false`,
+`isActive: false`, `usedModules` now lists **two** `ActionCreateDraft`. Ops unchanged at **481/1000**:
+every edit went over MCP, nothing ran.
+
+**🔴 THE DISASTER THE AUDIT CAUGHT.** Widening the trigger is not enough on its own. Routes A and B
+filter *only* on visa type and key fields — neither of them looked at `Checklist Filed`, because
+until now the trigger guaranteed it was empty. Add the chase group to the trigger and that
+guarantee is gone: **a chase row with a supported visa type matches route A.** It would have
+- overwritten `Checklist Filed` with `NO CHECKLIST MAPPED — review` (module 11),
+- copied the checklist into the client's OneDrive folder a **second** time (module 4),
+- rewritten the filename (module 5),
+- and **redrafted the original checklist email** (module 12),
+
+all while the row was only ever asking for a chase — and reported success at every step. The fix is
+`{{1.`24`}} notexist` on **every** OR-group of both routes: 14 on A, 3 on B. Make ORs the groups, so
+one unguarded group readmits everything. The verifier now asserts *every* group carries it, by count,
+not by spot-check.
+
+**Second decision made during the build: no `now`.** Route C stamps the flag `DRAFTED`, with no date.
+`{{formatDate(now; ...)}}` is standard Make but is **not verified in this project**, and if it threw,
+the stamp would fail, `onerror Ignore` would swallow it, the flag would stay `CHASE` and M4 would
+redraft the same email on every run. The `if()/emptystring` idiom used in the chase body **is**
+verified here — module 3 has run on it eight times. Gmail already shows the draft's date.
+
+**Third: rows we cannot email never enter the scenario.** G2 requires `F exist`, so a dormant client
+with no email address is not selected at all — it costs zero operations and stays visibly flagged
+`CHASE` in the sheet for someone to phone. The alternative (let it in, stamp `NO EMAIL`) needed a
+fourth route and would have written a resolution to a row nothing had actually resolved.
+
+**Verifier: 43 → 76 checks.** The partition is no longer argued, it is enumerated: every combination
+of visa type × skills authority × location × `Checklist Filed` × `Chase Flag` × email is generated,
+filtered through the trigger's own two OR-groups to see whether it would even be emitted, and the
+**1,008** that survive are each asserted to match exactly one of the three routes. Zero match two;
+zero match none.
+
+**⚠️ Still untested in anger.** No row has ever carried `AE = CHASE`. The identifiers are the ones
+M4b already runs and the logic is proved on paper — but route C has not executed once. First real
+run is the pilot.
+
+**Throwaway scenarios `6959410` and `6967000` deleted.**

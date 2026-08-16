@@ -279,4 +279,14 @@ grace. Both fixed; `node scripts/test_m5_dormancy.js` is **24/24**.
 ⛔ **A-18 (the plaintext credentials) — Sharjeel has parked the conversation for now.** Not withdrawn,
 not raised with Robinder. It stays open in `CLIENT-ASKS.md` and is still verbal-only when it happens.
 
+2026-08-16 | internal (no client contact) | **AE Chase Flag added (11/11) and M5b BUILT AND LIVE.**
+Sharjeel ran `add_chase_flag_column_ae.gs`; M4 v4 applied to the live scenario and re-fetched to
+confirm it matches the file. Route C drafts the document-chase email into `visa.lodgement@` —
+**draft only, never sends.** Deep audit before applying caught a real disaster: widening the trigger
+alone would have let a chase row re-enter route A and **refile the checklist, recopy the file into
+the client's folder and redraft the first email**, reporting success at every step. Fixed by guarding
+all 17 OR-groups across routes A and B. Verifier **43 → 76 checks**; the 3-route partition is now
+enumerated over **1,008 row shapes**, not argued. Throwaway scenarios 6959410 and 6967000 deleted.
+**Ops still 481/1000 — the whole day cost zero.** M3 and M4 both remain **OFF**.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
