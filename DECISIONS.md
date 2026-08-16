@@ -3911,3 +3911,57 @@ supply surnames. → folded into **A-25** as part (c).
 behind local.** Company policy names **BrandRadar-AI · Roar-AI-Labs · Apex-AI-Clients** as the
 company-owned orgs, and this repo documents client data. **Nothing has been pushed and nothing will be
 without Sharjeel confirming the destination.** The gate prints this warning on every run.
+
+---
+
+## D-318 | 🔑 The OneDrive account swap — files do not move, and the blueprints do not change
+**15 Aug 2026.** Answers the question that stopped the item-4 wording being sent.
+
+### Two things that are easy to conflate
+
+| | |
+|---|---|
+| **Where the files live** | OneDrive `A0BABA3C2640082C`, owned by **`robin_multani007@hotmail.com`** — Robinder's personal Hotmail, labelled "YALE MIGRATION". **This does not change.** No file moves |
+| **Which account the automation signs in as** | Make connection **9279810**, currently OAuth'd as **`sharry00010@gmail.com`** — ours. **This is the only thing that changes** |
+
+The automation does not need to *own* the files. It needs to be *granted access* to them, exactly as
+our account was. Grant `project1@yalemigration.com.au` the same access, re-authorise 9279810 as that
+account, done.
+
+### 🔑 Proven: the blueprints need no edit at all
+Both scenarios address the drive **by ID**, never by account:
+`/v1.0/drives/A0BABA3C2640082C/items/{itemId}/children`
+`sharry00010` appears in the blueprints in exactly **four places**, all of them
+`metadata.restore.parameters.__IMTCONN__.label` — a display string in the Make editor. The functional
+reference is `"__IMTCONN__": 9279810`. Verified by walking the JSON, not by reading it.
+
+**Consequence:** the driveId and every folder itemId in `ONEDRIVE-IDS.md` stay valid. Re-authorising
+the connection is a change of identity, not of address. Nothing in M3 or M4 is touched.
+
+### ⚠️ Precedent that makes `project1@` viable
+Our own Microsoft account was created **on a Gmail address** (`sharry00010@gmail.com`, ACCESS.md #11).
+So a Microsoft identity on `project1@yalemigration.com.au` is the same pattern, not a new one.
+⚠️ **Still to verify before the call:** that Graph resolves `/v1.0/drives/{driveId}/items/...` for a
+guest-granted account the same way it does for ours. It should — permission is per-item, and the
+driveId is absolute — but *should* is not *verified*, and this is exactly the class of claim G1 exists
+for. **Test it with the connection live before anyone removes anything.**
+
+### 🔴 The sequencing rule — this is the part that can break production
+> **ADD the new access first. Prove the new connection works. Only then remove the old one.**
+
+If `sharry00010@`'s access is revoked before 9279810 is re-authorised, **every folder create and every
+checklist copy fails in the same minute**, and M3's own error handler cannot help — the OneDrive call
+is what fails, so the row gets `AUTO: client folder NOT created` and waits.
+
+The Robinder document therefore **asks only for the ADD and never mentions the removal.** Raising the
+removal in writing invites him to do it first and helpfully break it. He is told, in a callout, to
+leave our access in place until we confirm — and that he can remove it whenever he likes afterwards.
+
+> **When a change has a safe order and an unsafe order, the document must only contain the safe half.**
+> Do not describe the destructive step to someone who might do it out of sequence to be helpful.
+
+### Longer term
+`robin_multani007@hotmail.com` is still a personal Hotmail holding every client file. Moving to a
+Yale-owned Microsoft 365 tenant is the real fix and is already logged (CR-011, `GUIDE-microsoft-365-purchase.md`).
+This swap is not that migration — it removes **our** personal account from the critical path, which is
+the part we are responsible for.

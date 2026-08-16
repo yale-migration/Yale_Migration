@@ -91,19 +91,27 @@ one 482.
 
 ---
 
-### 4. Ten minutes on a call — one thing I want to hand back to you
+### 4. Ten minutes on a call — moving one connection onto a Yale account
 
-The folder automation currently connects to your OneDrive through **my** Microsoft login. That is
-simply how we got it working quickly in the early weeks, and it should not stay that way — your
-client files should not depend on my account.
+The part of the system that creates client folders currently reaches your OneDrive through **my**
+Microsoft login. That is just how we got it working quickly in the early weeks. It should sit on a
+Yale account, not mine — so that nothing you rely on depends on me personally.
 
-Moving it onto yours takes about two minutes on a screen-share, with you typing on your own machine.
-I never see or hold your password.
+**Where it should end up:** `project1@yalemigration.com.au` — the same account the automation already
+uses for the spreadsheets. One Yale account running everything, owned by you.
 
-There is also one thing about the files themselves that I would rather say to you directly than put
-in a document. Nothing urgent, and nothing wrong on your side.
+All it needs from you is to **give that account access to the `YALE MIGRATION - ONE SYSTEM` folder**,
+the same way you shared it with me. I will do the rest of the setup.
 
-Any time that suits you this week.
+> ⚠️ **One thing worth knowing:** please **add** the new account first and leave my access in place
+> until I confirm the switch has worked. If the old access is removed before the new one is
+> connected, folder creation stops that same minute. Once it is running on the Yale account I will
+> tell you, and you can remove mine whenever you like.
+
+There is also one thing about the files themselves I would rather say to you directly than put in a
+document. Nothing urgent, and nothing wrong on your side.
+
+Ten minutes, any time this week.
 
 ---
 

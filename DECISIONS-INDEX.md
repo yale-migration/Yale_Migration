@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 388K /     3913 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 328K /     3967 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 21:45
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 10:28
 
 | # | Decision |
 |---|---|
@@ -314,3 +314,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-15 21:4
 | **D-315** | 🔧 E1 AND E2 FIXED IN PRODUCTION — plus four findings the fix work turned up |
 | **D-316** | 📊 CENSUS OF ALL 66 TABS — the email/office/team question, answered properly |
 | **D-317** | 🧹 A HYGIENE GATE — because I put a client's name in the repo while writing about client PII |
+| **D-318** | 🔑 The OneDrive account swap — files do not move, and the blueprints do not change |
