@@ -153,15 +153,23 @@ def main():
                     rey_people.add(" ".join(sorted(re.sub(r"[^A-Z ]", "", v.upper()).split())))
         wbr.close()
 
+    WORD = {0: "no", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+            6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten",
+            11: "eleven", 12: "twelve"}
+
+    def word(n):
+        return WORD.get(n, str(n))
+
     subs = {
         "{{DATE}}": date.today().strftime("%d %B %Y"),
         "{{N_ACTIVE}}": str(len(names)),
         "{{N_TABS}}": str(n_tabs),
         "{{N_EMAILS_TOTAL}}": str(len(with_email)),
-        "{{N_PARTIAL}}": str(len(partial)),
+        "{{N_PARTIAL}}": word(len(partial)),
+        "{{N_PARTIAL_CAP}}": word(len(partial)).capitalize(),
         "{{PARTIAL_NAMES}}": "> " + ", ".join(partial) if partial else "> (none)",
         "{{TEAM_EVIDENCE}}": "Gayatri, Inder and Star",
-        "{{N_485}}": str(len([n for n in names if visa_of.get(n, "").startswith("485")])),
+        "{{N_485}}": word(len([n for n in names if visa_of.get(n, "").startswith("485")])),
         "{{N_REY_ROWS}}": str(rey_rows),
         "{{N_REY_PEOPLE}}": str(len([x for x in rey_people if x])),
         "{{N_CHECKLISTS}}": str(len([f for f in os.listdir(
@@ -180,6 +188,14 @@ def main():
         left = re.findall(r"\{\{[A-Z_]+\}\}", body)
         if left:
             sys.exit("unfilled placeholder(s): " + ", ".join(sorted(set(left))))
+        # Stamp a build ref derived from the content itself. A PDF built from an
+        # older copy of this file will carry a different code, which is the only
+        # reliable way to spot a stale PDF at a glance - it has happened three
+        # times (D-316, D-319, and again on 16 Aug).
+        import hashlib
+        ref = hashlib.sha1(body.encode("utf-8")).hexdigest()[:4]
+        body = body.replace("**From:** Sharjeel · **Date:**",
+                            "**Ref:** YM-DQ-" + ref + " · **From:** Sharjeel · **Date:**")
         p = os.path.join(DATA, dest)
         io.open(p, "w", encoding="utf-8").write(body)
         out.append(p)

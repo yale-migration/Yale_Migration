@@ -64,11 +64,10 @@ to one with a partner or dependent included. If I get it wrong, the client recei
 with your name on it. I will not guess it — `Y` or `N` per row.
 
 **6. For the 485 clients — which skills assessing authority?** *(column 5)*
-`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}} 485s** on the list and I have
-marked each of them in the sheet. The 485 checklist is different for each authority, so without this the
+`TRA`, `VETASSESS`, `ACECQA` or `MASTERS/BACHELORS`. There are **{{N_485}}** 485 clients on this list and I have marked each of them in the sheet. The 485 checklist is different for each authority, so without this the
 system cannot file a 485 at all — it will flag them for someone to do by hand.
 
-**7. {{N_PARTIAL}} of them are recorded with a first name only.** *(column 9)*
+**7. {{N_PARTIAL_CAP}} of them are recorded with a first name only.** *(column 9)*
 {{PARTIAL_NAMES}}
 Could I get surnames? I have held these back rather than create a client folder with half a name on it.
 
