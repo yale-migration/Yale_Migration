@@ -4057,3 +4057,70 @@ thing it was meant to check:
 ### Also outstanding on the current PDF
 Page 4 holds only the closing block and is otherwise blank — the "do not leave a mostly-empty final
 page" instruction was not applied. Content is four pages of material in a three-page shape.
+
+---
+
+## D-321 | 🔧 M4b groundwork — every identifier verified, and a validator that lies
+**16 Aug 2026.** Everything needed to build the checklist-email draft, established by testing rather
+than by reading docs.
+
+### The verified facts
+
+| | |
+|---|---|
+| **Blueprint module id** | `google-email:ActionCreateDraft`, **`version: 1`** |
+| **Connection param** | `__IMTCONN__` (an int), **not** `account` — the app-module schema says `account`, the blueprint uses `__IMTCONN__`. The schema describes the *editor form*, the blueprint uses a different key |
+| **Connection** | **9452213**, `visa.lodgement@yalemigration.com.au`, type `google-email` |
+| **Required mapper** | `folder` (use `DRAFT`), `to` (array), `subject`, `html` |
+| **Proof** | scenario **6967000** `YM-TMP-verify-draft-module` created with exactly that shape → `isinvalid: false` |
+
+🔑 **The Gmail connection is alive and auto-refreshing.** Its expiry moved from `2027-01-29` to
+`2027-02-12` between two calls in the same session — the token refreshed itself. D-271/D-297 hold:
+**M4b and M5b need nothing from the client.**
+
+### ⚠️ `validate_module_configuration` reports a false failure on this connection
+It returns **`Value '9452213' not found in options'`** for `ActionCreateDraft`. It returns **the exact
+same error for `TriggerNewEmail`** — the module M9 already runs on that connection, successfully, with
+zero errors. So the error is about the validator's option-list lookup, not about the connection.
+
+> **A validator that fails a known-good configuration is not evidence.** Before believing a negative,
+> run it against something already proven to work. If that fails too, the tool is wrong, not the work.
+> Third time this shape has appeared: D-311 (null meant pass), D-320 (a checksum quoted to its own
+> generator), and now a validator whose option list is incomplete.
+
+`app-modules_list` also disagrees with blueprints on naming — it reports `TriggerNewEmail` while the
+live M9 blueprint uses `google-email:triggerWatchNewEmails` version 4. **Both are accepted.** When in
+doubt, copy the identifier out of a working scenario, or prove it with a throwaway `scenarios_create`.
+
+### The M4b design, ready to apply
+Insert after module 5 (`Mark checklist filed`) in **route A** of M4:
+
+- **filter** `{{1.\`5\`}} exist` — column F, the client email. No email, no draft, no error.
+- `google-email:ActionCreateDraft` v1, `__IMTCONN__ 9452213`, folder `DRAFT`
+- `to`: `{{1.\`5\`}}` · subject and body from the visa type and the filed checklist name `{{3.\`3\`}}`
+- **onerror** `builtin:Ignore` — a failed draft must never break the filing chain
+
+**Cost:** +1 op per filed row. Route A goes 4 → 5 ops.
+⛔ **Draft only. Never `ActionSendEmail`.** Only the RMA advises; every draft waits for a human.
+
+### 🔴 M5b cannot follow the same route — a real constraint
+**M5a is Apps Script, not Make** (`scripts/m5_dormant_detector.gs`, zero Make ops). It writes
+`Next Follow-up Due` and a dormant note into MASTER. Apps Script runs as `project1@`, so it **cannot**
+put a draft in `visa.lodgement@` — only the Make Gmail connection can.
+
+A Make scenario for M5b would be a **third** scenario, and the Free plan caps **active** scenarios at
+**2** (`license.scenarios: 2`, verified). M3 + M4 are those two. Options, to decide when M4b is done:
+fold the chase trigger into an existing scenario · build it and leave it off until Make Core (~$9/mo)
+· draft from `project1@` instead, which is free but the wrong sender.
+
+### 🔴 And a live consequence for the import
+M5a measures dormancy from `Last Contact` (R), falling back to `Date Added` (T). **Every imported
+client will have R blank**, so all 40 become "never contacted" and get flagged for a day-3 chase —
+**40 false alarms three days after import.** `LAST CONTACT` is in the sent document but only in the
+panel, not as a numbered question, so it is the field most likely to come back empty.
+**Fix on our side, not another client ask:** suppress dormancy on imported rows until first contact.
+
+### Housekeeping
+Two throwaway scenarios are parked, both on-demand and inactive, both 0 ops:
+`6959410 YM-TMP-read-checklist-map` · `6967000 YM-TMP-verify-draft-module`. **Delete both** once M4b
+is applied.

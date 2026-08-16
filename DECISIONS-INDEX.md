@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 396K /     4059 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 400K /     4126 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 13:47
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 15:42
 
 | # | Decision |
 |---|---|
@@ -317,3 +317,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 13:4
 | **D-318** | 🔑 The OneDrive account swap — files do not move, and the blueprints do not change |
 | **D-319** | 🔴 COMPLETENESS AUDIT — four MASTER columns the build reads and no question asked for |
 | **D-320** | 🔴 The staleness check I built verified nothing — because I put the answer in the prompt |
+| **D-321** | 🔧 M4b groundwork — every identifier verified, and a validator that lies |
