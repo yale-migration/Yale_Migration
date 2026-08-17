@@ -44,11 +44,14 @@
  */
 
 var PD_SHEET_ID = '1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k';
-var PD_TAB      = 'MASTER';
 
+// tab -> the dropdowns to extend on it. MASTER's two ran 18 Aug (186 was a no-op,
+// SMS was real). ENQUIRIES was added after, when the enquiry import showed the same
+// gap: SOP-CI-001 names EIGHT enquiry channels and the dropdown was missing SMS.
 var PD_PATCHES = [
-  { col: 8,  letter: 'H', header: 'Visa Type', add: ['186'] },
-  { col: 21, letter: 'U', header: 'Source',    add: ['SMS'] }
+  { tab: 'MASTER',    col: 8,  letter: 'H', header: 'Visa Type', add: ['186'] },
+  { tab: 'MASTER',    col: 21, letter: 'U', header: 'Source',    add: ['SMS'] },
+  { tab: 'ENQUIRIES', col: 5,  letter: 'E', header: 'Channel',   add: ['SMS'] }
 ];
 
 
@@ -61,28 +64,28 @@ function patchMasterDropdowns() {
   if (!lock.tryLock(30000)) { Logger.log('ABORT — another script holds the lock.'); return; }
 
   try {
-    var sh = SpreadsheetApp.openById(PD_SHEET_ID).getSheetByName(PD_TAB);
-    if (!sh) { Logger.log('ABORT — no tab named ' + PD_TAB); return; }
-
-    var lastRow = Math.max(sh.getMaxRows(), 2);
+    var ss = SpreadsheetApp.openById(PD_SHEET_ID);
 
     PD_PATCHES.forEach(function (p) {
+      var sh = ss.getSheetByName(p.tab);
+      if (!sh) { Logger.log('SKIP ' + p.tab + '.' + p.letter + ' — no tab named ' + p.tab); return; }
+      var lastRow = Math.max(sh.getMaxRows(), 2);
       // Guard: the column must still be the one we think it is. If someone has
       // inserted a column, patching by number would edit the wrong dropdown.
       var header = String(sh.getRange(1, p.col).getValue()).trim();
       if (header !== p.header) {
-        Logger.log('SKIP ' + p.letter + ' — header is "' + header + '", expected "' + p.header +
+        Logger.log('SKIP ' + p.tab + '.' + p.letter + ' — header is "' + header + '", expected "' + p.header +
                    '". A column has moved. Do NOT patch blind; stop and look.');
         return;
       }
 
       var probe = sh.getRange(2, p.col).getDataValidation();
       if (!probe) {
-        Logger.log('SKIP ' + p.letter + ' — no data validation on this column at all.');
+        Logger.log('SKIP ' + p.tab + '.' + p.letter + ' — no data validation on this column at all.');
         return;
       }
       if (probe.getCriteriaType() !== SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
-        Logger.log('SKIP ' + p.letter + ' — validation is ' + probe.getCriteriaType() +
+        Logger.log('SKIP ' + p.tab + '.' + p.letter + ' — validation is ' + probe.getCriteriaType() +
                    ', not a plain list. Patching it would change its kind.');
         return;
       }
@@ -90,7 +93,7 @@ function patchMasterDropdowns() {
       var current = probe.getCriteriaValues()[0].slice();
       var missing = p.add.filter(function (v) { return current.indexOf(v) === -1; });
       if (!missing.length) {
-        Logger.log('OK ' + p.letter + ' — already has ' + p.add.join(', ') + '. Nothing to do.');
+        Logger.log('OK ' + p.tab + '.' + p.letter + ' — already has ' + p.add.join(', ') + '. Nothing to do.');
         return;
       }
 
@@ -103,10 +106,10 @@ function patchMasterDropdowns() {
       try {
         sh.getRange(2, p.col, lastRow - 1, 1).setDataValidation(rule);
         SpreadsheetApp.flush();
-        Logger.log('PATCHED ' + p.letter + ' ' + p.header + ' += ' + missing.join(', ') +
+        Logger.log('PATCHED ' + p.tab + '.' + p.letter + ' ' + p.header + ' += ' + missing.join(', ') +
                    '   (' + current.length + ' -> ' + updated.length + ' values)');
       } catch (e) {
-        Logger.log('FAILED ' + p.letter + ' — ' + e.message);
+        Logger.log('FAILED ' + p.tab + '.' + p.letter + ' — ' + e.message);
       }
     });
 
@@ -121,24 +124,26 @@ function patchMasterDropdowns() {
 
 /** Proves the values are there AND that a real write of each one is accepted. */
 function verifyMasterDropdowns() {
-  var sh = SpreadsheetApp.openById(PD_SHEET_ID).getSheetByName(PD_TAB);
+  var ss = SpreadsheetApp.openById(PD_SHEET_ID);
   var pass = 0, fail = 0;
   function check(label, ok, detail) {
     Logger.log((ok ? '  PASS  ' : '  FAIL  ') + label + (detail ? '  — ' + detail : ''));
     ok ? pass++ : fail++;
   }
 
-  Logger.log('=== MASTER dropdowns ===');
-  var row = sh.getLastRow() + 1;
+  Logger.log('=== dropdowns ===');
 
   PD_PATCHES.forEach(function (p) {
+    var sh = ss.getSheetByName(p.tab);
+    if (!sh) { check(p.tab + ' tab exists', false); return; }
+    var row = sh.getLastRow() + 1;
     var rule = sh.getRange(2, p.col).getDataValidation();
-    check(p.letter + ' still has a list', !!rule);
+    check(p.tab + '.' + p.letter + ' still has a list', !!rule);
     if (!rule) return;
 
     var vals = rule.getCriteriaValues()[0];
     p.add.forEach(function (v) {
-      check(p.letter + ' contains "' + v + '"', vals.indexOf(v) > -1, vals.join(' / '));
+      check(p.tab + '.' + p.letter + ' contains "' + v + '"', vals.indexOf(v) > -1, vals.join(' / '));
 
       // The list containing a value and the CELL accepting it are two different
       // claims. setAllowInvalid(false) is what makes the difference, so test the
@@ -147,9 +152,9 @@ function verifyMasterDropdowns() {
       try {
         cell.setValue(v);
         SpreadsheetApp.flush();
-        check(p.letter + ' actually accepts "' + v + '" being written', true);
+        check(p.tab + '.' + p.letter + ' actually accepts "' + v + '" being written', true);
       } catch (e) {
-        check(p.letter + ' actually accepts "' + v + '" being written', false, e.message);
+        check(p.tab + '.' + p.letter + ' actually accepts "' + v + '" being written', false, e.message);
       }
       try { cell.clearContent(); SpreadsheetApp.flush(); } catch (ignore) {}
     });

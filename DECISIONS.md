@@ -4586,3 +4586,88 @@ Outcomes 1 Granted + 1 Refused reconciles with 14 on file and 12 open.
 
 `Sheet4` in the MASTER workbook is unexplained. Not created by us. Not opened yet — and per G8,
 "probably empty" is a conclusion that requires opening it.
+
+## D-327 | ENQUIRIES import — and 47% of their enquiry dates are wrong in the source file
+
+Everything from D-323…D-326 is verified against data, so this is the first new build since.
+`DATA SHEET.xlsx` → the ENQUIRIES tab. `scripts/build_enquiries_import.py`, report-only by default.
+
+### 🔴 Half the dates are day/month transposed — IN THE CLIENT'S FILE
+
+Of 566 populated date cells:
+
+| | count | day > 12 |
+|---|---|---|
+| stored as **TEXT** (`26/06/2026`) | 301 | **301 — 100%** |
+| stored as a **DATETIME** (`2026-01-07`) | 265 | **0 — 0%** |
+
+A perfect split on *"is the day greater than 12"* cannot happen by chance. It is the signature of
+Excel parsing with a **US locale**:
+
+```
+'7/1/2026'   both parts <= 12  -> read as m/d -> JULY 1     -> became a datetime
+'26/6/2026'  26 is not a month -> parse fails -> left alone -> stayed text
+```
+
+Every datetime-typed cell is an Australian `d/m` string Excel read as `m/d`.
+
+**Confirmed against a signal that played no part in forming the hypothesis** — impossible future
+dates in a call log that ends in August:
+
+| | range | dates in the future |
+|---|---|---|
+| as stored | 2026-01-07 … 2026-11-08 | **55** |
+| day/month swapped | 2026-07-01 … 2026-08-11 | **0** |
+
+55 → 0, and the repaired range lines up exactly with the text cells' own range. One survivor,
+`2027-07-29`, is a genuine typo in the source, not a parse error — reported, never silently fixed.
+
+**Why it would have mattered.** SOP-CI-001's cadence is *follow up within 7 days, again after 30*
+(D-307). Import as-is and 265 enquiries carry a date wrong by up to five months: a June enquiry
+filed as January is instantly "long overdue", and one filed in November is never due at all. The
+automation would have been confidently wrong on nearly half the lead list, and the sheet would have
+looked completely normal.
+
+⛔ The swap is applied **only** to datetime-typed cells. Text cells are already correct.
+
+### Two fields left deliberately blank
+
+**`Status`.** SOP-CI-001 step 10B gives the vocabulary — `Not Proceeding` / `Pending Decision` /
+`Lost Lead` — and the ENQUIRIES dropdown already carries it. But that vocabulary comes from a
+**process diagram**, and no column in DATA SHEET records it. Searched all four client workbooks:
+those three phrases appear in **none of them**. What the remarks actually hold is `call back` (22),
+`no response` (3), `follow up` (3), `not interested` (1). Mapping `call back` onto `Pending
+Decision` would be inventing a migration agency's lead status and then feeding it to an automation
+that acts on it. Blank, with the raw remark carried into Notes.
+
+🔑 Worth naming: the *task* was correctly specified — WHERE-WE-STAND said "use **their** words". The
+words are real. What nobody had checked was whether anything in the data **produces** them. Same
+shape as A-17 and A-09: a premise that is true about the client and useless about the file.
+
+**`Channel`.** The log is plainly phone/WhatsApp — column C is `Phone Number`, the remarks discuss
+calls and messages. Nothing in the file says so, and SOP-CI-001 names eight channels. Stamping
+`Phone` on 676 rows is a guess that reads as fact six months later. Blank, and one short question.
+
+### The numbers
+
+676 non-empty rows → **621 to import**. 20 dropped with neither name nor phone; 35 duplicate phone
+numbers merged, keeping the **earliest** date because the follow-up clock runs from first contact.
+
+`Assigned To` is a `setAllowInvalid(false)` dropdown, so every value must land on the roster:
+`inder`→Inder (225), `rj`→RJ (68), `gayatri`→Gayatri (63), `priyanka`→Priyanka (57), `fiza`→Fiza
+(49), `robin`→**Robinder** (11), `rey`→Rey (7), `star`→Star (2), and `indert` — a one-row typo —
+→Inder. 139 land on `Unassigned`. Five cells hold sentences rather than names
+(*"please check previous consultant"*, *"3rd time he message for call"*): mapped to `Unassigned`
+and **preserved verbatim in Notes**, because a note somebody typed is data.
+
+### Also
+
+Our own files said DATA SHEET was *"~200 rows"* and *"392/395"*. It is **676 non-empty rows**. Both
+figures were carried for weeks and neither was ever computed. Corrected.
+
+`ENQUIRIES.Channel` was missing `SMS`, the same gap as MASTER's `Source`. SOP-CI-001 names SMS as a
+channel. `patch_master_dropdowns.gs` now works across tabs and carries it — 🟡 **not urgent, fold it
+into the next time that script is run.**
+
+⛔ The CSV is **not written by default** and **must never be committed** — 621 real people, names and
+phone numbers. `--write` puts it in `../client-data/`, outside the repo.

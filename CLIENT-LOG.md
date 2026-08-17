@@ -337,4 +337,14 @@ its own list shaded 5 — two tests, one word — and the list excluded never-co
 the import none of the 40 could ever have appeared in it. Rebuilt. **Views 7 and 8 verified working**
 on the filter assertion, not row counts. CHECKLIST MAP now 38 rows (190 live). M3/M4 **OFF**.
 
+2026-08-18 | internal (no client contact) | **All dashboard views verified against seeded data**
+— view 4 now equals its own KPI (10 = 10), view 8 excludes Received/Not required, view 9 excludes
+both expired rows and shades exactly the 4 inside 60 days. Every figure the seeder predicted matched
+the screen. `Sheet4` opened: **empty**. Then built the **ENQUIRIES import (D-327)** — 621 rows from
+their call log — and found **47% of their enquiry dates are day/month transposed in the source
+file**, Excel having parsed Australian d/m strings with a US locale. 55 impossible future dates go
+to 0 after the repair. Untouched, SOP-CI-001's 7/30-day cadence would have run against dates wrong
+by up to five months on nearly half the lead list. `Status` and `Channel` left blank rather than
+guessed. **One question for the team: what channel is the DATA SHEET log?** M3/M4 still OFF.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

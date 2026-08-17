@@ -144,6 +144,26 @@ function preflightGoLive() {
            noVisa.length + ' without one — M4 cannot choose a checklist');
 
   Logger.log('');
+  Logger.log('=== 5 · TABS — anything here we did not put here? ===');
+  // `Sheet4` sat in this workbook for weeks and nobody had opened it. It IS empty
+  // (checked 18 Aug) — but "probably empty" was a conclusion nobody had earned, and
+  // G8 exists because that assumption has been wrong three times on this project.
+  // So it is a check now: any unexpected tab is named, and its size is reported.
+  var EXPECTED = ['DASHBOARD', 'MASTER', 'CHECKLIST MAP', 'FOLDER INVENTORY', 'ENQUIRIES'];
+  SpreadsheetApp.openById(PF_SHEET_ID).getSheets().forEach(function (t) {
+    var nm = t.getName();
+    if (EXPECTED.indexOf(nm) > -1) return;
+    var r = t.getLastRow(), c = t.getLastColumn();
+    if (r === 0 || c === 0) {
+      Logger.log('  OK    "' + nm + '" is an unexpected tab but it is EMPTY — safe to delete');
+    } else {
+      Logger.log('  WARN  "' + nm + '" is unexpected AND HOLDS DATA (' + r + ' rows x ' +
+                 c + ' cols). Open it before go-live.');
+      warn++;
+    }
+  });
+
+  Logger.log('');
   Logger.log('================================================================');
   if (stop > 0) {
     Logger.log('🔴 NO-GO — ' + stop + ' blocker(s). Do NOT activate any scenario.');

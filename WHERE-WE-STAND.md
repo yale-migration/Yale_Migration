@@ -31,7 +31,7 @@ applied to the live scenario with route C drafting the document-chase email into
 | M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive runs on OUR personal account** — see §5 |
-| — | Dashboard | ✅ built + tested | goodwill, not MVP scope |
+| — | Dashboard | ✅ **9 views, all verified against seeded data 18 Aug** | goodwill, not MVP scope |
 
 **Honest: ~26%** — 10.5 of 40 contracted build-hours (D-311). **~47 of 48 contract hours consumed**;
 the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
@@ -80,10 +80,13 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **C-3 + C-4 — DONE 17 Aug.** Dashboard **6 → 9 views**: Documents Outstanding · Blocked On A Third Party · Visa Expiry. The columns existed; these make them visible | — | 🔴 **needs `buildDashboard()` re-run** |
 | ~~—~~ | ✅ **Visa-expiry deadline view — DONE 17 Aug** (view 9, shaded inside 60 days) | — | same re-run |
 | ~~—~~ | ✅ **C-5 column half — DONE 17 Aug.** `Referral` was already there; only `SMS` was missing | — | 🔴 needs `patchMasterDropdowns()` |
+| ~~—~~ | ✅ **Dashboard views 4/7/8/9 VERIFIED 18 Aug.** View 4 now matches its own KPI exactly (10 = 10). View 8 excludes `Received`/`Not required`. View 9 excludes the 2 expired rows and shades exactly the 4 inside 60 days — every number predicted by the seeder matched the screen | — | ✅ |
+| ~~—~~ | ✅ **`Sheet4` opened and confirmed EMPTY** (was an unearned assumption). Now a `preflightGoLive()` check, not an eyeball | — | ✅ |
 | **1** | **C-1** — build to **their** `Client Enquiry Form`, do not design a new one (D-314) | 2 | 🟢 |
 | **2** | **C-2** — secure upload link generator. ⚠️ **Decide first:** a Graph share link on the client's whole folder exposes the checklist and everything else in it, so it needs its own `Upload` subfolder. Also depends on §5 risk 1 — do not build a link generator onto a personal OneDrive account | 2 | 🟠 **blocked on the OneDrive handover** |
 | **3** | **C-5 capture path** — Referral and SMS need somewhere to come *from*, not just a dropdown value | 1 | 🟢 |
-| **4** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
+| ~~—~~ | ✅ **`DATA SHEET` → ENQUIRIES — BUILT 18 Aug (D-327).** `build_enquiries_import.py`, **621 rows** ready. Found **47% of their enquiry dates day/month transposed by Excel's US locale** — 55 impossible future dates → 0 after repair. `Status` and `Channel` left blank on purpose: the vocabulary is real, the source field does not exist | — | 🔴 needs the client to confirm Channel, then `--write` + paste |
+| **4** | **M6 enquiry capture** — now unblocked: ENQUIRIES has a shape, a source and a cadence (7/30, D-307) | 3 | 🟢 |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
 
 ### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
@@ -154,7 +157,7 @@ not a sample:
 | **Office** | ⛔ **nowhere.** The two `LOCATION` columns hold Australian *states* and *ONSHORE/OFFSHORE* |
 | Email | ~66 clients book-wide — **but 0 of the 40 active ones** |
 | Consultant | 713 names book-wide — **but only 4 of the 40 active ones**, and they span *both* teams |
-| Phone | plentiful — `DATA SHEET` 392/395 |
+| Phone | `DATA SHEET` **654 of 676** non-empty rows. ⚠️ our notes said "~200 rows" and "392/395" — **both wrong, never computed** (D-327) |
 
 **The import source is `LODGEMENT JULY TO PRESENT`** — 42 rows = **40 people** after one duplicate and
 a row literally named `SAMPLE`. ⛔ `SUMMARY OF CLIENTS` is **not** an import source: 47 names, 11 with
@@ -170,6 +173,7 @@ a visa type. We recommended it once without opening it (D-315).
 | `python3 scripts/verify_blueprints.py` | **79 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
+| `python3 scripts/build_enquiries_import.py` | 621 ENQUIRIES rows from their call log. **Report-only by default**; `--write` emits PII outside the repo. Repairs the transposed dates (D-327) |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
 | `previewDemoRows()` · `seedDemoWorkflowColumns()` | dry-run the teardown · fill Z–AC on demo rows so dashboard views 7/8 can be **seen working** (D-324) |
