@@ -14,10 +14,61 @@ applied to the live scenario with route C drafting the document-chase email into
 
 ---
 
-# 2 · MVP PROGRESS — 11 modules
+# 2 · MVP PROGRESS — the workflow, and where each piece actually sits
+
+**The pipeline, end to end.** ✅ built+verified · 🟠 spec'd · ⬜ not started · 🔴 blocked
+
+```
+  ENQUIRY                              CLIENT FILE                        CLOSE
+  ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
+  │ M7 phone │   │ M6 chase │   │ M3 folder│   │ M4a file │   │ M5a quiet│
+  │ ⬜       │──▶│ ✅ 7/30  │──▶│ ✅ proven│──▶│ ✅ proven│──▶│ ✅ daily │
+  └──────────┘   └────┬─────┘   └──────────┘   └────┬─────┘   └────┬─────┘
+  ┌──────────┐        │                             │              │
+  │ M9 email │        ▼                             ▼              ▼
+  │ 🟠 spec'd│   ┌──────────┐                  ┌──────────┐  ┌──────────┐
+  └──────────┘   │ M8 send  │                  │ M4b draft│  │ M5b chase│
+                 │ ⬜ next  │                  │ ✅ live  │  │ ✅ live  │
+                 └──────────┘                  └──────────┘  └──────────┘
+       ENQUIRIES tab ◀── 621 rows ready          MASTER tab A..AE, 31 cols
+```
 
 | # | Module | State | Notes |
 |---|---|---|---|
+| M1 | Discovery | ✅ done | reopened twice |
+| M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
+| M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
+| M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard · 190 mapped D-325 · **OFF** |
+| M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |
+| M5a | Dormancy detection | ✅ running daily | Apps Script, 0 ops · 36/36 |
+| M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
+| M6 | Enquiry follow-up | ✅ **built 18 Aug** | D-328 · SOP-CI-001 10D · 22/22 · 0 ops |
+| M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
+| M8 | Follow-up engine | ⬜ **NEXT** | M6 schedules the touch points; M8 is what goes out |
+| M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
+| M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
+| M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
+| — | Dashboard | ✅ **DONE for MVP — 9 views, all verified against data** | goodwill, not MVP scope. Not being worked on further |
+| — | C-1 … C-5 | C-3 ✅ C-4 ✅ C-5 half ✅ · C-1 ⬜ C-2 🔴 | the five contracted items |
+
+## 🔄 DECISIONS THAT REVERSED — do not re-litigate, do not re-inherit the old one
+
+| Was | Now | Why |
+|---|---|---|
+| M5b needs a 3rd Make scenario / paid plan | **Route C inside M4** | Free caps active scenarios at 2. No money question before go-live (D-322) |
+| "186 cannot be typed into MASTER" | ⛔ **WRONG — it was always there** | My read started one line below the evidence (D-325) |
+| "no 190 checklist exists" (D-236) | **It has existed since 11 Aug** | Comment outlived its truth; 190 now mapped (D-325) |
+| ENQUIRIES `Channel` left blank | **Defaults to `Phone`** | Instructed not to block; labelled an assumption, reversible (D-328) |
+| `SUMMARY OF CLIENTS` is the import source | **`LODGEMENT JULY TO PRESENT`** | We recommended it without opening it (D-315) |
+| Dashboard "Going quiet" = last contact −14 | **= Next Follow-up Due, same as its KPI** | Tile said 10, list shaded 5, same screen (D-326) |
+
+**Honest: ~34%** — 13.5 of 40 contracted build-hours. **~47 of 48 contract hours consumed**;
+the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
+
+**Ops: 481 / 1,000 · 519 left · resets 25 Aug.** Both scenarios deliberately **OFF**.
+Everything since 16 Aug cost **0 ops** — blueprints edited over MCP, never run.
+
+---|---|---|---|
 | M1 | Discovery | ✅ done | reopened twice |
 | M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
@@ -163,6 +214,21 @@ not a sample:
 **The import source is `LODGEMENT JULY TO PRESENT`** — 42 rows = **40 people** after one duplicate and
 a row literally named `SAMPLE`. ⛔ `SUMMARY OF CLIENTS` is **not** an import source: 47 names, 11 with
 a visa type. We recommended it once without opening it (D-315).
+
+---
+
+# 6b · 🤖 HOW THIS PROJECT KEEPS ITSELF HONEST (D-329)
+
+| | |
+|---|---|
+| `.claude/hooks/git-guard.py` | `PreToolUse` on Bash. **Blocks `git commit`** if `repo_hygiene.py` fails; warns that `origin` is a personal account on `git push` |
+| `/yale-ship` | session-end ritual — was a CLAUDE.md section, now a skill that loads only when used |
+| `/yale-client-message` | the G5/G9 gate before anything reaches Robinder or the team |
+
+🔑 **Why:** the gate was declared mandatory twice in CLAUDE.md and enforced by nothing — it ran
+because the model remembered. Writing a test for the new hook then found that `repo_hygiene.py`
+had been scanning **tracked files only**, so a brand-new file carrying a secret was invisible at
+exactly the moment the check exists for. Both fixed and both tested by planting real violations.
 
 ---
 

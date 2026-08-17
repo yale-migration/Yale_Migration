@@ -48,6 +48,19 @@ SECRETS = [
                                                           "API key / token"),
     (r"\bBearer +[A-Za-z0-9._\-]{20,}",                   "bearer token"),
     (r"-----BEGIN [A-Z ]*PRIVATE KEY",                    "private key"),
+    # Added 18 Aug (D-329). The list above only caught tokens that ANNOUNCE
+    # themselves with an `api_key:` / `password:` prefix. Every provider this stack
+    # actually touches issues a self-identifying token that carries no such label,
+    # and a bare `sk-live-...` on a line was sailing through. Prefix-shaped rules
+    # only catch the careful mistakes.
+    (r"\bsk-(?:live|test|ant|proj)-[A-Za-z0-9_\-]{16,}",  "Anthropic/Stripe-style secret key"),
+    (r"\bgh[pousr]_[A-Za-z0-9]{30,}",                     "GitHub token"),
+    (r"\bAKIA[0-9A-Z]{16}\b",                            "AWS access key id"),
+    (r"\bAIza[0-9A-Za-z_\-]{35}\b",                      "Google API key"),
+    (r"\bxox[baprs]-[0-9A-Za-z\-]{10,}",                  "Slack token"),
+    (r"\beyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-]{10,}",
+                                                          "JWT (Supabase/service key)"),
+    (r"\bpostgres(?:ql)?://[^\s:@]+:[^\s@]+@",            "Postgres connection string with password"),
     (r"\b(?:password|passwd|pwd)\b *[:=] *['\"]?[^\s'\"<*{$\[]{4,}",
                                                           "literal password"),
 ]
@@ -61,9 +74,36 @@ fail = False
 
 
 def tracked_text_files():
-    out = subprocess.run(["git", "ls-files"], capture_output=True, text=True).stdout
-    return [f for f in out.split("\n")
-            if f and f.rsplit(".", 1)[-1].lower() in TEXT_EXT and os.path.exists(f)]
+    """
+    Tracked files PLUS untracked-but-not-ignored ones.
+
+    🔴 FIXED 18 Aug (D-329) — this was `git ls-files`, which lists ONLY TRACKED files.
+    A brand-new file was therefore invisible to every check below until AFTER it had
+    already been committed once. The normal workflow here is:
+
+        git add -A && git commit -m "..."
+
+    The gate runs before that line executes, when the new file is still untracked. So
+    the one moment the check exists for — a new file carrying a secret or a client's
+    name arriving in the repo — was exactly the moment it could not see.
+
+    Found by writing a test for the commit hook (D-329): a planted API key in a new
+    file was waved straight through. The gate had been reporting HYGIENE PASS on a set
+    that excluded everything new since it was written for D-317.
+
+    `--cached --others --exclude-standard` is precisely what `git add -A` would stage.
+    """
+    out = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        capture_output=True, text=True).stdout
+    seen, files = set(), []
+    for f in out.split("\n"):
+        if not f or f in seen:
+            continue                    # --cached and --others can both list a path
+        seen.add(f)
+        if f.rsplit(".", 1)[-1].lower() in TEXT_EXT and os.path.exists(f):
+            files.append(f)
+    return files
 
 
 def head(n, title):

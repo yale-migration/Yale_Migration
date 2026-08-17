@@ -29,7 +29,9 @@ Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
   PINs (D-306). **If a column name contains `password`, `username`, `OTP`, `PIN` or
   `security question`, it is excluded from every read, import, log line and message. No exceptions.**
 - **NO SECRETS in this repo** — no keys, no passwords, no client PII.
-  **Checked, not trusted: `python3 scripts/repo_hygiene.py` before every commit** (D-317).
+  **Enforced, not trusted:** `.claude/hooks/git-guard.py` runs `repo_hygiene.py` on every
+  `git commit` and denies the commit if it fails (D-329). It checks tracked **and untracked**
+  files — the set `git add -A` would stage.
 - ⚠️ **`origin` is a PERSONAL GitHub account, not a company org.** 52 commits unpushed.
   **Never push without asking Sharjeel** — company orgs are BrandRadar-AI · Roar-AI-Labs · Apex-AI-Clients.
 
@@ -66,12 +68,9 @@ Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
   relevance signal.**
 - 🔴 **Before ANY access request: `connections_get`, NOT `connections_list`.** List returns a *count*;
   get returns the *scope strings*. We nearly asked twice for access already granted (D-271, D-297).
-- 🔴 **G9 NOTHING GOES TO THE CLIENT THAT OUR OWN FILES CAN ANSWER.** Every ask we have sent and then
-  had to walk back followed the same shape: *we asked, then found we already held it, or that the
-  question was wrong.* A-09's premise was wrong (D-315). The roster was on disk for three weeks
-  (D-310). Before any ask leaves: **open the file that would answer it — and check it has the FIELDS,
-  not just the records.** A-17 sent us to a 47-row tab that is 36 rows of nothing but names, because
-  we recommended it without opening it. **Retracting an ask costs more credibility than asking late.**
+- 🔴 **G9 NOTHING GOES TO THE CLIENT THAT OUR OWN FILES CAN ANSWER.**
+  ▶ **`/yale-client-message`** before anything reaches Robinder or the team — the full gate,
+  with the dated failures behind each line. Loads only when used (D-329).
 
 Full text of the gates: `PROCESS.md`.
 
@@ -123,14 +122,10 @@ Gmail via Make OAuth on `visa.lodgement@` — **`gmail.modify` is sufficient, no
 client** (D-297) · Claude API = email triage · Meta/WhatsApp = enquiry channels ·
 Looker Studio = staff dashboard · Next.js + Supabase = client portal (Phase 3, **company hosting only**).
 
-## Session end — every time, no exceptions
+## Session end
 
-🔴 **`python3 scripts/repo_hygiene.py` FIRST — it must say HYGIENE PASS before you commit.** It exists
-because I wrote a client's name into this repo while auditing client PII (D-317), and it immediately
-caught a junk `SAMPLE` row heading for a real client folder.
-Then: update `WHERE-WE-STAND.md` · append `DECISIONS.md` (header **must** be `## D-NNN | Title` on ONE
-line, or the index silently skips it) + run `bash scripts/gen_decisions_index.sh` ·
-`CLIENT-LOG.md` same day · then
-`git add -A && git commit -m "<module>: <what changed>"`
-⛔ **COMMIT ONLY — do not `git push`.** `origin` is a personal GitHub account and this repo documents
-client data. Ask Sharjeel where it should live before anything leaves this machine (D-317).
+▶ **`/yale-ship`** — hygiene gate, WHERE-WE-STAND, DECISIONS + index, CLIENT-LOG, commit.
+The procedure lives in the skill so it does not cost context every session (D-329).
+
+⛔ **COMMIT ONLY — never `git push`.** `origin` is a personal GitHub account and this repo
+documents client data. Ask Sharjeel first, every time (D-317).

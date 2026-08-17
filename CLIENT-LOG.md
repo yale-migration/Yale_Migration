@@ -355,4 +355,13 @@ consultant's judgement. `Channel` defaulted to `Phone` on instruction, clearly l
 assumption and reversible in one filter. ⏳ Rey (Reyward Jake Gamol) asked for a call tomorrow —
 replying to offer written answers first and ask what it is about, so a call is short if still needed.
 
+2026-08-18 | internal (no client contact) | **Our own process hardened (D-329).** `repo_hygiene.py`
+was declared mandatory twice in CLAUDE.md and **enforced by nothing** — it ran because the model
+remembered, and D-317 exists because once it didn't. Now a `PreToolUse` hook denies `git commit` when
+the gate fails. Writing the test for that hook then exposed a hole in the gate itself: it scanned
+**tracked files only**, so a brand-new file carrying a secret was invisible at exactly the moment the
+check exists for. Both fixed, both proven by planting real violations. Also widened the token
+patterns (they only caught credentials that announce themselves) and moved two CLAUDE.md procedures
+into `/yale-ship` and `/yale-client-message` so they cost context only when used.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

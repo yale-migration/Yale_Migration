@@ -4726,3 +4726,75 @@ genuinely a mix and the file does not say.
 `Imported from DATA SHEET row N on <date>` in Notes, so the batch filters in one click; or re-run
 with `--channel WhatsApp`. The report prints it as an ASSUMPTION every time.
 🔑 A default that nobody is told about becomes a fact in six months. This one announces itself.
+
+## D-329 | Enforcing our own rules, and the hole that testing the enforcement exposed
+
+Asked to think about how this project survives across sessions — context, skills, hooks — the audit
+started with the rules we already have rather than with new ones. The finding is uncomfortable.
+
+### 1 · 🔴 The one mandatory gate was enforced by nothing
+
+`CLAUDE.md` declares `python3 scripts/repo_hygiene.py` mandatory before every commit **in two
+separate places, in bold, with a 🔴**. There was no git hook, no `.claude/`, no automation of any
+kind. It ran because the model remembered to run it.
+
+D-317 exists *because* a client's surname reached this repo when nobody remembered. The fix was a
+script; the script's invocation was left to memory. **That is the same shape as D-323 (an instruction
+in five documents and neither of the two anyone reads), D-324 (a delete path nobody reviews) and
+D-326 (a collision the language allows silently).** A rule with no check is a preference.
+
+Now `.claude/hooks/git-guard.py`, a `PreToolUse` hook on `Bash`:
+- `git commit` → runs the gate, **denies the commit** on failure, with the findings inline
+- `git push` → allows, but states that `origin` is a **personal** GitHub account and this repo
+  documents a client's data. Org policy is company orgs only. A warning is not permission.
+- quoted strings are stripped before matching, so a commit *message* mentioning "git push" cannot
+  trip the push branch — tested
+
+### 2 · 🔴 And the gate itself had been checking the wrong set of files
+
+Writing a test for the hook is what found it. A planted API key in a **new** file was waved straight
+through.
+
+```python
+def tracked_text_files():
+    out = subprocess.run(["git", "ls-files"], ...)   # TRACKED FILES ONLY
+```
+
+The workflow here is `git add -A && git commit -m "..."`. The gate runs **before** that line
+executes, when the new file is still untracked. So the precise moment the check exists for — a new
+file carrying a secret or a client's name arriving in the repo — was the one moment it could not
+see. Every file created this week was scanned only *after* it had already been committed once.
+
+Fixed to `git ls-files --cached --others --exclude-standard`: exactly what `git add -A` stages.
+Re-tested — the same planted password now **DENIES** the commit.
+
+🔑 **A gate that reports PASS over the wrong set is worse than no gate**, because it is trusted.
+D-311, D-316, D-320, D-321 and now this: the recurring failure on this project is not missing checks,
+it is checks that pass for the wrong reason.
+
+### 3 · The token patterns only caught careful mistakes
+
+Every rule in `SECRETS` required the credential to **announce itself** — `api_key:`, `password:`,
+`Bearer`. A bare `sk-live-…` on a line matched nothing. Given this stack touches Supabase, AWS,
+GCP, GitHub and the Anthropic API, added self-identifying formats: `sk-(live|test|ant|proj)-`,
+`ghp_`/`gho_`, `AKIA…`, `AIza…`, `xox[baprs]-`, JWTs, and Postgres URIs with an inline password.
+All verified by planting each one and confirming the commit is denied.
+
+### 4 · Context: two CLAUDE.md sections were procedures, not facts
+
+`CLAUDE.md` loads on **every** session. A skill body loads only when used. The "Session end" ritual
+and the client-message gate were both step-by-step procedures sitting in permanent context, so they
+became `/yale-ship` and `/yale-client-message`. CLAUDE.md drops 8,106 → 7,443 bytes and the
+procedures got *longer* and more useful, because length no longer costs anything until needed.
+
+Deliberately **not** moved: the hard rules, the credential exclusion, the stack, and the file map.
+Those are facts that must be true from the first token of a session, not procedures to invoke.
+
+### What was considered and rejected
+
+- **A `SessionStart` hook injecting position** — `WHERE-WE-STAND.md` is 15KB and already the first
+  thing `CLAUDE.md` names. Auto-injecting it would spend that context on every session including the
+  ones that never touch the build.
+- **Splitting `DECISIONS.md`** (380KB / 328 entries). The access path is
+  `DECISIONS-INDEX.md` → `grep -A 25 "^## D-NNN"`, which is O(1) in file size. Splitting would break
+  every `grep` reference in the repo to fix a problem the index already solves.
