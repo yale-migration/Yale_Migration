@@ -11,7 +11,17 @@ var MAP_TAB   = 'CHECKLIST MAP';
 
 // Visa Type | Dependent (Y/N) | Authority or Location | Canonical filename
 // Dependent = Y when Party 2 Name (col D) is filled.
-// Anything NOT listed here routes to Needs Review — deliberately (D-236: no 190 checklist exists).
+// Anything NOT listed here routes to Needs Review — deliberately.
+//
+// ⛔ THIS LINE USED TO READ: "(D-236: no 190 checklist exists)".
+// It was true when written. It stopped being true on 11 Aug, when A-02 closed and the
+// corrected 190 checklist arrived and was filed as 190_SKILLED-NOMINATED.docx (D-280) —
+// after we had asked Robinder for it THREE times. Nobody came back to this line, so 190
+// stayed out of the map for a week, every 190 client was stamped
+// 'NO CHECKLIST MAPPED — review', and the document we chased hardest was never filed.
+//
+// 🔑 A comment stating a FACT ABOUT THE OUTSIDE WORLD is a fact with no expiry date on it.
+// This one outlived its truth and was believed anyway (D-325).
 var MAP_ROWS = [
   ['485','N','ACECQA','485_INDIVIDUAL_ACECQA.pdf'],
   ['485','N','TRA','485_INDIVIDUAL_TRA.pdf'],
@@ -37,7 +47,20 @@ var MAP_ROWS = [
   ['494','N','','494_EMPLOYER-REGIONAL.docx'], ['494','Y','','494_EMPLOYER-REGIONAL.docx'],
   ['802','N','','802_CHILD.docx'],             ['802','Y','','802_CHILD.docx'],
   ['101','N','','101-802_CHILD-VISAS.docx'],   ['101','Y','','101-802_CHILD-VISAS.docx'],
-  ['417','N','','417_WORKING-HOLIDAY.pdf'],    ['417','Y','','417_WORKING-HOLIDAY.pdf']
+  ['417','N','','417_WORKING-HOLIDAY.pdf'],    ['417','Y','','417_WORKING-HOLIDAY.pdf'],
+  // 🔴 ADDED 18 Aug (D-325). 190 was in M4's router and in MASTER's dropdown, and the
+  // checklist file has been sitting in docs/05-canonical-checklists since 11 Aug — but
+  // it had NO ROW HERE, so every 190 client was stamped 'NO CHECKLIST MAPPED — review'
+  // and the checklist was never filed.
+  //
+  // This is the checklist we asked Robinder for THREE TIMES (A-02, D-280): v1 and v2
+  // both described 491/189/regional under a 190 heading. We chased it, he corrected it
+  // twice, we filed it — and then never connected it.
+  //
+  // Worse, verify_blueprints.py contained a check that ASSERTED this behaviour:
+  //   "visa 190 reaches route A (so the guard stamps it even with no MAP row)"
+  // A passing test that encodes the bug as expected behaviour. Replaced.
+  ['190','N','','190_SKILLED-NOMINATED.docx'], ['190','Y','','190_SKILLED-NOMINATED.docx']
 ];
 
 function setupM4() {
@@ -74,6 +97,11 @@ function buildChecklistMap_(ss) {
   sh.setFrozenRows(1);
   sh.setColumnWidth(1, 110); sh.setColumnWidth(2, 100);
   sh.setColumnWidth(3, 240); sh.setColumnWidth(4, 330);
+  // Drop our own previous protection first. sh.clear() does NOT remove protections, so
+  // re-running this "idempotent" setup was stacking a new protected range every time.
+  sh.getProtections(SpreadsheetApp.ProtectionType.RANGE).forEach(function (pr) {
+    if (pr.getDescription() === 'M4 lookup — edit values, not headers') pr.remove();
+  });
   sh.getRange(1, 1, 1, 4).protect().setDescription('M4 lookup — edit values, not headers');
   Logger.log('CHECKLIST MAP built with ' + MAP_ROWS.length + ' rows.');
 }

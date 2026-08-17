@@ -4421,3 +4421,83 @@ and a code-reuse defect that only fire under conditions nobody had tried yet.
 
 ⛔ **Do not delete the demo rows yet.** They are the only data on the system, and views 7 and 8 have
 never been proven. Sequence is in `CUTOVER-PLAN.md` step 0 — verify first, delete on import day.
+
+## D-325 | ⛔ RETRACTING the 186 finding, and the real bug it was hiding
+
+Sharjeel ran the scripts from D-323/D-324 and sent the logs. One line retracts a finding:
+
+```
+11:23:31 PM  Info   OK H — already has 186. Nothing to do.
+```
+
+### The retraction
+
+**D-323 finding #3 was wrong. 186 was already in MASTER's dropdown.** I wrote that it was "a live
+blocker — the cell rejects it", put that in `WHERE-WE-STAND.md` as a fixed risk, and wrote it into
+a script header in bold red.
+
+**How:** the claim came from reading `setup_master_sheet.gs` with `sed -n '55,75p'`. The Visa Type
+array spans lines **54–56** and `'186'` is on line **54**. The read began one line below the
+evidence, returned the tail of the array, and the absence of 186 *in what came back* was treated as
+absence *from the list*. The live sheet was never checked.
+
+🔑 **The tell was there and I wrote it myself.** The script header said *"Verified against the live
+blueprint, not from memory"* — which was true of the claim about M4's router, and I let it sit two
+lines under a claim about the dropdown that was verified against nothing. **Adjacency is not
+evidence.** This is D-311/316/320/321 again: a signal that reads like verification and is not.
+
+What survived: `SMS` genuinely was missing (`8 -> 9 values`), and C-5's `Referral` genuinely was
+already present. The guard in `patchMasterDropdowns()` is what caught the error, by refusing to
+patch what was already there. It stays, as a no-op.
+
+### The real bug, found while cross-checking properly
+
+Nothing anywhere compared the three lists that have to agree:
+
+| | |
+|---|---|
+| M4's router accepts | **14** visa types |
+| CHECKLIST MAP resolves | **13** |
+| checklist files on disk | **23** |
+
+**`190` was in the router and in the dropdown, and had no CHECKLIST MAP row.** So every 190 client
+was stamped `NO CHECKLIST MAPPED — review` and no checklist was ever filed for them.
+
+`190_SKILLED-NOMINATED.docx` has been on disk since **11 Aug**. It is the checklist we asked
+Robinder for **three separate times** — v1 and v2 both described 491/189/regional under a 190
+heading, he corrected it twice, we filed it and closed A-02 (D-280). Then never connected it.
+
+**The cause is one stale comment.** `setup_m4_checklist_map.gs` line 13:
+
+```js
+// Anything NOT listed here routes to Needs Review — deliberately (D-236: no 190 checklist exists).
+```
+
+True when written. False from 11 Aug. Nobody returned to it, and everything downstream trusted it.
+🔑 **A code comment stating a fact about the outside world is a fact with no expiry date attached.**
+
+**And a passing test was guarding the bug.** `verify_blueprints.py` contained:
+
+```python
+check("visa 190 reaches route A (so the guard stamps it even with no MAP row)", ...)
+```
+
+Green for a week, asserting the broken state as the intended one. A green test is worth exactly what
+it claims, and this one claimed the wrong thing.
+
+### Fixed
+
+- 190 mapped to `190_SKILLED-NOMINATED.docx`, N and Y. 36 → 38 MAP rows.
+- The misleading verifier check replaced by a real **coverage cross-check** (router ⊆ map, every
+  mapped file exists on disk, unused files reported). **76 → 79 checks.**
+- The stale comment replaced with what actually happened.
+- `buildChecklistMap_()` was stacking a new protected range on every run — `sh.clear()` does not
+  remove protections. It now drops its own first.
+- `500_ADDING-DEPENDENT.pdf` is the one file no MAP row points at. Expected — it is a separate
+  document, and it is the one carrying the bank-details quote page raised as A-26.
+
+### What is genuinely true about coverage
+
+MASTER offers 23 visa types; 10 route to `NEEDS REVIEW` because we hold no checklist: **300, 186,
+191, 600, Skills Assessment, EOI, ART, Bridging, Other** (190 now removed from that list). That is
+correct behaviour and it was already disclosed to the client in `YM-DQ-e573`.

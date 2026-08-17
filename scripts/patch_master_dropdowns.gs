@@ -10,16 +10,24 @@
  * ---- WHAT AND WHY -----------------------------------------------------------
  *
  * H `Visa Type` += '186'
- *   🔴 THIS IS A LIVE BLOCKER, not a nicety. Subclass 186 appears in Yale's own
- *   pipeline AND in their own fee master (`VISA AND PF FEE`), but it is in neither
- *   MASTER's dropdown nor M4's router. The dropdowns are built with
- *   setAllowInvalid(FALSE), so today a consultant cannot type 186 into the sheet at
- *   all — the cell rejects it. A whole visa line has nowhere to be recorded.
+ *   ⛔ RETRACTED 18 Aug (D-325). **186 WAS ALREADY IN THE DROPDOWN.** This header used
+ *   to call it "a live blocker — the cell rejects it". That was wrong, and the run log
+ *   said so: `OK H — already has 186. Nothing to do.`
  *
- *   Adding it does NOT make M4 mis-file anything. 186 is not in route A's 14
- *   supported types, so it falls to route B, which stamps `NEEDS REVIEW` and writes
- *   a Notes line — exactly the right behaviour for a visa we have no checklist for.
- *   Verified against the live blueprint, not from memory.
+ *   How the mistake was made, because it is worth not repeating: the claim came from
+ *   reading setup_master_sheet.gs with `sed -n '55,75p'`. The Visa Type array spans
+ *   lines 54–56 and '186' is on line 54. **The read started one line below the
+ *   evidence**, showed the tail of the array, and the absence of 186 in what came back
+ *   was treated as absence from the list. Nothing was ever checked against the live
+ *   sheet. This function's own guard is what proved it, by refusing to patch.
+ *
+ *   The real coverage gap is bigger and duller: MASTER offers 23 visa types and
+ *   CHECKLIST MAP resolves 13, so 10 route to NEEDS REVIEW — 300, 186, 191, 600,
+ *   Skills Assessment, EOI, ART, Bridging, Other, and (until D-325) 190. That is
+ *   correct behaviour, not a bug: we hold no checklist for any of them.
+ *
+ *   Left in place deliberately. It is a no-op now and its guard is the reason the
+ *   error surfaced at all.
  *
  * U `Source` += 'SMS'
  *   ROADMAP C-5 says this dropdown needs 'Referral' and 'SMS'. **'Referral' is

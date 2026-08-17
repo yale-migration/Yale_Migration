@@ -123,11 +123,20 @@ No third scenario, no paid plan, draft still lands in `visa.lodgement@`.
 proved on paper over 1,008 row shapes and the module identifiers are the same ones M4b already runs,
 but route C has not executed once. **It gets its first real run in the pilot, not before.**
 
-**3. ~~Subclass `186` is a coverage gap.~~ ✅ FIXED 17 Aug (D-323) — and it was worse than recorded.**
-MASTER's dropdowns are `setAllowInvalid(FALSE)`, so 186 was not just unsupported by M4 — **the cell
-rejected it.** A visa line in their own pipeline and their own fee master had nowhere to be typed.
-`patchMasterDropdowns()` adds it in place. It still routes to `NEEDS REVIEW` in M4, which is correct:
-we hold no 186 checklist.
+**3. ⛔ ~~Subclass `186` is a coverage gap.~~ THE 186 FINDING WAS WRONG — RETRACTED (D-325).**
+186 was already in the dropdown. The run log said `OK H — already has 186. Nothing to do.` The claim
+came from a `sed` read that started **one line below** the array element it was looking for. Nothing
+was ever checked against the live sheet.
+
+✅ **The real gap, found by cross-checking properly: `190` had no CHECKLIST MAP row.** It was in the
+router and in the dropdown, so every 190 client was stamped `NO CHECKLIST MAPPED — review` and the
+checklist — **the one we asked Robinder for three times** (A-02, D-280) — was never filed. Cause: a
+comment reading *"no 190 checklist exists"* that was true when written and false from 11 Aug. Now
+mapped, and `verify_blueprints.py` has a permanent router-vs-map-vs-disk cross-check (**79 checks**).
+
+🔑 **Genuinely true about coverage:** MASTER offers 23 visa types, CHECKLIST MAP resolves 14.
+The other 10 — `300 · 186 · 191 · 600 · Skills Assessment · EOI · ART · Bridging · Other` — route to
+`NEEDS REVIEW`, which is correct, and was already disclosed to the client in `YM-DQ-e573`.
 
 ---
 
@@ -155,7 +164,7 @@ a visa type. We recommended it once without opening it (D-315).
 | Command | What it does |
 |---|---|
 | `python3 scripts/repo_hygiene.py` | 🔴 **before every commit.** Secrets, client PII, tracked spreadsheets, remote warning (D-317) |
-| `python3 scripts/verify_blueprints.py` | **76 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
+| `python3 scripts/verify_blueprints.py` | **79 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |

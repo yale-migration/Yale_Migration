@@ -16,6 +16,7 @@ matter here are the ones a successful run cannot make:
 """
 
 import itertools
+import re
 import json
 import os
 import sys
@@ -215,8 +216,13 @@ check(f"no visa matches BOTH routes ({n} combinations)", not both,
 check(f"no visa matches NEITHER route ({n} combinations)", not neither,
       f"{len(neither)} orphaned e.g. {neither[0] if neither else ''}")
 
-check("visa 190 reaches route A (so the guard stamps it even with no MAP row)",
+check("visa 190 reaches route A",
       ev_filter(guard["filter"], {"{{1.`7`}}": "190", "{{1.`23`}}": "", "{{1.`6`}}": ""}))
+# ⛔ This check USED to read "...so the guard stamps it even with no MAP row" and passed
+# happily for a week. It asserted the bug as the expected behaviour: 190 had no CHECKLIST
+# MAP row, so every 190 client got 'NO CHECKLIST MAPPED — review' and the checklist we
+# chased Robinder for three times (D-280) was never filed. A green test is only as good
+# as what it claims. The real check is now the cross-check block below (D-325).
 check("visa 600 (Tourist) falls to NEEDS REVIEW, not into a loop",
       ev_filter(routeB[0]["filter"], {"{{1.`7`}}": "600", "{{1.`23`}}": "", "{{1.`6`}}": ""}))
 
@@ -418,6 +424,52 @@ else:
           body[:80])
     check("chase body degrades gracefully when Docs Outstanding is empty",
           "emptystring" in draft["mapper"]["html"])
+
+# ============================================ checklist coverage cross-check (D-325)
+# Three lists have to agree and NOTHING was comparing them:
+#   1. the visa types M4's router accepts
+#   2. the visa types CHECKLIST MAP can resolve to a filename
+#   3. the checklist files actually on disk
+# A visa in (1) but not (2) is stamped "NO CHECKLIST MAPPED — review" forever. A file in
+# (3) that no row in (2) points at is a document we chased the client for and never used.
+# Both failures are silent: M4 reports success either way.
+print("\n=== checklist coverage — router vs CHECKLIST MAP vs the files on disk ===")
+
+CHECKLIST_DIR = os.path.join(os.path.dirname(SCEN), "docs", "05-canonical-checklists")
+MAP_GS = os.path.join(os.path.dirname(SCEN), "scripts", "setup_m4_checklist_map.gs")
+
+if not (os.path.isdir(CHECKLIST_DIR) and os.path.exists(MAP_GS)):
+    print("  SKIP - checklist dir or map script not found")
+else:
+    _src = open(MAP_GS).read()
+    _blk = _src[_src.index("var MAP_ROWS = ["):_src.index("\n];", _src.index("var MAP_ROWS = ["))]
+    _rows = re.findall(r"\['([^']*)','([^']*)','([^']*)','([^']*)'\]", _blk)
+    check("CHECKLIST MAP parses to rows", len(_rows) > 0, f"{len(_rows)} rows")
+
+    _map_visas = {r[0] for r in _rows}
+    _map_files = {r[3] for r in _rows}
+    _files = {f for f in os.listdir(CHECKLIST_DIR)
+              if not f.startswith("REF_") and f not in ("MANIFEST.json", "README.md")}
+
+    _guard = m4v4["flow"][1]["routes"][0]["flow"][0] if os.path.exists(_v4) \
+             else m4["flow"][1]["routes"][0]["flow"][0]
+    _router = {c["b"] for g in _guard["filter"]["conditions"]
+               for c in g if c.get("a") == "{{1.`7`}}"}
+
+    _unmapped = sorted(_router - _map_visas)
+    check("every visa the router accepts has a CHECKLIST MAP row",
+          not _unmapped, f"unmapped: {_unmapped} -> these get 'NO CHECKLIST MAPPED' forever")
+
+    _missing = sorted(f for f in (_map_files - _files) if f)
+    check("every file CHECKLIST MAP points at exists on disk",
+          not _missing, f"missing: {_missing}")
+
+    # Advisory, not a hard failure: some files are legitimately reference-only.
+    _unused = sorted(_files - _map_files)
+    if _unused:
+        print(f"  NOTE  {len(_unused)} checklist file(s) no MAP row points at: {_unused}")
+        print("        500_ADDING-DEPENDENT.pdf is expected here - it is a separate document")
+        print("        (and carries the bank-details quote page raised as A-26).")
 
 # ---------------------------------------------------- connections must not drift
 print("\n=== connections ===")

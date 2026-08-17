@@ -314,4 +314,16 @@ against columns blank on every row, so they render identically whether they work
 (D-292). `seedDemoWorkflowColumns()` makes them provable. **Demo rows deliberately NOT deleted yet.**
 M3 and M4 remain **OFF**. Ops **481/1000**.
 
+2026-08-18 | internal (no client contact) | **Sharjeel ran everything; one log line retracted a
+finding of mine (D-325).** `OK H — already has 186. Nothing to do.` — **the 186 "live blocker" from
+D-323 was wrong**, it was already in the dropdown. My read of the source started one line below the
+evidence and I never checked the live sheet. Cross-checking properly then found the real bug:
+**`190` had no CHECKLIST MAP row**, so every 190 client was stamped `NO CHECKLIST MAPPED — review`
+and the checklist **we asked Robinder for three times** (A-02, D-280) was never filed. Cause: a
+comment saying "no 190 checklist exists", true when written, false since 11 Aug — and a *passing*
+verifier check that asserted the broken behaviour as intended. 190 now mapped; verifier **76 → 79**
+with a permanent router-vs-map-vs-disk cross-check. Dropdowns confirmed 6/6, dashboard rebuilt to
+9 views, dormant highlight replaced **2** stacked duplicates (confirming that D-323 finding).
+Demo rows still in place deliberately. M3 and M4 **OFF**. Ops **481/1000**.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
