@@ -25,7 +25,7 @@ applied to the live scenario with route C drafting the document-chase email into
 | M4b | Checklist email draft | ✅ **BUILT 16 Aug — applied to M4, verified live** | D-321 · **OFF** · draft only, never sends |
 | M5a | Dormancy detection | ✅ running daily · **import baseline added 16 Aug** | **Apps Script, not Make.** Zero ops. 24/24 in `test_m5_dormancy.js` |
 | M5b | Chase email draft | ✅ **BUILT + APPLIED 16 Aug — M4 v4 route C** | D-322 · **OFF** · draft only. Partition proved over **1,008 row shapes** |
-| M6 | Enquiry capture | 🟠 spec'd, unbuilt | cadence 7 + 30 days (D-307) |
+| M6 | Enquiry follow-up | ✅ **BUILT 18 Aug (D-328)** — Apps Script, zero ops, 22/22 | SOP-CI-001 10D verbatim. Baseline built in **before** the 621-row flood could happen |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
 | M8 | Follow-up engine | ⬜ not started | nurtures leads over ENQUIRIES. Not M5 |
 | M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
@@ -86,7 +86,8 @@ prompt** (D-320) — that is how the check got defeated.
 | **2** | **C-2** — secure upload link generator. ⚠️ **Decide first:** a Graph share link on the client's whole folder exposes the checklist and everything else in it, so it needs its own `Upload` subfolder. Also depends on §5 risk 1 — do not build a link generator onto a personal OneDrive account | 2 | 🟠 **blocked on the OneDrive handover** |
 | **3** | **C-5 capture path** — Referral and SMS need somewhere to come *from*, not just a dropdown value | 1 | 🟢 |
 | ~~—~~ | ✅ **`DATA SHEET` → ENQUIRIES — BUILT 18 Aug (D-327).** `build_enquiries_import.py`, **621 rows** ready. Found **47% of their enquiry dates day/month transposed by Excel's US locale** — 55 impossible future dates → 0 after repair. `Status` and `Channel` left blank on purpose: the vocabulary is real, the source field does not exist | — | 🔴 needs the client to confirm Channel, then `--write` + paste |
-| **4** | **M6 enquiry capture** — now unblocked: ENQUIRIES has a shape, a source and a cadence (7/30, D-307) | 3 | 🟢 |
+| ~~—~~ | ✅ **M6 — BUILT 18 Aug (D-328).** 7/30 cadence, historical baseline, never writes Status | — | 22/22 |
+| **4** | **M8 follow-up engine** — nurture over ENQUIRIES. M6 schedules; M8 is what actually goes out | 3 | 🟢 |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
 
 ### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
@@ -177,6 +178,7 @@ a visa type. We recommended it once without opening it (D-315).
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
 | `previewDemoRows()` · `seedDemoWorkflowColumns()` | dry-run the teardown · fill Z–AC on demo rows so dashboard views 7/8 can be **seen working** (D-324) |
+| `node scripts/test_m6_enquiries.js` | **22 checks.** Runs the real M6 `.gs` under a frozen clock. Proves the 621-row flood is prevented |
 | `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 

@@ -4671,3 +4671,58 @@ into the next time that script is run.**
 
 ⛔ The CSV is **not written by default** and **must never be committed** — 621 real people, names and
 phone numbers. `--write` puts it in `../client-data/`, outside the repo.
+
+## D-328 | M6 enquiry follow-up built — and the baseline lesson applied BEFORE it bit
+
+`scripts/m6_enquiry_followup.gs` implements SOP-CI-001 step 10D verbatim: *"Follow up within 7 days
+and again after 30 days unless the client requests no further contact."* 22/22 in
+`scripts/test_m6_enquiries.js`, which runs the shipped `.gs` under a frozen clock.
+
+**Apps Script, not Make — a decision, not a convenience.** Free caps ACTIVE scenarios at 2 and
+M3 + M4 are those two (D-322). Building M6 in Make forces a paid-plan conversation with a client
+whose first project has not gone live. Zero operations, same job.
+
+### The flood was designed out, not discovered
+
+The 621 rows from D-327 are dated from 26 June. Every one is already past its 30-day window, so a
+naive first run writes *"no outcome recorded"* against **all 621 on day one** — a wall of red on the
+client's own sheet, on the morning we are trying to show them something that works.
+
+That is the same failure `IMPORT_BASELINE` exists to prevent in M5a. This time it went in **before
+the first run rather than after** — the first defect on this project caught by remembering a
+previous one instead of by tripping over it. The test proves both halves: **621 flagged without a
+baseline, 0 with one**, recorded honestly as *historical, imported with no outcome recorded* rather
+than as somebody's failure to act inside a system that did not exist.
+
+### Two deliberate refusals
+
+**It never writes `Status`.** Status is the consultant's judgement and the vocabulary is theirs
+(10B). A test asserts the column is untouched on every row — the same line D-327 drew when it
+refused to map `call back` onto `Pending Decision`.
+
+**It offers no third date.** SOP-CI-001 stops at 30 days. Past that the script says *"set a Status"*
+and clears the due date, because what is needed then is a decision, not another chase we invented.
+
+### Reuse over duplication, guarded
+
+M6 reuses `startOfDay_` / `parseBaseline_` / `addDays_` / `fmt_` / `toDate_` / `contains_` from
+`m5_dormant_detector.gs` — same project, so they are in scope. Copying them would mean two
+implementations of the strict date parser drifting apart, and **the D-326 collision gate cannot
+catch drift between two functions with different names**. Instead `m6Run_()` checks
+`typeof startOfDay_ === 'function'` and aborts with a plain message if that file is ever removed.
+Every M6 global carries an `M6_` prefix so nothing collides.
+
+`m6Strip_()` removes only its own `M6:` line and leaves whatever a consultant typed — tested over
+six consecutive runs. That is M5a's `stripDormant_()` lesson applied rather than relearned.
+
+### Channel: a judgement, made and labelled
+
+Instructed not to block on the open question, `build_enquiries_import.py` now defaults `Channel` to
+**`Phone`**. FOR: the source column is titled `Phone Number`, 654 of 676 rows carry one, the remarks
+are full of *call back* (22). AGAINST: many numbers are +91 India, where WhatsApp dominates — it is
+genuinely a mix and the file does not say.
+
+⛔ **Reversible in one step and that is the point.** Every imported row carries
+`Imported from DATA SHEET row N on <date>` in Notes, so the batch filters in one click; or re-run
+with `--channel WhatsApp`. The report prints it as an ASSUMPTION every time.
+🔑 A default that nobody is told about becomes a fact in six months. This one announces itself.

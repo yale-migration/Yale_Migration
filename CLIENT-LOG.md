@@ -347,4 +347,12 @@ to 0 after the repair. Untouched, SOP-CI-001's 7/30-day cadence would have run a
 by up to five months on nearly half the lead list. `Status` and `Channel` left blank rather than
 guessed. **One question for the team: what channel is the DATA SHEET log?** M3/M4 still OFF.
 
+2026-08-18 | internal (no client contact) | **M6 enquiry follow-up BUILT (D-328)** — SOP-CI-001
+10D's 7-then-30 cadence, Apps Script so no paid-plan conversation is forced, 22/22 tests. The
+621-row flood was designed out **before** the first run rather than discovered after: without a
+baseline every imported enquiry flags as lapsed on day one. It never writes Status — that is the
+consultant's judgement. `Channel` defaulted to `Phone` on instruction, clearly labelled an
+assumption and reversible in one filter. ⏳ Rey (Reyward Jake Gamol) asked for a call tomorrow —
+replying to offer written answers first and ask what it is about, so a call is short if still needed.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
