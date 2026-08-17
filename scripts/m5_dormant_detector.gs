@@ -166,19 +166,62 @@ function updateFollowUps() {
       'Set IMPORT_BASELINE on import day or the imported files all flag on day 3.');
 }
 
-/** Highlights every overdue row orange. Run once — the formatting then maintains itself. */
+/**
+ * Highlights every overdue row orange. Safe to run repeatedly.
+ *
+ * 🔴 FIXED 17 Aug (D-323) — TWO defects, both of which hid work from the one screen
+ * the consultants actually use.
+ *
+ * 1. `$N2=""` DISAGREED WITH THE REST OF THE SYSTEM ABOUT WHAT "OPEN" MEANS.
+ *    Three definitions were live at once:
+ *      · this rule        — open means Outcome is BLANK
+ *      · the detector     — open means Outcome is not Granted/Refused/Withdrawn
+ *      · the dashboard    — open means Outcome is blank OR 'Pending'
+ *    'Pending' is a real value in column N's dropdown and real rows carry it. Such a
+ *    row would go dormant, get a chase email drafted by M4 route C and appear in the
+ *    dashboard's "Going quiet" list — while looking completely normal in MASTER.
+ *    Now it matches the detector exactly, which is the thing that sets column S.
+ *
+ * 2. It pushed a NEW rule every run. Three runs, three identical rules stacked on the
+ *    same range. We now strip our own rule first and re-add exactly one.
+ */
+var DORMANT_BG = '#FFE0B2';
+// Same test as CLOSED_OUTCOMES above. Keep the two in step — if one drifts, the sheet
+// and the automation disagree again and the sheet is the one people trust.
+var DORMANT_RULE =
+  '=AND($S2<>"", $S2<TODAY(), $N2<>"Granted", $N2<>"Refused", $N2<>"Withdrawn")';
+
 function addDormantHighlight() {
   var sh = SpreadsheetApp.getActive().getSheetByName('MASTER');
-  var range = sh.getRange('A2:Y1000');
-  var rule = SpreadsheetApp.newConditionalFormatRule()
-    .whenFormulaSatisfied('=AND($S2<>"", $S2<TODAY(), $N2="")')
-    .setBackground('#FFE0B2')
+  if (!sh) { Logger.log('ERROR: MASTER tab not found.'); return; }
+
+  // A2:AE1000, not A2:Y1000 — MASTER runs to AE now, and a highlight that stops at Y
+  // leaves the five workflow columns unshaded, so a dormant row appears to end
+  // half-way across the sheet.
+  var range = sh.getRange('A2:AE1000');
+
+  // Identify our own rule by its formula, not by colour — someone else's orange rule
+  // must survive, and our own must not be duplicated.
+  var all = sh.getConditionalFormatRules();
+  var kept = all.filter(function (r) {
+    var cond = r.getBooleanCondition();
+    if (!cond) return true;
+    var args = cond.getCriteriaValues() || [];
+    return !(args.length && String(args[0]).indexOf('$S2<TODAY()') > -1);
+  });
+  var removed = all.length - kept.length;
+
+  kept.push(SpreadsheetApp.newConditionalFormatRule()
+    .whenFormulaSatisfied(DORMANT_RULE)
+    .setBackground(DORMANT_BG)
     .setRanges([range])
-    .build();
-  var rules = sh.getConditionalFormatRules();
-  rules.push(rule);
-  sh.setConditionalFormatRules(rules);
-  Logger.log('Dormant highlight added — overdue rows turn orange.');
+    .build());
+  sh.setConditionalFormatRules(kept);
+  SpreadsheetApp.flush();
+
+  Logger.log('Dormant highlight set on A2:AE1000' +
+             (removed ? '  (replaced ' + removed + ' earlier copy/copies)' : ''));
+  Logger.log('Open now means: not Granted, not Refused, not Withdrawn — same as the detector.');
 }
 
 function contains_(list, v) {

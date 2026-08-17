@@ -4246,3 +4246,95 @@ M4b already runs and the logic is proved on paper — but route C has not execut
 run is the pilot.
 
 **Throwaway scenarios `6959410` and `6967000` deleted.**
+
+## D-323 | Ownership audit, 17 Aug — four defects the module-by-module work never would have found
+
+Everything to date was audited **within a module**. This pass audited the system **between**
+modules — the seams where one piece assumes something about another. All four findings live there.
+
+### 1 · 🔴 The demo rows would have polluted the client's real OneDrive
+
+MASTER holds **14 invented people** from `seed_demo_rows.gs`, all with `@example.com` addresses.
+Every downstream piece is now built and armed. Switch a scenario on with those rows present and:
+M3 creates **14 fake client folders in Yale's live OneDrive**, M4a files real checklists into them,
+M4b drafts a checklist email to each fake address, and route C later drafts a chase to the same.
+**Nothing errors. Every step reports success.** The client opens the folder tree they showed us as
+their system of record and finds a dozen people who do not exist.
+
+The instruction to run `removeDemoRows()` first was written down in **five** places — `STATUS.md`,
+`DASHBOARD-TRACKER.md`, `CALL-QUESTIONS-robinder.md`, and twice in `DECISIONS.md`. It was in
+**neither** of the two documents anyone actually opens at go-live: `CUTOVER-PLAN.md`, which
+`seed_demo_rows.gs` names by filename, and `WHERE-WE-STAND.md`, which `CLAUDE.md` calls the one file
+to read after a context reset.
+
+🔑 **Written down five times and still missable is not a documentation problem.** Now
+`scripts/preflight_go_live.gs` — read-only, prints **GO / NO-GO**, names the offending rows, and
+also reports what M3/M4 would do on their first run and roughly what it would cost in operations.
+Added as **step 0** of the cutover plan and as a four-point **GO-LIVE GATE** in `WHERE-WE-STAND.md`.
+⛔ It matches on the **email**, never the `DEMO-` code — `master_codes.gs` overwrites column A on a
+5-minute timer, which is exactly how `removeDemoRows()` silently stopped working once before (D-296).
+
+### 2 · Three live definitions of "open", and the narrowest one was on the screen people use
+
+| Where | Test |
+|---|---|
+| `addDormantHighlight()` on MASTER | `$N2=""` — blank only |
+| `m5_dormant_detector.gs` logic | not `Granted` / `Refused` / `Withdrawn` |
+| the dashboard | `N is null or N = 'Pending'` |
+
+`Pending` is a real value in column N's dropdown. A Pending row would go dormant, be flagged `CHASE`,
+have a chase email drafted, and show in the dashboard's "Going quiet" list — while looking **entirely
+normal in MASTER**. The one surface a consultant works on all day was the one that hid it. The
+highlight now uses the detector's test verbatim. (Dashboard vs detector are equivalent in practice:
+N's dropdown is `setAllowInvalid(false)` over exactly those four values, so blank-or-Pending and
+not-closed are the same set. Left alone deliberately.)
+
+`addDormantHighlight()` also pushed a **new rule on every run** — three runs, three stacked
+duplicates. It now strips its own rule (identified by formula, not by colour, so somebody else's
+orange rule survives) and re-adds exactly one.
+
+### 3 · Subclass 186 could not be typed into the sheet at all
+
+Known as a "coverage gap" since D-315, but the severity was wrong. MASTER's dropdowns are built with
+`setAllowInvalid(FALSE)`, so 186 was not merely unsupported by M4 — **the cell rejected it.** A visa
+line that is in Yale's own pipeline *and* their own fee master had nowhere to be recorded.
+
+`scripts/patch_master_dropdowns.gs` adds it **in place**. ⛔ Not by re-running
+`setup_master_sheet.gs`, which would rebuild every header, width, date format and dropdown on a tab
+that now carries structure that script has never heard of (Z–AE, the AC dropdown, M4's numeric index
+contract). It reads the current list off the sheet and appends, preserving the existing
+`allowInvalid` setting rather than guessing, and refuses to patch if a header has moved.
+
+Adding 186 does not make M4 mis-file: it is not one of route A's 14 supported types, so it falls to
+route B and is stamped `NEEDS REVIEW` with a Notes line — the correct outcome for a visa we hold no
+checklist for. **Verified against the live blueprint, not from memory.**
+
+### 4 · ROADMAP C-5 was wrong about its own requirement
+
+C-5 says the `Source` dropdown needs `Referral` **and** `SMS`. `Referral` has been there since the
+sheet was built (`setup_master_sheet.gs`, column U). Only `SMS` was missing. Checked before writing
+the patch rather than after. C-5's remaining work is the capture path, not the column.
+
+### Also done in the same pass
+
+**Dashboard 6 views → 9**, which is what finally makes C-3 and C-4 real rather than just columns:
+`7 · DOCUMENTS OUTSTANDING` (reads AA — the same field the chase email reads, so an empty view is
+now the visible symptom of every chase falling back to generic wording), `8 · BLOCKED ON A THIRD
+PARTY` (AB/AC, excluding `Received` and `Not required`), and `9 · VISA EXPIRY — soonest first`
+(P, future dates only, shaded inside 60 days).
+
+`LAST_COL` widened `Y` → `AE`. Safe, and checked rather than assumed: every query addresses columns
+by letter over a range that still **starts at A**, so widening the end moves nothing; the KPI tiles
+use their own explicit ranges and never touch `LAST_COL`; and the visa-mix query's `Col1/Col2/Col3`
+are positions inside a constructed `{H,N,A}` array, unrelated to it.
+
+`addDormantHighlight()` range `A2:Y1000` → `A2:AE1000`, so a dormant row no longer appears to stop
+half-way across the sheet.
+
+### The shape of all four
+
+Every one sits where two components meet and each assumed the other's contract. That is the same
+family as D-311/316/320/321 — a signal that looks like evidence and is generated by the thing it
+checks — but arrived at from the opposite direction: **not a false pass, but nobody looking at all,
+because each module passed its own tests.** Module-level verification cannot find these. Only
+walking the seams can.

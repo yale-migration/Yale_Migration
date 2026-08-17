@@ -6,7 +6,8 @@
 
 # 1 · THE ONE-LINE POSITION
 
-**M5b is BUILT AND LIVE.** MASTER carries all 31 columns (Z–AD 22/22, AE 11/11), and M4 v4 is
+**M5b is BUILT AND LIVE, and a system-level audit (D-323) found four defects at the seams between
+modules — including one that would have put 14 fake client folders in Yale's real OneDrive.** MASTER carries all 31 columns (Z–AD 22/22, AE 11/11), and M4 v4 is
 applied to the live scenario with route C drafting the document-chase email into `visa.lodgement@`.
 **Nothing on our side is blocked.** The only external dependency left is the team's reply
 (`TEAM`/`CONSULTANT`/`EMAIL`), which gates the pilot import and nothing else.
@@ -76,13 +77,31 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **M4b — DONE 16 Aug.** Applied to M4 route A, re-fetched and confirmed. `verify_blueprints.py` **43/43** | — | ⚠️ untested against a real send — no client has an email yet |
 | ~~—~~ | ✅ **Dormancy on imported rows — DONE 16 Aug (D-322).** `IMPORT_BASELINE` + 14-day grace. Found two real defects doing it: the rule fires **day 4 not day 3**, and the baseline parsed as **UTC midnight** | — | 24/24 |
 | ~~—~~ | ✅ **M4 v4 / M5b — DONE 16 Aug.** Trigger widened to two OR-groups + `A1:AE1`, route C added, routes A+B closed against chase rows. Applied live, re-fetched, matches the file | — | verifier **31 → 76 checks** |
-| **1** | **C-1 … C-5** — the five contracted items, now tracked in `ROADMAP.md` | 9 | 🟢 **UNBLOCKED — Z–AE are live as of 16 Aug** |
-| **2** | Visa-expiry deadline view | 1 | 🟢 source exists |
-| **3** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
+| ~~—~~ | ✅ **C-3 + C-4 — DONE 17 Aug.** Dashboard **6 → 9 views**: Documents Outstanding · Blocked On A Third Party · Visa Expiry. The columns existed; these make them visible | — | 🔴 **needs `buildDashboard()` re-run** |
+| ~~—~~ | ✅ **Visa-expiry deadline view — DONE 17 Aug** (view 9, shaded inside 60 days) | — | same re-run |
+| ~~—~~ | ✅ **C-5 column half — DONE 17 Aug.** `Referral` was already there; only `SMS` was missing | — | 🔴 needs `patchMasterDropdowns()` |
+| **1** | **C-1** — build to **their** `Client Enquiry Form`, do not design a new one (D-314) | 2 | 🟢 |
+| **2** | **C-2** — secure upload link generator. ⚠️ **Decide first:** a Graph share link on the client's whole folder exposes the checklist and everything else in it, so it needs its own `Upload` subfolder. Also depends on §5 risk 1 — do not build a link generator onto a personal OneDrive account | 2 | 🟠 **blocked on the OneDrive handover** |
+| **3** | **C-5 capture path** — Referral and SMS need somewhere to come *from*, not just a dropdown value | 1 | 🟢 |
+| **4** | `DATA SHEET` → ENQUIRIES using **their** words: `Not Proceeding` · `Pending Decision` · `Lost Lead` | 2 | 🟢 (D-307) |
 | — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
 
-⛔ **Do not switch M3/M4 on** until real clients are in and Robinder gives a date.
-⛔ **Set `Weekdays 09:00/13:00/17:00` in the same action** — both are still on 15-min.
+### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
+
+| | Check | How |
+|---|---|---|
+| 1 | 🔴 **The 14 demo rows are OUT of MASTER** | `removeDemoRows()`, then **`preflightGoLive()`** must print **GO** |
+| 2 | Scheduling is **Weekdays 09:00/13:00/17:00** | both scenarios are still on the 15-minute default |
+| 3 | OneDrive is on a **Yale** account | connection 9279810 is still `sharry00010@gmail.com` — §5 risk 1 |
+| 4 | **Robinder has given a date** | not implied by him saying yes to something else |
+
+🔴 **On the demo rows.** They are 14 invented people with `@example.com` addresses. M3 would create
+folders for them **in the client's real OneDrive**, M4 would file checklists into those folders, and
+M4b + route C would draft emails to the fake addresses. Nothing errors — it all reports success.
+⛔ The durable marker is the **email**, not the `DEMO-` code: `master_codes.gs` overwrites column A on
+a 5-minute timer, which is how `removeDemoRows()` silently stopped working once before (D-296).
+This instruction existed in four other files and in **neither** this one nor `CUTOVER-PLAN.md`.
+Now it is `scripts/preflight_go_live.gs`, a check rather than a sentence (D-323).
 
 ---
 
@@ -104,8 +123,11 @@ No third scenario, no paid plan, draft still lands in `visa.lodgement@`.
 proved on paper over 1,008 row shapes and the module identifiers are the same ones M4b already runs,
 but route C has not executed once. **It gets its first real run in the pilot, not before.**
 
-**3. Subclass `186` is a coverage gap.** In their live pipeline *and* their own fee master, but in
-neither MASTER's dropdown nor M4's router.
+**3. ~~Subclass `186` is a coverage gap.~~ ✅ FIXED 17 Aug (D-323) — and it was worse than recorded.**
+MASTER's dropdowns are `setAllowInvalid(FALSE)`, so 186 was not just unsupported by M4 — **the cell
+rejected it.** A visa line in their own pipeline and their own fee master had nowhere to be typed.
+`patchMasterDropdowns()` adds it in place. It still routes to `NEEDS REVIEW` in M4, which is correct:
+we hold no 186 checklist.
 
 ---
 
@@ -137,6 +159,7 @@ a visa type. We recommended it once without opening it (D-315).
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
+| **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
 | `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 

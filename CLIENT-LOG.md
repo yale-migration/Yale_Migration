@@ -289,4 +289,16 @@ all 17 OR-groups across routes A and B. Verifier **43 → 76 checks**; the 3-rou
 enumerated over **1,008 row shapes**, not argued. Throwaway scenarios 6959410 and 6967000 deleted.
 **Ops still 481/1000 — the whole day cost zero.** M3 and M4 both remain **OFF**.
 
+2026-08-17 | internal (no client contact) | **System-level audit — four defects at the seams (D-323).**
+Worst: the **14 demo rows are still in MASTER**, and with M3/M4/M4b/route C all built, switching a
+scenario on would have created **14 fake client folders in Yale's live OneDrive**, filed checklists
+into them and drafted emails to `@example.com` — reporting success at every step. The instruction to
+clear them existed in five documents and in neither of the two anyone opens at go-live. Now
+`scripts/preflight_go_live.gs`, a GO/NO-GO check. Also: three disagreeing definitions of "open" left
+`Pending` rows invisible on MASTER while the dashboard and the chase engine both treated them as
+dormant; **subclass 186 could not physically be typed into the sheet** (`setAllowInvalid(false)`),
+not merely unsupported; and ROADMAP C-5 was wrong — `Referral` was already in the dropdown, only
+`SMS` was missing. **Dashboard 6 → 9 views**, which is what makes C-3 and C-4 real.
+Nothing sent to the client. M3 and M4 remain **OFF**. Ops still **481/1000**.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

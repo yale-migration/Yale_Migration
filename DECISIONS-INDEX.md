@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 408K /     4248 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 412K /     4340 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 22:00
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-17 15:27
 
 | # | Decision |
 |---|---|
@@ -319,3 +319,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-16 22:0
 | **D-320** | 🔴 The staleness check I built verified nothing — because I put the answer in the prompt |
 | **D-321** | 🔧 M4b groundwork — every identifier verified, and a validator that lies |
 | **D-322** | M5b routes through M4, not a third scenario — and needs an exact-match flag column |
+| **D-323** | Ownership audit, 17 Aug — four defects the module-by-module work never would have found |

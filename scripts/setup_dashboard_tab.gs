@@ -19,13 +19,18 @@
 
 var DATA_TAB  = 'MASTER';      // the tab holding client rows — headers in row 1, data from row 2
 var DASH_TAB  = 'DASHBOARD';
-// Deliberately 'Y', NOT the real last column. After add_master_columns_z_to_ad.gs
-// MASTER runs A..AD (30 columns), but Z..AD are workflow fields no dashboard view
-// reads. Every QUERY here is A2:Y, so the new columns simply fall outside — checked
-// 15 Aug, no view changed. Widen this only when a view actually needs Z..AD, and
-// re-read the Col1/Col2/Col3 references first: in the visa-mix query those are
-// positions inside a constructed {H,N,A} array, not offsets into this range.
-var LAST_COL  = 'Y';
+// Widened Y -> AE on 17 Aug so views 7 and 8 can read the C-3/C-4 columns.
+//
+// SAFE, and here is why, because it looks riskier than it is: every QUERY below
+// addresses columns by LETTER (J, K, M, R...) and the range still STARTS at A, so
+// A is A and Z is Z no matter where the range ends. Widening the end moves nothing.
+// Verified against the two places that could have broken:
+//   · the KPI tiles use their own explicit ranges (A2:A, N2:N, V2:V, Y2:Y) and never
+//     touch LAST_COL at all;
+//   · the visa-mix query uses Col1/Col2/Col3, which are positions inside a CONSTRUCTED
+//     {H,N,A} array passed as customRange — also nothing to do with LAST_COL.
+// MASTER now runs A..AE (31 columns). Keep this in step with the real last column.
+var LAST_COL  = 'AE';
 
 // Colours
 var NAVY   = '#1b3a5c';
@@ -108,13 +113,49 @@ function buildDashboard() {
       " label Col1 'Visa type', count(Col3) 'Open matters'", 17,
       '{' + t('H') + ',' + t('N') + ',' + t('A') + '}');
 
+  // ---- C-4 (ROADMAP) — received / missing status per client -------------------
+  // AA is the same field M5b's chase email reads. If this view is empty, every chase
+  // email falls back to "the outstanding documents for your application" — which is
+  // true but useless. This view is how anyone notices that.
+  r = block_(sh, r, '7 · DOCUMENTS OUTSTANDING',
+      'Open files with something still to come in. This is exactly what the chase email lists.',
+      "select A, C, L, AA where A is not null and " + OPEN +
+      " and AA is not null and AA <> '' order by C asc limit 15" +
+      " label A 'Code', C 'Client', L 'Consultant', AA 'Still waiting on'", 18);
+
+  // ---- C-3 (ROADMAP) — third-party responsible-party tracking -----------------
+  // Their own SOPs name employer / college / RTO / assessing authority as the thing
+  // that actually holds a file up. Until now none of it was tracked anywhere, so a
+  // file blocked on a college looked identical to a file blocked on the client.
+  // 'Received' and 'Not required' are two of the six AC dropdown values; excluding
+  // them leaves precisely the ones somebody still has to chase.
+  r = block_(sh, r, '8 · BLOCKED ON A THIRD PARTY',
+      'Files waiting on someone other than the client — employer, college, RTO, assessing authority.',
+      "select A, C, AB, AC where A is not null and " + OPEN +
+      " and AB is not null and AB <> ''" +
+      " and AC <> 'Received' and AC <> 'Not required' order by C asc limit 15" +
+      " label A 'Code', C 'Client', AB 'Waiting on', AC 'Status'", 18);
+
+  // ---- visa expiry deadlines --------------------------------------------------
+  // P is Visa Expiry. Soonest first, and only dates that have not already passed —
+  // a list headed by expiries from last year is a list nobody reads twice.
+  var expStart = r;
+  r = block_(sh, r, '9 · VISA EXPIRY — soonest first',
+      'Open files with a visa expiry on record. Shaded red inside 60 days.',
+      "select A, C, L, P, M where A is not null and " + OPEN +
+      " and P is not null and P >= now() order by P asc limit 15" +
+      " label A 'Code', C 'Client', L 'Consultant', P 'Visa expires', M 'Stage'" +
+      " format P 'd mmm yyyy'", 18);
+  expiryHighlight_(sh, expStart + 3);
+  sh.getRange(expStart + 3, 4, 15, 1).setNumberFormat('d mmm yyyy');
+
   footer_(sh, r);
 
   sh.setFrozenRows(2);
   ss.setActiveSheet(sh);
   SpreadsheetApp.flush();
 
-  Logger.log('DASHBOARD built. 6 views + 6 headline numbers.');
+  Logger.log('DASHBOARD built. 9 views + 6 headline numbers.');
   Logger.log('It reads ' + DATA_TAB + '!A2:' + LAST_COL + ' live — the numbers grow by themselves as clients are added.');
   Logger.log('Nothing in ' + DATA_TAB + ' was read, written or changed.');
 }
@@ -217,11 +258,25 @@ function quietHighlight_(sh, firstDataRow) {
   sh.setConditionalFormatRules(rules);
 }
 
+/** Shades the visa-expiry list where the expiry is inside 60 days. */
+function expiryHighlight_(sh, firstDataRow) {
+  var target = sh.getRange(firstDataRow, 1, 15, 5);
+  var rule = SpreadsheetApp.newConditionalFormatRule()
+    .whenFormulaSatisfied('=AND($D' + firstDataRow + '<>"",$D' + firstDataRow + '<TODAY()+60)')
+    .setBackground(ALERT).setFontColor(ALERTX)
+    .setRanges([target]).build();
+  var rules = sh.getConditionalFormatRules();
+  rules.push(rule);
+  sh.setConditionalFormatRules(rules);
+}
+
 function footer_(sh, row) {
   sh.getRange(row, 1, 1, 6).merge()
     .setValue('Counts cover open matters only — anything Granted, Refused or Withdrawn is excluded ' +
               'so closed files never inflate the numbers. "Going quiet" uses the Next Follow-up Due ' +
-              'date set each morning by the follow-up script.')
+              'date set each morning by the follow-up script. "Documents outstanding" and "Blocked on ' +
+              'a third party" are typed in by consultants — an empty view means nobody has filled ' +
+              'those columns in yet, not that nothing is outstanding.')
     .setFontSize(8).setFontColor(MUTED).setWrap(true);
   sh.setRowHeight(row, 34);
 }

@@ -31,7 +31,28 @@ Everything below is preparation for that single moment.
 
 ---
 
-## The six steps
+## The steps
+
+### 0 · 🔴 Clear the demo rows — BEFORE anything else
+
+**MASTER holds 14 invented people** seeded by `seed_demo_rows.gs` so the dashboard could be proven
+against data. Every one of them has an `@example.com` address. M3, M4a, M4b and route C are all
+built now, and none of them can tell the difference — switch a scenario on with those rows present
+and Yale's real OneDrive gains a dozen client folders for people who do not exist, each with a
+checklist filed in it and an email drafted to a fake address. Nothing errors. It all reports success.
+
+⛔ **The marker is the EMAIL, not the code** (D-296). `master_codes.gs` runs on a 5-minute timer and
+overwrites anything in column A that is not a valid `YM-2026-#####`, so the `DEMO-` prefix was gone
+within five minutes of seeding and `removeDemoRows()` had silently stopped matching. `@example.com`
+is reserved by RFC 2606 and can never be a real client.
+
+1. Run `removeDemoRows()`
+2. Run **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) and read the log
+3. It must print **GO**. If it prints **NO-GO**, stop — it will name the rows.
+
+`preflightGoLive()` is read-only and also reports what M3/M4 would do on their first run, and the
+rough operation cost of that run. **This step existed only as a sentence in four other documents
+and was in neither this plan nor `WHERE-WE-STAND.md`. It is a check now, not a sentence (D-323).**
 
 ### 1 · Reconcile the schema — BEFORE any data moves
 Read the headers of their live sheet and compare, column by column, against MASTER's 25 (A–Y).
