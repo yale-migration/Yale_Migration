@@ -101,29 +101,209 @@ function seedDemoRows() {
   Logger.log('REMOVE BEFORE THE REAL IMPORT:  Run → removeDemoRows');
 }
 
+/**
+ * Fills the WORKFLOW columns Z..AC on the demo rows only.  (D-324)
+ *
+ * WHY THIS HAD TO EXIST. The demo rows were seeded on 13 Aug, before columns Z..AE
+ * existed. Dashboard views 7 (Documents Outstanding, reads AA) and 8 (Blocked On A
+ * Third Party, reads AB/AC) were built on 17 Aug against columns that are blank on
+ * every row in the sheet.
+ *
+ * 🔴 So both views render "Nothing to show yet" — and so would a view with a broken
+ * QUERY, a wrong column letter, or a typo in a label. **An empty view and a broken
+ * view are indistinguishable** (D-292…D-296). Shipping two views nobody has ever seen
+ * produce a row is shipping two views that have not been tested.
+ *
+ * This makes them testable. It writes ONLY to rows whose email is @example.com, and
+ * ONLY to columns Z..AC, so it can never touch a real client or a column any other
+ * part of the system reads.
+ *
+ * ⛔ AE `Chase Flag` is deliberately NOT seeded. That column is the handshake with M4
+ * route C, and a hand-planted CHASE would cause a real draft the moment M4 is switched
+ * on. The detector owns that column and nothing else may write to it.
+ */
+function seedDemoWorkflowColumns() {
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) { Logger.log('ABORT — could not get the document lock.'); return; }
+
+  try {
+    var found = findDemoRows_();
+    if (!found) return;
+    if (!found.demo.length) {
+      Logger.log('No demo rows found — nothing to seed. (Have they already been removed?)');
+      return;
+    }
+
+    var sh = found.sh;
+    if (String(sh.getRange(1, 26).getValue()).trim() !== 'Docs Received' ||
+        String(sh.getRange(1, 29).getValue()).trim() !== 'Third Party Status') {
+      Logger.log('ABORT — Z..AC are not where they should be. Run add_master_columns_z_to_ad.gs first.');
+      return;
+    }
+
+    // Z Docs Received · AA Docs Outstanding · AB Third Party · AC Third Party Status
+    // Left deliberately mixed: some rows blank, so the views prove they FILTER rather
+    // than just listing everything.
+    var PATTERN = [
+      ['Passport, CoE',            'Health check, OSHC certificate', '',                   ''],
+      ['',                         'Passport bio page',              'Employer',           'Waiting'],
+      ['Passport, IELTS',          '',                               'VETASSESS',          'Requested'],
+      ['',                         '',                               '',                   ''],
+      ['Passport',                 'Skills assessment outcome',      'Engineers Australia','Chased'],
+      ['Form 80, passport',        'Police check',                   '',                   ''],
+      ['',                         'CoE from college',               'Kaplan Business School','Waiting'],
+      ['Passport, photos',         '',                               'Employer',           'Received'],
+      ['',                         'Medical, biometrics',            '',                   ''],
+      ['Passport, marriage cert',  'Form 888 statements',            '',                   ''],
+      ['',                         '',                               'RTO',                'Not required'],
+      ['Passport',                 'Bank statements',                'Employer',           'Escalated'],
+      ['CoE, passport',            '',                               '',                   ''],
+      ['',                         'Nomination approval letter',     'Employer',           'Waiting']
+    ];
+
+    var wrote = 0, failed = [];
+    found.demo.forEach(function (d, i) {
+      var vals = PATTERN[i % PATTERN.length];
+      try {
+        // One row at a time with flush inside the try — AC carries a dropdown and
+        // validation is LAZY, so it throws at flush(), not at setValues() (D-315).
+        sh.getRange(d.row, 26, 1, 4).setValues([vals]);
+        SpreadsheetApp.flush();
+        wrote++;
+      } catch (e) {
+        failed.push('row ' + d.row + ' (' + d.name + ') — ' + e.message);
+      }
+    });
+
+    Logger.log('Seeded Z..AC on ' + wrote + ' of ' + found.demo.length + ' demo row(s).');
+    if (failed.length) {
+      Logger.log('FAILED ' + failed.length + ':');
+      failed.forEach(function (f) { Logger.log('  ' + f); });
+    }
+    Logger.log('');
+    // No predicted row counts here on purpose. The views also filter on OPEN, and
+    // which demo rows are open is decided by the seed data, not by this pattern — so
+    // any number printed here would be a guess dressed up as an expectation, which is
+    // how "five 485s", "28 checklists" and "~403 clients" all got into client-facing
+    // text before being computed and found wrong.
+    Logger.log('Now re-open the DASHBOARD tab and check three things:');
+    Logger.log('  1. view 7 Documents Outstanding shows ROWS, not "Nothing to show yet"');
+    Logger.log('  2. view 8 Blocked On A Third Party shows ROWS');
+    Logger.log('  3. 🔑 view 8 contains NO row whose Status is "Received" or "Not required"');
+    Logger.log('     — that is the filter working, and it is the only assertion here that');
+    Logger.log('       does not depend on how many demo rows happen to be open.');
+    Logger.log('If a view still says "Nothing to show yet", the VIEW is broken, not the data.');
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+
+/**
+ * Shows exactly what removeDemoRows() would delete. Changes NOTHING.
+ * Always run this first — it is the difference between deleting 14 rows and
+ * discovering afterwards that it was 15.
+ */
+function previewDemoRows() {
+  var found = findDemoRows_();
+  if (!found) return;
+  Logger.log('=== rows removeDemoRows() WOULD delete ===');
+  found.demo.forEach(function (d) {
+    Logger.log('  row ' + d.row + '   ' + d.code + '   ' + d.name + '   ' + d.email);
+  });
+  Logger.log('');
+  Logger.log('would delete ' + found.demo.length + ' · would KEEP ' + found.keep + ' row(s) with a name');
+  if (found.keep > 0) {
+    Logger.log('⚠️  There are rows that are NOT demo. Read the list above and be sure.');
+  }
+  Logger.log('Nothing was changed. Run removeDemoRows() when the list is right.');
+}
+
+
 function removeDemoRows() {
+  // 🔴 getDocumentLock(), NOT getScriptLock() — they are DIFFERENT mutexes and taking the
+  // wrong one is the same as taking none (D-324).
+  //
+  // master_codes.gs runs assignMissingCodes() on a 5-MINUTE TIMER and holds a DOCUMENT
+  // lock. It reads whole columns, then writes back BY ROW INDEX:
+  //     var codes = sh.getRange(FIRST_ROW, COL_CODE, n, 1).getValues();   // read
+  //     sh.getRange(FIRST_ROW + i, COL_CODE).setValue(...);               // write by index
+  // Delete a row between that read and that write and index i now points at a DIFFERENT
+  // client. It stamps a client code — and a Date Added — onto the wrong person, silently.
+  // This function used to hold no lock at all and delete row-by-row across 14 API calls,
+  // leaving that window open every single time.
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) {
+    Logger.log('ABORT — could not get the document lock in 30s.');
+    Logger.log('assignMissingCodes() is probably mid-run. Wait a minute and try again.');
+    return;
+  }
+
+  try {
+    var found = findDemoRows_();
+    if (!found) return;
+    if (!found.demo.length) { Logger.log('Nothing to remove — no demo rows found.'); return; }
+
+    var sh = found.sh;
+
+    // Delete CONTIGUOUS BLOCKS bottom-up, not one row at a time. 14 separate deleteRow
+    // calls is 14 round trips; the seeded rows are consecutive, so this is normally one.
+    var nums = found.demo.map(function (d) { return d.row; }).sort(function (a, b) { return a - b; });
+    var blocks = [];
+    for (var i = 0; i < nums.length; i++) {
+      var last = blocks[blocks.length - 1];
+      if (last && nums[i] === last.start + last.count) last.count++;
+      else blocks.push({ start: nums[i], count: 1 });
+    }
+    blocks.reverse().forEach(function (b) { sh.deleteRows(b.start, b.count); });
+    SpreadsheetApp.flush();
+
+    Logger.log(nums.length + ' demo row(s) removed in ' + blocks.length + ' block(s).');
+    Logger.log(found.keep + ' row(s) with a name remain.');
+    Logger.log('');
+    Logger.log('NEXT: resetCodeSequence() in master_codes.gs, so the first real client is');
+    Logger.log('YM-2026-00001 and not YM-2026-000' + (14 + 1) + '. Then preflightGoLive().');
+
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+
+/**
+ * The single place that decides what "a demo row" is. Both preview and delete use it,
+ * so the thing you are shown and the thing that gets deleted can never disagree.
+ *
+ * 🔴 THE MARKER IS THE EMAIL, NOT THE CODE (D-296). master_codes.gs treats ANY value
+ * that is not a valid YM-2026-##### as "uncoded" and overwrites it — so every DEMO-001
+ * was replaced by a real code within five minutes of seeding, and the prefix guard had
+ * silently stopped matching anything. example.com is reserved by RFC 2606 and no script
+ * touches column F, so it survives. The prefix test is kept only as a belt-and-braces
+ * catch for a row seeded in the last five minutes.
+ */
+function findDemoRows_() {
   var sh = SpreadsheetApp.getActive().getSheetByName(SEED_TAB);
-  if (!sh) { Logger.log('ABORTED — no tab named "' + SEED_TAB + '".'); return; }
+  if (!sh) { Logger.log('ABORTED — no tab named "' + SEED_TAB + '".'); return null; }
 
   var last = sh.getLastRow();
-  if (last < 2) { Logger.log('Nothing to remove — sheet is empty.'); return; }
+  if (last < 2) { Logger.log('Sheet has no data rows.'); return null; }
 
-  // 🔴 DO NOT match on the DEMO- code alone. master_codes.gs treats ANY value that is not
-  // a valid YM-2026-##### as "uncoded" and overwrites it — so within 5 minutes of seeding,
-  // every DEMO-001 has already been replaced by a real code. The prefix guard was built on
-  // a wrong reading of that script (D-296).
-  // The durable marker is the EMAIL: example.com is reserved for testing (RFC 2606) and no
-  // script touches column F, so it survives.
   var rows = sh.getRange(2, 1, last - 1, 6).getValues();   // A..F
-  var removed = 0;
-  // bottom-up, so deleting a row never shifts the ones still to check
-  for (var i = rows.length - 1; i >= 0; i--) {
-    var isDemo = String(rows[i][0]).indexOf(DEMO_PREFIX) === 0 ||
-                 String(rows[i][5]).toLowerCase().indexOf('@example.com') > -1;
-    if (isDemo) { sh.deleteRow(i + 2); removed++; }
+  var demo = [], keep = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var code  = String(rows[i][0] || '').trim();
+    var name  = String(rows[i][2] || '').trim();
+    var email = String(rows[i][5] || '').trim();
+    if (!name) continue;                                    // blank row, not a client
+    if (code.indexOf(DEMO_PREFIX) === 0 ||
+        email.toLowerCase().indexOf('@example.com') > -1) {
+      demo.push({ row: i + 2, code: code || '(none)', name: name, email: email || '(none)' });
+    } else {
+      keep++;
+    }
   }
-  SpreadsheetApp.flush();
-  Logger.log(removed + ' demo rows removed. MASTER holds only real clients now.');
+  return { sh: sh, demo: demo, keep: keep };
 }
 
 /**

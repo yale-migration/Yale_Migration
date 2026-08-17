@@ -78,6 +78,7 @@ function assignMissingCodes_() {
     // Write CELL BY CELL, never whole columns. A column-wide setValues() would flatten any formula in
     // A or T into a static value and clobber concurrent human/Make edits between read and write (D-145).
     sh.getRange(FIRST_ROW + i, COL_CODE).setValue(CODE_PREFIX + pad_(next, 5));
+    setHighWater_(next);              // retire the number the moment it is issued
     next++;
     wrote++;
     if (String(dates[i][0]).trim() === '') {
@@ -107,7 +108,28 @@ function auditDuplicateCodes() {
   return dups;
 }
 
-/** Highest existing number + 1 (never reuses a code, even after deletions). */
+var HIGH_WATER_KEY = 'YM_CODE_HIGH_WATER';
+
+/**
+ * Highest number ever ISSUED + 1.
+ *
+ * 🔴 FIXED 17 Aug (D-324). The old comment on this function read "never reuses a code,
+ * even after deletions" — and the code did the exact opposite. It took the maximum of
+ * the codes CURRENTLY IN THE SHEET. Delete the highest-numbered client and the next new
+ * client is handed that same code.
+ *
+ * That is not cosmetic. The client code is quoted TO THE CLIENT: M4b's checklist email
+ * and M4 route C's chase email both say "Your reference for this matter is <code>".
+ * Two different people, same reference, and the sheet cannot tell them apart afterwards
+ * — auditDuplicateCodes() would find nothing, because only one of them still exists.
+ *
+ * A wrong comment is worse than no comment: it is the thing a reviewer trusts instead
+ * of reading the four lines underneath it. Nobody had read them since 2 Aug.
+ *
+ * The fix is a high-water mark in document properties, which survives row deletion.
+ * We take the larger of it and the sheet, so an existing sheet is never regressed and
+ * the property can be lost without issuing a duplicate.
+ */
 function nextNumber_(codes) {
   var max = 0;
   for (var i = 0; i < codes.length; i++) {
@@ -117,7 +139,82 @@ function nextNumber_(codes) {
       if (!isNaN(num) && num > max) max = num;
     }
   }
-  return max + 1;
+  var stored = parseInt(
+    PropertiesService.getDocumentProperties().getProperty(HIGH_WATER_KEY) || '0', 10);
+  if (isNaN(stored)) stored = 0;
+  return Math.max(max, stored) + 1;
+}
+
+/** Remember the highest number issued, so deleting rows can never free a code. */
+function setHighWater_(n) {
+  var props = PropertiesService.getDocumentProperties();
+  var stored = parseInt(props.getProperty(HIGH_WATER_KEY) || '0', 10);
+  if (isNaN(stored) || n > stored) props.setProperty(HIGH_WATER_KEY, String(n));
+}
+
+
+/**
+ * Run ONCE, immediately after removeDemoRows() and BEFORE the real import.
+ *
+ * The 14 demo rows burned YM-2026-00001 … 00014. With the high-water mark above in
+ * place those numbers are now retired, so the first real client would be 00015 and
+ * Yale's numbering would start at fifteen for no reason they could ever be told.
+ *
+ * Demo codes were never issued to a person and never left this spreadsheet, so they
+ * are the one case where resetting is safe. This recomputes the mark from what is
+ * actually in the sheet right now.
+ *
+ * ⛔ REFUSES TO RUN if any demo row is still present — resetting first and deleting
+ * afterwards would hand real clients the demo numbers all over again.
+ * ⛔ REFUSES TO RUN if a real coded client already exists — at that point a reset
+ * could reissue a code that has already been emailed to somebody.
+ */
+function resetCodeSequence() {
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) { Logger.log('ABORT — could not get the document lock.'); return; }
+
+  try {
+    var sh = SpreadsheetApp.getActive().getSheetByName(SHEET_NAME);
+    if (!sh) { Logger.log('ABORT — no tab named ' + SHEET_NAME); return; }
+
+    var last = sh.getLastRow();
+    var rows = last >= FIRST_ROW
+      ? sh.getRange(FIRST_ROW, 1, last - FIRST_ROW + 1, 6).getValues() : [];
+
+    var demoLeft = 0, coded = 0, max = 0;
+    rows.forEach(function (r) {
+      var code = String(r[0] || '').trim();
+      var name = String(r[2] || '').trim();
+      var mail = String(r[5] || '').trim().toLowerCase();
+      if (!name) return;
+      if (mail.indexOf('@example.com') > -1) { demoLeft++; return; }
+      if (CODE_RE.test(code)) {
+        coded++;
+        var num = parseInt(code.substring(CODE_PREFIX.length), 10);
+        if (!isNaN(num) && num > max) max = num;
+      }
+    });
+
+    if (demoLeft) {
+      Logger.log('ABORT — ' + demoLeft + ' demo row(s) still in the sheet.');
+      Logger.log('Run removeDemoRows() FIRST, then come back. Resetting now would hand the');
+      Logger.log('demo numbers straight back out to real clients.');
+      return;
+    }
+    if (coded) {
+      Logger.log('ABORT — ' + coded + ' real client(s) already hold codes (highest ' + max + ').');
+      Logger.log('Those codes may already be in emails to clients. Not resetting.');
+      Logger.log('The sequence will simply continue from ' + (max + 1) + ', which is correct.');
+      return;
+    }
+
+    PropertiesService.getDocumentProperties().setProperty(HIGH_WATER_KEY, '0');
+    Logger.log('Code sequence reset. The first real client will be ' + CODE_PREFIX + '00001.');
+    Logger.log('From here the high-water mark is permanent — deleting a row can never free a code.');
+
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function pad_(num, size) {

@@ -46,9 +46,24 @@ overwrites anything in column A that is not a valid `YM-2026-#####`, so the `DEM
 within five minutes of seeding and `removeDemoRows()` had silently stopped matching. `@example.com`
 is reserved by RFC 2606 and can never be a real client.
 
-1. Run `removeDemoRows()`
-2. Run **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) and read the log
-3. It must print **GO**. If it prints **NO-GO**, stop — it will name the rows.
+⛔ **NOT before import day.** The demo rows are the only data on the system. Delete them early and
+every dashboard view reads empty — at which point a broken view and a correct one look identical
+(D-292…D-296) and nothing can be verified again until real clients land.
+
+**On import day, in this exact order:**
+
+| # | Run | Expect |
+|---|---|---|
+| a | `previewDemoRows()` | read-only. Lists what would go. **Read it.** |
+| b | `removeDemoRows()` | `14 demo row(s) removed in 1 block(s)` |
+| c | `resetCodeSequence()` | `The first real client will be YM-2026-00001` |
+| d | `preflightGoLive()` | must print **GO** |
+
+🔑 **(c) is not optional and the order matters.** The demo rows burned `YM-2026-00001…00014`, and
+those numbers are now permanently retired by the high-water mark added in D-324 — so without a reset
+Yale's first real client is `00015`, for a reason nobody could ever explain to them.
+`resetCodeSequence()` refuses to run while a demo row is still present, because resetting first and
+deleting second would hand the demo numbers straight back out.
 
 `preflightGoLive()` is read-only and also reports what M3/M4 would do on their first run, and the
 rough operation cost of that run. **This step existed only as a sentence in four other documents

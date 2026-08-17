@@ -4338,3 +4338,86 @@ family as D-311/316/320/321 — a signal that looks like evidence and is generat
 checks — but arrived at from the opposite direction: **not a false pass, but nobody looking at all,
 because each module passed its own tests.** Module-level verification cannot find these. Only
 walking the seams can.
+
+## D-324 | The teardown path audit — three defects in the thing that removes the demo data
+
+Asked to explain how to delete the demo rows, I audited the deletion path before writing the
+instructions. It has three defects, and the worst of them corrupts real client data.
+
+### 1 · 🔴 `removeDemoRows()` held NO lock, against a script that runs every 5 minutes
+
+`master_codes.gs` → `assignMissingCodes()` runs on a **5-minute time-driven trigger** and does
+read-whole-column, then write-back-**by row index**:
+
+```js
+var codes = sh.getRange(FIRST_ROW, COL_CODE, n, 1).getValues();   // read all rows
+...
+sh.getRange(FIRST_ROW + i, COL_CODE).setValue(CODE_PREFIX + ...); // write by index i
+```
+
+`removeDemoRows()` deleted rows **one at a time, across 14 separate API calls, holding nothing**.
+Delete a row between that read and that write and index `i` now addresses a **different client**.
+It stamps a client code — and a `Date Added` — onto the wrong person. Silently. No error.
+
+⛔ **And the fix is not "add a lock", it is "add the RIGHT lock".** `LockService.getScriptLock()`
+and `LockService.getDocumentLock()` are **different mutexes**. `master_codes.gs` takes a *document*
+lock. Three scripts I wrote on 16–17 Aug — `add_master_columns_z_to_ad.gs`,
+`add_chase_flag_column_ae.gs`, `patch_master_dropdowns.gs` — took a *script* lock, which does not
+exclude it at all. **Taking the wrong mutex reads in review exactly like taking the right one.**
+All of them are now on `getDocumentLock()`.
+
+`removeDemoRows()` also now deletes **contiguous blocks** rather than row-by-row (14 round trips
+becomes 1 for consecutively-seeded rows), which shrinks the window as well as guarding it, and
+gained `previewDemoRows()` — a read-only dry run sharing one `findDemoRows_()` with the deleter, so
+what you are shown and what gets deleted cannot disagree.
+
+### 2 · 🔴 A comment that asserted the exact opposite of what the code did
+
+```js
+/** Highest existing number + 1 (never reuses a code, even after deletions). */
+function nextNumber_(codes) { ... max of codes CURRENTLY IN THE SHEET ... }
+```
+
+It reuses codes after deletions. That is precisely what it does. Delete the highest-numbered client
+and the next new client is handed that same code.
+
+Not cosmetic: the client code is quoted **to the client**. M4b's checklist email and M4 route C's
+chase email both say *"Your reference for this matter is `<code>`"*. Two different people, same
+reference. And `auditDuplicateCodes()` would report nothing wrong, because only one of them is
+still in the sheet.
+
+🔑 **A wrong comment is worse than no comment** — it is what a reviewer reads *instead of* the four
+lines underneath. That comment was written 2 Aug and had been believed ever since.
+
+Fixed with a high-water mark in document properties, which survives row deletion, taking
+`max(sheet, stored)` so the property can be lost without ever issuing a duplicate. Plus
+`resetCodeSequence()`, run once between the demo removal and the import so Yale's first real client
+is `YM-2026-00001` and not `00015`. It **refuses** to run if any demo row is still present (that
+order would hand the demo numbers straight back out) and **refuses** if any real coded client exists
+(their code may already be in a client's inbox).
+
+### 3 · Two dashboard views shipped 17 Aug that could not be verified
+
+Views 7 (`Documents Outstanding`, reads AA) and 8 (`Blocked On A Third Party`, reads AB/AC) were
+built against columns that are **blank on every row in the sheet** — the demo rows were seeded on
+13 Aug, before Z..AE existed. So both render *"Nothing to show yet"* — and so would a view with a
+broken QUERY, a wrong column letter or a bad label. **D-292…D-296 exactly: an empty report and a
+broken report are indistinguishable.** I shipped two views neither of us had ever seen produce a row.
+
+`seedDemoWorkflowColumns()` fills Z..AC on demo rows only. ⛔ **AE is deliberately not seeded** — a
+hand-planted `CHASE` would produce a real draft the moment M4 is switched on; the detector owns that
+column alone.
+
+The verification that matters is not the row count — that depends on which demo rows are open — but
+that **view 8 contains no row whose status is `Received` or `Not required`**. That is the filter
+working, and it holds regardless of the data.
+
+### The pattern, again
+
+D-323 was four defects at the seams between modules. These three are the same family one layer
+down: **the teardown path had never been audited because it is not a feature.** Nobody reviews the
+delete button. It ran once, on 13 Aug, appeared to work, and inherited a lock bug, a lying comment
+and a code-reuse defect that only fire under conditions nobody had tried yet.
+
+⛔ **Do not delete the demo rows yet.** They are the only data on the system, and views 7 and 8 have
+never been proven. Sequence is in `CUTOVER-PLAN.md` step 0 — verify first, delete on import day.

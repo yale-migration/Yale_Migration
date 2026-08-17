@@ -45,7 +45,11 @@ var PD_PATCHES = [
 
 
 function patchMasterDropdowns() {
-  var lock = LockService.getScriptLock();
+  // 🔴 getDocumentLock(), NOT getScriptLock() (D-324). They are DIFFERENT mutexes.
+  // master_codes.gs holds a DOCUMENT lock and runs on a 5-minute timer against this
+  // same tab. A script lock does not exclude it — taking the wrong one is the same as
+  // taking none, while looking in review exactly like it is handled.
+  var lock = LockService.getDocumentLock();
   if (!lock.tryLock(30000)) { Logger.log('ABORT — another script holds the lock.'); return; }
 
   try {

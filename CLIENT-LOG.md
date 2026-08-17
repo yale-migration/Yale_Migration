@@ -301,4 +301,17 @@ not merely unsupported; and ROADMAP C-5 was wrong — `Referral` was already in 
 `SMS` was missing. **Dashboard 6 → 9 views**, which is what makes C-3 and C-4 real.
 Nothing sent to the client. M3 and M4 remain **OFF**. Ops still **481/1000**.
 
+2026-08-17 | internal (no client contact) | **Teardown-path audit (D-324) — three defects in the
+code that deletes the demo data.** `removeDemoRows()` held **no lock** while `assignMissingCodes()`
+runs every 5 minutes doing read-then-write-by-row-index: deleting a row mid-run stamps a client code
+and Date Added **onto the wrong client, silently**. Worse, the fix was not "add a lock" — three
+scripts written 16–17 Aug took `getScriptLock()` while `master_codes.gs` takes `getDocumentLock()`,
+**different mutexes**, so they never excluded each other while looking in review as if they did.
+Second: `nextNumber_()` carried the comment *"never reuses a code, even after deletions"* and did
+exactly the opposite — and that code is quoted to clients in both automated emails. Fixed with a
+high-water mark + `resetCodeSequence()`. Third: dashboard views 7 and 8 were shipped yesterday
+against columns blank on every row, so they render identically whether they work or are broken
+(D-292). `seedDemoWorkflowColumns()` makes them provable. **Demo rows deliberately NOT deleted yet.**
+M3 and M4 remain **OFF**. Ops **481/1000**.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

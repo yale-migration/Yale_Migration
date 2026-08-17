@@ -90,7 +90,7 @@ prompt** (D-320) — that is how the check got defeated.
 
 | | Check | How |
 |---|---|---|
-| 1 | 🔴 **The 14 demo rows are OUT of MASTER** | `removeDemoRows()`, then **`preflightGoLive()`** must print **GO** |
+| 1 | 🔴 **The 14 demo rows are OUT of MASTER** | on import day only: `previewDemoRows()` → `removeDemoRows()` → **`resetCodeSequence()`** → `preflightGoLive()` = **GO**. Order matters (D-324) |
 | 2 | Scheduling is **Weekdays 09:00/13:00/17:00** | both scenarios are still on the 15-minute default |
 | 3 | OneDrive is on a **Yale** account | connection 9279810 is still `sharry00010@gmail.com` — §5 risk 1 |
 | 4 | **Robinder has given a date** | not implied by him saying yes to something else |
@@ -160,6 +160,7 @@ a visa type. We recommended it once without opening it (D-315).
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
+| `previewDemoRows()` · `seedDemoWorkflowColumns()` | dry-run the teardown · fill Z–AC on demo rows so dashboard views 7/8 can be **seen working** (D-324) |
 | `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 
