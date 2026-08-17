@@ -326,4 +326,15 @@ with a permanent router-vs-map-vs-disk cross-check. Dropdowns confirmed 6/6, das
 9 views, dormant highlight replaced **2** stacked duplicates (confirming that D-323 finding).
 Demo rows still in place deliberately. M3 and M4 **OFF**. Ops **481/1000**.
 
+2026-08-18 | internal (no client contact) | **A run log caught a global-scope collision (D-326).**
+`Column "Chase Flag" already present.` — printed by a function that looks for `Checklist Filed`.
+Apps Script shares one global scope across all .gs files and I had declared `CF_HEADER` a second
+time with a different value. Harmless only because the column it checked happened to exist; had it
+not, it would have written `Chase Flag` over MASTER's column Y header and every M4 write mapping by
+header name would have had nowhere to land. Renamed, and `repo_hygiene.py` now **fails the commit**
+on any cross-file name collision with differing values. Also: the "Going quiet" KPI counted 10 while
+its own list shaded 5 — two tests, one word — and the list excluded never-contacted files, so after
+the import none of the 40 could ever have appeared in it. Rebuilt. **Views 7 and 8 verified working**
+on the filter assertion, not row counts. CHECKLIST MAP now 38 rows (190 live). M3/M4 **OFF**.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

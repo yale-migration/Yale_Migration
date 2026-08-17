@@ -82,18 +82,32 @@ function buildDashboard() {
       " group by L order by count(A) desc limit 15" +
       " label L 'Consultant', count(A) 'Open matters'", 17);
 
+  // ---- REBUILT 18 Aug (D-326) — it disagreed with its own KPI tile ------------
+  // The tile counts rows whose Next Follow-up Due (S) has passed. This view used to
+  // sort by Last Contact (R) and shade at TODAY()-14. Two different tests, one name:
+  // on 18 Aug the tile read 10 and the view shaded 5, on the same data, on the same
+  // screen. The footer even told the reader the view used S. It did not.
+  //
+  // Worse for what comes next: `R is not null` EXCLUDED EVERY NEVER-CONTACTED FILE.
+  // After the import all 40 rows have a blank Last Contact, so not one of them could
+  // ever have appeared here — the files most at risk were the ones it could not show.
+  //
+  // Now it selects on S, exactly like the tile: same rows, same count, and S is shown
+  // so the reader can see WHY each row is listed. Never-contacted files appear with a
+  // blank Last Contact, which is itself the useful signal.
   var quietStart = r;
-  r = block_(sh, r, '4 · GOING QUIET — oldest contact first',
-      'Open files sorted by last contact. Anything shaded red has not been contacted in over 14 days.',
-      "select A, C, L, R, M where A is not null and " + OPEN +
-      " and R is not null order by R asc limit 15" +
-      " label A 'Code', C 'Client', L 'Consultant', R 'Last contact', M 'Stage'" +
-      " format R 'd mmm yyyy'", 18);
+  r = block_(sh, r, '4 · GOING QUIET — most overdue first',
+      'Open files whose follow-up date has passed. Same rule as the "Going quiet" number above.',
+      "select A, C, L, R, S, M where A is not null and " + OPEN +
+      " and S is not null and S < now() order by S asc limit 15" +
+      " label A 'Code', C 'Client', L 'Consultant', R 'Last contact'," +
+      " S 'Follow-up was due', M 'Stage'" +
+      " format R 'd mmm yyyy', S 'd mmm yyyy'", 18);
   quietHighlight_(sh, quietStart + 3);
   // Dates arrive from QUERY as serials (46216). setNumberFormat on the spill range does
   // NOT survive — the spilled result carries its own formatting. QUERY's own `format`
   // clause above is the reliable fix; this is a belt-and-braces second pass.
-  sh.getRange(quietStart + 3, 4, 15, 1).setNumberFormat('d mmm yyyy');
+  sh.getRange(quietStart + 3, 4, 15, 2).setNumberFormat('d mmm yyyy');
 
   r = block_(sh, r, '5 · OUTCOMES',
       'Every matter that has reached a decision.',
@@ -246,11 +260,16 @@ function block_(sh, row, heading, note, query, reserve, customRange) {
   return row + reserve;
 }
 
-/** Shades the "Going quiet" list where last contact is more than 14 days ago. */
+/**
+ * Shades the worst of the "Going quiet" list — a week or more past the follow-up date.
+ * Column E is now `Follow-up was due` (S), the same field the KPI tile counts, so this
+ * can no longer drift away from the number above it. Every row in the view is already
+ * overdue; the shading marks the ones that are badly overdue.
+ */
 function quietHighlight_(sh, firstDataRow) {
-  var target = sh.getRange(firstDataRow, 1, 15, 5);
+  var target = sh.getRange(firstDataRow, 1, 15, 6);
   var rule = SpreadsheetApp.newConditionalFormatRule()
-    .whenFormulaSatisfied('=AND($D' + firstDataRow + '<>"",$D' + firstDataRow + '<TODAY()-14)')
+    .whenFormulaSatisfied('=AND($E' + firstDataRow + '<>"",$E' + firstDataRow + '<TODAY()-7)')
     .setBackground(ALERT).setFontColor(ALERTX)
     .setRanges([target]).build();
   var rules = sh.getConditionalFormatRules();
@@ -273,8 +292,9 @@ function expiryHighlight_(sh, firstDataRow) {
 function footer_(sh, row) {
   sh.getRange(row, 1, 1, 6).merge()
     .setValue('Counts cover open matters only — anything Granted, Refused or Withdrawn is excluded ' +
-              'so closed files never inflate the numbers. "Going quiet" uses the Next Follow-up Due ' +
-              'date set each morning by the follow-up script. "Documents outstanding" and "Blocked on ' +
+              'so closed files never inflate the numbers. "Going quiet" — both the number and the ' +
+              'list — uses the Next Follow-up Due date set each morning by the follow-up script, ' +
+              'so the two always agree. "Documents outstanding" and "Blocked on ' +
               'a third party" are typed in by consultants — an empty view means nobody has filled ' +
               'those columns in yet, not that nothing is outstanding.')
     .setFontSize(8).setFontColor(MUTED).setWrap(true);

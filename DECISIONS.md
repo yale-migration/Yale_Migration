@@ -4501,3 +4501,88 @@ it claims, and this one claimed the wrong thing.
 MASTER offers 23 visa types; 10 route to `NEEDS REVIEW` because we hold no checklist: **300, 186,
 191, 600, Skills Assessment, EOI, ART, Bridging, Other** (190 now removed from that list). That is
 correct behaviour and it was already disclosed to the client in `YM-DQ-e573`.
+
+## D-326 | The run log caught a global-scope collision, and view 4 disagreed with its own KPI
+
+### 1 · 🔴 `CF_HEADER` was declared twice, with different values
+
+Sharjeel's log:
+
+```
+11:49:55 PM  Info   Column "Chase Flag" already present.
+```
+
+That line comes from `addChecklistFiledColumn_()`, which looks for **`Checklist Filed`**. It printed
+`Chase Flag`.
+
+**Apps Script shares ONE global scope across every `.gs` file in a project.** Two declarations:
+
+| File | Value |
+|---|---|
+| `setup_m4_checklist_map.gs` | `var CF_HEADER = 'Checklist Filed'` |
+| `add_chase_flag_column_ae.gs` *(mine, 16 Aug)* | `var CF_HEADER = 'Chase Flag'` |
+
+Whichever loads last wins, and from our side that order is not something to rely on.
+
+**It was harmless only by luck.** The function searched for `Chase Flag`, found AE, and
+early-returned. Had AE not existed it would have fallen through to
+`sh.getRange(1, CF_COL).setValue(CF_HEADER)` and written **`Chase Flag` into column Y**, replacing
+the `Checklist Filed` header. M4's `updateRow` modules map by **header name**
+(`useColumnHeaders: true`), so every write to `Checklist Filed` would then have had no column to
+land in — while M4's *reads*, which are by numeric index, carried on working. Half-broken, and
+green in the run log.
+
+Renamed `CF_*` → `AE_*` throughout my file. One prefix per file, no short generic prefixes in a
+shared-scope project.
+
+**Made permanent:** `repo_hygiene.py` gate 4 now parses every `.gs` for top-level `var`/`function`
+declarations and **fails the commit** on any name declared in two files with different values.
+Identical values warn — currently `FIRST_ROW`, which is `2` in both `m5_dormant_detector.gs` and
+`master_codes.gs`. Harmless today, one edit away from not being.
+
+🔑 Three days running, the thing that caught the defect was **a log line from a run, not a review**.
+The reviews kept passing.
+
+### 2 · "Going quiet" said 10 in the tile and shaded 5 in the list, on the same screen
+
+| | Test |
+|---|---|
+| KPI tile | `Next Follow-up Due (S) < TODAY()` → **10** |
+| view 4 shading | `Last Contact (R) < TODAY()-14` → **5** |
+| the footer text | claimed the view used S. It did not. |
+
+Both self-consistent, neither wrong on its own, and together they tell a manager two different
+numbers under one word.
+
+**And the worse half:** view 4 filtered `R is not null`, which **excluded every never-contacted
+file**. After the import all 40 rows have a blank `Last Contact`, so not one of them could ever have
+appeared in "Going quiet" — the view would have been structurally blind to exactly the rows most
+likely to need chasing, on day one, with nothing to indicate it.
+
+Rebuilt: it now selects on `S`, the same field the tile counts, sorted most-overdue-first, showing
+both `Last contact` and `Follow-up was due` so the reader can see why each row is there. Blank
+`Last contact` now reads as the signal it is. Shading marks rows more than a week past due.
+
+### 3 · View 9 was empty, which proves nothing
+
+Same trap as D-324 §3 and D-292: `9 · VISA EXPIRY` rendered its header row and no data, which is
+what a working view over no matching rows and a broken view look like — identically. No demo row had
+a `Visa Expiry`.
+
+`seedDemoWorkflowColumns()` now also writes column P with deliberately chosen offsets: some inside
+60 days (must appear, shaded), some beyond (must appear, unshaded), some blank (must not appear),
+and **some already expired (must NOT appear** — the query filters `P >= now()`). That last group is
+the assertion that proves the filter runs, the same role `Received` plays in view 8.
+
+### What the logs confirmed
+
+Views 7 and 8 **pass**, on the assertion that matters rather than on row counts: view 8 lists
+Requested / Escalated / Waiting / Chased / Waiting and contains **no** `Received` and no
+`Not required` row, though both exist in the seeded data. The filter is running.
+`CHECKLIST MAP built with 38 rows` — the 190 fix from D-325 is live.
+Outcomes 1 Granted + 1 Refused reconciles with 14 on file and 12 open.
+
+### Still open
+
+`Sheet4` in the MASTER workbook is unexplained. Not created by us. Not opened yet — and per G8,
+"probably empty" is a conclusion that requires opening it.

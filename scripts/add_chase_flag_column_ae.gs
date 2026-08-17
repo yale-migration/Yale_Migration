@@ -33,18 +33,36 @@
  *    column left of those and M4 files the WRONG CHECKLIST and reports success.
  *
  * Run addChaseFlagColumn(), then verifyChaseFlagColumn(). Verify changes nothing.
+ *
+ * ---- 🔴 WHY EVERY NAME IN HERE IS PREFIXED AE_ AND NOT CF_ (D-326) ---------------
+ * It was CF_. `setup_m4_checklist_map.gs` already declares `var CF_HEADER =
+ * 'Checklist Filed'`, and **Apps Script shares ONE global scope across every .gs file
+ * in a project** — so the two collided and whichever loaded last won.
+ *
+ * Sharjeel's 18 Aug run log is the proof:
+ *     Column "Chase Flag" already present.
+ * `addChecklistFiledColumn_()` looks for `Checklist Filed`. It printed `Chase Flag`,
+ * because by then CF_HEADER meant this file's value.
+ *
+ * It got away with it ONLY because AE already existed, so the function early-returned.
+ * Had AE been absent it would have fallen through and written **'Chase Flag' into
+ * column Y**, replacing the `Checklist Filed` header — and M4's updateRow modules map
+ * by HEADER NAME (`useColumnHeaders: true`), so every write to `Checklist Filed` would
+ * then have had no column to land in.
+ *
+ * ⛔ Never use a short generic prefix in a shared-scope project. One prefix per file.
  */
 
-var CF_SHEET_ID = '1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k';
-var CF_TAB      = 'MASTER';
+var AE_SHEET_ID = '1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k';
+var AE_TAB      = 'MASTER';
 
 // AD must be the rightmost column before we add anything. This is the state
 // add_master_columns_z_to_ad.gs leaves the sheet in, verified 22/22 on 16 Aug.
-var CF_ANCHOR_INDEX  = 30;             // AD
-var CF_ANCHOR_HEADER = 'Upload Link';
-var CF_INDEX         = 31;             // AE
-var CF_HEADER        = 'Chase Flag';
-var CF_NOTE = 'SET BY AUTOMATION — do not type in this column. '
+var AE_ANCHOR_INDEX  = 30;             // AD
+var AE_ANCHOR_HEADER = 'Upload Link';
+var AE_INDEX         = 31;             // AE
+var AE_HEADER        = 'Chase Flag';
+var AE_NOTE = 'SET BY AUTOMATION — do not type in this column. '
             + 'Blank = nothing due. CHASE = M4 should draft the chase email. '
             + 'DRAFTED <date> = the draft is sitting in visa.lodgement@ waiting to be sent.';
 
@@ -58,17 +76,17 @@ function addChaseFlagColumn() {
   if (!lock.tryLock(30000)) { Logger.log('ABORT — another script holds the lock.'); return; }
 
   try {
-    var sh = SpreadsheetApp.openById(CF_SHEET_ID).getSheetByName(CF_TAB);
-    if (!sh) { Logger.log('ABORT — no tab named ' + CF_TAB); return; }
+    var sh = SpreadsheetApp.openById(AE_SHEET_ID).getSheetByName(AE_TAB);
+    if (!sh) { Logger.log('ABORT — no tab named ' + AE_TAB); return; }
 
-    if (sh.getMaxColumns() < CF_ANCHOR_INDEX) {
+    if (sh.getMaxColumns() < AE_ANCHOR_INDEX) {
       Logger.log('ABORT — sheet has only ' + sh.getMaxColumns() + ' columns; expected at least '
-                 + CF_ANCHOR_INDEX + ' (through AD). Run add_master_columns_z_to_ad.gs first.');
+                 + AE_ANCHOR_INDEX + ' (through AD). Run add_master_columns_z_to_ad.gs first.');
       return;
     }
 
     var lastCol = sh.getLastColumn();
-    var headers = sh.getRange(1, 1, 1, Math.max(lastCol, CF_ANCHOR_INDEX)).getValues()[0]
+    var headers = sh.getRange(1, 1, 1, Math.max(lastCol, AE_ANCHOR_INDEX)).getValues()[0]
                     .map(function (h) { return String(h || '').trim(); });
 
     // Guard 1 — the five Z-AD columns must already be there, in order. If they are
@@ -85,37 +103,37 @@ function addChaseFlagColumn() {
     }
 
     // Guard 2 — already done?
-    if (headers.indexOf(CF_HEADER) > -1) {
-      Logger.log('ABORT — a column named "' + CF_HEADER + '" already exists at ' +
-                 (headers.indexOf(CF_HEADER) + 1) + '. Run verifyChaseFlagColumn() instead.');
+    if (headers.indexOf(AE_HEADER) > -1) {
+      Logger.log('ABORT — a column named "' + AE_HEADER + '" already exists at ' +
+                 (headers.indexOf(AE_HEADER) + 1) + '. Run verifyChaseFlagColumn() instead.');
       return;
     }
 
     // Guard 3 — nothing unexpected already sitting right of AD.
-    if (lastCol > CF_ANCHOR_INDEX) {
-      Logger.log('ABORT — last column is ' + lastCol + ', expected ' + CF_ANCHOR_INDEX + ' (AD).');
+    if (lastCol > AE_ANCHOR_INDEX) {
+      Logger.log('ABORT — last column is ' + lastCol + ', expected ' + AE_ANCHOR_INDEX + ' (AD).');
       Logger.log('Someone has added a column since 16 Aug. Look before adding more.');
       return;
     }
 
-    if (sh.getMaxColumns() < CF_INDEX) {
-      sh.insertColumnsAfter(sh.getMaxColumns(), CF_INDEX - sh.getMaxColumns());
+    if (sh.getMaxColumns() < AE_INDEX) {
+      sh.insertColumnsAfter(sh.getMaxColumns(), AE_INDEX - sh.getMaxColumns());
     }
 
     // insertColumnsAfter INHERITS the left neighbour's validation — that is exactly
     // how column Y silently inherited X's dropdown and blocked every script write.
-    var whole = sh.getRange(1, CF_INDEX, sh.getMaxRows(), 1);
+    var whole = sh.getRange(1, AE_INDEX, sh.getMaxRows(), 1);
     whole.clearDataValidations();
     whole.clearNote();
 
     try {
-      var cell = sh.getRange(1, CF_INDEX);
-      cell.setValue(CF_HEADER);
-      cell.setNote(CF_NOTE);
+      var cell = sh.getRange(1, AE_INDEX);
+      cell.setValue(AE_HEADER);
+      cell.setNote(AE_NOTE);
       cell.setFontWeight('bold').setBackground('#efefef');
-      sh.setColumnWidth(CF_INDEX, 150);
+      sh.setColumnWidth(AE_INDEX, 150);
       SpreadsheetApp.flush();          // validation is lazy — it throws HERE, inside the try
-      Logger.log('WROTE AE = ' + CF_HEADER);
+      Logger.log('WROTE AE = ' + AE_HEADER);
     } catch (e) {
       Logger.log('FAILED — ' + e.message);
       return;
@@ -132,7 +150,7 @@ function addChaseFlagColumn() {
 
 /** Proves AE is present, clean, and writable. Changes nothing permanent. */
 function verifyChaseFlagColumn() {
-  var sh = SpreadsheetApp.openById(CF_SHEET_ID).getSheetByName(CF_TAB);
+  var sh = SpreadsheetApp.openById(AE_SHEET_ID).getSheetByName(AE_TAB);
   var lastCol = sh.getLastColumn();
   var headers = sh.getRange(1, 1, 1, lastCol).getValues()[0]
                   .map(function (h) { return String(h || '').trim(); });
@@ -155,11 +173,11 @@ function verifyChaseFlagColumn() {
           headers[n - 1] === CRITICAL[pos], 'found "' + headers[n - 1] + '"');
   }
 
-  check('col 31 (AE) is "' + CF_HEADER + '"', headers[CF_INDEX - 1] === CF_HEADER,
-        'found "' + headers[CF_INDEX - 1] + '"');
-  check('AE is the last column', lastCol === CF_INDEX, 'last column is ' + lastCol);
+  check('col 31 (AE) is "' + AE_HEADER + '"', headers[AE_INDEX - 1] === AE_HEADER,
+        'found "' + headers[AE_INDEX - 1] + '"');
+  check('AE is the last column', lastCol === AE_INDEX, 'last column is ' + lastCol);
 
-  var rule = sh.getRange(2, CF_INDEX).getDataValidation();
+  var rule = sh.getRange(2, AE_INDEX).getDataValidation();
   check('AE has NO inherited validation', !rule, rule ? 'INHERITED: ' + rule.getCriteriaType() : 'clean');
 
   // Write test. Uses the exact strings the state machine uses, not a placeholder —
@@ -167,7 +185,7 @@ function verifyChaseFlagColumn() {
   Logger.log('=== write test (writes then clears a scratch row) ===');
   var row = sh.getLastRow() + 1;
   ['CHASE', 'DRAFTED 2026-08-16', ''].forEach(function (v) {
-    var cell = sh.getRange(row, CF_INDEX);
+    var cell = sh.getRange(row, AE_INDEX);
     try {
       cell.setValue(v);
       SpreadsheetApp.flush();
@@ -176,7 +194,7 @@ function verifyChaseFlagColumn() {
       check('AE accepts ' + (v === '' ? 'a clear' : '"' + v + '"'), false, e.message);
     }
   });
-  try { sh.getRange(row, CF_INDEX).clearContent(); SpreadsheetApp.flush(); } catch (ignore) {}
+  try { sh.getRange(row, AE_INDEX).clearContent(); SpreadsheetApp.flush(); } catch (ignore) {}
 
   Logger.log('');
   Logger.log(pass + '/' + (pass + fail) + ' checks passed');

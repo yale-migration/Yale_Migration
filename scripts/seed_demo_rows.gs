@@ -161,7 +161,19 @@ function seedDemoWorkflowColumns() {
       ['',                         'Nomination approval letter',     'Employer',           'Waiting']
     ];
 
-    var wrote = 0, failed = [];
+    // Column P Visa Expiry, for dashboard view 9. Offsets in DAYS from today; null
+    // leaves the cell blank. The set is chosen to test the view, not to look full:
+    //   · negative  -> ALREADY EXPIRED. The query filters `P >= now()`, so these must
+    //                  NOT appear. That is the assertion that proves the filter runs,
+    //                  the same role 'Received' plays in view 8.
+    //   · under 60  -> must appear AND be shaded red
+    //   · over 60   -> must appear unshaded
+    //   · null      -> must not appear at all
+    var EXPIRY_OFFSETS = [21, null, 140, -30, 45, null, 300, 12, -95, 210, null, 58, 400, 75];
+
+    var wrote = 0, failed = [], expSet = 0, expPast = 0, expSoon = 0;
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+
     found.demo.forEach(function (d, i) {
       var vals = PATTERN[i % PATTERN.length];
       try {
@@ -172,6 +184,19 @@ function seedDemoWorkflowColumns() {
         wrote++;
       } catch (e) {
         failed.push('row ' + d.row + ' (' + d.name + ') — ' + e.message);
+      }
+
+      var off = EXPIRY_OFFSETS[i % EXPIRY_OFFSETS.length];
+      if (off === null) return;
+      try {
+        var dt = new Date(today.getTime());
+        dt.setDate(dt.getDate() + off);
+        sh.getRange(d.row, 16).setValue(dt);       // P Visa Expiry
+        SpreadsheetApp.flush();
+        expSet++;
+        if (off < 0) expPast++; else if (off <= 60) expSoon++;
+      } catch (e) {
+        failed.push('row ' + d.row + ' P Visa Expiry — ' + e.message);
       }
     });
 
@@ -193,6 +218,14 @@ function seedDemoWorkflowColumns() {
     Logger.log('     — that is the filter working, and it is the only assertion here that');
     Logger.log('       does not depend on how many demo rows happen to be open.');
     Logger.log('If a view still says "Nothing to show yet", the VIEW is broken, not the data.');
+    Logger.log('');
+    Logger.log('Visa Expiry (P) written to ' + expSet + ' row(s): ' + expPast +
+               ' already expired, ' + expSoon + ' inside 60 days.');
+    Logger.log('  4. view 9 Visa Expiry shows rows');
+    Logger.log('  5. 🔑 the ' + expPast + ' ALREADY-EXPIRED row(s) are ABSENT from view 9');
+    Logger.log('     — the query filters P >= now(). If an expired date is listed, the');
+    Logger.log('       filter is not running and the view is wrong.');
+    Logger.log('  6. rows expiring inside 60 days are shaded red; the rest are not.');
 
   } finally {
     lock.releaseLock();

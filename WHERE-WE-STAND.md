@@ -123,6 +123,9 @@ No third scenario, no paid plan, draft still lands in `visa.lodgement@`.
 proved on paper over 1,008 row shapes and the module identifiers are the same ones M4b already runs,
 but route C has not executed once. **It gets its first real run in the pilot, not before.**
 
+**3b. ⚠️ `Sheet4` in the MASTER workbook is unexplained.** Not created by us, never opened. G8:
+"probably empty" is a conclusion that requires opening the file. Ask Sharjeel.
+
 **3. ⛔ ~~Subclass `186` is a coverage gap.~~ THE 186 FINDING WAS WRONG — RETRACTED (D-325).**
 186 was already in the dropdown. The run log said `OK H — already has 186. Nothing to do.` The claim
 came from a `sed` read that started **one line below** the array element it was looking for. Nothing
@@ -163,7 +166,7 @@ a visa type. We recommended it once without opening it (D-315).
 
 | Command | What it does |
 |---|---|
-| `python3 scripts/repo_hygiene.py` | 🔴 **before every commit.** Secrets, client PII, tracked spreadsheets, remote warning (D-317) |
+| `python3 scripts/repo_hygiene.py` | 🔴 **before every commit.** Secrets, client PII, tracked spreadsheets, **Apps Script global-name collisions** (D-326), remote warning |
 | `python3 scripts/verify_blueprints.py` | **79 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |

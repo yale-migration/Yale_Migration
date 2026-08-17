@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 420K /     4503 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 424K /     4588 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-17 23:38
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-17 23:55
 
 | # | Decision |
 |---|---|
@@ -322,3 +322,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-17 23:3
 | **D-323** | Ownership audit, 17 Aug — four defects the module-by-module work never would have found |
 | **D-324** | The teardown path audit — three defects in the thing that removes the demo data |
 | **D-325** | ⛔ RETRACTING the 186 finding, and the real bug it was hiding |
+| **D-326** | The run log caught a global-scope collision, and view 4 disagreed with its own KPI |

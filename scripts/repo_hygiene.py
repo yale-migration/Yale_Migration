@@ -164,8 +164,53 @@ else:
             print("  ok, reference only (%d hits): %s" % (n, f))
     fail |= bool(bad)
 
-# ------------------------------------------------------------- 4. remote/push
-head(4, "remote and unpushed state")
+# ------------------------------------------- 4. Apps Script global-name collisions
+#
+# 🔴 Apps Script shares ONE global scope across every .gs file in a project. Two files
+# declaring the same top-level `var` or `function` collide, and whichever loads last
+# wins — non-deterministically, from our point of view.
+#
+# This exists because of a real one (D-326): `CF_HEADER` was 'Checklist Filed' in
+# setup_m4_checklist_map.gs and 'Chase Flag' in add_chase_flag_column_ae.gs. The run
+# log printed `Column "Chase Flag" already present.` from a function that looks for
+# 'Checklist Filed'. It was harmless only by luck — the column it checked happened to
+# exist, so it early-returned instead of writing 'Chase Flag' over MASTER's column Y.
+#
+# DIFFERENT values = FAIL. IDENTICAL values = warn (still fragile: one edit apart).
+head(4, "Apps Script global-name collisions across scripts/*.gs")
+import collections
+_decl = collections.defaultdict(dict)     # name -> {file: value-or-None}
+_gsdir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+_gs = sorted(f for f in os.listdir(_gsdir) if f.endswith(".gs"))
+for _f in _gs:
+    for _line in open(os.path.join(_gsdir, _f), encoding="utf-8"):
+        _m = re.match(r"var\s+([A-Za-z_$][\w$]*)\s*=\s*(.+?);\s*(?://.*)?$", _line)
+        if _m:
+            _decl[_m.group(1)].setdefault(_f, _m.group(2).strip())
+            continue
+        _m = re.match(r"function\s+([A-Za-z_$][\w$]*)", _line)
+        if _m:
+            _decl[_m.group(1)].setdefault(_f, None)
+
+_hard, _soft = [], []
+for _name, _where in sorted(_decl.items()):
+    if len(_where) < 2:
+        continue
+    _vals = set(_where.values())
+    (_hard if len(_vals) > 1 else _soft).append((_name, _where))
+
+for _name, _where in _soft:
+    print("  warn  %s — same value in %s" % (_name, ", ".join(sorted(_where))))
+for _name, _where in _hard:
+    print("  FAIL  %s — DIFFERENT values, last file loaded wins:" % _name)
+    for _f, _v in sorted(_where.items()):
+        print("          %-34s %s" % (_f, _v if _v is not None else "(function)"))
+if not _hard and not _soft:
+    print("  clean — no shared top-level names")
+fail |= bool(_hard)
+
+# ------------------------------------------------------------- 5. remote/push
+head(5, "remote and unpushed state")
 remote = subprocess.run(["git", "remote", "get-url", "origin"],
                         capture_output=True, text=True).stdout.strip() or "none"
 ahead = subprocess.run(["git", "rev-list", "--count", "@{u}..HEAD"],
