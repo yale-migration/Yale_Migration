@@ -419,4 +419,17 @@ the wrong reply; `485 TRA` already parses from their existing visa column → **
 answered (emails live in Gmail threads); checked the Reyward workbook against all 13 gaps — **zero
 recoverable**, and none are RJ's. Method note: reading found 12 of 14 answers, diffing found all 14.
 
+2026-08-18 | 📥 **ACCESS GRANTED — verified, not taken on trust (D-337).** Sharjeel said the team
+had shared the sheets; I checked with Make's `rpcSpreadsheet` RPC on conn 9501125 (**0 operations**).
+`project1@` sees all three of their sheets and read back **31 live tabs** from YALE BRISBANE OFFICE
+WORK. ✅ **I-1 / A-20 / Q9 CLOSED — the last blocker on the import.** They also shared **STUDENTS**,
+which we never asked for. 🔑 The check handed us something bigger: **we had never held a single
+Google Sheet ID** — access-checklist item 1 asked for the share *"and reply with the sheet's link"*
+and only half arrived on 21 July. We now have all three IDs. 🔴 **And it caught a live-vs-export
+trap: the real tab is `LODGEMENT: JULY TO PRESENT` — with a colon.** Excel forbids `:` so the export
+silently renamed it, and four scripts plus eleven documents carry the wrong name. Pointed at the
+live sheet that returns **no rows and no error**. `build_master_import.py` now accepts either form.
+⛔ The email already sent asks for the re-share they have already done — covered in the WhatsApp
+follow-up rather than by re-asking.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

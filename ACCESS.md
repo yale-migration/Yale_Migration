@@ -1,5 +1,19 @@
 # ACCESS INVENTORY — status only. ⚠️ NO passwords, NO API keys, NO tokens in this file, ever.
 
+## ✅ GOOGLE SHEET IDs — verified live 18 Aug via Make `rpcSpreadsheet` on conn 9501125 (D-337)
+
+| Sheet | ID | `project1@` read access |
+|---|---|---|
+| YALE BRISBANE OFFICE WORK | `1NbaxgzHIiUM1yas1B3lt21ycNKyufPxXTxZPP0wamLI` | ✅ proven — 31 tabs listed |
+| REYWARD JAKE M GAMOL-2026 | `1_YDeb7iwHQr0c3MGKp0jp8MMyqBzqlr7sz36u8Qn4pc` | ✅ visible |
+| STUDENTS | `1XlnqEi42ZJNu3_vwNN8WgKcCk4zlzWyCyRQ9We_V9_A` | ✅ visible — **shared without being asked** |
+| Yale Migration — MASTER DATABASE | `1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k` | ✅ ours |
+
+🔴 **THE LIVE TAB IS `LODGEMENT: JULY TO PRESENT` — WITH A COLON.** Every script and document we
+wrote says `LODGEMENT JULY TO PRESENT`, because Excel forbids `:` in a sheet name and the `.xlsx`
+export silently renamed it. **Use the colon form for anything touching the live sheet.** Getting it
+wrong returns no rows and no error.
+
 ## ⚠️ ROSTER CHANGES — 18 Aug 2026 (D-330, from `ANSWERED.docx`)
 
 | Change | Detail | Action |

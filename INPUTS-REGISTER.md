@@ -68,7 +68,7 @@ marked it 🟢.
 
 | # | Input | Blocks | h | Ever asked? |
 |---|---|---|---|---|
-| **I-1** | **Live sheet access for `project1@`** (Q9 / A-20) | the import, and every number the dashboard shows | — | ✅ asked 16 Aug, **not answered** |
+| ~~I-1~~ | ✅ **CLOSED 18 Aug — access granted AND verified** via `rpcSpreadsheet` on conn 9501125, 0 ops. IDs now held for all three of their sheets; 31 live tabs read back. This also closed access-checklist item 1, whose *"reply with the sheet's link"* half had been open since 21 July (D-337) | — | ✅ **DONE** |
 | **I-2** | 🔴 **Anthropic API key + a Make connection for it** | **M9 entirely** | **5** | ⛔ **NEVER ASKED.** `ACCESS.md` says ✅. It is not |
 | **I-3** | **Facebook + Instagram page access** (Meta) | M6 capture | ~3 of 8 | ⛔ **never asked** |
 | **I-4** | **WhatsApp Business verification status** | M6 WhatsApp channel | ~1 | 🟠 raised at proposal, never chased |
@@ -116,7 +116,7 @@ missing ones — **I-2 and I-3** — were never asked for at all, and between th
 
 ## 4 · What must go to the client, in priority order
 
-1. **I-1** — the re-share. One click. Unblocks the import and everything downstream.
+1. ~~I-1 — the re-share~~ ✅ **DONE 18 Aug, verified.**
 2. **I-2** — the Anthropic key. ⚠️ Their billing per the Engagement Letter, so this is also the
    first time they see a running cost. Do not bundle it with anything else.
 3. **I-8** — OneDrive onto `project1@`. ⛔ **ADD first, remove ours only after it is proven.**

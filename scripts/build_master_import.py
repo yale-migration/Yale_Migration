@@ -37,6 +37,18 @@ RET  = os.path.join(CD, "2026-08-18_CLIENT-LIST-TO-UPDATE_returned.xlsx")
 ORIG = os.path.join(CD, "YALE BRISBANE OFFICE WORK.xlsx")
 OUT  = os.path.join(CD, "master-import.csv")
 
+# 🔴 THE LIVE GOOGLE SHEET AND THE .xlsx EXPORT DISAGREE ON THIS TAB NAME (D-337).
+# Live:   'LODGEMENT: JULY TO PRESENT'   (colon)
+# Export: 'LODGEMENT JULY TO PRESENT'    (Excel forbids ':' and renamed it silently)
+# Anything pointed at the LIVE sheet must use the colon form or it finds no tab —
+# and finds it without erroring, which is worse. Accept either, everywhere.
+LODGEMENT_TAB_NAMES = ['LODGEMENT: JULY TO PRESENT', 'LODGEMENT JULY TO PRESENT']
+GOOGLE_SHEET_IDS = {
+    'YALE BRISBANE OFFICE WORK': '1NbaxgzHIiUM1yas1B3lt21ycNKyufPxXTxZPP0wamLI',
+    'REYWARD JAKE M GAMOL-2026': '1_YDeb7iwHQr0c3MGKp0jp8MMyqBzqlr7sz36u8Qn4pc',
+    'STUDENTS':                  '1XlnqEi42ZJNu3_vwNN8WgKcCk4zlzWyCyRQ9We_V9_A',
+}
+
 MASTER_HEADERS = ['Client Code','Their Client ID','Full Name','Party 2 Name','Contact Number',
  'Email Address','Location','Visa Type','Visa Variant','Office','Team','Assigned Consultant',
  'Processing Stage','Visa Outcome','Grant Date','Visa Expiry','Refusal Reason','Last Contact',
@@ -67,7 +79,11 @@ def sheets():
             for c in range(1, 12)] for r in range(2, w.max_row + 1)]
     ret = [x for x in ret if x[0]]
     wb = openpyxl.load_workbook(ORIG, read_only=True, data_only=True)
-    rows = list(wb["LODGEMENT JULY TO PRESENT"].iter_rows(values_only=True))
+    tab = next((t for t in LODGEMENT_TAB_NAMES if t in wb.sheetnames), None)
+    if not tab:
+        sys.exit("no lodgement tab found. Looked for: %s. Sheet has: %s"
+                 % (LODGEMENT_TAB_NAMES, wb.sheetnames))
+    rows = list(wb[tab].iter_rows(values_only=True))
     wb.close()
     hdr = [str(c).strip() if c else '' for c in rows[0]]
     idx = {h: i for i, h in enumerate(hdr)}

@@ -5217,3 +5217,61 @@ document will write wherever the sentence ends, not where the form expects.
 
 ⛔ `/yale-client-message` now says: **when a client returns our own document, diff it against the
 source. Do not read it for answers.**
+
+## D-337 | Access IS granted — verified, and the verification handed us three things we did not have
+
+Sharjeel said the team had granted access by email. Given this project's history with unverified ✅s
+(D-331: `ACCESS.md` claimed a Claude key we never had), I checked instead of recording it.
+
+Verified by executing Make's own `rpcSpreadsheet` RPC against connection **9501125** (`project1@`) —
+no scenario, **no operations spent**. It returns every spreadsheet that account can actually see:
+
+| Sheet | ID |
+|---|---|
+| **YALE BRISBANE OFFICE WORK** | `1NbaxgzHIiUM1yas1B3lt21ycNKyufPxXTxZPP0wamLI` |
+| **REYWARD JAKE M GAMOL-2026** | `1_YDeb7iwHQr0c3MGKp0jp8MMyqBzqlr7sz36u8Qn4pc` |
+| **STUDENTS** | `1XlnqEi42ZJNu3_vwNN8WgKcCk4zlzWyCyRQ9We_V9_A` |
+| Yale Migration — MASTER DATABASE | `1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k` |
+
+Then `rpcSheet` against the first one returned **31 live tabs**, which proves *read* access rather
+than mere visibility.
+
+### ✅ I-1 / A-20 / Q9 — CLOSED
+
+**And it was the last blocker on the import.** M2 can now read live data instead of a static export.
+
+### 🔑 It also closed access-checklist item 1, which nobody noticed was still open
+
+That item asked for the share **"and reply with the sheet's link."** We got the share and never the
+link. **Until today this project had never held a single Google Sheets ID for any client file** — a
+grep across the repo, `access/`, `New-docs/` and `client-data/` returns zero Drive URLs. We had
+`.xlsx` exports and no way to address the originals. **Access without an ID is not access**, and we
+had been describing ourselves as having the former for weeks.
+
+### 🔴 The live tab name is NOT what every one of our scripts uses
+
+```
+live   'LODGEMENT: JULY TO PRESENT'      <- colon
+ours   'LODGEMENT JULY TO PRESENT'
+```
+
+**Excel forbids `:` in a sheet name, so the `.xlsx` export silently renamed the tab.** Everything we
+have written for four weeks — four scripts and eleven documents — carries the export's name. Point a
+Make module at the live sheet with our string and it finds **no such tab**: not an error we would
+have to debug, a lookup that returns nothing and a scenario that quietly does nothing.
+
+⛔ **This is the export-vs-original class of bug, and it only becomes visible the moment you touch
+the real thing.** It would have surfaced as "the import ran and imported nothing."
+
+### Two other things the tab list showed
+
+- **`STUDENTS` was shared too** — we never asked for it in Q9. ~3,600 education records (D-308).
+- **`eca password`** is a tab in that workbook. Another plaintext-credential surface alongside
+  `YALE COMPUTER AND PRINTER LOGS`. Adds to A-18; changes nothing about the rule — we never read a
+  column or tab whose name contains `password`.
+
+### The correction that matters for the message going out
+
+The email Sharjeel already sent asks them to do the re-share. **They have already done it.** Any
+follow-up must not ask again — asking a client for something they have just given you is the fastest
+way to look like nobody read their reply.
