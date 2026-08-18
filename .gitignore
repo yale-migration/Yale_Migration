@@ -1,8 +1,17 @@
 assets/samples/*
 !assets/samples/.gitkeep
 .DS_Store
+# Secrets. `*.env` alone does NOT catch `.env.local` — verified with
+# `git check-ignore` on 19 Aug, it came back NOT IGNORED (D-340).
 *.key
 *.env
+.env
+.env.*
+*.pem
+*credentials*.json
+creds*.json
+*secret*.json
+*token*.json
 
 # --- client PII must never be tracked (CLAUDE.md hard rule; enforced 2026-08-02, D-143) ---
 docs/**/Team roster.docx
