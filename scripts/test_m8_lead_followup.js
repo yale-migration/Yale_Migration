@@ -16,7 +16,9 @@ const LockService = { getDocumentLock: () => ({ tryLock: () => true, releaseLock
 
 // ENQUIRIES: A Date, B Name, C Phone, D Email, E Channel, F Visa, G Loc,
 //            H Assigned, I Status, J Follow-up Due, K Notes
-function blankRow() { return new Array(11).fill(''); }
+function blankRow() { return new Array(12).fill(''); }
+// row 1 must carry the L header or M8 correctly decides the column is absent
+function hdrRow(withLC) { const r = blankRow(); if (withLC) r[11] = 'Last Contact'; return r; }
 function enq(name, date, status, note) {
   const r = blankRow(); r[1] = name; r[0] = date || ''; r[8] = status || ''; r[10] = note || '';
   return r;
@@ -75,6 +77,7 @@ const check = (label, ok, detail) => {
 };
 const due  = (g, i) => String(g[i][9]);
 const note = (g, i) => String(g[i][10]);
+const lc   = (g, i) => String(g[i][11]);
 const stat = s => { const m = LOG; return m; };
 
 const BASE = '2026-08-18';
@@ -170,6 +173,55 @@ console.log('\n=== a mistyped baseline aborts rather than falling through ===');
     check('ABORT on "' + bad + '", nothing written',
           r.log.indexOf('ABORT') > -1 && due(r.grid, 1) === '' && note(r.grid, 1) === '');
   });
+}
+
+console.log('\n=== STOP-ON-REPLY (D-339) — the other half of M8 ===');
+{
+  // same lead, same dates, only difference is whether a reply was logged
+  const mk = withReply => {
+    const r = enq('A', '2026-09-01');
+    if (withReply) r[11] = '2026-09-03';
+    return [hdrRow(true), r];
+  };
+  let a = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk(false) });
+  check('no reply logged -> still scheduled (day-30 next)',
+        due(a.grid, 1) === '2026-10-01', due(a.grid, 1));
+
+  let b = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk(true) });
+  check('reply logged -> follow-up date CLEARED', due(b.grid, 1) === '', JSON.stringify(due(b.grid, 1)));
+  check('...and it says why, with the date', /replied 2026-09-03.*stopped/.test(note(b.grid, 1)), note(b.grid, 1));
+
+  // a reply must stop it even when BOTH windows are long past
+  let c = run({ today: '2026-12-01T10:00:00', baseline: BASE, rows: mk(true) });
+  check('reply beats "lapsed" — no "set a Status" nag once they have come back',
+        note(c.grid, 1).indexOf('set a Status') === -1 && due(c.grid, 1) === '', note(c.grid, 1));
+
+  // the reply column must never be written to by M8 — it is the human's field
+  check('M8 never writes column L itself', lc(c.grid, 1) === '2026-09-03', lc(c.grid, 1));
+}
+{
+  // idempotency: the replied note must not stack either
+  let g = [hdrRow(true), enq('A', '2026-09-01', '', 'spoke to her Tuesday')];
+  g[1][11] = '2026-09-03';
+  for (let i = 0; i < 5; i++) g = run({ today: '2026-10-05T10:00:00', baseline: BASE, rows: g }).grid;
+  check('exactly one M8: line after 5 runs', (note(g, 1).match(/M8:/g) || []).length === 1, note(g, 1));
+  check("the consultant's own words survive", note(g, 1).indexOf('spoke to her Tuesday') > -1);
+}
+{
+  // closed still wins over a reply — a Converted lead is not chased or annotated
+  const r = enq('A', '2026-09-01', 'Converted'); r[11] = '2026-09-03';
+  const x = run({ today: '2026-10-05T10:00:00', baseline: BASE, rows: [hdrRow(true), r] });
+  check('a CLOSED status still takes precedence over a logged reply',
+        due(x.grid, 1) === '' && note(x.grid, 1) === '', JSON.stringify(note(x.grid, 1)));
+}
+{
+  // column L absent -> exactly the old behaviour, and the log says so
+  const r = run({ today: '2026-09-10T10:00:00', baseline: BASE,
+                  rows: [hdrRow(false), enq('A', '2026-09-01')] });
+  check('L absent -> cadence unchanged', due(r.grid, 1) === '2026-10-01', due(r.grid, 1));
+  check('L absent -> the log says stop-on-reply is OFF',
+        r.log.indexOf('stop-on-reply is OFF') > -1,
+        r.log.split('\n').find(l => l.indexOf('replied') > -1));
 }
 
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed');

@@ -64,7 +64,7 @@ in a feature.
 | M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
 | M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
-| M8 | **Lead follow-up sequences (2h)** | ✅ **DONE 18 Aug** (bar stop-on-reply) | D-328/D-331 · 7/30 cadence · 22/22 · 0 ops · was mislabelled M6 for a day |
+| M8 | **Lead follow-up sequences (2h)** | ✅ **COMPLETE** — cadence **+ stop-on-reply** | D-328/D-331/D-339 · **32/32** · 0 ops · 🔴 needs `add_enquiries_last_contact.gs` run once |
 | M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
@@ -139,7 +139,7 @@ prompt** (D-320) — that is how the check got defeated.
 | **3** | **C-5 capture path** — Referral and SMS need somewhere to come *from*, not just a dropdown value | 1 | 🟢 |
 | ~~—~~ | ✅ **`DATA SHEET` → ENQUIRIES — BUILT 18 Aug (D-327).** `build_enquiries_import.py`, **621 rows** ready. Found **47% of their enquiry dates day/month transposed by Excel's US locale** — 55 impossible future dates → 0 after repair. `Status` and `Channel` left blank on purpose: the vocabulary is real, the source field does not exist | — | 🔴 needs the client to confirm Channel, then `--write` + paste |
 | ~~—~~ | ✅ **M6 — BUILT 18 Aug (D-328).** 7/30 cadence, historical baseline, never writes Status | — | 22/22 |
-| **4** | **M8 follow-up engine** — nurture over ENQUIRIES. M6 schedules; M8 is what actually goes out | 3 | 🟢 |
+| ~~—~~ | ✅ **M8 COMPLETE 18 Aug (D-339)** — stop-on-reply added, 32/32 | — | needs one script run |
 | **0** | 🟢 **CLIENT IMPORT — 38 rows ready, `build_master_import.py`.** Runs the moment Q9 lands and the demo rows come out | 1 | ⛔ **Q9 (A-20) only** |
 
 ### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
@@ -247,7 +247,7 @@ exactly the moment the check exists for. Both fixed and both tested by planting 
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
 | `previewDemoRows()` · `seedDemoWorkflowColumns()` | dry-run the teardown · fill Z–AC on demo rows so dashboard views 7/8 can be **seen working** (D-324) |
-| `node scripts/test_m6_enquiries.js` | **22 checks.** Runs the real M6 `.gs` under a frozen clock. Proves the 621-row flood is prevented |
+| `node scripts/test_m8_lead_followup.js` | **32 checks.** Runs the real M6 `.gs` under a frozen clock. Proves the 621-row flood is prevented |
 | `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 

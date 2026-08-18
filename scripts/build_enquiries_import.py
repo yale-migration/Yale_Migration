@@ -82,7 +82,8 @@ OUT = os.path.join(HERE, "..", "..", "client-data", "enquiries-import.csv")
 
 # Must match ENQUIRY_HEADERS in setup_master_sheet.gs exactly, in order.
 HEADERS = ["Date", "Name", "Phone", "Email", "Channel", "Visa Interest",
-           "Location", "Assigned To", "Status", "Follow-up Due", "Notes"]
+           "Location", "Assigned To", "Status", "Follow-up Due", "Notes",
+           "Last Contact"]   # L — added D-339, drives M8 stop-on-reply
 
 # `Assigned To` is a dropdown built with setAllowInvalid(false) — a value outside
 # this list is REJECTED by the cell, so every name has to land on one of them.
@@ -220,6 +221,8 @@ def main():
             "",                 # Status — deliberately blank, see the docstring
             "",                 # Follow-up Due — M6 computes this
             note,
+            "",                 # Last Contact — blank: nothing in DATA SHEET records
+                                # a reply date. A consultant fills it and M8 stops chasing.
         ])
 
     print("=== SOURCE ===")

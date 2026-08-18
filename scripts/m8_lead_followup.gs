@@ -46,7 +46,24 @@ var M8_DAY1     = 7;     // SOP-CI-001 10D — "within 7 days"
 var M8_DAY2     = 30;    // SOP-CI-001 10D — "and again after 30 days"
 var M8_BASELINE = '';    // 'yyyy-MM-dd' on enquiry-import day. '' = branch off.
 
-var M8_COL = { DATE:1, NAME:2, PHONE:3, STATUS:9, DUE:10, NOTES:11 };
+var M8_COL = { DATE:1, NAME:2, PHONE:3, STATUS:9, DUE:10, NOTES:11, LAST_CONTACT:12 };
+
+/**
+ * ---- STOP-ON-REPLY (D-339) ----------------------------------------------
+ * ROADMAP M8 is "7-day + 30-day cadence, **stop-on-reply**". The cadence shipped
+ * first; this is the other half.
+ *
+ * ⛔ We cannot detect a reply on our own. Reading the inbox is M9 and the
+ * WhatsApp/social channels are M6 — neither is built and both are blocked on
+ * access we do not hold. So the honest mechanism is: **the moment a human logs a
+ * reply in column L, the machine stops chasing.**
+ *
+ * A lead who has come back to us is a live conversation, not a cold one, and a
+ * nurture sequence has no business chasing it. When M6/M9 land they write the
+ * same column and this becomes automatic with no change here.
+ *
+ * Degrades safely: if column L does not exist, behaviour is exactly what it was.
+ */
 
 // From the ENQUIRIES Status dropdown. These three mean the conversation is over —
 // 'Not Proceeding' is also how "the client requests no further contact" is recorded,
@@ -89,6 +106,10 @@ function m8Run_() {
   var names   = sh.getRange(M8_FIRST, M8_COL.NAME,   n, 1).getValues();
   var phones  = sh.getRange(M8_FIRST, M8_COL.PHONE,  n, 1).getValues();
   var status  = sh.getRange(M8_FIRST, M8_COL.STATUS, n, 1).getValues();
+  // L may not exist yet — degrade to the pre-D-339 behaviour rather than throwing.
+  var hasLC   = sh.getLastColumn() >= M8_COL.LAST_CONTACT &&
+                String(sh.getRange(1, M8_COL.LAST_CONTACT).getValue()).trim() === 'Last Contact';
+  var replies = hasLC ? sh.getRange(M8_FIRST, M8_COL.LAST_CONTACT, n, 1).getValues() : null;
   var dueRng  = sh.getRange(M8_FIRST, M8_COL.DUE,    n, 1);
   var noteRng = sh.getRange(M8_FIRST, M8_COL.NOTES,  n, 1);
   var due     = dueRng.getValues();
@@ -96,7 +117,7 @@ function m8Run_() {
 
   var today = startOfDay_(new Date());
   var live = 0, closed = 0, historical = 0, nodate = 0, blank = 0;
-  var due7 = 0, due30 = 0, lapsed = 0;
+  var due7 = 0, due30 = 0, lapsed = 0, replied = 0;
 
   for (var i = 0; i < n; i++) {
     // An enquiry is a row with someone to contact. Name OR phone — the log has
@@ -108,6 +129,18 @@ function m8Run_() {
     if (contains_(M8_CLOSED, status[i][0])) {
       due[i][0] = '';                       // closed: no next touch point, ever
       closed++;
+      continue;
+    }
+
+    // STOP-ON-REPLY. Checked before the date maths, because a reply ends the
+    // sequence regardless of where in the 7/30 window the lead happens to be.
+    if (hasLC && String(replies[i][0]).trim()) {
+      var rd = startOfDay_(toDate_(replies[i][0]));
+      due[i][0] = '';
+      notes[i][0] = m8Note_(notes[i][0],
+        'replied' + (rd ? ' ' + fmt_(rd) : '') +
+        ' — follow-up sequence stopped, this is a live conversation now');
+      replied++;
       continue;
     }
 
@@ -158,6 +191,8 @@ function m8Run_() {
   Logger.log('     next touch = day ' + M8_DAY1 + ' ..... ' + due7);
   Logger.log('     next touch = day ' + M8_DAY2 + ' .... ' + due30);
   Logger.log('     🔴 lapsed, needs a Status .. ' + lapsed);
+  Logger.log('  replied -> sequence stopped ... ' + (hasLC ? replied
+             : 'column L ABSENT — stop-on-reply is OFF. Run add_enquiries_last_contact.gs'));
   Logger.log('  closed (' + M8_CLOSED.join('/') + ') ... ' + closed);
   Logger.log('  historical (pre-baseline) ..... ' + historical);
   Logger.log('  no usable date ................ ' + nodate);

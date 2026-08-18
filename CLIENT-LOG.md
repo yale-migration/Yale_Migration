@@ -446,4 +446,13 @@ CUTOVER-PLAN says so at the top. Also verified MASTER's full A–AE shape **thro
 automation actually uses** — an independent second source for the first time. All gates green:
 79/79 blueprints · 36/36 M5a · 22/22 M8 · hygiene pass · 10 .gs parse · 38 + 621 rows staged.
 
+2026-08-18 | internal | **M8 finished properly (D-339) — stop-on-reply built, 22 → 32 tests.**
+The cadence shipped this morning; the other half of the contracted line was missing and the module
+was being counted as done. ENQUIRIES gains column **L `Last Contact`**: the moment a human logs that
+the person came back, M8 clears the follow-up and says why. ⛔ **Not claimed as automatic** — reading
+the inbox is M9 and the channels are M6, both blocked on access we do not hold. When those land they
+write the same column and it becomes automatic with no change to M8. Closed statuses still take
+precedence; M8 never writes L itself; degrades loudly if L is absent. All gates: 79/79 · 36/36 ·
+32/32 · hygiene pass.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

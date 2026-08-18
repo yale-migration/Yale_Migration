@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 468K /     5327 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 472K /     5374 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 20:51
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 21:00
 
 | # | Decision |
 |---|---|
@@ -335,3 +335,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 20:5
 | **D-336** | "Did they ask anything from us?" — yes, and I had missed the biggest one twice |
 | **D-337** | Access IS granted — verified, and the verification handed us three things we did not have |
 | **D-338** | Their live intake sheet has none of the fields the automation needs — and that IS the cutover |
+| **D-339** | M8 finished — stop-on-reply, and being honest about what "automatic" means |

@@ -5325,3 +5325,50 @@ without it, every new client needs three fields typed by hand, forever.
 index M4 addresses (G/H/V/X/Y) and AE `Chase Flag`. Until now that shape had only ever been
 confirmed by Apps Script running *inside* the sheet. This confirms it **through the connection the
 automation actually uses** — a genuinely independent second source, and free.
+
+## D-339 | M8 finished — stop-on-reply, and being honest about what "automatic" means
+
+`m8_lead_followup.gs` shipped the 7/30 cadence on 18 Aug. ROADMAP M8 is *"7-day + 30-day lost-lead
+cadence, **stop-on-reply**"* — the second half was missing and the module was being counted as done.
+
+**The gap in one sentence:** M8 measured both follow-ups from the enquiry date and nothing else, and
+ENQUIRIES had nowhere to record that the person had come back to us. A lead who replied on day 2 and
+is mid-conversation with a consultant still got chased on day 30, by a system that could not see the
+conversation.
+
+### ⛔ What I did not build, and said so in the code
+
+**We cannot detect a reply.** Reading the inbox is M9; the WhatsApp and social channels are M6.
+Neither is built and both are blocked on access we do not hold (I-2, I-3, I-4). Wiring something
+that *looked* automatic would put a claim in a cell that the system cannot honour.
+
+**What it does instead:** a new `Last Contact` column at ENQUIRIES **L**, filled by whoever took the
+call. The moment a date lands there, M8 clears the follow-up date and writes
+*"replied <date> — follow-up sequence stopped, this is a live conversation now"*.
+
+🔑 A lead who has come back is not a cold lead, and a nurture sequence has no business chasing it.
+When M6/M9 eventually land they write **this same column**, and the behaviour becomes automatic with
+**no change to M8**. The manual step is the honest version of the automatic one, not a placeholder
+for it.
+
+### Design points worth keeping
+
+- **Stop-on-reply is checked BEFORE the date maths.** A reply ends the sequence regardless of where
+  in the 7/30 window the lead sits — including past day 30, so a lead who came back never gets the
+  *"set a Status"* nag.
+- **A closed status still wins.** `Converted` / `Lost Lead` / `Not Proceeding` take precedence over
+  a logged reply — tested, because two "stop" conditions racing is exactly where a wrong note gets
+  written.
+- **M8 never writes column L.** It is the human's field; the machine only reads it. Asserted by test.
+- **Degrades to the old behaviour if L is absent**, and says so out loud in the log rather than
+  silently doing less: `column L ABSENT — stop-on-reply is OFF`.
+- `build_enquiries_import.py` now emits 12 columns so the CSV and the tab cannot drift.
+
+**Tests 22 → 32**, all against the shipped `.gs` under a frozen clock. The pre-existing 22 still pass
+untouched, which is what proves the change is backward compatible rather than my saying it is.
+
+### Contract position
+
+M8 (2h) is now **genuinely complete** rather than complete-looking. That matters because on 18 Aug
+this module was briefly reported as M6 — an 8-hour line item shown finished on the strength of a
+2-hour one (D-331). Counting it honestly the second time is the point.
