@@ -1,4 +1,4 @@
-# WHERE WE STAND — 16 Aug 2026
+# WHERE WE STAND — 18 Aug 2026
 **The one file to read after a context reset.** Position, gaps, resume point.
 `STATUS.md` is history only. `DECISIONS-INDEX.md` → `DECISIONS.md` is why.
 
@@ -6,11 +6,17 @@
 
 # 1 · THE ONE-LINE POSITION
 
-**M5b is BUILT AND LIVE, and a system-level audit (D-323) found four defects at the seams between
-modules — including one that would have put 14 fake client folders in Yale's real OneDrive.** MASTER carries all 31 columns (Z–AD 22/22, AE 11/11), and M4 v4 is
-applied to the live scenario with route C drafting the document-chase email into `visa.lodgement@`.
-**Nothing on our side is blocked.** The only external dependency left is the team's reply
-(`TEAM`/`CONSULTANT`/`EMAIL`), which gates the pilot import and nothing else.
+🎉 **THE TEAM ANSWERED, 18 Aug — THE CLIENT IMPORT IS UNBLOCKED. 38 rows ready.**
+12 of 19 questions closed, the fee schedule corrected, and one answer reframed the whole pipeline:
+`LODGEMENT JULY TO PRESENT` is the **engaged-onwards subset**, not the client base — everything
+earlier lives on private per-consultant lists we have never seen (D-330).
+
+⛔ **Q9 — re-sharing the two Google Sheets with `project1@` — was NOT answered, and it is now the
+single remaining blocker.** Everything else on our side is built, tested and waiting.
+
+Behind that: M3 · M4a · M4b · M5a · M5b · M6 all built and verified; MASTER runs A–AE; the dashboard
+has 9 views all proven against data; four audit rounds (D-323…D-326) closed 15 defects, none of them
+in a feature.
 
 ---
 
@@ -36,7 +42,7 @@ applied to the live scenario with route C drafting the document-chase email into
 | # | Module | State | Notes |
 |---|---|---|---|
 | M1 | Discovery | ✅ done | reopened twice |
-| M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
+| M2 | Master data layer | ✅ built · 🟢 **38 rows ready to load** | MASTER A–AE + ENQUIRIES. Waits only on Q9 |
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard · 190 mapped D-325 · **OFF** |
 | M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |
@@ -58,37 +64,18 @@ applied to the live scenario with route C drafting the document-chase email into
 | M5b needs a 3rd Make scenario / paid plan | **Route C inside M4** | Free caps active scenarios at 2. No money question before go-live (D-322) |
 | "186 cannot be typed into MASTER" | ⛔ **WRONG — it was always there** | My read started one line below the evidence (D-325) |
 | "no 190 checklist exists" (D-236) | **It has existed since 11 Aug** | Comment outlived its truth; 190 now mapped (D-325) |
-| ENQUIRIES `Channel` left blank | **Defaults to `Phone`** | Instructed not to block; labelled an assumption, reversible (D-328) |
+| ENQUIRIES `Channel` → `Phone` | ⛔ **REVERTED to blank after 4 hours** | Rey: *"inquiries come from both whatsapp and social media"* — not phone (D-330) |
+| Student 500 charge = `$2,028` | **$2,500** (+ a full fee schedule) | Both our figures were stale; they supplied the real one (D-330) |
+| `LODGEMENT JULY TO PRESENT` = the client base | **the engaged-onwards SUBSET** | Consultants keep private per-client lists until engaged (D-330) |
+| Dashboard needs 3 access levels | **2** — Robinder is the only manager | *"Sir Robin is currently doing all those things"* (D-330) |
 | `SUMMARY OF CLIENTS` is the import source | **`LODGEMENT JULY TO PRESENT`** | We recommended it without opening it (D-315) |
 | Dashboard "Going quiet" = last contact −14 | **= Next Follow-up Due, same as its KPI** | Tile said 10, list shaded 5, same screen (D-326) |
 
-**Honest: ~34%** — 13.5 of 40 contracted build-hours. **~47 of 48 contract hours consumed**;
+**Honest: ~36%** — 14.5 of 40 contracted build-hours. **~47 of 48 contract hours consumed**;
 the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
 
 **Ops: 481 / 1,000 · 519 left · resets 25 Aug.** Both scenarios deliberately **OFF**.
 Everything since 16 Aug cost **0 ops** — blueprints edited over MCP, never run.
-
----|---|---|---|
-| M1 | Discovery | ✅ done | reopened twice |
-| M2 | Master data layer | ✅ built · 🔴 **empty** | MASTER + ENQUIRIES live. Needs the import |
-| M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
-| M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard (E2, D-315) · **OFF** |
-| M4b | Checklist email draft | ✅ **BUILT 16 Aug — applied to M4, verified live** | D-321 · **OFF** · draft only, never sends |
-| M5a | Dormancy detection | ✅ running daily · **import baseline added 16 Aug** | **Apps Script, not Make.** Zero ops. 24/24 in `test_m5_dormancy.js` |
-| M5b | Chase email draft | ✅ **BUILT + APPLIED 16 Aug — M4 v4 route C** | D-322 · **OFF** · draft only. Partition proved over **1,008 row shapes** |
-| M6 | Enquiry follow-up | ✅ **BUILT 18 Aug (D-328)** — Apps Script, zero ops, 22/22 | SOP-CI-001 10D verbatim. Baseline built in **before** the 621-row flood could happen |
-| M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
-| M8 | Follow-up engine | ⬜ not started | nurtures leads over ENQUIRIES. Not M5 |
-| M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
-| M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
-| M11 | Handover | 🔴 | **OneDrive runs on OUR personal account** — see §5 |
-| — | Dashboard | ✅ **9 views, all verified against seeded data 18 Aug** | goodwill, not MVP scope |
-
-**Honest: ~26%** — 10.5 of 40 contracted build-hours (D-311). **~47 of 48 contract hours consumed**;
-the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
-
-**Ops: 481 / 1,000 · 519 left · resets 25 Aug.** Both scenarios deliberately **OFF**, `activeScenarios: 0`.
-All 16 Aug work cost **0 ops** — blueprints edited over MCP, never run.
 
 ---
 
