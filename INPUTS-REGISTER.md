@@ -122,3 +122,27 @@ missing ones — **I-2 and I-3** — were never asked for at all, and between th
 ⛔ **Not four separate messages.** Cap is four items for Robinder (`VOICE-MESSAGE-robinder.md`);
 the team took nineteen in one document and answered twelve. **Channel questions to the team,
 account and billing questions to Robinder.**
+
+
+---
+
+## 5 · 🔬 Data issues inside the returned sheet (D-333) — need one reply each
+
+| Row(s) | Issue | Why it cannot be guessed |
+|---|---|---|
+| 28 | `JAANVI SHARMA` here vs `JANVI SHARMA` on their tab | becomes a OneDrive folder name and is typed into client email |
+| 22 + 23 | **one email on two clients** (482 and 500, both RJ) | email is MASTER's identity key; both checklists land in one inbox |
+| 13 | domain `gmil.com` | one character from `gmail.com` — will bounce, and we must not invent an address |
+| 18 · 24 · 34 · 41 | **485 with no skills authority** | five different 485 checklists exist; M4 cannot choose |
+| 34 | no consultant + no email + 485 with no authority | unprocessable as it stands |
+| all 41 | **column F "anyone else on the application" returned empty** | we told them ourselves this one "has real consequences" — wrong checklist otherwise |
+
+**Degraded but not blocking:** 12 rows without an email · 6 without a consultant (→ `Unassigned`).
+
+## 6 · ✅ Verified clean — do not re-check these
+
+- Visa type on the returned sheet matches their own `TYPE OF VISA APPLICATION` on **all 39** joinable
+  rows — **0 mismatches**.
+- `SAMPLE` was dropped by them without being asked again (answers Q8 in practice).
+- `RODEL CLUTARIO` is duplicated in **their** tab; the returned list correctly has him once.
+- Office is BRISBANE on all 41 — Q3 answered by omission, no Townsville clients in this batch.

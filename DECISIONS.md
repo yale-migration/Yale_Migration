@@ -5037,3 +5037,58 @@ has come from reading a primary source that had been summarised somewhere.** D-3
 held), D-315 (a tab we recommended unopened), D-325 (a read that started one line below the
 evidence), D-331 (a ✅ nobody checked), and now an access checklist we wrote ourselves and filed.
 `INPUTS-REGISTER.md` §1b is that checklist, with a state column, so it cannot be filed again.
+
+## D-333 | Forensic pass on the two returned files — six data issues, and what is actually unanswered
+
+Third audit, this time row-by-row against their original tab rather than on summary counts.
+
+### Which questions are genuinely still open
+
+My first pass on `ANSWERED.docx` used a regex that matched any paragraph starting with `no…` — it
+scored **"NOVEMBER"** (table text inside the question itself) as an answer to **Q10**. Corrected by
+reading each question block between its own number and the next.
+
+**Answered on the sheet:** Q1 Q2 Q3 Q7. **Answered in prose:** Q4 Q6 Q11 Q13 Q14 Q15 Q16 Q18 Q19.
+**Deferred:** Q17 (*"Need to ask sir ROBIN"*).
+🔴 **Genuinely unanswered: Q5 · Q8 · Q9 · Q10 · Q12.**
+
+**Q5 is the one that bites.** We told them ourselves it *"has real consequences — the system sends a
+different checklist to a single applicant than to one with a partner or dependent included."*
+Column F came back **0 of 41**. Two rows are recoverable from the visa text (`485 Dependent`,
+`491 DEPENDENT`); the other 36 are unknown, and the wrong checklist is a document error with an
+RMA's name on it.
+
+### Six issues inside the returned sheet
+
+| | Finding |
+|---|---|
+| 1 | 🔴 **`JAANVI SHARMA`** on the returned list vs **`JANVI SHARMA`** on their own tab. One letter. Same person almost certainly — but the name becomes a **OneDrive folder** and is typed into an email to the client, so it is not ours to pick |
+| 2 | 🔴 **One email address on two different clients** — rows 22 and 23, both RJ, one **482** and one **500**. Email is MASTER's identity key, and M4b would send both clients' checklists to one inbox |
+| 3 | 🔴 **`gmil.com`** — row 13, a 500 client of Star's. One character from `gmail.com`, structurally valid, will bounce |
+| 4 | 🔴 **4 × 485 with no skills authority** — rows 18, 24, 34, 41. M4 cannot choose between five different 485 checklists |
+| 5 | ⚠️ **Row 34 is unprocessable**: no consultant, no email, and a 485 with no authority |
+| 6 | ✅ **`RODEL CLUTARIO` is duplicated in THEIR original tab** — the returned list has him once, which is the correct call and confirms they cleaned it |
+
+**Verified clean:** every visa type on the returned sheet matches their own `TYPE OF VISA
+APPLICATION` column — **0 mismatches across 39 joinable rows.** The `SAMPLE` row was dropped without
+being asked twice, which answers Q8 in practice.
+
+Coverage of the 38 importable: **12 without an email** (folder + checklist still work, no email
+draft) and **6 without a consultant** (→ `Unassigned`). Neither blocks; both degrade.
+
+### What THEY asked US, still unanswered
+
+Q6: *"can we add a column as well which assessing authority required for 485? Or do you have any
+suggestion we can minimize this on the sheet?"*
+
+**Answer owed, and it is a good question.** Yes — one `SKILLS AUTHORITY` column on the lodgement
+tab, as a **dropdown of exactly five values** (`TRA` · `VETASSESS` · `ACECQA` ·
+`Engineers Australia` · `Not required (Bachelor/Masters)`) so nobody free-types a sixth. It is only
+ever filled for 485s — **4 rows today** — and blank everywhere else. That is the whole of the
+minimisation: it is not a new field per client, it is a field that applies to one visa line.
+
+### Scope correction on this round
+
+Meta and OneDrive are **excluded from the team message** on Sharjeel's instruction — this thread is
+with the team, and both are Robinder-level items. They remain open in `INPUTS-REGISTER.md`
+(I-3, I-8) and are not closed by being left out of one email.
