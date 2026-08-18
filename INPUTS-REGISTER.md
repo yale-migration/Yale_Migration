@@ -83,6 +83,10 @@ marked it 🟢.
 | **I-13** | 🔴 **Confirmation the 23 checklists are CURRENT** (checklist item 14) | **M4 going live at all** | — | ⛔ **never chased** |
 | **I-14** | 🔴 **`Client Enquiry Form`** (checklist item 12) | **C-1**, and M6's field set | 2 | ⛔ **never asked** — D-314 said "ask for it, do not design it" |
 | **I-15** | Inquiry-SOP follow-up Email/SMS templates (item 10) | M8 wording, M6 auto-reply | — | 🟠 partial |
+| **I-16** | 🔴 **"Anyone else on the application?" — Q5, returned 0/41** | **the RIGHT checklist per client** | — | ✅ asked, came back empty |
+| **I-17** | 🔴 **Which list is live — Q10, never answered** | whether **247 more people** from `REYWARD JAKE M GAMOL-2026` also import | ? | ✅ asked, **not answered** |
+| **I-18** | Where the **walk-in** enquiry sheet lives (checklist item 6 sibling) | M6 walk-in fold-in | ~1 | ⛔ never asked |
+| **I-19** | Whose are `Bne.skilled@` and `migrate@` — Q12 | roster completeness, M9 routing | — | ✅ asked, not answered |
 
 ---
 

@@ -5128,3 +5128,33 @@ once, which is exactly when a defence is supposed to hold.
 
 🔑 **The gate was never the weak point. The way I called it was.** Three audits found checks that
 passed for the wrong reason; this is a check that FAILED for the right reason and was not heard.
+
+
+## D-335 | Final pre-send reconciliation — six items were missing from my own email
+
+Two-way check before anything goes out: **every open item must appear in the message, and every
+item in the message must still be open.** Run against `CLIENT-ASKS.md` and `INPUTS-REGISTER.md`
+rather than from memory.
+
+**The draft was incomplete in six places.** All six are things we already knew and had simply not
+carried into the message:
+
+| Missing | Why it matters |
+|---|---|
+| **A-27 — say YES to the client codes** | *They proposed it themselves* (Q16) and are waiting. `YM-2026-#####` has been running since 2 Aug. Not answering a client's own proposal is the cheapest possible way to look inattentive |
+| **Q10 — which list is live** | Never answered. If `REYWARD JAKE M GAMOL-2026` is also live, that is **~247 more people**, and it is a scope question, not a detail |
+| **I-18 — the walk-in sheet** | ROADMAP has said *"location still to confirm"* for weeks. One line, unblocks part of M6 |
+| **Q12 — `Bne.skilled@` / `migrate@`** | Two roster addresses with no owner. Affects M9 routing |
+| **I-15 — follow-up Email/SMS templates** | Access-checklist item 10, still partial |
+| **I-9 — 2–3 real files for testing** | M10 needs them and it costs the team a minute to nominate |
+
+Also confirmed: **I-2 (Anthropic key) is deliberately NOT in the team message** — it is a spend
+decision and the team cannot authorise it. ⛔ **Recorded as held for Robinder, not dropped.** Meta
+(I-3), WhatsApp (I-4) and OneDrive (I-8) excluded on instruction; all four remain open.
+
+**Both client files are now fully read** — no cell comments, no tracked changes, no footnotes, no
+hidden sheets, one visible tab. There is nothing further to extract from either.
+
+🔑 **The draft was not wrong, it was incomplete — and incompleteness is invisible from inside the
+draft.** It only showed up by listing the open items independently and ticking them off. That
+reconciliation is now the last step before any client message, in `/yale-client-message`.

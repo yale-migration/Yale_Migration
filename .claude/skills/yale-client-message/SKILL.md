@@ -52,5 +52,15 @@ New requests are **not** scope. Log in `CHANGE-REQUESTS.md` + `PHASE-2-3-BACKLOG
 reply *"Phase 2/3 list mein daal diya"*, keep building. We have already absorbed ~16h
 free (`HOURS-LEDGER.md`). Never absorb. Quote before working.
 
-## 8 · Record it
+## 8 · 🔴 RECONCILE BOTH WAYS before sending
+List every open item from `CLIENT-ASKS.md` **and** `INPUTS-REGISTER.md`, then tick each one off
+against the draft:
+- **every open item → is it in the message, or deliberately excluded for a stated reason?**
+- **every question in the message → is it still genuinely open?**
+
+⛔ Deliberately excluded is fine; **silently dropped is not.** On 18 Aug a draft that read complete
+was missing six items, including a *yes* to something the client had proposed themselves (D-335).
+Incompleteness is invisible from inside a draft — it only appears when the list is built separately.
+
+## 9 · Record it
 Append to `CLIENT-LOG.md` the same day, and update the row in `CLIENT-ASKS.md`.

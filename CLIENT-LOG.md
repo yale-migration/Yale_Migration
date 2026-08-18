@@ -399,4 +399,13 @@ longest single item in the timeline"* by the Engagement Letter itself and is **2
 D-314 said "ask for it, do not design it", and we never asked. Their SOPs name **six** documents we
 have never seen. Revised: **≈18.5 of ~21 remaining hours are input-blocked; ~2.5 are mine.**
 
+2026-08-18 | internal | **Pre-send reconciliation (D-335) — the draft team message was missing six
+items**, found by listing open items from CLIENT-ASKS + INPUTS-REGISTER and ticking them off rather
+than re-reading the draft. Biggest miss: **we never said YES to the client codes they proposed
+themselves** (Q16). Also missing: Q10 (which list is live — potentially 247 more people), the
+walk-in sheet location, Q12, the follow-up templates, and nominating 2–3 files for testing.
+Both client files now **fully read** — no comments, tracked changes, footnotes or hidden sheets.
+I-2 (Anthropic key) deliberately held for Robinder, not dropped. `/yale-client-message` now ends
+with a mandatory two-way reconciliation.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
