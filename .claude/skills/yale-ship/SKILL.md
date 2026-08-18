@@ -8,7 +8,14 @@ description: The Yale session-end ritual — hygiene gate, WHERE-WE-STAND, DECIS
 Run in this order. Each step exists because skipping it cost something dated.
 
 ## 1 · Hygiene
-`python3 scripts/repo_hygiene.py` — must print **HYGIENE PASS**.
+```bash
+python3 scripts/repo_hygiene.py          # on its own line — read the whole output
+```
+⛔ **NEVER pipe it into `tail`, `grep` or `head` inside an `&&` chain.** A pipeline's exit status is
+the LAST command's, so `repo_hygiene.py | tail -1 && git commit` **commits even when the gate
+fails** — that is exactly how two client names reached this repo on 18 Aug (D-334). The gate printed
+`LEAKED` six times and the commit went through.
+If the output is long: `python3 scripts/repo_hygiene.py > /tmp/hyg.txt 2>&1; echo $?`
 
 The commit hook enforces this too (D-329), so a failure here will block the commit
 anyway. Run it first so the failure is a sentence rather than a rejected tool call.

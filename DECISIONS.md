@@ -5062,12 +5062,12 @@ RMA's name on it.
 
 | | Finding |
 |---|---|
-| 1 | 🔴 **`JAANVI SHARMA`** on the returned list vs **`JANVI SHARMA`** on their own tab. One letter. Same person almost certainly — but the name becomes a **OneDrive folder** and is typed into an email to the client, so it is not ours to pick |
+| 1 | 🔴 **one client is spelled differently on the returned list and on their own tab**. One letter. Same person almost certainly — but the name becomes a **OneDrive folder** and is typed into an email to the client, so it is not ours to pick |
 | 2 | 🔴 **One email address on two different clients** — rows 22 and 23, both RJ, one **482** and one **500**. Email is MASTER's identity key, and M4b would send both clients' checklists to one inbox |
 | 3 | 🔴 **`gmil.com`** — row 13, a 500 client of Star's. One character from `gmail.com`, structurally valid, will bounce |
 | 4 | 🔴 **4 × 485 with no skills authority** — rows 18, 24, 34, 41. M4 cannot choose between five different 485 checklists |
 | 5 | ⚠️ **Row 34 is unprocessable**: no consultant, no email, and a 485 with no authority |
-| 6 | ✅ **`RODEL CLUTARIO` is duplicated in THEIR original tab** — the returned list has him once, which is the correct call and confirms they cleaned it |
+| 6 | ✅ **one client is duplicated in THEIR original tab** — the returned list has him once, which is the correct call and confirms they cleaned it |
 
 **Verified clean:** every visa type on the returned sheet matches their own `TYPE OF VISA
 APPLICATION` column — **0 mismatches across 39 joinable rows.** The `SAMPLE` row was dropped without
@@ -5092,3 +5092,39 @@ minimisation: it is not a new field per client, it is a field that applies to on
 Meta and OneDrive are **excluded from the team message** on Sharjeel's instruction — this thread is
 with the team, and both are Robinder-level items. They remain open in `INPUTS-REGISTER.md`
 (I-3, I-8) and are not closed by being left out of one email.
+
+## D-334 | I leaked two client names into the repo, the gate caught it, and I committed anyway
+
+Writing up D-333 I put **two real client surnames into `DECISIONS.md` and `INPUTS-REGISTER.md`** —
+while documenting a finding about those very clients. That is **D-317 happening again, identically**:
+the original leak in August was also a client name written into a code comment while documenting
+client PII.
+
+`repo_hygiene.py` **caught it**. It printed `LEAKED` six times and exited non-zero.
+
+**The commit went through anyway**, because of how I invoke it:
+
+```bash
+python3 scripts/repo_hygiene.py 2>&1 | tail -1 && git add -A && git commit ...
+```
+
+🔴 **A pipeline's exit status is the LAST command's.** `tail` succeeded, so `&&` saw success. I have
+been running the gate through `| tail -1` for readability all week — **the gate has been advisory
+this whole time and I did not know it.** It failed loudly, printed FAIL to my screen, and I read the
+last line, saw a remote warning, and committed.
+
+**And the D-329 hook did not save me.** `.claude/settings.json` was written *during this session*;
+hook config loads at session start, so the `PreToolUse` guard I built two days ago is not active in
+the session that built it. It will fire from the next session on. Belt and braces both failed at
+once, which is exactly when a defence is supposed to hold.
+
+**Fixes:**
+1. Names redacted from both files to row references — `row 28`, `rows 22 and 23`. **The row number is
+   all the finding ever needed.** Naming the client added nothing except the leak.
+2. ⛔ **Never pipe the gate.** `python3 scripts/repo_hygiene.py` on its own line, or
+   `python3 scripts/repo_hygiene.py > /tmp/hyg.txt 2>&1; echo $?` when the output is long.
+   `/yale-ship` updated to say so.
+3. The hook stays as the real defence — it just could not help in the session that created it.
+
+🔑 **The gate was never the weak point. The way I called it was.** Three audits found checks that
+passed for the wrong reason; this is a check that FAILED for the right reason and was not heard.
