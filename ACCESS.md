@@ -21,7 +21,7 @@ Secrets live only in: Make connections (client's org) · password manager · cli
 | 7 | Meta Business Manager | Employee access + assets | ✅ | Page + IG + WhatsApp assigned |
 | 8 | WhatsApp Business API | Meta verification | 🟡 | CHECK status in Security Centre ourselves |
 | 9 | project1@ Gmail | Password held | 🟡 | ⛔ **Delegation DROPPED** (D-78/D-79/D-80 — impossible to an external Gmail, invisible to the API). Needs a Make↔Gmail **OAuth** at M4 time (D-13). Client should still rotate password + add 2FA |
-| 10 | Claude API (Anthropic) | Client's key, in Make connection | ✅ | Client's billing per Engagement Letter |
+| 10 | Claude API (Anthropic) | Client's key, in Make connection | 🔴 **NOT HELD** | ⛔ **This row said ✅ for weeks and it was false (D-331).** `connections_list` on team 2210317 returns FOUR connections — Google, Gmail, Microsoft, and Make's own default AI provider. **There is no Anthropic connection.** It has never been asked for: no `CLIENT-ASKS` row, no `CLIENT-LOG` entry. **M9 (5 contracted hours) cannot start without it.** Client's billing per the Engagement Letter — so it is also the first running cost they will see |
 | 11 | Microsoft account for browsing | MSA on sharry00010@gmail.com | 🟡 | Created new outlook_ acct by mistake — redo with Gmail as MSA, or use link |
 | 12 | Xero | — | ⛔ deferred | Phase 2 only — do not request yet |
 
@@ -126,7 +126,7 @@ Every automation depends on an authenticated identity. If that identity's access
 | OneDrive (`__IMTCONN__ 9279810`) | `sharry00010@gmail.com` | ❌ **US** | 🔴 folders stop being created |
 | Apps Script 5-min trigger | Sharjeel's Google account | ❌ **US** | 🔴 client codes stop being issued (D-153) |
 | Make org membership | `info@yalemigration.com.au` owns the org; we are Admin members | ✅ CLIENT | 🟢 |
-| Claude API key | Client's key, client's billing | ✅ CLIENT | 🟢 |
+| Claude API key | Client's key, client's billing | 🔴 **NOT HELD — never requested** | 🔴 blocks M9 (D-331) |
 
 **Two items to transfer at M11, both silent-failure risks. The Sheets connection is already correct** —
 better than previously recorded, which assumed all three were ours.

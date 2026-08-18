@@ -4900,3 +4900,77 @@ Encoded in `scripts/build_master_import.py`.
 38 rows. M3 would create 38 folders; **M4 files 28 checklists**, stamps **10 NEEDS REVIEW**
 (6 unsupported visa lines + 4 485s with no authority); **M4b drafts 19 emails**. Estimated first run
 **~343 operations** against the 519 left this month — it fits, with no room to run it twice.
+
+## D-331 | Requirements audit — two inputs never asked for, and a module shipped under the wrong number
+
+Asked to prove we have everything the build needs, I audited the contract rather than my own module
+list. Three findings, and none of them were visible from inside the work.
+
+### 1 · 🔴 `ACCESS.md` marked the Claude API key ✅ HELD. There is no such connection.
+
+`connections_list` on team 2210317 returns **four** connections:
+
+| id | what | whose |
+|---|---|---|
+| 9501125 | Google Sheets | `project1@` ✅ client |
+| 9452213 | Gmail | `visa.lodgement@` ✅ client |
+| 9279810 | Microsoft | `sharry00010@gmail.com` 🔴 **ours** |
+| 9279683 | Make's own default AI provider | Make, not Anthropic |
+
+**No Anthropic connection.** And no `CLIENT-ASKS` row, no `CLIENT-LOG` entry — it was never
+requested. `ACCESS.md` carried `✅ | Client's billing per Engagement Letter` in two places.
+
+🔑 **The Engagement Letter saying whose key it will be is not evidence that we have the key.** The
+row recorded a *decision about ownership* and was read for weeks as a *statement of possession*.
+**M9 is 5 contracted hours and cannot start.** Same family as D-310: a summary that omits something
+reads identically to a summary of something that never existed.
+
+### 2 · 🔴 What I built and shipped as "M6" is M8
+
+ROADMAP, read properly:
+
+```
+M6 — Enquiry capture hub        (8h): FB/IG -> Make -> ENQUIRIES + auto-reply, website form,
+                                      walk-in sheet, dedupe, consultant auto-assign, 7-day rule
+M8 — Lead follow-up sequences   (2h): 7-day + 30-day cadence, stop-on-reply
+```
+
+`m6_enquiry_followup.gs` is the 7/30 cadence. That is **M8**, in full, minus stop-on-reply. Grep it
+for `Facebook` and you get **zero**. Renamed to `m8_lead_followup.gs`, prefixes `M6_` → `M8_`,
+tests still 22/22.
+
+🔑 **The cost was not the code, it was the status.** `WHERE-WE-STAND` showed an **8-hour** module
+complete on the strength of a **2-hour** one — a 6-hour overstatement on a 48-hour engagement, and
+M6 is the module with the most unasked-for dependencies behind it. Progress reported against the
+wrong line item is how a fixed-price build quietly runs out of hours.
+
+### 3 · The real constraint is no longer engineering
+
+New file: **`INPUTS-REGISTER.md`**, now step 3 of `CLAUDE.md`'s START HERE. One row per input,
+⛔ **✅ only with a primary source named in an Evidence column.**
+
+**Twelve inputs are not held. Two were never asked for at all** — the Anthropic key (I-2, 5h) and
+Meta/Facebook/Instagram access (I-3, ~3h). Between them they gate **13 of the 40 contracted hours**.
+
+| | h | buildable today? |
+|---|---|---|
+| M6 capture hub | 8 | 🔴 no — Meta, website form, walk-in location |
+| M9 triage | 5 | 🔴 no — no API key |
+| M10 testing | 2 | 🔴 no — no real files |
+| M11 handover | 2 | 🔴 no — OneDrive still ours |
+| C-2 upload link | 2 | 🔴 no — same |
+| **M7 phone intake** | **4** | 🟢 **yes** |
+| **C-1 intake form** | **2** | 🟢 **yes** |
+| stop-on-reply | 0.5 | 🟢 yes |
+
+**≈15 of ~21 remaining hours are blocked on inputs. ≈6.5 are mine to do.**
+
+⛔ **"Q9 is the single remaining blocker" was wrong** and I wrote it this morning. It is the blocker
+on the *import*. It is not the blocker on the *build*.
+
+### Why this was invisible until now
+
+Every previous audit looked at what we had built. This one asked what the contract requires and
+walked backwards to the inputs. The gaps were never in the code — they were in the space between
+"the client will provide X" and "the client has provided X", which no test covers and no module
+touches. `INPUTS-REGISTER.md` exists to make that space a table with an evidence column.

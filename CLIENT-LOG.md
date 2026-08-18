@@ -377,4 +377,15 @@ already built. Rey confirmed enquiries are **WhatsApp + social media, not phone*
 `Phone` default was wrong and is reverted. Files placed in `client-data/`, **not** `docs/`: docs is
 tracked and origin is a personal GitHub account.
 
+2026-08-18 | internal (no client contact) | **Requirements audit against the CONTRACT (D-331).**
+Three findings. (1) 🔴 `ACCESS.md` marked the Claude API key **✅ held** — `connections_list` proves
+there is **no Anthropic connection** and it was **never asked for**. M9 is 5 contracted hours and
+cannot start. The Engagement Letter saying whose key it will be is not evidence we have it.
+(2) 🔴 What I shipped this morning as **M6 is actually M8** — the 7/30 cadence, 2h, not the 8h
+capture hub. Renamed; the cost was the *status*, a 6-hour overstatement on a 48h engagement.
+(3) New **`INPUTS-REGISTER.md`**: twelve inputs not held, **two never requested** (Anthropic key,
+Meta page access) gating **13 of 40 contracted hours**. **≈15 of ~21 remaining hours are blocked on
+inputs, not engineering; ≈6.5 are mine.** ⛔ "Q9 is the single blocker" — written by me this
+morning — was wrong: it blocks the import, not the build.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

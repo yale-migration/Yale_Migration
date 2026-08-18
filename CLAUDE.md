@@ -12,8 +12,11 @@ referral inside a family network — mistakes travel beyond this engagement.
 
 1. **`WHERE-WE-STAND.md`** — position, gaps, resume point. **This file owns "where are we".**
 2. **`CLIENT-ASKS.md`** — what we are waiting on the client for
-3. **`CLIENT-DATA-INVENTORY.md`** — before touching or asking for any client data
-4. `DASHBOARD-TRACKER.md` — if the work touches the dashboard
+3. **`INPUTS-REGISTER.md`** — 🔑 **every input the build needs and whether we VERIFIABLY hold it.**
+   A row may only be ✅ with a primary source named. Created because `ACCESS.md` marked the Claude
+   API key ✅ for weeks when no such connection existed (D-331)
+4. **`CLIENT-DATA-INVENTORY.md`** — before touching or asking for any client data
+5. `DASHBOARD-TRACKER.md` — if the work touches the dashboard
 
 ⛔ **NEVER read `DECISIONS.md` whole — 350KB, it will eat the session.**
 Use `DECISIONS-INDEX.md` to find the number, then `grep -A 25 "^D-297" DECISIONS.md`.
@@ -95,6 +98,7 @@ broken formula and a correct one identically (D-292…D-296).
 |---|---|
 | **`WHERE-WE-STAND.md`** | 🔑 position · gaps · resume point |
 | `CLIENT-ASKS.md` | outstanding balance with the client |
+| **`INPUTS-REGISTER.md`** | 🔑 every input the build needs · **verified** state only · what each one blocks |
 | `CLIENT-DATA-INVENTORY.md` | every client file, what is in it, what is forbidden |
 | `CLIENT-SOP-WORKFLOWS.md` | their own 12 process SOPs — the spec for M5/M6/M7/M9 |
 | `DASHBOARD-TRACKER.md` | the dashboard workstream end to end |

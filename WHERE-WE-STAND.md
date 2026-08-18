@@ -11,8 +11,14 @@
 `LODGEMENT JULY TO PRESENT` is the **engaged-onwards subset**, not the client base — everything
 earlier lives on private per-consultant lists we have never seen (D-330).
 
-⛔ **Q9 — re-sharing the two Google Sheets with `project1@` — was NOT answered, and it is now the
-single remaining blocker.** Everything else on our side is built, tested and waiting.
+⛔ **Q9 — re-sharing the two Google Sheets with `project1@` — was NOT answered.** It blocks the
+import.
+
+🔴 **BUT Q9 IS NOT THE ONLY BLOCKER, and saying so on 18 Aug was wrong (D-331).** A full requirements
+audit found **twelve inputs we do not hold**, two of which had never been asked for at all:
+**no Anthropic API key** (M9, 5h — `ACCESS.md` had it marked ✅ and there is no such connection) and
+**no Meta/Facebook/Instagram access** (M6, ~3h). **≈15 of the ~21 remaining contracted hours are
+blocked on inputs, not on engineering.** ▶ **`INPUTS-REGISTER.md`** is now the authority on this.
 
 Behind that: M3 · M4a · M4b · M5a · M5b · M6 all built and verified; MASTER runs A–AE; the dashboard
 has 9 views all proven against data; four audit rounds (D-323…D-326) closed 15 defects, none of them
@@ -48,9 +54,9 @@ in a feature.
 | M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |
 | M5a | Dormancy detection | ✅ running daily | Apps Script, 0 ops · 36/36 |
 | M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
-| M6 | Enquiry follow-up | ✅ **built 18 Aug** | D-328 · SOP-CI-001 10D · 22/22 · 0 ops |
+| M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
-| M8 | Follow-up engine | ⬜ **NEXT** | M6 schedules the touch points; M8 is what goes out |
+| M8 | **Lead follow-up sequences (2h)** | ✅ **DONE 18 Aug** (bar stop-on-reply) | D-328/D-331 · 7/30 cadence · 22/22 · 0 ops · was mislabelled M6 for a day |
 | M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
@@ -227,6 +233,7 @@ exactly the moment the check exists for. Both fixed and both tested by planting 
 | `python3 scripts/verify_blueprints.py` | **79 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
+| **`INPUTS-REGISTER.md`** | 🔑 read before planning ANY module — what we hold, what we do not, what each gap blocks (D-331) |
 | `python3 scripts/build_master_import.py` | **38 MASTER rows** from the team's returned list joined to their live tab. Report-only by default (D-330) |
 | `python3 scripts/build_enquiries_import.py` | 621 ENQUIRIES rows from their call log. **Report-only by default**; `--write` emits PII outside the repo. Repairs the transposed dates (D-327) |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |

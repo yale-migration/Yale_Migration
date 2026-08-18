@@ -1,10 +1,10 @@
-// Loads the REAL m6_enquiry_followup.gs (plus m5_dormant_detector.gs, whose date
+// Loads the REAL m8_lead_followup.gs (plus m5_dormant_detector.gs, whose date
 // helpers it reuses) and runs it against a fake ENQUIRIES tab under a frozen clock.
 // The logic under test is the shipped file, unmodified.
 const fs = require('fs');
 const DIR = "/Users/muhammadsharjeel/Downloads/SOP'S/yale-build/scripts/";
 const M5 = fs.readFileSync(DIR + 'm5_dormant_detector.gs', 'utf8');
-const M6 = fs.readFileSync(DIR + 'm6_enquiry_followup.gs', 'utf8');
+const M6 = fs.readFileSync(DIR + 'm8_lead_followup.gs', 'utf8');
 
 let LOG = [];
 const Logger = { log: m => LOG.push(String(m)) };
@@ -63,7 +63,7 @@ function run({ today, baseline, rows }) {
     static now() { return new RealDate(today).getTime(); }
   };
   const fn = new Function('SpreadsheetApp', 'Logger', 'Utilities', 'LockService', 'Date', '__B__',
-    M5 + '\n' + M6 + '\n; M6_BASELINE = __B__; updateEnquiryFollowUps();');
+    M5 + '\n' + M6 + '\n; M8_BASELINE = __B__; updateEnquiryFollowUps();');
   fn(SpreadsheetApp, Logger, Utilities, LockService, FrozenDate, baseline);
   return { grid: sheet._grid, log: LOG.join('\n') };
 }
@@ -147,8 +147,8 @@ console.log('\n=== idempotency: the M6 note must never stack ===');
 {
   let g = [blankRow(), enq('A', '2026-09-01', '', 'called him, will try Monday')];
   for (let i = 0; i < 6; i++) g = run({ today: '2026-10-05T10:00:00', baseline: BASE, rows: g }).grid;
-  const hits = (note(g, 1).match(/M6:/g) || []).length;
-  check('exactly one M6: line after 6 runs', hits === 1, note(g, 1));
+  const hits = (note(g, 1).match(/M8:/g) || []).length;
+  check('exactly one M8: line after 6 runs', hits === 1, note(g, 1));
   check("the consultant's own words survive untouched",
         note(g, 1).indexOf('called him, will try Monday') > -1, note(g, 1));
 }
