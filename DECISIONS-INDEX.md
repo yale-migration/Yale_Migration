@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 436K /     4800 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 440K /     4902 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 00:39
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 16:09
 
 | # | Decision |
 |---|---|
@@ -326,3 +326,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 00:3
 | **D-327** | ENQUIRIES import — and 47% of their enquiry dates are wrong in the source file |
 | **D-328** | M6 enquiry follow-up built — and the baseline lesson applied BEFORE it bit |
 | **D-329** | Enforcing our own rules, and the hole that testing the enforcement exposed |
+| **D-330** | The team's answers — 12 of 19 closed, the import unblocked, and two premises overturned |

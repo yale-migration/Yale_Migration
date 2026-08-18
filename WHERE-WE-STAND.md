@@ -139,7 +139,7 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **`DATA SHEET` → ENQUIRIES — BUILT 18 Aug (D-327).** `build_enquiries_import.py`, **621 rows** ready. Found **47% of their enquiry dates day/month transposed by Excel's US locale** — 55 impossible future dates → 0 after repair. `Status` and `Channel` left blank on purpose: the vocabulary is real, the source field does not exist | — | 🔴 needs the client to confirm Channel, then `--write` + paste |
 | ~~—~~ | ✅ **M6 — BUILT 18 Aug (D-328).** 7/30 cadence, historical baseline, never writes Status | — | 22/22 |
 | **4** | **M8 follow-up engine** — nurture over ENQUIRIES. M6 schedules; M8 is what actually goes out | 3 | 🟢 |
-| — | **10-row pilot import** | 1 | 🔴 waits on the team's reply (`TEAM`/`CONSULTANT`/`EMAIL`) |
+| **0** | 🟢 **CLIENT IMPORT — 38 rows ready, `build_master_import.py`.** Runs the moment Q9 lands and the demo rows come out | 1 | ⛔ **Q9 (A-20) only** |
 
 ### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
 
@@ -240,6 +240,7 @@ exactly the moment the check exists for. Both fixed and both tested by planting 
 | `python3 scripts/verify_blueprints.py` | **79 checks.** Proves M3/M4 routes partition their input — enumerates all 1,008 row shapes M4's trigger can emit and asserts exactly one of the three routes fires |
 | `python3 scripts/audit_all_tabs.py` | census of every tab; skips credential columns by header |
 | `python3 scripts/build_client_questions.py` | regenerates the client documents + CSV with computed figures |
+| `python3 scripts/build_master_import.py` | **38 MASTER rows** from the team's returned list joined to their live tab. Report-only by default (D-330) |
 | `python3 scripts/build_enquiries_import.py` | 621 ENQUIRIES rows from their call log. **Report-only by default**; `--write` emits PII outside the repo. Repairs the transposed dates (D-327) |
 | `python3 scripts/build_pilot_import.py` | pilot rows from their real list. `--office`/`--team` default **blank** on purpose |
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |

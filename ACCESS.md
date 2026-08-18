@@ -1,4 +1,13 @@
 # ACCESS INVENTORY — status only. ⚠️ NO passwords, NO API keys, NO tokens in this file, ever.
+
+## ⚠️ ROSTER CHANGES — 18 Aug 2026 (D-330, from `ANSWERED.docx`)
+
+| Change | Detail | Action |
+|---|---|---|
+| 🔴 **Mershe Ventura has LEFT** | *"not part of the company already but the email address `student@yalemigration.com.au` is still on her name"* | ⛔ **A live mailbox attributed to a former employee**, at a firm holding ImmiAccount credentials. Raise with Robinder on the same call as A-18 — verbally, not in writing |
+| ✅ **GOPI has joined** | no email, team or visa line given yet | Not in MASTER's `Assigned Consultant` dropdown. Add when we have the email — one more question, not urgent |
+| ✅ **Manager = Robinder, ALONE** | *"Sir Robin is currently doing all those things"* | 🔑 The dashboard needs **two** access levels, not three. Simplifies Looker row-level security (P2-01) |
+| Nisha | still recorded as former staff — not contradicted | no change |
 Secrets live only in: Make connections (client's org) · password manager · client's own consoles.
 
 | # | System | Access method | Status | Notes |

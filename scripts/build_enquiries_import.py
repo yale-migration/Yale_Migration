@@ -50,18 +50,23 @@ and touching them would break what works.
           and then feeding it to an automation. Left blank. The raw remark is
           carried into Notes so a human can set it in seconds.
 
-`Channel` DEFAULTED TO 'Phone' 18 Aug, on instruction not to block on it. This is a
-          judgement, so here is the evidence and how to undo it.
-          FOR: the source column is literally titled 'Phone Number'; 654 of 676 rows
-          carry one; the remarks are full of 'call back' (22) and 'No response but
-          send a message'. SOP-CI-001 lists 'telephone' as a channel.
-          AGAINST: many numbers are +91 India, and WhatsApp is the dominant channel
-          for that clientele. It is genuinely a mix and the file does not say.
-          REVERSIBLE IN ONE STEP: every imported row carries
-          'Imported from DATA SHEET row N on <date>' in Notes, so the whole batch can
-          be filtered and bulk-changed. Or re-run with --channel WhatsApp.
-          ⚠️  Still worth one question to the team. Do not let the default harden
-          into a fact just because it is sitting in a cell.
+`Channel` ⛔ ANSWERED 18 Aug — AND THE ANSWER KILLED MY DEFAULT. I had set this to
+          'Phone' because the column is titled 'Phone Number' and the remarks are full
+          of 'call back'. Rey (Reyward Jake Gamol, consultant) replied:
+
+              "Inquiries usually come from both whatsapp and social media accounts"
+
+          Not phone. Two channels, and no column in the file distinguishes them
+          row-by-row — so stamping either one on 621 rows is wrong for roughly half.
+          Default is now BLANK, which is a STRONGER position than the blank I started
+          with: then it was uncertainty, now it is positive evidence of a mix.
+
+          🔑 The default was live for about four hours. Had nobody asked, "Phone" would
+          have sat in 621 cells and become the truth by attrition. The label that said
+          ASSUMPTION every time the script ran is the only reason it was still cheap to
+          undo. Defaults must announce themselves.
+
+          --channel WhatsApp still works if they later say WhatsApp dominates.
 """
 import argparse
 import collections
@@ -146,11 +151,12 @@ def clean_phone(p):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true", help="write the CSV (default: report only)")
-    ap.add_argument("--channel", default="Phone",
+    ap.add_argument("--channel", default="",
                     choices=["Phone", "WhatsApp", "Walk-in", "Email", "Website",
                              "Referral", "SMS", "Facebook", "Instagram", ""],
-                    help="Channel to stamp on every row. Default Phone — an ASSUMPTION "
-                         "(see the module docstring). Pass '' to leave blank.")
+                    help="Channel to stamp on every row. Default BLANK: the team says "
+                         "enquiries are a WhatsApp/social-media mix and nothing in the "
+                         "file separates them row-by-row (D-330).")
     args = ap.parse_args()
 
     rows = load_rows()
@@ -244,10 +250,10 @@ def main():
             print('      "%s" x%d' % (k[:44] if k else "(blank)", v))
 
     print("\n=== JUDGEMENTS AND BLANKS ===")
-    print("  Channel  — set to %r on every row. THIS IS AN ASSUMPTION, not a fact in"
+    print("  Channel  — %r. The team confirmed enquiries are a WhatsApp/social-media"
           % (args.channel or "(blank)"))
-    print("             the file. Reversible: filter Notes for 'Imported from DATA")
-    print("             SHEET', or re-run with --channel WhatsApp. Confirm with the team.")
+    print("             mix (Rey, 18 Aug) and no column separates them per row, so blank")
+    print("             is the honest value. --channel WhatsApp if that changes.")
     print("  Status   — BLANK. SOP-CI-001's vocabulary is real but NO column in any of")
     print("             the four client workbooks records it. Not invented here.")
     print("  Email    — BLANK. Not present in this file at all.")

@@ -364,4 +364,17 @@ check exists for. Both fixed, both proven by planting real violations. Also wide
 patterns (they only caught credentials that announce themselves) and moved two CLAUDE.md procedures
 into `/yale-ship` and `/yale-client-message` so they cost context only when used.
 
+2026-08-18 | 📥 **RECEIVED from the team — `ANSWERED.docx` + the completed client list** | **12 of 19
+questions closed and the import is unblocked: 38 rows ready** (D-330). Team 40/41, all 11 surnames,
+office 41/41. Two rows held back — the consultant column said *"no longer client"*, a status hiding
+in a name field. ⛔ **Q9 (re-share with `project1@`) was NOT answered and is now the only blocker.**
+🔑 Q4 reframed the pipeline: consultants keep **private per-client lists** and only add people to
+the July-to-present tab once engaged or ready to lodge — so that tab is the engaged-onwards subset,
+not the client base. Fees came back in full and **both our figures were stale** ($2,500 not $2,028).
+Manager = **Robinder alone** → the dashboard needs two access levels, not three. **Mershe has left**
+but `student@` is still under her name ⚠️. **GOPI joined.** They asked for the client-code system we
+already built. Rey confirmed enquiries are **WhatsApp + social media, not phone** — my four-hour-old
+`Phone` default was wrong and is reverted. Files placed in `client-data/`, **not** `docs/`: docs is
+tracked and origin is a personal GitHub account.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

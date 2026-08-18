@@ -4798,3 +4798,105 @@ Those are facts that must be true from the first token of a session, not procedu
 - **Splitting `DECISIONS.md`** (380KB / 328 entries). The access path is
   `DECISIONS-INDEX.md` → `grep -A 25 "^## D-NNN"`, which is O(1) in file size. Splitting would break
   every `grep` reference in the repo to fix a problem the index already solves.
+
+## D-330 | The team's answers — 12 of 19 closed, the import unblocked, and two premises overturned
+
+`ANSWERED.docx` (they replied inline inside our own document) + the completed
+`CLIENT LIST TO UPDATE.xlsx`, both received 18 Aug. Filed to `client-data/`, **not**
+`yale-build/docs/` as asked: `docs/` is tracked, `origin` is a personal GitHub account, and the
+xlsx carries 40 real client names and 27 personal email addresses. Org policy and the CLAUDE.md
+hard rule both point the same way — the instruction was a placement preference, the rule is not.
+
+### 🔑 The most important thing they said, and it was not an answer to what we asked
+
+Q4, on consultants:
+
+> *"What we are commonly doing is that we have our own lists of clients per consultant, then once
+> the application is ready to lodge or engaged we will add to the July to present list."*
+
+**`LODGEMENT JULY TO PRESENT` is not their pipeline. It is the engaged-onwards subset.** Every
+enquiry, quote and pre-engagement client sits on private per-consultant lists we have never seen
+and were never offered. Consequences:
+
+- The 40 rows are not "the client base" — they are the far end of it. **A-17 is answered and the
+  question was slightly wrong** (we asked *which of these are active*, not *what is missing*).
+- The dashboard's funnel starts mid-funnel. It is not broken; its scope is narrower than the words
+  on it imply.
+- **Commercially this is the CRM conversation arriving on its own** (CR-001). Their documented
+  process already assumes a system; the private lists are the gap it would close. Do not raise it
+  now — raise it with M3/M4 running as the evidence.
+
+### The list, audited value by value
+
+40 rows returned. **38 importable**, 2 held back — both say *"no longer client"* in the consultant
+column, which is a **status hiding in a name field**. Importing them would have created two live
+client folders for people who left.
+
+| Field | Coverage | Note |
+|---|---|---|
+| Team | **38/38** ✅ | `F`/`I` codes, mapped to FILIPINO/INDIAN |
+| Consultant | 38/38 | but 6 were blank → `Unassigned`; `ROBIN`×7 → `Robinder`; one cell held **two** names |
+| Office | 41/41 | all BRISBANE — Q3 answered by omission, no Townsville clients |
+| Surnames | **11/11** ✅ | every single-name client resolved |
+| Email | 26/38 | 12 still missing → no checklist or chase email for those |
+| Visa Expiry | 26/38 | joined from their own tab |
+| Processing Stage | 32/38 | joined from `STATUS` |
+| **Skills Authority** | **0/38** 🔴 | 4 of the 485s left as `<-- needed` |
+| Phone · Last Contact · Party 2 | **0/38** | columns F, H, I returned entirely empty |
+
+**Two data defects the format checks would have passed:**
+- one email on `gmil.com` — a single character from `gmail.com`. Structurally valid, will bounce.
+  ⛔ **Not repaired.** "Almost certainly a typo" is not a basis for sending a client's checklist to
+  an address we invented. Flagged in Notes, imported verbatim.
+- one email appears on **two different clients**. Email is MASTER's identity key.
+
+`Party 2 Name` empty across all 40 matters more than it looks: Q5 was the one we flagged as having
+*"real consequences"* — the checklist differs for a dependent. `485 Dependent` and `491 DEPENDENT`
+in the visa column are now split into Visa Type + Visa Variant, which recovers two of them.
+
+### ⛔ Q9 was not answered, and it is now the ONLY blocker
+
+The re-share of the two Google Sheets with `project1@`. Everything else is built. Without it the
+system reads a static export while their live sheet moves.
+
+### Two of our own positions overturned
+
+**1. The enquiry channel.** Rey: *"Inquiries usually come from both whatsapp and social media
+accounts."* Not phone. My `Phone` default — set four hours earlier on the reasoning that the column
+is titled *Phone Number* — was wrong for most of 621 rows. Reverted to blank, which is now the
+*stronger* position: it was uncertainty before, it is positive evidence of a mix now.
+
+🔑 **The default was live for four hours and cost nothing to undo, only because the script printed
+`THIS IS AN ASSUMPTION` every time it ran.** An unannounced default becomes a fact by attrition.
+
+**2. The fees. Both of our figures were stale.** Q18/Q19 came back with a full schedule: student 500
+is **$2,500** standard, **$2,050** ELICOS, secondary **$1,530**/**$1,255**, under-18 **$500**/**$410**,
+plus 1.4%. The `$2,028` we had triangulated across three of their own files (D-315) is superseded.
+407 is likewise fully specified. A-26 closes.
+
+### Staff (A-16, A-13 close)
+
+- **Manager = Robinder, alone.** *"Sir Robin is currently doing all those things."* The dashboard
+  needs **two** access levels, not three — that simplifies the Looker row-level security.
+- **Mershe Ventura has left**, and ⚠️ `student@yalemigration.com.au` is **still under her name**.
+  A live mailbox attributed to a former employee, at a firm holding ImmiAccount credentials.
+- **GOPI has joined** — not yet in MASTER's consultant dropdown.
+
+### They asked US two things (A-27, A-28)
+
+- Q16: *"I propose that we need to start the code creation for easier monitoring."* **They are asking
+  for `YM-2026-#####`, which has been running since 2 Aug.** Say yes and show them.
+- Q6: *"can we add a column which assessing authority is required for 485?"* — a real question we owe
+  an answer to, and it is the thing blocking 4 checklists.
+
+### Q15 answered → the status mapping is now theirs, not ours
+
+*"Pending means not yet drafted and lodged."* So `PENDING → Documents Pending`,
+`DRAFTED → Ready for Lodgement`, `LODGED → Lodged`, `WITHDRAWN → Closed + Outcome Withdrawn`.
+Encoded in `scripts/build_master_import.py`.
+
+### Where the import stands
+
+38 rows. M3 would create 38 folders; **M4 files 28 checklists**, stamps **10 NEEDS REVIEW**
+(6 unsupported visa lines + 4 485s with no authority); **M4b drafts 19 emails**. Estimated first run
+**~343 operations** against the 519 left this month — it fits, with no room to run it twice.
