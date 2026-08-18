@@ -432,4 +432,18 @@ live sheet that returns **no rows and no error**. `build_master_import.py` now a
 ⛔ The email already sent asks for the re-share they have already done — covered in the WhatsApp
 follow-up rather than by re-asking.
 
+2026-08-18 | 📤 **Email + WhatsApp SENT to the team.** Access confirmed received; the corrected
+assessing-authority answer (no new column — write `485 TRA` in the existing visa cell), yes to the
+client codes, and the CR-013 response on the six visa lines all went with it.
+
+2026-08-18 | internal | **Live-sheet audit through Make's own RPC (D-338), 0 operations.** 🔴 Their
+live `LODGEMENT: JULY TO PRESENT` has **11 columns and none of them is TEAM, CONSULTANT or EMAIL** —
+they said they *could* add them (Q4) and filled our fallback workbook instead. **So the 38 rows are
+a snapshot and client 39 arrives with nothing M3 needs.** It degrades safely (the D-315 catch-all
+stamps NEEDS ROUTING) and ⛔ **the fix is NOT a fourth column** — they already said *"too much column
+is a lot to handle"*. **The cutover is the fix**, and it is now mandatory rather than tidy;
+CUTOVER-PLAN says so at the top. Also verified MASTER's full A–AE shape **through the connection the
+automation actually uses** — an independent second source for the first time. All gates green:
+79/79 blueprints · 36/36 M5a · 22/22 M8 · hygiene pass · 10 .gs parse · 38 + 621 rows staged.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

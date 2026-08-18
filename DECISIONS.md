@@ -5275,3 +5275,53 @@ the real thing.** It would have surfaced as "the import ran and imported nothing
 The email Sharjeel already sent asks them to do the re-share. **They have already done it.** Any
 follow-up must not ask again — asking a client for something they have just given you is the fastest
 way to look like nobody read their reply.
+
+## D-338 | Their live intake sheet has none of the fields the automation needs — and that IS the cutover
+
+With live access finally proven (D-337), I read the real column list of
+`LODGEMENT: JULY TO PRESENT` through Make's own `rpcGetFilterKeys` — 0 operations, the same eyes the
+automation uses.
+
+**Eleven columns, A–K:** `NAME · CURRENT VISA · VISA EXPIRATION · DAYS LEFT · TYPE OF VISA
+APPLICATION · STATUS · DATE OF LODGMENT · All Documuents attached? · IF YES IDENTIFY · REMARKS ·
+COMMENTS`
+
+🔴 **No TEAM. No CONSULTANT. No EMAIL.**
+
+They answered Q4 with *"we can include the columns on the July to present lodgment lists"* — **can,
+not have.** They filled in the separate `CLIENT LIST TO UPDATE` workbook instead, which was the
+fallback we offered. So the team/consultant/email data exists in **one one-off file** and nowhere in
+their live system.
+
+### What that means, precisely
+
+The 38 rows we import are a **point-in-time snapshot**. Client 39 — the next person their team adds
+— arrives with no team, no office, no email and no consultant. M3 needs Team and Office to choose a
+folder; M4b needs the email.
+
+**It does not break.** The E1 catch-all built in D-315 is exactly this case: the row is stamped
+`Folder URL: NEEDS ROUTING` and a Notes line names the two fields to fix. The system degrades
+visibly instead of guessing. 🔑 **That catch-all was built for a hypothetical and this is it,
+arriving as a certainty.**
+
+### But the fix is not "ask for three more columns"
+
+That was the original ask and they routed around it. Asking again also runs straight into **CR-014**,
+where they told us plainly: *"too much column is a lot to handle."* Adding a fourth would be
+answering their complaint with more of the thing they complained about.
+
+**The right answer is the cutover, which is already the plan.** Once MASTER is the working surface,
+their team adds clients **there** — with dropdowns on Team, Office, Consultant and Visa Type, so
+the fields cannot be left blank or free-typed — and `LODGEMENT: JULY TO PRESENT` becomes history.
+`CUTOVER-PLAN.md` step 5 is the freeze that makes it stick.
+
+⛔ So this is **not a new blocker**. It is the reason the cutover exists, arriving as evidence.
+It does change one thing: **the cutover is no longer optional or "nice to sequence properly"** —
+without it, every new client needs three fields typed by hand, forever.
+
+### Also verified live, and worth having on record
+
+`MASTER` read back through the same RPC: **all 31 columns A–AE, in order**, including every numeric
+index M4 addresses (G/H/V/X/Y) and AE `Chase Flag`. Until now that shape had only ever been
+confirmed by Apps Script running *inside* the sheet. This confirms it **through the connection the
+automation actually uses** — a genuinely independent second source, and free.

@@ -11,8 +11,15 @@
 `LODGEMENT JULY TO PRESENT` is the **engaged-onwards subset**, not the client base — everything
 earlier lives on private per-consultant lists we have never seen (D-330).
 
-⛔ **Q9 — re-sharing the two Google Sheets with `project1@` — was NOT answered.** It blocks the
-import.
+✅ **ACCESS IS LIVE AND VERIFIED (D-337).** `project1@` reads all three of their sheets; we hold the
+file IDs for the first time; 31 live tabs read back. **Q9 / A-20 / I-1 CLOSED — the import is
+unblocked and runs against live data.**
+
+🔴 **Two things that verification then exposed.** The live tab is `LODGEMENT: **JULY TO PRESENT**`
+**with a colon** — Excel forbids `:` so every export renamed it, and 4 scripts + 11 docs carry the
+wrong name (against the live sheet that returns *no rows and no error*). And the live tab has
+**no TEAM, no CONSULTANT, no EMAIL column** (D-338) — so the 38 rows are a snapshot and client 39
+arrives incomplete. That is not a new blocker; **it is the reason the cutover exists.**
 
 🔴 **BUT Q9 IS NOT THE ONLY BLOCKER, and saying so on 18 Aug was wrong (D-331).** A full requirements
 audit found **twelve inputs we do not hold**, two of which had never been asked for at all:
@@ -49,7 +56,7 @@ in a feature.
 | # | Module | State | Notes |
 |---|---|---|---|
 | M1 | Discovery | ✅ done | reopened twice |
-| M2 | Master data layer | ✅ built · 🟢 **38 rows ready to load** | MASTER A–AE + ENQUIRIES. Waits only on Q9 |
+| M2 | Master data layer | ✅ built · 🟢 **38 rows ready · access LIVE** | MASTER A–AE **verified through Make's own RPC** (D-338). Waits only on the checklist-currency confirmation |
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard · 190 mapped D-325 · **OFF** |
 | M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |

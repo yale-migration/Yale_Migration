@@ -23,6 +23,21 @@ chased for documents they already sent. **Silence is what makes this the dangero
 
 ---
 
+## 🔴 WHY THIS IS NOT OPTIONAL — verified 18 Aug (D-338)
+
+Their live `LODGEMENT: JULY TO PRESENT` tab has **11 columns and not one of them is TEAM, CONSULTANT
+or EMAIL** — read directly through Make's `rpcGetFilterKeys`, 0 operations. They said they *could*
+add them (Q4) and instead filled the one-off workbook we offered as a fallback.
+
+So the 38 rows we import are a **snapshot**. The next client their team adds arrives with nothing the
+folder automation needs. It degrades safely — the D-315 catch-all stamps `NEEDS ROUTING` — but a
+human has to fix three fields, every time, forever.
+
+⛔ **Asking for a fourth column is the wrong fix.** They already told us *"too much column is a lot to
+handle"* (CR-014). **The cutover IS the fix:** MASTER becomes where clients are added, with dropdowns
+that make the fields impossible to leave blank, and their tab becomes history. Step 5's freeze is the
+mechanism.
+
 ## The solution in one line
 
 > **On an agreed date, their old sheet becomes read-only. After that there is only one place to type.**
