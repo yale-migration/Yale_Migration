@@ -21,10 +21,39 @@ of my 48 hours are left?"* this file is the answer. Update it at the end of ever
 | 14–15 Aug | Data audits (4 workbooks, 30+ tabs) · three-agent audit · corrections | 6 |
 | | **BUILD SUBTOTAL** | **~41** |
 | | Client communication (messages, briefs, scripts) | ~6 |
-| | **TOTAL** | **~47** |
+| **16–19 Aug** | **M4b · M5b (M4 v4 route C) · M8 + stop-on-reply · dashboard 6→9 views · ENQUIRIES + MASTER importers · four audit rounds (D-323…D-326, D-331…D-338) · hook + skills infrastructure · 20 decision entries** | **~20** |
+| | **BUILD SUBTOTAL** | **~61** |
+| | Client communication (messages, briefs, scripts, the 19-question document + follow-ups) | **~8** |
+| | **TOTAL** | **~69** |
 
-## 🔴 What this means
-**We are at or past the 48-hour cap, and roughly 26% of contracted outcomes are delivered.**
+## 🔴 WHERE THIS ACTUALLY STANDS — updated 19 Aug 2026
+
+**~69 hours spent against a firm 48-hour cap. ~21 hours over. ~37% of contracted modules delivered.**
+
+⛔ **The cap is the contract's central term:** *"Firm 48-hour cap; anything beyond is quoted as a
+written change order **before any additional hours are used**."* No change order has been raised.
+Every hour past 48 has been absorbed, unbilled and unauthorised.
+
+### And the calendar term, which nobody had checked until today
+
+Proposal v3: *"**MVP (48 hours): 3 to 4 weeks from kick-off**, assuming access items below are
+provided in the first week."*
+
+| | |
+|---|---|
+| Kick-off | **Sat 25 Jul** (`CLIENT-LOG`) |
+| Today | **Wed 19 Aug** — 25 days, **3.6 weeks** |
+| 🔴 Outer edge of the committed window | **Sat 22 Aug — three days away** |
+
+🔑 **The condition attached to that timeline was never met.** *"Assuming access items are provided in
+the first week"* — **7 of the 14 access-checklist items have never been provided at all** (D-332),
+and two of them were never even chased. The clock ran; the inputs did not arrive.
+
+**Both terms are now live at once:** we are over the hour cap and at the edge of the week window.
+This is a change-order conversation, and it should happen before more hours go in — not after.
+
+### The old note, kept for the record
+**As at 15 Aug: at or past the 48-hour cap, roughly 26% of contracted outcomes delivered.**
 
 The gap is **absorbed out-of-scope work** — none of it quoted, none of it authorised by change order:
 
