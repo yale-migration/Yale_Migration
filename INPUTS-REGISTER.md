@@ -32,6 +32,38 @@ thing is in our hands.
 
 ---
 
+## 1b · 🔴 THE KICK-OFF ACCESS CHECKLIST — audited 18 Aug for the first time
+
+**We wrote a 14-item access checklist and sent it on 21 July** (`project documents/Yale-Migration-Access-Checklist.pdf`).
+The Engagement Letter names it: *"the access checklist … sent the same day the invoice is settled."*
+**Nobody has audited against it since.** Seven of the fourteen were never delivered, and we never chased them.
+
+| # | Item (their priority order) | State |
+|---|---|---|
+| 1 | Client Engagement Log — share the Sheets | 🟠 shared with `sharry00010@` (personal), **not** `project1@` → this IS Q9 / A-20 |
+| 2 | **M365: create an `automation@` user + share the folders** | 🔴 **NEVER DONE.** We OAuth'd my *personal* Microsoft account instead. **The checklist asked for exactly the right thing and it was never delivered — that is the whole of risk #1** |
+| 3 | `project1@` 2-Step + delegate access | ⛔ **superseded, correctly** — `gmail.modify` on `visa.lodgement@` covers it (D-297) |
+| 4 | **Meta Business Manager — invite + assign FB Page, IG, WhatsApp** | 🔴 **NEVER DONE** → M6 |
+| 5 | **WhatsApp Business — verification status + number** | 🔴 **NEVER ANSWERED.** ⚠️ The Engagement Letter calls this *"the longest single item in the timeline"* and says start it *"right away"*. **28 days have passed** |
+| 6 | **Website enquiries — where do they land?** | 🔴 **NEVER ANSWERED** → M6 |
+| 7 | Make.com account + admin invite | ✅ **DONE** — team 2210317 |
+| 8 | **Claude AI key** | 🔴 **NEVER DONE** (D-331) → M9, 5h |
+| 9 | Sample emails sent + received, incl. a real s56 | ✅ **good coverage** — 4 s56 artefacts, 485 + student threads |
+| 10 | Follow-up Email / SMS templates | 🟠 s56 template only; the Inquiry-SOP follow-up templates never arrived |
+| 11 | Team roster | ✅ **DONE** 26 Jul |
+| 12 | **Internal forms — Enquiry / Detail / Consultation** | 🔴 **NONE RECEIVED.** Their SOPs name **six** artefacts — `Client Enquiry Form`, `Client Information Sheet`, `Service Agreement`, `Client Quotation`, `Client Consent Form`, `Document Request Checklist` — **we hold none of them** |
+| 13 | Enquiry conversation screenshots | 🟠 1 received, 2–3 asked for |
+| 14 | **Confirm the checklists we hold are the CURRENT versions** | 🔴 **NEVER CONFIRMED.** 🔴 **M4 files these 23 documents to real clients.** If any is out of date we send a client an outdated document list under an RMA's name |
+
+🔑 **Item 14 is the one that should not have waited.** Everything else costs time. That one costs
+credibility with their clients, and M4 is built and one switch away from doing it.
+
+🔑 **Item 12 changes what is buildable.** D-314 said of the intake form: *"Ask for it — do not design
+it."* We never asked. **C-1 is therefore NOT buildable** — correcting yesterday's audit, which
+marked it 🟢.
+
+---
+
 ## 2 · 🔴 NOT HELD — and each one blocks contracted hours
 
 | # | Input | Blocks | h | Ever asked? |
@@ -48,6 +80,9 @@ thing is in our hands.
 | **I-10** | **Skills authority for the 4 × 485** | 4 checklists at import | — | ✅ asked, returned blank |
 | **I-11** | **Make paid plan** | the go-live gate | — | 🟢 deliberately deferred (D-291) |
 | **I-12** | Dashboard access list (A-30) | Looker row-level security | — | 🟠 team deferred to Robinder |
+| **I-13** | 🔴 **Confirmation the 23 checklists are CURRENT** (checklist item 14) | **M4 going live at all** | — | ⛔ **never chased** |
+| **I-14** | 🔴 **`Client Enquiry Form`** (checklist item 12) | **C-1**, and M6's field set | 2 | ⛔ **never asked** — D-314 said "ask for it, do not design it" |
+| **I-15** | Inquiry-SOP follow-up Email/SMS templates (item 10) | M8 wording, M6 auto-reply | — | 🟠 partial |
 
 ---
 
@@ -65,8 +100,9 @@ thing is in our hands.
 | C-2 Upload link | 2 | 🔴 NO — I-8 |
 | C-5 capture path | 0.5 | 🔴 NO — same channels as M6 |
 
-**≈15 of the ~21 contracted hours left are blocked on inputs we do not hold.**
-🟢 **Unblocked and mine to do: M7 (4h) · C-1 (2h) · stop-on-reply (0.5h) — about 6.5 hours.**
+**≈18.5 of the ~21 contracted hours left are blocked on inputs we do not hold.**
+🟢 **Genuinely unblocked: stop-on-reply (0.5h) + the half of M7 that does not need their form (~2h)
+— about 2.5 hours.** ⛔ Yesterday I said 6.5. That counted C-1 as buildable and it is not.
 
 🔑 **The constraint on this project is no longer engineering. It is inputs.** Two of the twelve
 missing ones — **I-2 and I-3** — were never asked for at all, and between them they gate

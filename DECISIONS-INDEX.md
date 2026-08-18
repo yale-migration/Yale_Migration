@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 448K /     4976 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 452K /     5039 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 16:56
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 17:30
 
 | # | Decision |
 |---|---|
@@ -328,3 +328,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 16:5
 | **D-329** | Enforcing our own rules, and the hole that testing the enforcement exposed |
 | **D-330** | The team's answers — 12 of 19 closed, the import unblocked, and two premises overturned |
 | **D-331** | Requirements audit — two inputs never asked for, and a module shipped under the wrong number |
+| **D-332** | Second-pass audit — we audited against our own transcription, not the contract |

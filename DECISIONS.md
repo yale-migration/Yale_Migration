@@ -4974,3 +4974,66 @@ Every previous audit looked at what we had built. This one asked what the contra
 walked backwards to the inputs. The gaps were never in the code — they were in the space between
 "the client will provide X" and "the client has provided X", which no test covers and no module
 touches. `INPUTS-REGISTER.md` exists to make that space a table with an evidence column.
+
+## D-332 | Second-pass audit — we audited against our own transcription, not the contract
+
+D-331 audited the build against `ROADMAP.md`. **`ROADMAP.md` is our transcription of the scope, not
+the scope.** G6 says one authority per fact and we were reading a copy. Re-running the audit against
+the source documents found three things D-331 could not have seen.
+
+### 1 · 🔴 We wrote a 14-item access checklist on 21 July and never audited against it
+
+`project documents/Yale-Migration-Access-Checklist.pdf`. The Engagement Letter names it explicitly.
+**Seven of the fourteen items were never delivered, and we never chased a single one.**
+
+Never delivered: **2** (create an `automation@` M365 user + share the folders) · **4** (Meta Business
+Manager) · **5** (WhatsApp verification status) · **6** (where website enquiries land) · **8** (Claude
+API key) · **12** (their internal forms) · **14** (confirm the checklists are current).
+
+Two of those deserve naming on their own.
+
+**Item 2 is the whole of risk #1.** The checklist asked them to create a dedicated `automation@`
+user under their own tenancy and share the client folders with it. That never happened, so we
+OAuth'd **my personal Microsoft account** and built M3 and M4 on it. We have been describing this
+for weeks as a handover problem to solve later. **It was a kick-off deliverable that was never
+chased.** The right instruction was written down on day one.
+
+**Item 14 is the one that should never have waited.** *"One reply confirming the checklist documents
+you have sent us are the current versions your team uses today — so the automation never sends a
+client an outdated list."* Never confirmed. **M4 is built, tested, and one switch away from filing
+23 documents into real client folders and emailing them out under a Registered Migration Agent's
+name.** Every other gap costs time; this one costs their credibility with their own clients.
+
+### 2 · 🔴 Item 5 is the contract's own critical path, and it is 28 days late
+
+The Engagement Letter, unprompted: *"the WhatsApp Business application with Meta should be started
+right away — **Meta's approval time is the longest single item in the timeline**."*
+
+Sent 21 July. Today is 18 August. We have never once asked whether it was started. If it has not
+been, the WhatsApp channel cannot land inside this engagement no matter how fast anything else goes.
+
+### 3 · 🔴 C-1 is NOT buildable — correcting D-331
+
+D-331 marked C-1 (2h) 🟢 buildable. It is not. C-1 is the intake form, and **D-314 said in terms:
+*"The intake form is called `Client Enquiry Form` and they already have it. Ask for it — do not
+design it."*** It was access-checklist item 12. **We never asked, and the file exists nowhere on
+disk** — I searched every folder.
+
+Worse than one missing file: their SOPs name **six** artefacts we have never seen —
+`Client Enquiry Form` · `Client Information Sheet` · `Service Agreement Template` ·
+`Client Quotation Template` · `Client Consent Form` · `Document Request Checklist`.
+
+**Revised honest position: ≈18.5 of the ~21 remaining hours are input-blocked. About 2.5 hours are
+genuinely mine to do** — stop-on-reply, and the half of M7 that does not need their form.
+
+### Why two audits in two days reached different numbers
+
+D-331 asked *"does the build have what the modules need?"* and read our module list. This one asked
+*"what did we tell the client we needed, and did it arrive?"* and read the documents we ourselves
+sent. **The second question was answerable on 21 July and nobody asked it for four weeks.**
+
+🔑 The pattern is now unmistakable and worth stating plainly: **every serious finding on this project
+has come from reading a primary source that had been summarised somewhere.** D-310 (a roster we
+held), D-315 (a tab we recommended unopened), D-325 (a read that started one line below the
+evidence), D-331 (a ✅ nobody checked), and now an access checklist we wrote ourselves and filed.
+`INPUTS-REGISTER.md` §1b is that checklist, with a state column, so it cannot be filed again.

@@ -17,8 +17,9 @@ import.
 🔴 **BUT Q9 IS NOT THE ONLY BLOCKER, and saying so on 18 Aug was wrong (D-331).** A full requirements
 audit found **twelve inputs we do not hold**, two of which had never been asked for at all:
 **no Anthropic API key** (M9, 5h — `ACCESS.md` had it marked ✅ and there is no such connection) and
-**no Meta/Facebook/Instagram access** (M6, ~3h). **≈15 of the ~21 remaining contracted hours are
-blocked on inputs, not on engineering.** ▶ **`INPUTS-REGISTER.md`** is now the authority on this.
+**no Meta/Facebook/Instagram access** (M6, ~3h). **≈18.5 of the ~21 remaining contracted hours are
+blocked on inputs, not on engineering** — and **7 of the 14 items on the access checklist we sent on
+21 July were never delivered and never chased** (D-332). ▶ **`INPUTS-REGISTER.md`** is now the authority on this.
 
 Behind that: M3 · M4a · M4b · M5a · M5b · M6 all built and verified; MASTER runs A–AE; the dashboard
 has 9 views all proven against data; four audit rounds (D-323…D-326) closed 15 defects, none of them
@@ -126,7 +127,7 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **C-5 column half — DONE 17 Aug.** `Referral` was already there; only `SMS` was missing | — | 🔴 needs `patchMasterDropdowns()` |
 | ~~—~~ | ✅ **Dashboard views 4/7/8/9 VERIFIED 18 Aug.** View 4 now matches its own KPI exactly (10 = 10). View 8 excludes `Received`/`Not required`. View 9 excludes the 2 expired rows and shades exactly the 4 inside 60 days — every number predicted by the seeder matched the screen | — | ✅ |
 | ~~—~~ | ✅ **`Sheet4` opened and confirmed EMPTY** (was an unearned assumption). Now a `preflightGoLive()` check, not an eyeball | — | ✅ |
-| **1** | **C-1** — build to **their** `Client Enquiry Form`, do not design a new one (D-314) | 2 | 🟢 |
+| **1** | **C-1** — build to **their** `Client Enquiry Form` | 2 | 🔴 **BLOCKED — we never asked for the form** (D-332). D-314 said "ask for it, do not design it" |
 | **2** | **C-2** — secure upload link generator. ⚠️ **Decide first:** a Graph share link on the client's whole folder exposes the checklist and everything else in it, so it needs its own `Upload` subfolder. Also depends on §5 risk 1 — do not build a link generator onto a personal OneDrive account | 2 | 🟠 **blocked on the OneDrive handover** |
 | **3** | **C-5 capture path** — Referral and SMS need somewhere to come *from*, not just a dropdown value | 1 | 🟢 |
 | ~~—~~ | ✅ **`DATA SHEET` → ENQUIRIES — BUILT 18 Aug (D-327).** `build_enquiries_import.py`, **621 rows** ready. Found **47% of their enquiry dates day/month transposed by Excel's US locale** — 55 impossible future dates → 0 after repair. `Status` and `Channel` left blank on purpose: the vocabulary is real, the source field does not exist | — | 🔴 needs the client to confirm Channel, then `--write` + paste |

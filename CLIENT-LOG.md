@@ -388,4 +388,15 @@ Meta page access) gating **13 of 40 contracted hours**. **≈15 of ~21 remaining
 inputs, not engineering; ≈6.5 are mine.** ⛔ "Q9 is the single blocker" — written by me this
 morning — was wrong: it blocks the import, not the build.
 
+2026-08-18 | internal (no client contact) | **Second-pass audit against the CONTRACT, not our
+transcription (D-332).** 🔴 **We sent a 14-item access checklist on 21 July and never audited against
+it — 7 items were never delivered and never chased.** Item 2 (create an `automation@` M365 user) is
+the entire OneDrive risk we have been calling a handover problem; it was a day-one deliverable.
+Item 14 (confirm our 23 checklists are their CURRENT versions) was never asked — **M4 is one switch
+from emailing those to real clients under an RMA's name.** Item 5 (WhatsApp/Meta) is called *"the
+longest single item in the timeline"* by the Engagement Letter itself and is **28 days late**.
+⛔ **C-1 is NOT buildable** — corrects yesterday: the `Client Enquiry Form` was checklist item 12,
+D-314 said "ask for it, do not design it", and we never asked. Their SOPs name **six** documents we
+have never seen. Revised: **≈18.5 of ~21 remaining hours are input-blocked; ~2.5 are mine.**
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
