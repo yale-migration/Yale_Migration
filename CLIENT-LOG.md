@@ -408,4 +408,15 @@ Both client files now **fully read** — no comments, tracked changes, footnotes
 I-2 (Anthropic key) deliberately held for Robinder, not dropped. `/yale-client-message` now ends
 with a mandatory two-way reconciliation.
 
+2026-08-18 | internal | **"Did they ask anything from us?" — YES, and I had missed the biggest one
+twice (D-336).** Diffed every paragraph of `ANSWERED.docx` against our own template instead of
+reading for `Answer:` markers. 🔴 **They asked us to cover the six uncovered visa lines** —
+186/600/ART/Citizenship/PARTNER VISA — written as *"(we need to covered it properly)"* appended
+inside our own sentence. **~7 of the 38 importing clients are on those lines.** Logged **CR-013**,
+quote before starting, never absorb. 🔴 Their Q6 answer was **truncated in my own reading** — the
+missing clause was *"because too much column is a lot to handle"*, which makes "add another column"
+the wrong reply; `485 TRA` already parses from their existing visa column → **CR-014**. Q1 was also
+answered (emails live in Gmail threads); checked the Reyward workbook against all 13 gaps — **zero
+recoverable**, and none are RJ's. Method note: reading found 12 of 14 answers, diffing found all 14.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

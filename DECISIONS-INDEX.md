@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 460K /     5160 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 464K /     5219 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 20:26
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 20:35
 
 | # | Decision |
 |---|---|
@@ -332,3 +332,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-18 20:2
 | **D-333** | Forensic pass on the two returned files — six data issues, and what is actually unanswered |
 | **D-334** | I leaked two client names into the repo, the gate caught it, and I committed anyway |
 | **D-335** | Final pre-send reconciliation — six items were missing from my own email |
+| **D-336** | "Did they ask anything from us?" — yes, and I had missed the biggest one twice |

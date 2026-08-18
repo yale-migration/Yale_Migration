@@ -5158,3 +5158,62 @@ hidden sheets, one visible tab. There is nothing further to extract from either.
 🔑 **The draft was not wrong, it was incomplete — and incompleteness is invisible from inside the
 draft.** It only showed up by listing the open items independently and ticking them off. That
 reconciliation is now the last step before any client message, in `/yale-client-message`.
+
+
+## D-336 | "Did they ask anything from us?" — yes, and I had missed the biggest one twice
+
+Asked the question directly, I stopped trusting my read and diffed every paragraph of
+`ANSWERED.docx` against our own source template to isolate exactly what THEY wrote. Two answers
+surfaced that two previous passes had not, **because both were typed INSIDE our own paragraphs
+rather than on an `Answer:` line** — so a reader scanning for answers slides straight past them.
+
+### 🔴 They asked us to cover the six uncovered visa lines — and I missed it twice
+
+Our paragraph read: *"If you want any of those lines covered properly, tell me and I will talk it
+through with Robinder."*
+
+Their reply, appended in brackets at the end of **our own sentence**: **"(we need to covered it
+properly)"**
+
+That is a direct yes to an offer we made, about **186 · 600 · ART · Citizenship · PARTNER VISA** —
+roughly **7 of the 38 clients being imported**. Logged as **CR-013**. ⛔ Not absorbed: five visa
+lines each need a checklist obtained, CHECKLIST MAP rows, a router branch, a dropdown value and a
+re-run of the partition proof. Quote before any of it starts.
+
+🔑 Commercially it is the best signal in the engagement — the team, unprompted, asking for full
+coverage. That is CR-001 arriving from the shop floor instead of from Robinder.
+
+### 🔴 Their Q6 answer was truncated in my own reading, and the missing clause is the point
+
+I printed their answers at 150 characters and the cut fell mid-sentence. The full text:
+
+> *"can we add a column as well which assessing authority required for 485? Or do you have any
+> suggestion we can minimize this on the sheet **because to much column is a lot to handle**"*
+
+**They are telling us the sheet is becoming unusable.** We have asked them to add TEAM, CONSULTANT
+and EMAIL, and my drafted reply was *"add one more column."* That answers the question they typed
+and ignores the sentence they finished it with.
+
+**The right answer needs no new column.** They already write `485 Dependent` and `491 DEPENDENT`
+into the existing `TYPE OF VISA APPLICATION` cell, and `build_master_import.py` already splits that
+field — so `485 TRA` parses today with nothing added. And once the import runs, MASTER becomes the
+working surface and their sheet stops growing columns at all. Logged **CR-014**.
+
+### Q1 was also answered, and the answer is honest but does not help
+
+> *"Most of the clients email can be found only on email thread — some of the clients of rj their
+> email usually on reyward sheet"*
+
+Checked rather than assumed: I name-matched all 13 email-less rows against every tab of
+`REYWARD JAKE M GAMOL-2026.xlsx`. **Zero hits, and none of the 13 are RJ's clients** — so the
+pointer is accurate and simply does not apply to the remaining gaps. Those addresses exist only in
+Gmail threads, which is another reason I-1 (the `project1@` re-share) matters.
+
+### The method that found it, and the one that did not
+
+Reading for `Answer:` markers found 12 of 14. **Diffing every paragraph against our own template
+found all 14** — because it makes no assumption about where a person will type. A client answering a
+document will write wherever the sentence ends, not where the form expects.
+
+⛔ `/yale-client-message` now says: **when a client returns our own document, diff it against the
+source. Do not read it for answers.**

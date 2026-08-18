@@ -52,6 +52,21 @@ New requests are **not** scope. Log in `CHANGE-REQUESTS.md` + `PHASE-2-3-BACKLOG
 reply *"Phase 2/3 list mein daal diya"*, keep building. We have already absorbed ~16h
 free (`HOURS-LEDGER.md`). Never absorb. Quote before working.
 
+## 7b · 🔴 WHEN A CLIENT RETURNS OUR OWN DOCUMENT — diff it, do not read it
+
+⛔ **Do not scan for `Answer:` lines.** People type where the sentence ends, not where the form
+expects. On 18 Aug two answers were written INSIDE our own paragraphs — including **a direct yes to
+a scope offer worth five visa lines** — and two separate passes slid past both (D-336).
+
+```bash
+# isolate exactly what THEY added
+python3 - <<'EOF'
+# extract every paragraph, normalise, and print only those absent from our source template
+EOF
+```
+Also: **never print their text truncated.** A 150-character cut hid *"because too much column is a
+lot to handle"* — the clause that changed the right answer.
+
 ## 8 · 🔴 RECONCILE BOTH WAYS before sending
 List every open item from `CLIENT-ASKS.md` **and** `INPUTS-REGISTER.md`, then tick each one off
 against the draft:

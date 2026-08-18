@@ -14,6 +14,28 @@ CORRECTED 2026-07-29: capacity is NOT a risk — BRISBANE OFFICE alone is 68.2 G
 Microsoft plan (1TB+). The remaining issue is governance/ownership: ~150 clients' passports and police
 checks sit under one individual's personal account. Phase 2/3 recommendation only, not a blocker.
 
+CR-013 | 2026-08-18 | 🔴 **CLIENT-REQUESTED: cover the six visa lines the MVP does not** — 186 ·
+600 · ART · Citizenship · PARTNER VISA | **NEW — needs a quote, do not start** | ⚠️ **Found late.**
+Their reply is a five-word bracket appended INSIDE our own paragraph in `ANSWERED.docx`, not on an
+`Answer:` line: our text read *"If you want any of those lines covered properly, tell me and I will
+talk it through with Robinder"* and they wrote **"(we need to covered it properly)"**. That is a
+direct yes to an offer we made. **Roughly 7 of the 38 imported clients sit on these lines**, so it
+is not hypothetical — those people currently get `NEEDS REVIEW` and a human does their file by hand.
+Work involved per line: obtain their checklist, add CHECKLIST MAP rows, extend M4's router, extend
+MASTER's dropdown, re-run the partition proof. ⛔ **Never absorb — 5 visa lines is not a rounding
+error on a 48h MVP.** Reply: logged for Phase 2, quoted separately. 🔑 Commercially this is the
+strongest signal yet that they want the system to cover everything, which is the CR-001 conversation
+arriving from the team rather than from Robinder.
+
+CR-014 | 2026-08-18 | (client usability feedback, not a scope request) **"too much column is a lot
+to handle"** | ACT ON IT — free | Said in the same breath as agreeing to add a SKILLS AUTHORITY
+column (Q6). We have now asked them to add **four** columns to their working sheet — TEAM,
+CONSULTANT, EMAIL, and nearly a fifth. ⛔ **Do not answer this with "add one more column."** They
+already write `485 Dependent` and `491 DEPENDENT` in the existing `TYPE OF VISA APPLICATION` cell,
+and `build_master_import.py` already splits that field — so `485 TRA` parses with **no new column at
+all**. And once the import runs, MASTER becomes the working surface and their sheet stops growing
+columns permanently. That is the real answer to what they actually said.
+
 ## Phase 2 backlog (already scoped in Proposal v3 — 49h, quote after MVP)
 Quotes+Xero (fee master ready) · deadline engine (blueprint = "YALE BRISBANE OFFICE WORK" S56 tabs) ·
 QC gate w/ content-vs-label check · Looker dashboard · advanced AI (doc classify+rename) · enrolment
