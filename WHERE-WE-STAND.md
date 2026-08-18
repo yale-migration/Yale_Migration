@@ -65,7 +65,7 @@ in a feature.
 | M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
 | M8 | **Lead follow-up sequences (2h)** | ✅ **COMPLETE** — cadence **+ stop-on-reply** | D-328/D-331/D-339 · **32/32** · 0 ops · ✅ column L added live 18 Aug |
-| M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
+| M9 | Email triage / s56 | 🟢 **UNBLOCKED 19 Aug — Anthropic conn 9948850 live and proven** | 5h · the biggest buildable block. Module reads **PDFs natively**, so no text-extraction step (D-340) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
 | — | Dashboard | ✅ **DONE for MVP — 9 views, all verified against data** | goodwill, not MVP scope. Not being worked on further |

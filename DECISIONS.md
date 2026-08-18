@@ -5372,3 +5372,57 @@ untouched, which is what proves the change is backward compatible rather than my
 M8 (2h) is now **genuinely complete** rather than complete-looking. That matters because on 18 Aug
 this module was briefly reported as M6 — an 8-hour line item shown finished on the strength of a
 2-hour one (D-331). Counting it honestly the second time is the point.
+
+## D-340 | The Anthropic key existed all along — and the module can read PDFs, which changes M9
+
+Sharjeel had the key: Robinder created one at some point and sent it, and **it had simply never
+reached Make**. Connection **9948850** created 19 Aug and proven by a real call —
+`claude-haiku-4-5-20251001`, `end_turn`, 20 input / 3 output tokens, 1 operation.
+
+✅ **I-2 CLOSED. M9's five contracted hours are unblocked** — the largest single block of buildable
+work that was stuck.
+
+🔑 **This is the third time on this project that something we were about to ask the client for turned
+out to already exist somewhere** — the staff roster (D-310), the 190 checklist (D-325), now the API
+key. **The pattern is not that the client is slow. It is that things arrive and are not recorded.**
+`INPUTS-REGISTER.md` exists for exactly this, and it only works if a thing is written down the day
+it lands.
+
+### 🔑 The module accepts PDF documents natively — and s56 requests arrive as PDFs
+
+Reading `anthropic-claude:createAMessage`'s real schema rather than assuming, the content block
+types are **Text · Image · PDF document · Tool result**.
+
+**That materially simplifies M9.** The Department's s56 requests come as PDF attachments, and the
+M9 spec already warns that *"the S56 PDFs are visually redacted but the TEXT LAYER contains full
+client identifiers"*. The plan had implied extracting text before classifying. **It can pass the PDF
+straight through** — no extraction step, no text-layer handling, fewer moving parts.
+
+### Everything M9's spec needs is present in the module
+
+| M9 needs | Module field | ✅ |
+|---|---|---|
+| tool-use JSON schema classification | `tools` → Custom Tool → `input_schema.properties` (JSON) | ✅ |
+| force a tool call | `tool_choice` → `auto` / `any` / `tool` / `none` | ✅ |
+| structured output | `outputFormat` → `json_schema` | ✅ |
+| temperature 0 | `temperature`, validated 0–1 | ✅ |
+| a system prompt | `system` | ✅ |
+| read the attachment | content block type **PDF document** | ✅ |
+
+⚠️ The test ran at **temperature 1** with `outputFormat: text` — correct for a smoke test, wrong for
+classification. M9 will pin **temperature 0** and a JSON schema, because a classifier that
+paraphrases is a classifier that silently misfiles a legal deadline.
+
+### Two small things to tidy
+
+1. **The names are swapped.** The connection reads *"Muhammad's Anthropic Claude connection"*; the
+   throwaway scenario was called *"Yale's Anthropic connection"*. It should be the other way round —
+   at handover, a connection carrying my name in the client's account is the same smell as the
+   OneDrive one. **Rename to `Yale's Anthropic connection`.**
+2. **Throwaway scenario 7002534 deleted** — inactive, held a `"where is pakistan?"` test prompt, and
+   was scheduled every 15 minutes had anyone switched it on. Same clean-up as 6959410 / 6967000.
+
+⚠️ **The key came through WhatsApp, so treat it as exposed.** Ask Robinder to issue a fresh one and
+revoke this. Not urgent, but it should not be the permanent key.
+
+**Ops: 482 / 1,000** — the one operation was the smoke test, and it was worth it.

@@ -459,4 +459,14 @@ precedence; M8 never writes L itself; degrades loudly if L is absent. All gates:
 **M8 stop-on-reply is now active** (D-339). ⚠️ `verifyEnquiriesLastContact()` not yet run — not
 blocking, ENQUIRIES is still empty, but run it before the 621-row import lands.
 
+2026-08-19 | internal | **Anthropic connection LIVE (D-340) — and the key had existed all along.**
+Robinder had created one previously and sent it; it had simply never reached Make. Connection
+**9948850** created and **proven by a real call** (Haiku 4.5, end_turn, 20/3 tokens, 1 op).
+✅ **I-2 closed — M9's 5 hours unblocked.** 🔑 Third time something we were about to ask for turned
+out to already exist (roster D-310, 190 checklist D-325, now the key) — the client is not slow,
+things arrive and go unrecorded. 🔑 Module reads **PDF attachments natively**, which removes the
+text-extraction step from M9's plan — s56 requests arrive as PDFs. ⚠️ Connection needs renaming
+(reads "Muhammad's"), and the key came via WhatsApp so ask Robinder to rotate it. Throwaway
+scenario 7002534 deleted. **Ops 482/1000.**
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

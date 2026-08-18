@@ -70,7 +70,7 @@ marked it 🟢.
 | # | Input | Blocks | h | Ever asked? |
 |---|---|---|---|---|
 | ~~I-1~~ | ✅ **CLOSED 18 Aug — access granted AND verified** via `rpcSpreadsheet` on conn 9501125, 0 ops. IDs now held for all three of their sheets; 31 live tabs read back. This also closed access-checklist item 1, whose *"reply with the sheet's link"* half had been open since 21 July (D-337) | — | ✅ **DONE** |
-| **I-2** | 🔴 **Anthropic API key + a Make connection for it** | **M9 entirely** | **5** | ⛔ **NEVER ASKED.** `ACCESS.md` says ✅. It is not |
+| ~~I-2~~ | ✅ **CLOSED 19 Aug — connection 9948850 live and PROVEN by a real call.** Robinder had already created the key; it had simply never reached Make. **M9's 5 hours are unblocked** (D-340) | — | ✅ **DONE** |
 | **I-3** | **Facebook + Instagram page access** (Meta) | M6 capture | ~3 of 8 | ⛔ **never asked** |
 | **I-4** | **WhatsApp Business verification status** | M6 WhatsApp channel | ~1 | 🟠 raised at proposal, never chased |
 | **I-5** | **Where the website form lands** | M6 website capture | ~1 | ⛔ never asked |
@@ -118,8 +118,7 @@ missing ones — **I-2 and I-3** — were never asked for at all, and between th
 ## 4 · What must go to the client, in priority order
 
 1. ~~I-1 — the re-share~~ ✅ **DONE 18 Aug, verified.**
-2. **I-2** — the Anthropic key. ⚠️ Their billing per the Engagement Letter, so this is also the
-   first time they see a running cost. Do not bundle it with anything else.
+2. ~~I-2 — the Anthropic key~~ ✅ **DONE 19 Aug.**
 3. **I-8** — OneDrive onto `project1@`. ⛔ **ADD first, remove ours only after it is proven.**
 4. **I-3 · I-5 · I-6** — the three M6 channel questions. One message, three lines.
 5. **I-10** — the four 485 authorities, plus the answer they asked us for (A-28).
