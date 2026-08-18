@@ -64,7 +64,7 @@ in a feature.
 | M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
 | M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
-| M8 | **Lead follow-up sequences (2h)** | ✅ **COMPLETE** — cadence **+ stop-on-reply** | D-328/D-331/D-339 · **32/32** · 0 ops · 🔴 needs `add_enquiries_last_contact.gs` run once |
+| M8 | **Lead follow-up sequences (2h)** | ✅ **COMPLETE** — cadence **+ stop-on-reply** | D-328/D-331/D-339 · **32/32** · 0 ops · ✅ column L added live 18 Aug |
 | M9 | Email triage / s56 | 🟠 spec'd, unbuilt | their 7/14/28 ladder, already lapsing (D-305) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |

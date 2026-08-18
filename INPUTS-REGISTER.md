@@ -20,6 +20,7 @@ thing is in our hands.
 | Google Sheets connection, **client-owned** | Make conn `9501125` · `project1@yalemigration.com.au` · 5 scopes · no expiry · used by M3 + M4 |
 | Gmail connection, **client-owned** | Make conn `9452213` · `visa.lodgement@` · `gmail.modify` · expires **2027-02-12**, auto-refreshing |
 | MASTER spreadsheet, A–AE | 31 columns · `verifyMasterColumns()` 22/22 · `verifyChaseFlagColumn()` 11/11 |
+| ENQUIRIES column **L `Last Contact`** | added live 18 Aug — `WROTE L = Last Contact`. Drives M8 stop-on-reply (D-339) |
 | 23 canonical checklists | `docs/05-canonical-checklists/` · hash-recorded in `MANIFEST.json` · cross-checked against CHECKLIST MAP and M4's router by `verify_blueprints.py` |
 | Their 4 client workbooks | `client-data/` · all 66 tabs censused (`audit_all_tabs.py`, D-316) |
 | **The returned client list** | `client-data/2026-08-18_CLIENT-LIST-TO-UPDATE_returned.xlsx` · 38 importable rows |

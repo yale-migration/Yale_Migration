@@ -455,4 +455,8 @@ write the same column and it becomes automatic with no change to M8. Closed stat
 precedence; M8 never writes L itself; degrades loudly if L is absent. All gates: 79/79 · 36/36 ·
 32/32 · hygiene pass.
 
+2026-08-18 | internal | ENQUIRIES column **L `Last Contact`** added live — `WROTE L = Last Contact`.
+**M8 stop-on-reply is now active** (D-339). ⚠️ `verifyEnquiriesLastContact()` not yet run — not
+blocking, ENQUIRIES is still empty, but run it before the 621-row import lands.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
