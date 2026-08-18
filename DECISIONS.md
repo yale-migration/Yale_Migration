@@ -5426,3 +5426,64 @@ paraphrases is a classifier that silently misfiles a legal deadline.
 revoke this. Not urgent, but it should not be the permanent key.
 
 **Ops: 482 / 1,000** — the one operation was the smoke test, and it was worth it.
+
+## D-341 | Friday call runbook — and the OneDrive instruction we have been carrying is impossible
+
+Researched the three Friday items against current sources rather than from memory. Two findings
+change what we ask for.
+
+### 🔴 1 · "Create an `automation@yalemigration.com.au` user" cannot be done
+
+Access-checklist item 2, written 21 July and repeated ever since, says to create a dedicated M365
+user and share the client folders with it. **That instruction assumed a Microsoft 365 business
+tenant. There isn't one.**
+
+`ONEDRIVE-IDS.md` records the drive owner as **`robin_multani007@hotmail.com`** — a **personal**
+Microsoft account. You cannot create `automation@yalemigration.com.au` without first buying M365,
+which is exactly why `GUIDE-microsoft-365-purchase.md` exists and has been sitting unread.
+
+**So we have been asking, for four weeks, for something the client could not do** — and never
+noticed, because nobody re-read the instruction against what we later learned about the drive.
+
+**Option A (free, Friday):** create a **Microsoft account against `project1@yalemigration.com.au`**
+— verified that Microsoft accepts any existing email address via `signup.live.com` → *use existing
+email* — then Robinder shares the folder with it and we add a second Make connection.
+**Option B (proper):** buy M365 Business Standard, real `automation@` user, migrate the folders.
+That also closes **CR-003**, the ~150 clients' passports sitting under one individual's personal
+account. Phase 2 conversation, not a Friday one.
+
+⚠️ **Option A carries one genuinely unverified step.** M3/M4 address the folders by absolute drive
+ID (`/v1.0/drives/A0BABA3C2640082C/items/…`). For **personal** OneDrive, Microsoft's docs describe a
+shared folder appearing in the recipient's account as a **`remoteItem`** — they do **not** promise
+the owner's original drive path resolves for a guest. **So we test with both connections live and
+switch only after.** This is why "ADD before REMOVE" was already the rule; now we know precisely
+what we are testing for.
+
+### 🔴 2 · "WhatsApp verification" is two things, and we have been asking about the wrong one
+
+```
+Meta BUSINESS verification ──► WhatsApp DISPLAY NAME review ──► number registered
+```
+
+**Display name review does not even start until business verification completes.** So the only
+question worth asking Friday is *"is the business verified?"* — everything else is downstream of it
+and it is the part that takes days.
+
+Statuses to listen for in **Business settings → Business Info**: `Verified` · `Pending` ·
+`Not verified` · `Failed`. The most common rejection is a trading name that does not exactly match
+the registered name. Australia: ASIC extract / ABN registration / business bank statement.
+
+### 3 · Meta asset access — the step everyone skips
+
+Portfolio access should be **Partial**, with **Full control on the two assets only** (Page +
+Instagram). Two different toggles with almost the same name. ⛔ **Inviting someone without then
+assigning assets sends successfully and grants nothing** — a silent no-op, and the reason
+"I invited you already" conversations go in circles. Also: the invite email **must** be the address
+attached to the recipient's Facebook account.
+
+### Output
+
+`CALL-RUNBOOK-robinder-friday.md` — read-aloud steps, failure modes with fixes, the extras list, and
+the A-18 script marked verbal-only. ⚠️ Meta's own help pages are JS-rendered and unreadable by
+fetch; the Meta steps come from **two independent third-party guides that agree**, while the
+Microsoft and Meta-for-Developers pages were read directly. Sources listed in the file.

@@ -469,4 +469,14 @@ text-extraction step from M9's plan — s56 requests arrive as PDFs. ⚠️ Conn
 (reads "Muhammad's"), and the key came via WhatsApp so ask Robinder to rotate it. Throwaway
 scenario 7002534 deleted. **Ops 482/1000.**
 
+2026-08-19 | internal | **Friday call runbook written and researched (D-341).** Two corrections.
+🔴 The `automation@yalemigration.com.au` M365 user we have asked for since 21 July **cannot be
+created — they have no M365 tenant**; the client folders are on Robinder's **personal Hotmail**
+OneDrive. We have been asking four weeks for something impossible and never re-read the instruction
+against what we later learned. Revised: a Microsoft account on `project1@` (verified — Microsoft
+accepts any existing email), folder shared to it, ⚠️ then **test the drive path before switching**
+because personal-OneDrive shares surface as `remoteItem` and the owner's path may not resolve for a
+guest. 🔴 Second: **"WhatsApp verification" is Meta BUSINESS verification first** — display-name
+review does not start until it completes, so that is the only question worth asking Friday.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

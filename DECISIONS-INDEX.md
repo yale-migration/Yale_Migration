@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 412K /     5428 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 476K /     5489 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 02:01
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 02:14
 
 | # | Decision |
 |---|---|
@@ -337,3 +337,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 02:0
 | **D-338** | Their live intake sheet has none of the fields the automation needs — and that IS the cutover |
 | **D-339** | M8 finished — stop-on-reply, and being honest about what "automatic" means |
 | **D-340** | The Anthropic key existed all along — and the module can read PDFs, which changes M9 |
+| **D-341** | Friday call runbook — and the OneDrive instruction we have been carrying is impossible |

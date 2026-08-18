@@ -76,7 +76,7 @@ marked it 🟢.
 | **I-5** | **Where the website form lands** | M6 website capture | ~1 | ⛔ never asked |
 | **I-6** | **Where the walk-in sheet lives** | M6 walk-in fold-in | ~1 | ⛔ never asked — ROADMAP says "location still to confirm" |
 | **I-7** | **👍 on the auto-reply wording** (A-10) | M6 going live | — | 🟠 held until M6 exists |
-| **I-8** | **OneDrive on a Yale account** | M11 handover · **C-2** | 2+2 | ✅ asked 16 Aug, not answered |
+| **I-8** | **OneDrive on a Yale account** | M11 · **C-2** | 2+2 | 🔴 **THE ASK WAS IMPOSSIBLE (D-341).** Checklist item 2 said create an `automation@` M365 user — **there is no M365 tenant**; the drive is Robinder's personal `@hotmail.com`. Revised ask: a Microsoft account on `project1@`, folder shared to it. Friday |
 | **I-9** | **2–3 real client files** (A-11) | M10 | 2 | 🟠 due at M10 |
 | **I-10** | **Skills authority for the 4 × 485** | 4 checklists at import | — | ✅ asked, returned blank |
 | **I-11** | **Make paid plan** | the go-live gate | — | 🟢 deliberately deferred (D-291) |

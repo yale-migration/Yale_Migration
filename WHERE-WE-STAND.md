@@ -233,6 +233,18 @@ exactly the moment the check exists for. Both fixed and both tested by planting 
 
 ---
 
+# 6c · 📞 FRIDAY 21 AUG — THE CALL
+
+▶ **`CALL-RUNBOOK-robinder-friday.md`** — read-aloud steps for Meta · WhatsApp · OneDrive, researched
+19 Aug against current sources (D-341).
+
+🔴 **Two things that runbook corrects:** the `automation@` M365 user we have been asking for since
+21 July **cannot be created — there is no M365 tenant**, the drive is Robinder's personal Hotmail
+account. And "WhatsApp verification" is really **Meta business verification first**, with display-name
+review blocked behind it — so the only question worth asking is whether the *business* is verified.
+
+---
+
 # 7 · TOOLING — built this week, use it
 
 | Command | What it does |
