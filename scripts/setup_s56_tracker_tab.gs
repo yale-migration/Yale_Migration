@@ -162,6 +162,61 @@ function setupS56Tracker() {
 }
 
 
+/**
+ * Restore ONLY the dropdowns. Touches no data, ever.                    (19 Aug 2026)
+ *
+ * ===================== WHY THIS HAD TO EXIST =====================
+ * Deleting the M9 test row also removed the data validation from row 2, and
+ * verifyS56Tracker() dropped to 21/23. The obvious fix is to re-run
+ * setupS56Tracker() — but that REFUSES to run on a tab holding data, which is
+ * correct and non-negotiable: this tab carries legal deadlines.
+ *
+ * 🔴 So in production the two guards deadlock. A row is deleted, the dropdowns
+ * vanish, the tab now holds real Section 56 deadlines, and NOTHING can put the
+ * validation back. The only remaining option would be to empty a tab of legal
+ * deadlines in order to repair its formatting — which nobody should ever do.
+ *
+ * A destructive rebuild is not the only repair a tab can need. This is the
+ * non-destructive one: it writes data validation and nothing else. Safe to run
+ * at any time, on a full tab or an empty one.
+ */
+function repairS56Dropdowns() {
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) { Logger.log('ABORT — could not get the document lock.'); return; }
+  try {
+    var sh = SpreadsheetApp.openById(S56_SHEET_ID).getSheetByName(S56_TAB);
+    if (!sh) { Logger.log('ABORT — no tab named ' + S56_TAB); return; }
+
+    // Prove the columns are where we think before writing validation onto them.
+    // Validation on the wrong column is worse than none: it silently constrains
+    // a field nobody meant to constrain.
+    var hdr = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]
+                .map(function (h) { return String(h || '').trim(); });
+    var pairs = [['Assigned To', S56_ASSIGNEES], ['Status', S56_STATUSES]];
+    for (var k = 0; k < pairs.length; k++) {
+      var want = pairs[k][0], at = S56_HEADERS.indexOf(want);
+      if (hdr[at] !== want) {
+        Logger.log('ABORT — expected "' + want + '" in column ' + s56ColumnLetter_(at + 1) +
+                   ' but found "' + hdr[at] + '". Not writing validation anywhere.');
+        return;
+      }
+    }
+
+    var n = Math.max(sh.getMaxRows() - 1, 1);
+    for (var i = 0; i < pairs.length; i++) {
+      s56AddList_(sh, S56_HEADERS.indexOf(pairs[i][0]) + 1, n, pairs[i][1]);
+      Logger.log('  restored ' + pairs[i][0] + ' — ' + pairs[i][1].length + ' options, rows 2..' + (n + 1));
+    }
+    SpreadsheetApp.flush();
+    Logger.log('');
+    Logger.log('Dropdowns restored. NO data was read, changed or cleared.');
+    Logger.log('Now run verifyS56Tracker().');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+
 /** Proves the tab matches what the M9 blueprint will write into. */
 function verifyS56Tracker() {
   var sh = SpreadsheetApp.openById(S56_SHEET_ID).getSheetByName(S56_TAB);
