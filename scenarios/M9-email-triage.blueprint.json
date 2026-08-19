@@ -13,7 +13,7 @@
         "folder": "INBOX",
         "criteria": "all",
         "markSeen": false,
-        "limit": 10,
+        "limit": 1,
         "from": "",
         "subject": "",
         "includeWords": "\"We need more information to help us assess your application\" OR \"Request for more information for a\" OR from:homeaffairs.gov.au",
@@ -130,20 +130,7 @@
           "x": 300,
           "y": 0
         }
-      },
-      "onerror": [
-        {
-          "id": 5,
-          "module": "builtin:Ignore",
-          "version": 1,
-          "metadata": {
-            "designer": {
-              "x": 300,
-              "y": 150
-            }
-          }
-        }
-      ]
+      }
     },
     {
       "id": 4,
@@ -176,20 +163,7 @@
           "x": 600,
           "y": 0
         }
-      },
-      "onerror": [
-        {
-          "id": 6,
-          "module": "builtin:Ignore",
-          "version": 1,
-          "metadata": {
-            "designer": {
-              "x": 600,
-              "y": 150
-            }
-          }
-        }
-      ]
+      }
     }
   ],
   "metadata": {
