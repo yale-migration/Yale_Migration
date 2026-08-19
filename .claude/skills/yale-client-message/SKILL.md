@@ -67,6 +67,17 @@ EOF
 Also: **never print their text truncated.** A 150-character cut hid *"because too much column is a
 lot to handle"* — the clause that changed the right answer.
 
+## 7c · 🔴 CHECK A GENERATED DOCUMENT AGAINST ITSELF
+
+Verifying every claim against the code is not enough — it misses the document disagreeing with
+**itself** (D-346, all three found after a clean fact-check):
+
+- ⛔ **No page numbers in prose.** "(page 2)" became wrong the moment a layout fix repaginated it.
+  Say "at the end of this document".
+- **Count the thing you claimed to count.** "Nine views" sat above a ten-row table.
+- **Quantity words against the list.** "A couple of things" introduced seven.
+- Read the rendered PDF, not just the markdown — pagination is where these appear.
+
 ## 8 · 🔴 RECONCILE BOTH WAYS before sending
 List every open item from `CLIENT-ASKS.md` **and** `INPUTS-REGISTER.md`, then tick each one off
 against the draft:

@@ -5720,3 +5720,45 @@ needs to read whole. Worth one `page-break-inside: avoid`.
 check verified the numbers I had asserted (23 checklists, 9 views, 3/7/30) and not the ones I had
 *inherited from the client's own spreadsheet*. **A fact-check only covers what you thought to
 check.**
+
+
+## D-346 | Second guide audit — the layout fix moved the content the prose pointed at
+
+The regenerated PDF fixed everything from D-345: the Partner correction, the row-number
+attribution, and *"What it will never do"* now sits whole on one page. Three defects left, and the
+first one is instructive.
+
+### 🔴 1 · "(page 2)" — the fix broke the reference
+
+Page 1 read *"once you have confirmed a couple of things **(page 2)**"*. In the first render the ask
+table WAS on page 2. Adding the page-break rules pushed it to page 3, **so the cross-reference I
+wrote became wrong as a direct result of the layout fix I asked for.**
+
+🔑 **Prose must not contain page numbers when the layout is generated.** Every regeneration can
+move them, and nothing in the pipeline checks. Replaced with *"listed at the end of this
+document"* — true at any pagination.
+
+### 🔴 2 · "Nine views" above a ten-row table
+
+The dashboard table's first row was **Six headline numbers**, which is the KPI strip, not a view.
+So the sentence said nine and a reader counting rows found ten. The count was *right* — I verified
+nine `block_()` calls in the script — but the table quietly added a tenth thing to it.
+
+Fixed by lifting the headline numbers into a sentence above the table. Now: six numbers, then nine
+rows, and both are countable. ⚠️ **My earlier fact-check passed this**, because it verified the
+number nine against the code and never counted the rows underneath it.
+
+### 3 · "a couple of things" describing seven
+
+Understating an ask list is not a kindness — the reader budgets two minutes and finds seven. Now
+"a few things".
+
+### The pattern in all three
+
+None was a false statement about the system. All three were **the document disagreeing with
+itself** — prose against layout, a count against its own table, a quantity against its own list.
+D-345's check verified every claim against the *code* and none against the *rest of the document*.
+
+⛔ Added to `/yale-client-message`: before any generated document goes out, check it against
+**itself** — cross-references, counts against the things counted, and quantity words against the
+lists they describe.

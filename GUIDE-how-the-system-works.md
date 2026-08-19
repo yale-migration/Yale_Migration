@@ -8,8 +8,8 @@ Written for consultants — no technical steps, nothing to install.
 ## Where it is up to right now
 
 The client-file part of the system is **built and tested**. Nothing is switched on yet, and **your
-files have not been touched.** It goes live once you have confirmed a couple of things (page 2) and
-Robinder gives a date.
+files have not been touched.** It goes live once you have confirmed a few things —
+listed at the end of this document — and Robinder gives a date.
 
 **Nothing in this system emails a client on its own.** Every message it produces is a **draft**
 sitting in `visa.lodgement@` waiting for one of you to read it and press send. That is deliberate —
@@ -96,11 +96,15 @@ conversation, not a cold lead.
 
 ## The dashboard
 
-One tab, opens on a phone or a laptop, updates itself, **nobody maintains it.** Nine views:
+One tab, opens on a phone or a laptop, updates itself, **nobody maintains it.**
+
+Across the top, **six headline numbers**: clients on file · open matters · going quiet · granted ·
+folders missing · checklists missing.
+
+Then **nine views**:
 
 | | |
 |---|---|
-| Six headline numbers | clients on file · open matters · going quiet · granted · folders missing · checklists missing |
 | Branch performance | open matters by office and team |
 | Where matters are stuck | by processing stage — the biggest number is the bottleneck |
 | Workload per consultant | who is carrying the most |

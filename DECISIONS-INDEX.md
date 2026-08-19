@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 492K /     5722 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 432K /     5764 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:14
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:58
 
 | # | Decision |
 |---|---|
@@ -342,3 +342,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:1
 | **D-343** | "We already asked them, right?" — yes, but the record could not prove it |
 | **D-344** | Rey asked for a user guide — which is M11, and it unlocks the blockers |
 | **D-345** | Auditing the guide before it went out — three defects, one of them a false claim to the client |
+| **D-346** | Second guide audit — the layout fix moved the content the prose pointed at |
