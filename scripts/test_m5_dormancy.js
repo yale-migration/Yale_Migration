@@ -47,7 +47,7 @@ function blankRow() { return new Array(31).fill(''); }
 // row 1 must carry the AE header or the detector correctly decides the column is absent
 function headerRow(withFlag) { const r = blankRow(); if (withFlag) r[30] = 'Chase Flag'; return r; }
 
-function run({ today, baseline, rows }) {
+function run({ today, baseline, rows }, lockGranted = true) {
   LOG = [];
   const sheet = makeSheet(rows);
   global.SpreadsheetApp = {
@@ -62,9 +62,14 @@ function run({ today, baseline, rows }) {
   };
   // eval the real file, then override the baseline constant the same way an editor would
   const sandbox = {};
-  const fn = new Function('SpreadsheetApp', 'Logger', 'Utilities', 'Date', '__BASE__',
+  // LockService added 19 Aug: updateFollowUps() now takes the DOCUMENT lock before
+  // writing. Tests exercise the real entry point, so the mock must grant the lock —
+  // and `lockGranted:false` below proves the abort path actually refuses to write.
+  const LockService = { getDocumentLock: () => ({
+    tryLock: () => lockGranted, releaseLock() {} }) };
+  const fn = new Function('SpreadsheetApp', 'Logger', 'Utilities', 'Date', 'LockService', '__BASE__',
     src + '\n; IMPORT_BASELINE = __BASE__; updateFollowUps(); return {NEXT_DUE:COL.NEXT_DUE,NOTES:COL.NOTES};');
-  const cols = fn(global.SpreadsheetApp, global.Logger, global.Utilities, global.Date, baseline);
+  const cols = fn(global.SpreadsheetApp, global.Logger, global.Utilities, global.Date, LockService, baseline);
   global.Date = RealDate;
   return { grid: sheet._grid, cols, log: LOG.join('\n') };
 }
@@ -226,6 +231,29 @@ console.log('\n=== AE Chase Flag — the handshake with M4 route C (D-322) ===')
   check('AE absent -> says so in the log, loudly',
         r.log.indexOf('COLUMN NOT PRESENT') > -1, r.log.split('\n').pop());
   check('AE absent -> nothing written to column 31', flag(r.grid, 1) === '');
+}
+
+console.log('\n=== 🔴 the document lock (added 19 Aug, before the daily trigger) ===');
+{
+  // Self-contained fixture: a row that the normal run DOES write to.
+  const base = () => [headerRow(true)].concat(
+    Array.from({length: 3}, (_, i) => imported('LOCK CASE ' + i)));
+  const opts = () => ({ today: '2026-08-24T10:00:00', baseline: '', rows: base() });
+
+  const wrote   = run(opts());
+  const refused = run(opts(), false);
+  const untouched = JSON.stringify(base());
+
+  check('sanity: with the lock granted, this fixture really does write',
+        JSON.stringify(wrote.grid) !== untouched);
+  check('🔴 lock DENIED -> not one cell is written',
+        JSON.stringify(refused.grid) === untouched,
+        'a stale write-back is what re-stamps CHASE over DRAFTED');
+  check('lock DENIED -> says so in the log, not silently',
+        /ABORT.*document lock/.test(refused.log),
+        refused.log.split('\n')[0] || '(no log)');
+  check('lock DENIED -> tells the operator tomorrow catches up',
+        /tomorrow/i.test(refused.log));
 }
 
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed');

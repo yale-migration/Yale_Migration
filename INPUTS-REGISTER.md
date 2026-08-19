@@ -73,10 +73,23 @@ hiding among items that were merely awaiting a reply. So every open row below mu
 | Asked, awaiting reply | Never asked / not yet asked |
 |---|---|
 | **I-5 · I-9 · I-10 · I-13 · I-14 · I-15 · I-16 · I-17 · I-18 · I-19** — all in the team email of **18 Aug** (`SENT-2026-08-18-team-email.md`) | **I-3 Meta · I-4 WhatsApp · I-8 OneDrive** — Robinder's, going to **Friday's call** |
-| | **I-20** real `.eml` — in the spec since 29 Jul, still never chased |
+| | **I-20** real `.eml` — in the spec since 29 Jul → **Friday item 9** |
+| | **I-22** S56 client-email wording + cadence — same 29 Jul batch → **A-34(b)** |
+| | **I-23** S56 samples for 500/485/820 — same 29 Jul batch → **A-34(c)** |
+| | 🔴 **I-24** GOPI's email/team — **blocks assigning him a client at all** → **Friday item 8** |
 | | **I-21** M9 slot + operations — a decision, not an ask |
 
 **I-7 · I-11 · I-12** are deliberately deferred, not blocked.
+
+🔴 **19 Aug — the same failure D-331 named, found again by a different route.** All four rows above were
+invisible to this register until a reconciliation ran the *other* way: not "is each open input tracked?" but
+"is each thing the build needs actually **on a surface that reaches the client**?" I-20/22/23 sat in
+`docs/M9-EMAIL-AI-SPEC.md` under the heading **"Still needed from client"** for three weeks — a heading that
+reads exactly like a register and is not one. **I-24 is worse: it was hidden by a ✅.** A-13 was closed on
+18 Aug as *"folded into A-16"*, but A-16's answer settled only the manager question; *"GOPI has joined"*
+arrived with no email, and the tick on the parent carried the unanswered child away with it.
+🔑 **A closure is only as complete as the narrowest question it absorbed.**
+
 
 ## 2 · 🔴 NOT HELD — and each one blocks contracted hours
 
@@ -97,8 +110,11 @@ hiding among items that were merely awaiting a reply. So every open row below mu
 | **I-13** | 🔴 **Confirmation the 23 checklists are CURRENT** (checklist item 14) | **M4 going live at all** | — | ⛔ **never chased** |
 | **I-14** | 🔴 **`Client Enquiry Form`** (checklist item 12) | **C-1**, and M6's field set | 2 | ⛔ **never asked** — D-314 said "ask for it, do not design it" |
 | **I-15** | Inquiry-SOP follow-up Email/SMS templates (item 10) | M8 wording, M6 auto-reply | — | 🟠 partial |
-| **I-20** | 🔴 **A real `.eml` s56 email with headers intact** | M9's trigger filter — no sample carries a sender or subject, the cheapest classifier features | — | ⛔ in the spec since 29 Jul, never chased |
+| **I-20** | 🔴 **A real `.eml` s56 email with headers intact** | M9's trigger filter — no sample carries a sender or subject, the cheapest classifier features | — | ⛔ in the spec since 29 Jul, never chased → ✅ **now Friday runbook item 9** (added 19 Aug) |
 | **I-21** | 🔴 **A Make slot AND the operations for M9** | M9 running at all — `scenarios:2` cap, and ~600 ops/mo at their volume | — | go-live decision (D-342) |
+| **I-22** | Yale's **S56 client-request + follow-up wording** + the reminder cadence | M9's draft replies — the file sent under this name is WhatsApp screenshots (D-38) | — | ⛔ **never asked** — same 29 Jul batch as I-20 → A-34(b) |
+| **I-23** | S56 samples for **500 / 485 / 820-801** | confirms the 28-day figure holds beyond the one subclass we have seen | — | ⛔ **never asked** — same 29 Jul batch → A-34(c) |
+| **I-24** | 🔴 **GOPI's work email, team and visa line** | `MASTER` col L dropdown is `setAllowInvalid(false)` — **he cannot be assigned a client at all** until he is on the list | — | ⛔ **never asked.** Hidden by A-13 being closed into A-16 on 18 Aug → A-33, Friday item 8 |
 | **I-16** | 🔴 **"Anyone else on the application?" — Q5, returned 0/41** | **the RIGHT checklist per client** | — | ✅ asked, came back empty |
 | **I-17** | 🔴 **Which list is live — Q10, never answered** | whether **247 more people** from `REYWARD JAKE M GAMOL-2026` also import | ? | ✅ asked, **not answered** |
 | **I-18** | Where the **walk-in** enquiry sheet lives (checklist item 6 sibling) | M6 walk-in fold-in | ~1 | ⛔ never asked |

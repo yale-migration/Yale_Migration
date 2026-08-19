@@ -68,7 +68,36 @@ var CLOSED_OUTCOMES = ['Granted', 'Refused', 'Withdrawn'];
  */
 var FLAG_CHASE = 'CHASE';
 
+/**
+ * 🔴 THE LOCK IS NOT OPTIONAL — added 19 Aug 2026, before the daily trigger was installed.
+ *
+ * This function reads every row of MASTER, computes in memory, then writes back BY INDEX.
+ * M4 (Make) writes column AE `Chase Flag` on those same rows. With no lock, an AE stamp
+ * that lands between our read and our write is silently overwritten with the stale value.
+ *
+ * The specific loop that causes: M4 sets row 12 to DRAFTED; we write back the CHASE we
+ * read a second earlier; tomorrow M4 sees CHASE and drafts the same email again. Every
+ * morning, forever, 2 operations each time — exactly what the "ONLY WHEN BLANK" comment
+ * above exists to prevent, defeated by a race rather than by logic.
+ *
+ * ⚠️ Unsupervised execution is what made this urgent. Run by hand, someone is watching.
+ * On a 7am trigger nobody is. `removeDemoRows()` had this identical defect (same read-
+ * then-write-by-index shape) and it was fixed for the same reason.
+ *
+ * ⛔ getDocumentLock(), NOT getScriptLock() — they are different mutexes. M8 and the M9
+ * parser both take the DOCUMENT lock; a script lock here would not exclude either.
+ */
 function updateFollowUps() {
+  var lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) {
+    Logger.log('ABORT — could not get the document lock in 30s. Not writing. ' +
+               'Another script or a Make write is mid-flight; tomorrow\'s run will catch up.');
+    return;
+  }
+  try { return m5UpdateFollowUps_(); } finally { lock.releaseLock(); }
+}
+
+function m5UpdateFollowUps_() {
   var sh = SpreadsheetApp.getActive().getSheetByName('MASTER');
   if (!sh) { Logger.log('ERROR: MASTER tab not found.'); return; }
 

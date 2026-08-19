@@ -185,6 +185,8 @@ Keep the three above sacred. These are extras, in priority order.
 | 5 | **Dashboard access list** — his team said *"need to ask sir Robin"* | Who sees what. He is the only manager, so it is two levels not three |
 | 6 | **Is JRP in or out of scope?** (A-19, open since 14 Aug) | 73 candidates, four steps each — a whole pipeline we have never scoped |
 | 7 | ⚠️ **`student@yalemigration.com.au` is still under Mershe's name** and she has left | A live mailbox attributed to a former employee, at a firm holding ImmiAccount logins |
+| 8 | ⚠️ **ONLY IF REY HAS NOT ANSWERED** — GOPI's work email, team and visa line (A-33). **Asked Rey first, 19 Aug** | 🔴 **Not paperwork — a go-live defect.** He is in no dropdown, and the sheet *rejects* a name that is not on the list. Day one, nobody can assign him a client and the cell just refuses. One line from Robinder fixes it |
+| 9 | **"Woh Department ke emails forward kar dein — screenshot nahi, email khud."** 2–3 of them, ideally different visa types (A-34) | Every sample we hold is a **scan of a picture**, so we have never seen a sender address or a subject line — the two things the email triage keys off. ⚠️ **This has been in the M9 spec since 29 Jul and was never actually asked.** Costs him 30 seconds of forwarding |
 
 ---
 

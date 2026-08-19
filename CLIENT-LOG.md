@@ -495,7 +495,7 @@ operations, not just a slot. Recorded now rather than discovered at go-live. Ops
 
 2026-08-19 | 📥 team (Rey) | **Asked for a summary of how the new system works** — *"with the summary,
 I can easily provide the necessary information."* 🔑 He is not stalling: **he lacks the context to
-answer our questions confidently, which is our failure — we asked fifteen questions across two
+answer our questions confidently, which is our failure — we asked **nineteen** questions (`YM-DQ-e573`, 7 parts; *fifteen* here was wrong — corrected 19 Aug) across two
 documents and never explained what the thing does.** Written as `GUIDE-how-the-system-works.md`
 (D-344) and booked as **M11**, which is contracted, not absorbed. Covers only what is built and
 proven; M6/M7/M9 appear once under a clearly-labelled "not built yet". Every claim fact-checked
