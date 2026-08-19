@@ -5670,3 +5670,53 @@ single most important sentence in the document for an RMA's practice.
 
 **File:** `GUIDE-how-the-system-works.md` — two pages, no technical steps, written for a consultant.
 It is also the seed of the M11 handover pack rather than a throwaway.
+
+
+## D-345 | Auditing the guide before it went out — three defects, one of them a false claim to the client
+
+The PDF rendered faithfully. The content did not survive its own fact-check.
+
+### 🔴 1 · It told them Partner visas are not covered. They are.
+
+The draft listed *"186, 600, ART, Citizenship and **Partner**"* as having no checklist. Checked
+against the map and the disk: **`820/801` is mapped and `820-801_PARTNER.docx` exists.**
+
+What actually happened is narrower and more useful to them: **one row on their returned list is
+written `PARTNER VISA`**, which matches nothing. Change that cell to `820/801` and the client is
+handled automatically.
+
+⛔ Telling a migration agency we cannot handle partner visas — when we can — is the kind of error
+that costs confidence in everything else in the document. It came from copying the client's own
+"(no checklist yet)" annotations straight out of their spreadsheet instead of checking each against
+the map. **Their annotation was the assumption; I inherited it.**
+
+### 🔴 2 · The row numbers pointed at nothing the reader could find
+
+Items 3 and 4 said "rows 18, 24, 34 and 41" and "row 28" with no file named. Those are rows in the
+**returned workbook** (`INPUTS-REGISTER` §5 is titled *"data issues inside the returned sheet"*).
+Rey would most naturally open `LODGEMENT: JULY TO PRESENT`, where the same numbers are **different
+clients**. Now stated explicitly, twice.
+
+### ⚠️ 3 · "Every morning it checks" — nobody has verified that trigger exists
+
+`WHERE-WE-STAND` has said **"M5a ✅ running daily"** for days. There is **no record anywhere of the
+daily time-trigger being created** — the only documented Apps Script trigger is the 5-minute
+`assignMissingCodes` one (D-28, D-153).
+
+🔑 **Another unverified ✅, and it nearly went to the client as a promise.** D-331 was the Anthropic
+key; this is the same shape. Downgraded to `⚠️ UNVERIFIED` and added to Sharjeel's checks —
+Apps Script → Triggers, thirty seconds.
+
+⚠️ Related and already known (D-153): **Apps Script triggers belong to whoever created them.** If
+this one exists on Sharjeel's account, it dies at handover, silently. That is an M11 item.
+
+### Also, on format
+
+The PDF is 3 pages, which is fine. But **"What it will never do" splits across pages 2 and 3** —
+items 1–2 on one page, 3–5 on the next. That is the section a Registered Migration Agent's team most
+needs to read whole. Worth one `page-break-inside: avoid`.
+
+🔑 **The document was fact-checked when written and still shipped a false claim** — because the
+check verified the numbers I had asserted (23 checklists, 9 views, 3/7/30) and not the ones I had
+*inherited from the client's own spreadsheet*. **A fact-check only covers what you thought to
+check.**

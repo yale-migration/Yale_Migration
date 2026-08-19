@@ -60,7 +60,7 @@ in a feature.
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
 | M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard · 190 mapped D-325 · **OFF** |
 | M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |
-| M5a | Dormancy detection | ✅ running daily | Apps Script, 0 ops · 36/36 |
+| M5a | Dormancy detection | ✅ built · ⚠️ **"running daily" is UNVERIFIED** | Apps Script, 0 ops · 36/36. 🔴 **No record anywhere that the daily time-trigger was ever created** — the only documented trigger is the 5-minute `assignMissingCodes`. Confirm in Apps Script → Triggers before anyone is told it runs every morning (D-345) |
 | M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
 | M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |

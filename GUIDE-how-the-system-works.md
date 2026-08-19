@@ -67,9 +67,13 @@ The system chooses from **23 of your own checklists** using three things from th
 ⚠️ **If any of those three is missing, the system does not guess.** It marks the row
 **`NEEDS REVIEW`** and leaves it for a person. It will never file a checklist it is not sure about.
 
-Some visa lines have no checklist yet — **186, 600, ART, Citizenship and Partner**. Those clients
-still get their folder and still appear on the dashboard; they are simply flagged for someone to
-handle by hand. Robinder and I are discussing covering them properly.
+Four visa lines on your current list have no checklist yet — **186, 600, ART and Citizenship**.
+Those clients still get their folder and still appear on the dashboard; they are simply flagged for
+someone to handle by hand. Robinder and I are discussing covering them properly.
+
+✅ **Partner visas are covered** — there is an 820/801 checklist and the system files it. One row on
+your list is written as `PARTNER VISA`, which the system does not recognise. Change it to
+**`820/801`** and that client is handled automatically like any other.
 
 ---
 
@@ -123,13 +127,16 @@ One tab, opens on a phone or a laptop, updates itself, **nobody maintains it.** 
 ## The few things I still need from you
 
 Each one connects to something above.
+📄 **Where the row numbers point:** items 3, 4 and 4b refer to **the workbook you sent back**
+(`CLIENT LIST TO UPDATE`), not to your July-to-present tab — the rows are numbered differently.
 
 | # | What I need | Why — and what it affects |
 |---|---|---|
 | 1 | 🔴 **One line confirming the 23 checklists are the versions your team uses today** | These get filed and emailed to clients automatically. If one is out of date, a client gets an outdated document list with your name on it. **I will not switch this on until you confirm.** |
 | 2 | 🔴 **"Is anyone else on the application?" — Y or N per client** | This picks a *different* checklist. It is the one that came back empty. |
-| 3 | **The assessing authority for four 485 clients** | Rows 18, 24, 34 and 41. Just write it in the visa cell, e.g. `485 TRA` — no new column needed. |
-| 4 | **Four small fixes on your sheet** | Row 28's name is spelled two ways · rows 22 and 23 share one email address · row 13's email reads `gmil.com` |
+| 3 | **The assessing authority for four 485 clients** | Rows **18, 24, 34 and 41 of the list you sent back** (`CLIENT LIST TO UPDATE`). Just write it in the visa cell, e.g. `485 TRA` — no new column needed. |
+| 4 | **Four small fixes**, same list | **Row 28** — the name is spelled one way there and another on your July tab · **rows 22 and 23** share one email address (a 482 and a 500, both RJ's) · **row 13**'s email reads `gmil.com` |
+| 4b | **Two clients marked "no longer client"** | I have held those back rather than create folders for them. Just confirm that is right. |
 | 5 | **Which client list is the live one** | Is `REYWARD JAKE M GAMOL-2026` history, or still current? It is about 247 more people either way. |
 | 6 | *When you have time* | your **Client Enquiry Form** · where your **website enquiry form** sends messages · whether there is a separate **walk-in sheet** |
 
