@@ -343,3 +343,35 @@ Fixed by writing `type: "object"` and `additionalProperties: false` explicitly.
 that import went through the UI form, which filled the default in. The re-import applied the
 blueprint literally. **The same blueprint behaves differently depending on how it entered Make** —
 so a scenario proven by a UI-configured run is not proof that the JSON on disk is correct.
+
+### 🔴 `toJSON()` DOES NOT EXIST IN MAKE
+
+Third run. Gmail ✅, Anthropic ✅, Google Sheets ❌:
+
+> *Couldn't map the Raw Classification field. `toJSON()` isn't a Make function.*
+
+The spec had flagged exactly this — *"the path and types are verified; `toJSON`/`map`/`first`
+behaving in this nesting is the part a single execution proves."* The flag was right and the
+assumption was wrong. **Make has no generic serialiser.**
+
+Make's own two suggestions are both wrong here:
+- **`escapeJSON()`** escapes a *string*. It cannot turn a collection into JSON.
+- **A Transform-to-JSON module** works but costs **an extra operation per email** — a 50% rise in
+  per-email cost on a plan already capped at 1,000/month.
+
+**The fix: build the JSON explicitly in the mapper**, one `escapeJSON()` per field. Deterministic,
+no extra module, no extra operation.
+
+⛔ **Every value is quoted — numbers and booleans included.** An absent number would otherwise emit
+`"days_allowed": ,` which is invalid JSON and would take the *whole row* to `UNPARSEABLE`, losing
+thirteen good fields over one missing one. The parser already copes: it `parseInt`/`parseFloat`s the
+numbers and accepts `'true'` as well as `true`.
+
+⚠️ **`content[1]` is assumed to be the tool_use block.** With `tool_choice: {"type":"any"}` and no
+extended thinking there is exactly one content block, so this holds. If it ever stops holding, every
+field renders empty — and that is **visible, not silent**: `Category` becomes `UNCATEGORISED` and
+`Needs Review` becomes `YES`. Both are now covered by tests.
+
+**`test_s56_parse.js`: 36 → 43.** Every previous test used native JSON types, so the shape Make
+actually sends — every value a string — had never been exercised. It now is, along with the
+all-empty payload.

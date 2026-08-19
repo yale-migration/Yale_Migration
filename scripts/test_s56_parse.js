@@ -191,5 +191,41 @@ console.log('\n=== it aborts rather than write into the wrong columns ===');
         r.log.indexOf('ABORT') > -1 && cell(r.grid,'CATEGORY') === '', r.log.split('\n')[0]);
 }
 
+console.log('\n=== 🔴 the shape MAKE actually sends (every value a STRING) ===');
+{
+  // Make has no serialiser — toJSON() does not exist (proven live, 19 Aug). The
+  // blueprint therefore builds the JSON by concatenation with escapeJSON(), which
+  // quotes EVERY value, numbers and booleans included. Until now every test here
+  // used native types, so the real payload shape was never exercised.
+  const MAKE = JSON.stringify({
+    category: 'Department correspondence',
+    is_department_request: 'true',      // string, not boolean
+    client_name: 'A CLIENT', subclass: '500',
+    letter_date: '2026-08-14',
+    days_allowed: '28',                 // string, not number
+    due_date: '2026-09-12', internal_due_date: '2026-09-10',
+    deadline_sentence: 'You have 28 days starting on the day after we emailed this request.',
+    trn: 'EGP9XF6H64', application_id: '1540713558', file_number: 'BCC2025/7294045',
+    confidence: '0.96',                 // string, not number
+    needs_review: 'false'               // string, not boolean
+  });
+  const r = run([withRaw(MAKE)]);
+  check('"true" is honoured as a Department request', cell(r.grid,'CATEGORY') === 'Department correspondence');
+  check('numeric string days_allowed transcribes', cell(r.grid,'DAYS') === '28');
+  check('numeric string confidence parses to a number', cell(r.grid,'CONF') === '0.96', cell(r.grid,'CONF'));
+  check('🔴 "false" does NOT read as truthy -> not flagged', cell(r.grid,'REVIEW') === '', cell(r.grid,'REVIEW'));
+  check('the legal date still transcribes verbatim', cell(r.grid,'DUE') === '2026-09-12');
+
+  // If content[1] is not the tool_use block, escapeJSON yields empty for every field.
+  // That must be VISIBLE, never a quiet blank row.
+  const EMPTY = JSON.stringify(Object.fromEntries(
+    ['category','is_department_request','client_name','subclass','letter_date','days_allowed',
+     'due_date','internal_due_date','deadline_sentence','trn','application_id','file_number',
+     'confidence','needs_review'].map(k => [k, ''])));
+  const e = run([withRaw(EMPTY)]);
+  check('🔴 all-empty payload -> UNCATEGORISED, not blank', cell(e.grid,'CATEGORY') === 'UNCATEGORISED', cell(e.grid,'CATEGORY'));
+  check('🔴 all-empty payload -> flagged for review', cell(e.grid,'REVIEW') === 'YES');
+}
+
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed');
 process.exit(fail === 0 ? 0 : 1);

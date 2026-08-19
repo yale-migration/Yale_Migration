@@ -1,0 +1,11 @@
+Error
+Couldn't map the Raw Classification field in this module. toJSON() isn't a Make function, so the mapping breaks.
+
+Possible fixes:
+
+Replace toJSON() with escapeJSON().
+Map the text directly into the Raw Classification field.
+Use a Transform to JSON module for JSON text.
+
+Original message
+

@@ -154,7 +154,7 @@
           "Received": "{{2.internalDate}}",
           "Subject": "{{2.subject}}",
           "Gmail Link": "https://mail.google.com/mail/u/0/#inbox/{{2.id}}",
-          "Raw Classification": "{{toJSON(first(map(3.content; \"input\"; \"type\"; \"tool_use\")))}}",
+          "Raw Classification": "{\"category\":\"{{escapeJSON(3.content[1].input.category)}}\",\"is_department_request\":\"{{escapeJSON(3.content[1].input.is_department_request)}}\",\"client_name\":\"{{escapeJSON(3.content[1].input.client_name)}}\",\"subclass\":\"{{escapeJSON(3.content[1].input.subclass)}}\",\"letter_date\":\"{{escapeJSON(3.content[1].input.letter_date)}}\",\"days_allowed\":\"{{escapeJSON(3.content[1].input.days_allowed)}}\",\"due_date\":\"{{escapeJSON(3.content[1].input.due_date)}}\",\"internal_due_date\":\"{{escapeJSON(3.content[1].input.internal_due_date)}}\",\"deadline_sentence\":\"{{escapeJSON(3.content[1].input.deadline_sentence)}}\",\"trn\":\"{{escapeJSON(3.content[1].input.trn)}}\",\"application_id\":\"{{escapeJSON(3.content[1].input.application_id)}}\",\"file_number\":\"{{escapeJSON(3.content[1].input.file_number)}}\",\"confidence\":\"{{escapeJSON(3.content[1].input.confidence)}}\",\"needs_review\":\"{{escapeJSON(3.content[1].input.needs_review)}}\"}",
           "Status": "New",
           "Assigned To": "Unassigned"
         },
