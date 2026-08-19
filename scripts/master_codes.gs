@@ -20,6 +20,13 @@ var CODE_PREFIX  = 'YM-2026-';
 var COL_CODE     = 1;  // A  Client Code
 var COL_NAME     = 3;  // C  Full Name  (B = their CL-### id)
 var COL_DATE     = 20; // T  Date Added
+// ⚠️ SHARED GLOBAL. `FIRST_ROW` is ALSO declared in m5_dormant_detector.gs, with the same
+// value. Apps Script gives every .gs in a project ONE global scope, so these are not two
+// variables — they are one, and whichever file loads last wins. Identical values make that
+// harmless today and invisible to the hygiene gate, which compares values.
+// ⛔ Change this in one file and you silently change the other. Both are LIVE on triggers
+// (this on a daily/5-minute run against MASTER). If they ever need to differ, rename both
+// to a prefixed constant first. This is the CF_HEADER failure, caught before it bit.
 var FIRST_ROW    = 2;  // row 1 = headers
 var CODE_RE      = /^YM-\d{4}-\d{5}$/;   // what a REAL code looks like (D-145)
 

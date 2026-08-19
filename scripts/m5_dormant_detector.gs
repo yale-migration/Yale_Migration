@@ -37,6 +37,13 @@
  */
 var COL = { NAME:3, STAGE:13, OUTCOME:14, LAST_CONTACT:18, NEXT_DUE:19, DATE_ADDED:20, NOTES:23,
             CHASE_FLAG:31 };   // AE — the handshake with M4 route C (D-322)
+// ⚠️ SHARED GLOBAL. `FIRST_ROW` is ALSO declared in master_codes.gs, with the same
+// value. Apps Script gives every .gs in a project ONE global scope, so these are not two
+// variables — they are one, and whichever file loads last wins. Identical values make that
+// harmless today and invisible to the hygiene gate, which compares values.
+// ⛔ Change this in one file and you silently change the other. Both are LIVE on triggers
+// (this on a daily/5-minute run against MASTER). If they ever need to differ, rename both
+// to a prefixed constant first. This is the CF_HEADER failure, caught before it bit.
 var FIRST_ROW   = 2;
 var CHASE_FIRST = 3;    // days after intake if never contacted
 var CHASE_NEXT  = 7;    // days after the last contact
