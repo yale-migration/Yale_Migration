@@ -23,6 +23,7 @@ Design notes, both learned the hard way:
     The two fee workbooks in docs/ are price lists and a blank invoice template.
 """
 
+import hashlib
 import os
 import re
 import subprocess
@@ -217,6 +218,23 @@ else:
 # exist, so it early-returned instead of writing 'Chase Flag' over MASTER's column Y.
 #
 # DIFFERENT values = FAIL. IDENTICAL values = warn (still fragile: one edit apart).
+
+def _fnbody(d, fname, func):
+    """Crude but sufficient: the function's source from its header to the next
+    top-level `function`/`var`, normalised. Enough to tell two implementations
+    apart without parsing JavaScript."""
+    try:
+        src = open(os.path.join(d, fname), encoding="utf-8").read()
+    except OSError:
+        return "?"
+    m = re.search(r"^function\s+" + re.escape(func) + r"\b", src, re.M)
+    if not m:
+        return "?"
+    rest = src[m.end():]
+    nxt = re.search(r"^(?:function\s|var\s)", rest, re.M)
+    body = rest[:nxt.start()] if nxt else rest
+    return hashlib.md5(re.sub(r"\s+|//.*", "", body).encode()).hexdigest()[:10]
+
 head(4, "Apps Script global-name collisions across scripts/*.gs")
 import collections
 _decl = collections.defaultdict(dict)     # name -> {file: value-or-None}
@@ -230,7 +248,12 @@ for _f in _gs:
             continue
         _m = re.match(r"function\s+([A-Za-z_$][\w$]*)", _line)
         if _m:
-            _decl[_m.group(1)].setdefault(_f, None)
+            # 🔴 Two functions with the SAME NAME were previously both recorded as
+            # None, so the gate called them "same value" and only warned — even if
+            # their bodies differed completely. A duplicated helper that has since
+            # drifted is exactly the silent-wrong-behaviour case this gate exists
+            # for, so fingerprint the body and treat a difference as a FAILURE.
+            _decl[_m.group(1)].setdefault(_f, "fn:" + _fnbody(_gsdir, _f, _m.group(1)))
 
 _hard, _soft = [], []
 for _name, _where in sorted(_decl.items()):
