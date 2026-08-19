@@ -22,13 +22,14 @@ of my 48 hours are left?"* this file is the answer. Update it at the end of ever
 | | **BUILD SUBTOTAL** | **~41** |
 | | Client communication (messages, briefs, scripts) | ~6 |
 | **16–19 Aug** | **M4b · M5b (M4 v4 route C) · M8 + stop-on-reply · dashboard 6→9 views · ENQUIRIES + MASTER importers · four audit rounds (D-323…D-326, D-331…D-338) · hook + skills infrastructure · 20 decision entries** | **~20** |
-| | **BUILD SUBTOTAL** | **~61** |
+| 19 Aug | **M9** tracker + parser + independent deadline verifier (58 tests) · **M11** user guide (client-requested) | **~5** |
+| | **BUILD SUBTOTAL** | **~66** |
 | | Client communication (messages, briefs, scripts, the 19-question document + follow-ups) | **~8** |
-| | **TOTAL** | **~69** |
+| | **TOTAL** | **~74** |
 
 ## 🔴 WHERE THIS ACTUALLY STANDS — updated 19 Aug 2026
 
-**~69 hours spent against a firm 48-hour cap. ~21 hours over. ~37% of contracted modules delivered.**
+**~74 hours spent against a firm 48-hour cap. ~26 hours over. ~40% of contracted modules delivered.**
 
 ⛔ **The cap is the contract's central term:** *"Firm 48-hour cap; anything beyond is quoted as a
 written change order **before any additional hours are used**."* No change order has been raised.

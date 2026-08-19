@@ -493,4 +493,12 @@ Make writing ONE raw field and Apps Script parsing it, which is better anyway be
 🔴 **`scenarios:2` is a hard cap and M9 also costs ~600 ops/month** — it needs the paid plan for
 operations, not just a slot. Recorded now rather than discovered at go-live. Ops 485/1000.
 
+2026-08-19 | 📥 team (Rey) | **Asked for a summary of how the new system works** — *"with the summary,
+I can easily provide the necessary information."* 🔑 He is not stalling: **he lacks the context to
+answer our questions confidently, which is our failure — we asked fifteen questions across two
+documents and never explained what the thing does.** Written as `GUIDE-how-the-system-works.md`
+(D-344) and booked as **M11**, which is contracted, not absorbed. Covers only what is built and
+proven; M6/M7/M9 appear once under a clearly-labelled "not built yet". Every claim fact-checked
+against the code, not read back. Says three times that nothing emails a client by itself.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
