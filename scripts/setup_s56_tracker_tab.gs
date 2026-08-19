@@ -122,9 +122,23 @@ function setupS56Tracker() {
       .setBackground('#fdece9').setFontColor('#c0392b')
       .setRanges([sh.getRange(2, 1, Math.max(sh.getMaxRows() - 1, 1), S56_HEADERS.length)])
       .build();
-    var rules = sh.getConditionalFormatRules();
+    // ⛔ STRIP OUR OWN RULE FIRST, then add exactly one.
+    // Pushing unconditionally stacks an identical rule on the same range every run —
+    // the precise defect already found and fixed in m5_dormant_detector.gs
+    // (addDormantHighlight: "three runs, three identical rules"). This function is
+    // re-runnable by design, so it had the same bug waiting.
+    // Identified by the rule's own formula, so a rule a human added by hand survives.
+    var mine = '$' + dueCol + '2<>""';
+    var rules = sh.getConditionalFormatRules().filter(function (existing) {
+      try {
+        var f = existing.getBooleanCondition();
+        var vals = f ? f.getCriteriaValues() : null;
+        return !(vals && String(vals[0]).indexOf(mine) > -1);
+      } catch (e) { return true; }   // never drop a rule we cannot inspect
+    });
     rules.push(rule);
     sh.setConditionalFormatRules(rules);
+    Logger.log('Conditional format: 1 due-date rule set (any earlier copy replaced).');
 
     var widths = { 'Deadline Sentence': 420, 'Subject': 300, 'Gmail Link': 220,
                    'Raw Classification': 300, 'Client Name': 200 };
