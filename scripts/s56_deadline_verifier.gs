@@ -201,8 +201,35 @@ function s56vRun_() {
   Logger.log('  ⛔ past the legal deadline ..... ' + overdue);
   Logger.log('  ⏳ due within 7 days ........... ' + dueSoon);
   Logger.log('');
-  Logger.log(mismatch + sentenceMismatch === 0
-    ? 'Every computed deadline matches an independent recomputation.'
-    : '🔴 ' + (mismatch + sentenceMismatch) + ' row(s) flagged. Notes are on the DUE DATE cells, '
-      + 'and Needs Review is set to YES. Nothing was auto-corrected.');
+  // 🔴 ZERO CHECKS PASSING IS NOT VERIFICATION.
+  //
+  // The first live run (19 Aug) printed "Every computed deadline matches an independent
+  // recomputation" after recomputing NOTHING — one row, no letter date, no days allowed.
+  // Literally true and completely misleading, in the one script whose whole job is to be
+  // trusted about legal dates.
+  //
+  // The production failure it invites: the classifier silently stops extracting
+  // letter_date, every row lands as "no basis to check", and this reports all-clear
+  // every morning while not a single deadline is being verified. That is the same shape
+  // as onerror:Ignore reporting SUCCESS on a write that never happened.
+  //
+  // So the summary is now driven by what was ACTUALLY CHECKED, not by the absence of
+  // failures. A count of zero gets its own line, and it is a warning.
+  if (mismatch + sentenceMismatch > 0) {
+    Logger.log('🔴 ' + (mismatch + sentenceMismatch) + ' row(s) flagged. Notes are on the DUE DATE '
+             + 'cells, and Needs Review is set to YES. Nothing was auto-corrected.');
+  } else if (checked > 0) {
+    Logger.log('✅ All ' + checked + ' recomputable row(s) agree with an independent recomputation.');
+    if (noBasis > 0) {
+      Logger.log('⚠️  ...but ' + noBasis + ' row(s) COULD NOT BE CHECKED AT ALL. Those deadlines '
+               + 'are unverified — this result says nothing about them.');
+    }
+  } else if (noBasis > 0) {
+    Logger.log('⚠️  NOTHING WAS VERIFIED. ' + noBasis + ' row(s) had no letter date or days '
+             + 'allowed to recompute from, and 0 rows were checked.');
+    Logger.log('   This is NOT a pass. If these are Department requests, the extraction is '
+             + 'failing and no deadline in this tab is being independently confirmed.');
+  } else {
+    Logger.log('No rows carried a deadline to check.');
+  }
 }

@@ -224,5 +224,35 @@ console.log('\n=== it aborts rather than flag the wrong column ===');
         LOG[0]);
 }
 
+console.log('\n=== 🔴 zero checks passing is NOT verification ===');
+{
+  // The first live run printed "Every computed deadline matches an independent
+  // recomputation" having recomputed nothing at all — one row with no letter date
+  // and no days allowed. True, and completely misleading, in the script whose only
+  // job is to be trusted about legal dates.
+  const noBasis = run({ today: TODAY, rows: [row({ name: 'A CLIENT' })] });
+  check('🔴 nothing checked -> does NOT claim everything matches',
+        !/All .* agree|Every computed deadline matches/.test(noBasis.log),
+        noBasis.log.split('\n').filter(l => l.trim()).pop());
+  check('🔴 nothing checked -> says so in plain words',
+        /NOTHING WAS VERIFIED/.test(noBasis.log));
+  check('🔴 nothing checked -> states explicitly this is not a pass',
+        /This is NOT a pass/.test(noBasis.log));
+
+  // A genuine all-clear must still read as an all-clear.
+  const good = run({ today: TODAY, rows: [row({ name: 'B CLIENT', letter: '2026-08-14',
+                     days: 28, due: '2026-09-12', internal: '2026-09-10' })] });
+  check('a real agreement still reports as agreement',
+        /agree with an independent recomputation/.test(good.log),
+        good.log.split('\n').filter(l => l.trim()).pop());
+
+  // Mixed: some verified, some not. The unverified ones must not hide behind the pass.
+  const mixed = run({ today: TODAY, rows: [
+    row({ name: 'C', letter: '2026-08-14', days: 28, due: '2026-09-12', internal: '2026-09-10' }),
+    row({ name: 'D' })] });
+  check('🔴 mixed run -> the unchecked rows are called out beside the pass',
+        /COULD NOT BE CHECKED AT ALL/.test(mixed.log), mixed.log);
+}
+
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed');
 process.exit(fail === 0 ? 0 : 1);
