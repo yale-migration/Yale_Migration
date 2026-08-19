@@ -479,4 +479,15 @@ because personal-OneDrive shares surface as `remoteItem` and the owner's path ma
 guest. 🔴 Second: **"WhatsApp verification" is Meta BUSINESS verification first** — display-name
 review does not start until it completes, so that is the only question worth asking Friday.
 
+2026-08-19 | internal (overnight) | **M9 built as far as it honestly can be (D-342) — 58 new tests.**
+Tracker tab, JSON parser (36 tests) and an **independent deadline recomputation** (22 tests): the
+parser transcribes, the verifier computes, so a legal date gets two separate shots. Probed the live
+Make/Anthropic API for 2 ops and learned four things no doc gave me — notably that `max_tokens` as a
+string works in the UI and **fails via the API**, so a UI-built blueprint may not post back.
+⛔ Could not verify the tool-use output path: the scratch-tab probe was **blocked as a write to the
+client's live sheet, correctly, and I did not route around it** — so the architecture changed to
+Make writing ONE raw field and Apps Script parsing it, which is better anyway because it is testable.
+🔴 **`scenarios:2` is a hard cap and M9 also costs ~600 ops/month** — it needs the paid plan for
+operations, not just a slot. Recorded now rather than discovered at go-live. Ops 485/1000.
+
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**

@@ -65,7 +65,7 @@ in a feature.
 | M6 | **Enquiry capture hub (8h)** | 🔴 **BARELY STARTED — spec only** | ⛔ what I shipped as "M6" was **M8** (D-331). Needs Meta/website/walk-in access we have never asked for |
 | M7 | Phone intake | ⬜ not started | their 13-step SOP found (D-307) |
 | M8 | **Lead follow-up sequences (2h)** | ✅ **COMPLETE** — cadence **+ stop-on-reply** | D-328/D-331/D-339 · **32/32** · 0 ops · ✅ column L added live 18 Aug |
-| M9 | Email triage / s56 | 🟢 **UNBLOCKED 19 Aug — Anthropic conn 9948850 live and proven** | 5h · the biggest buildable block. Module reads **PDFs natively**, so no text-extraction step (D-340) |
+| M9 | Email triage / s56 | 🟡 **PARSER + VERIFIER BUILT 19 Aug — 58 tests** | D-342 · tracker tab, JSON parser, **independent deadline recomputation**. 🔴 **Cannot be switched on: `scenarios:2` cap + ~600 ops/mo** |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
 | — | Dashboard | ✅ **DONE for MVP — 9 views, all verified against data** | goodwill, not MVP scope. Not being worked on further |
@@ -88,8 +88,13 @@ in a feature.
 **Honest: ~36%** — 14.5 of 40 contracted build-hours. **~47 of 48 contract hours consumed**;
 the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
 
-**Ops: 481 / 1,000 · 519 left · resets 25 Aug.** Both scenarios deliberately **OFF**.
-Everything since 16 Aug cost **0 ops** — blueprints edited over MCP, never run.
+**Ops: 485 / 1,000 · 515 left · resets Tue 25 Aug.** All scenarios **OFF** (`activeScenarios: 0`).
+The 4 ops since 16 Aug were the Anthropic smoke test and the M9 API probe — both bought a fact that
+would otherwise have been a guess.
+
+🔴 **`license.scenarios: 2` — a HARD cap on ACTIVE scenarios.** M3 + M4 are those two, so **M9 cannot
+be switched on** without merging M3+M4 or moving to a paid plan. And at ~10 emails/day M9 costs
+~600 ops/month on its own — **it needs the paid plan for OPERATIONS, not just for a slot** (D-342).
 
 ---
 
@@ -260,6 +265,8 @@ review blocked behind it — so the only question worth asking is whether the *b
 | **`preflightGoLive()`** (`scripts/preflight_go_live.gs`) | 🔴 **the go-live gate.** Read-only. Must print **GO** before any scenario is activated (D-323) |
 | `previewDemoRows()` · `seedDemoWorkflowColumns()` | dry-run the teardown · fill Z–AC on demo rows so dashboard views 7/8 can be **seen working** (D-324) |
 | `node scripts/test_m8_lead_followup.js` | **32 checks.** Runs the real M6 `.gs` under a frozen clock. Proves the 621-row flood is prevented |
+| `node scripts/test_s56_parse.js` | **36 checks** — the M9 JSON parser against fenced/prose/double-encoded/garbage input |
+| `node scripts/test_s56_deadlines.js` | **22 checks** — independent recomputation of every legal deadline |
 | `node scripts/test_m5_dormancy.js` | **24 checks.** Loads the real `m5_dormant_detector.gs` and runs it against a fake MASTER with a frozen clock. Run it after ANY edit to that file |
 | `bash scripts/gen_decisions_index.sh` | after appending to `DECISIONS.md`. Header **must** be `## D-NNN \| Title` on one line |
 
