@@ -74,6 +74,27 @@ var M8_CLOSED = ['Not Proceeding', 'Lost Lead', 'Converted'];
 // replaces its OWN line without touching a word a consultant typed.
 var M8_TAG = 'M8:';
 
+/**
+ * ---- FLOOD GUARD (19 Aug 2026) ------------------------------------------
+ * The header above explains why M8_BASELINE exists: import 621 enquiries dated from
+ * 26 June with no baseline and the first run stamps "no outcome recorded" on every
+ * one of them, on the client's live sheet.
+ *
+ * 🔴 That protection was a COMMENT and a variable someone has to remember to set. On
+ * 19 Aug a daily 8am trigger was installed, so the first run after any future import
+ * is unattended — nobody is watching to stop it. The demo-rows incident had exactly
+ * this shape: the instruction existed in five documents and was in none of the ones
+ * read at go-live.
+ *
+ * So the script now refuses instead of trusting. If the baseline is unset and this run
+ * would mark more than M8_FLOOD_LIMIT rows lapsed at once, it writes NOTHING and says
+ * why. A real day's work never lapses 25 enquiries simultaneously; only an import does.
+ *
+ * Setting M8_BASELINE to the import date turns the guard off by making it unnecessary —
+ * those rows become 'historical' and never reach the lapsed count.
+ */
+var M8_FLOOD_LIMIT = 25;
+
 
 function updateEnquiryFollowUps() {
   var lock = LockService.getDocumentLock();
@@ -180,6 +201,20 @@ function m8Run_() {
         ') are past and no outcome is recorded — set a Status');
       lapsed++;
     }
+  }
+
+  if (!baseline && lapsed > M8_FLOOD_LIMIT) {
+    // Nothing has been written yet — `due` and `notes` are in-memory copies.
+    Logger.log('🔴 ABORT — REFUSING TO WRITE. ' + lapsed + ' enquiries would be marked');
+    Logger.log('   lapsed in one run and M8_BASELINE is not set.');
+    Logger.log('');
+    Logger.log('   That is the signature of a fresh import, not a day of real work.');
+    Logger.log('   Writing would stamp "no outcome recorded" across the client\'s live sheet.');
+    Logger.log('');
+    Logger.log('   FIX: set M8_BASELINE to the enquiry import date (yyyy-MM-dd) and re-run.');
+    Logger.log('   Those rows then read as historical, which is what they are.');
+    Logger.log('   Nothing has been changed.');
+    return;
   }
 
   dueRng.setValues(due);

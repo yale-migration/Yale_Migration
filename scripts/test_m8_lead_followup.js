@@ -101,10 +101,33 @@ console.log('\n=== THE FLOOD THE BASELINE PREVENTS ===');
   // 621 imported enquiries all dated well before today
   const rows = [blankRow()].concat(
     Array.from({ length: 621 }, (_, i) => enq('C' + i, '2026-07-0' + (i % 9 + 1))));
+  // Until 19 Aug this asserted lapsedOff === 621 — it PROVED THE BUG HAPPENS, to show
+  // the baseline fixed it. Once the flood guard landed, the run refuses to write at all,
+  // so the old expectation would have failed for the right reason and looked like a
+  // regression. A test that encodes a defect as expected output is a trap either way.
   const off = run({ today: '2026-08-18T10:00:00', baseline: '', rows: rows.map(r => r.slice()) });
   const lapsedOff = off.grid.slice(1).filter(r => String(r[10]).indexOf('set a Status') > -1).length;
-  check('WITHOUT a baseline, all 621 are flagged lapsed on day one (the bug)',
-        lapsedOff === 621, lapsedOff + ' flagged');
+  const untouched = JSON.stringify([blankRow()].concat(
+    Array.from({ length: 621 }, (_, i) => enq('C' + i, '2026-07-0' + (i % 9 + 1)))));
+
+  check('🔴 no baseline + a mass lapse -> the guard REFUSES, 0 written',
+        lapsedOff === 0, lapsedOff + ' flagged');
+  check('🔴 ...and not one cell of the sheet is touched',
+        JSON.stringify(off.grid) === untouched);
+  check('...the log names the cause, not just the refusal',
+        /M8_BASELINE is not set/.test(off.log), off.log.split('\n')[0]);
+  check('...the log gives the fix, not just the problem',
+        /set M8_BASELINE to the enquiry import date/i.test(off.log));
+  check('...and states plainly that nothing changed',
+        /Nothing has been changed/.test(off.log));
+
+  // The guard must not fire on a normal day. 5 lapsed is real work, not an import.
+  const few = [blankRow()].concat(
+    Array.from({ length: 5 }, (_, i) => enq('D' + i, '2026-07-0' + (i % 9 + 1))));
+  const small = run({ today: '2026-08-18T10:00:00', baseline: '', rows: few });
+  const lapsedFew = small.grid.slice(1).filter(r => String(r[10]).indexOf('set a Status') > -1).length;
+  check('a normal day (5 lapsed, under the limit) still writes as before',
+        lapsedFew === 5, lapsedFew + ' flagged');
   const on = run({ today: '2026-08-18T10:00:00', baseline: BASE, rows: rows.map(r => r.slice()) });
   const lapsedOn = on.grid.slice(1).filter(r => String(r[10]).indexOf('set a Status') > -1).length;
   check('WITH the baseline, 0 are flagged lapsed', lapsedOn === 0, lapsedOn + ' flagged');
