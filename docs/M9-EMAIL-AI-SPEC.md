@@ -132,3 +132,55 @@ Inbound patterns worth hard-coding: `CoECertificate-<SURNAME>-<First>-<QUAL>-<DD
 3. **S56 samples for other subclasses** (500/485/820-801/GSM) to confirm the title template and the
    28-day figure hold.
 4. Confirm the supervising RMA / MARN question in safety rule 2.
+
+---
+
+## ✅ THE OUTPUT MAPPING — RESOLVED 19 Aug 2026, no UI visit needed
+
+This was logged for days as *"30 seconds in the Make UI: read the tool-use output path off the
+Anthropic module's field picker"* — an item only Sharjeel could do. It was resolved instead with
+`app-module_get(anthropic-claude@1, createAMessage, format=json)`, which returns the module's full
+output interface over the API. **0 operations.** The same mistake as D-310: an answer we already had
+access to, filed as a question for someone else.
+
+### The real shape
+
+`content` is an **array**. Each element carries:
+
+| field | type | |
+|---|---|---|
+| `type` | text | `text` · `thinking` · `tool_use` |
+| `text` | text | present on text blocks |
+| `thinking` · `signature` | text | present when extended thinking is on |
+| `id` · `name` | text | the tool call |
+| **`input`** | **collection** | 🔑 **the tool arguments — our classification JSON** |
+| `tool_use_id` · `caller` · `content` · `citations` | | |
+
+Top level also returns `stop_reason`, `usage`, `model`, `tools`.
+
+### 🔴 Two traps, both silent
+
+**1. `content[1]` is not reliably the tool call.** A text or thinking block can precede it. Index
+into it blindly and `.input` is empty — the parser writes `UNPARSEABLE`, which is visible, but the
+run still "succeeded". Filter by type instead of trusting position:
+
+```
+map(1.content; "input"; "type"; "tool_use")
+```
+
+**2. ⛔ `input` is a COLLECTION, not text.** Write a collection into a sheet cell and it renders
+`[object Object]`. `s56_parse_classifications.gs` already treats that exact string as garbage —
+`s56pExtractJson_()` returns null on it and the row becomes `UNPARSEABLE`. So the obvious mapping
+produces a permanently unparseable column and looks like a model problem, not a mapping problem.
+It must be serialised:
+
+```
+{{ toJSON(first(map(1.content; "input"; "type"; "tool_use"))) }}
+```
+
+→ writes to `S56 TRACKER` column S `Raw Classification`. The parser takes it from there.
+
+⚠️ **Confirm with one live run before trusting it (1 operation).** The path and types above come
+from the module schema and are verified; `toJSON`/`map`/`first` behaving as expected in this exact
+nesting is the part a single execution proves. Check the cell holds `{"category":...}` and not
+`[object Object]`.
