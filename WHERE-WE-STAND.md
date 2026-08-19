@@ -147,7 +147,7 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **M8 COMPLETE 18 Aug (D-339)** — stop-on-reply added, 32/32 | — | needs one script run |
 | **0** | 🟢 **CLIENT IMPORT — 38 rows ready, `build_master_import.py`.** Runs the moment Q9 lands and the demo rows come out | 1 | ⛔ **Q9 (A-20) only** |
 
-### ⛔ THE GO-LIVE GATE — nothing is activated until all four are true
+### ⛔ THE GO-LIVE GATE — nothing is activated until all FIVE are true
 
 | | Check | How |
 |---|---|---|
@@ -155,6 +155,7 @@ prompt** (D-320) — that is how the check got defeated.
 | 2 | Scheduling is **Weekdays 09:00/13:00/17:00** | both scenarios are still on the 15-minute default |
 | 3 | OneDrive is on a **Yale** account | connection 9279810 is still `sharry00010@gmail.com` — §5 risk 1 |
 | 4 | **Robinder has given a date** | not implied by him saying yes to something else |
+| 5 | 🔴 **BOTH baselines are set to the import date** | `IMPORT_BASELINE` in `m5_dormant_detector.gs` **and** `M8_BASELINE` in `m8_lead_followup.gs`, same date, `yyyy-MM-dd`. **Added 19 Aug — it was in neither this gate nor `CUTOVER-PLAN.md`.** Both are `''` today, which is correct until import day. Leave them and the 38 MASTER rows all flag dormant on day 3 (route C drafts a chase for each) and the 621 enquiries all read as lapsed on day 1. ⚠️ **The daily triggers went live 19 Aug, so the first run after import is UNATTENDED.** M8 now refuses a mass write if its baseline is unset; **M5a has no such guard — it will simply do it.** |
 
 🔴 **On the demo rows.** They are 14 invented people with `@example.com` addresses. M3 would create
 folders for them **in the client's real OneDrive**, M4 would file checklists into those folders, and
