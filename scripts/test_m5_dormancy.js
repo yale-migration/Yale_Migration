@@ -99,9 +99,28 @@ console.log('=== THE BUG: 40 imported files, the day the 3-day rule bites ===');
   const d23 = run({ today: '2026-08-23T10:00:00', baseline: '', rows: rows.map(r => r.slice()) });
   check('no baseline: nothing yet on 23 Aug (due == today, not overdue)',
         dormantCount(d23.grid) === 0, dormantCount(d23.grid) + ' dormant');
+  // Until 19 Aug this asserted dormantCount === 40 — it PROVED THE BUG HAPPENS, to show
+  // the baseline fixed it. The flood guard now refuses the write entirely, so the old
+  // expectation would fail for the right reason while reading as a regression. Same
+  // trap the M8 suite had, and the blueprint verifier before that.
+  const untouched = JSON.stringify(
+    [headerRow(true)].concat(Array.from({length: 40}, (_, i) => imported('CLIENT ' + i))));
   const before = run({ today: '2026-08-24T10:00:00', baseline: '', rows: rows.map(r => r.slice()) });
-  check('WITHOUT a baseline, all 40 flag on 24 Aug (this is the bug)',
-        dormantCount(before.grid) === 40, dormantCount(before.grid) + ' dormant');
+
+  check('🔴 no baseline + a mass CHASE raise -> the guard REFUSES',
+        dormantCount(before.grid) === 0, dormantCount(before.grid) + ' dormant');
+  check('🔴 ...and not one cell is written — no AE flag, no due date, no note',
+        JSON.stringify(before.grid) === untouched);
+  check('...the log names the real consequence, not just the refusal',
+        /route C drafts a chase email/.test(before.log), before.log.split('\n')[0] || '(none)');
+  check('...and gives the fix',
+        /set IMPORT_BASELINE to the import date/i.test(before.log));
+
+  // The guard must not fire on a normal day. 10 raised is real work, not an import.
+  const ten = [headerRow(true)].concat(Array.from({length: 10}, (_, i) => imported('SMALL ' + i)));
+  const normal = run({ today: '2026-08-24T10:00:00', baseline: '', rows: ten });
+  check('a normal day (10 raised, under the limit) still writes as before',
+        dormantCount(normal.grid) === 10, dormantCount(normal.grid) + ' dormant');
   const after = run({ today: '2026-08-24T10:00:00', baseline: BASE, rows: rows.map(r => r.slice()) });
   check('WITH the baseline, 0 flag on day 3',
         dormantCount(after.grid) === 0, dormantCount(after.grid) + ' dormant');

@@ -69,6 +69,29 @@ var CLOSED_OUTCOMES = ['Granted', 'Refused', 'Withdrawn'];
 var FLAG_CHASE = 'CHASE';
 
 /**
+ * ---- FLOOD GUARD (19 Aug 2026) ------------------------------------------
+ * Mirrors the one in m8_lead_followup.gs, and exists for a sharper reason.
+ *
+ * IMPORT_BASELINE stops 38 freshly imported clients being read as new intakes and
+ * flagged dormant on day 3. Until today that protection was a comment and a variable
+ * someone has to remember to set on import day.
+ *
+ * 🔴 M5a's output is worse than M8's when it goes wrong. M8 writes notes. M5a stamps
+ * column AE `Chase Flag` = CHASE, and **M4 route C turns every CHASE into a drafted
+ * chase email**. Forget the baseline and three days after import the client finds ~38
+ * chase drafts addressed to people nobody has failed — on their own Gmail, under their
+ * own registration. Two operations each, and the "ONLY WHEN BLANK" rule means they do
+ * not re-raise, so it looks like it worked.
+ *
+ * The daily 07:00 trigger went live 19 Aug, so the first run after any import is
+ * unattended. Nobody is watching to stop it. Gate 5 of the go-live checklist catches
+ * this if someone reads the checklist; this catches it if nobody does.
+ *
+ * A real day never raises 15 files to CHASE at once. Only an import does.
+ */
+var M5_FLOOD_LIMIT = 15;
+
+/**
  * 🔴 THE LOCK IS NOT OPTIONAL — added 19 Aug 2026, before the daily trigger was installed.
  *
  * This function reads every row of MASTER, computes in memory, then writes back BY INDEX.
@@ -176,6 +199,20 @@ function m5UpdateFollowUps_() {
     } else if (hasFlag) {
       flags[i][0] = '';                // not overdue: nothing is pending, whatever it said
     }
+  }
+
+  if (!baseline && raised > M5_FLOOD_LIMIT) {
+    // Nothing written yet — due/notes/flags are in-memory copies.
+    Logger.log('🔴 ABORT — REFUSING TO WRITE. ' + raised + ' files would be raised to');
+    Logger.log('   CHASE in one run and IMPORT_BASELINE is not set.');
+    Logger.log('');
+    Logger.log('   M4 route C drafts a chase email for every CHASE flag. That is ' + raised);
+    Logger.log('   emails to clients who have not gone quiet — they were imported.');
+    Logger.log('');
+    Logger.log('   FIX: set IMPORT_BASELINE to the import date (yyyy-MM-dd) and re-run.');
+    Logger.log('   Imported files then get the ' + CHASE_IMPORTED + '-day grace instead.');
+    Logger.log('   Nothing has been changed.');
+    return;
   }
 
   dueRange.setValues(due);
