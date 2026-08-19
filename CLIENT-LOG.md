@@ -502,3 +502,51 @@ proven; M6/M7/M9 appear once under a clearly-labelled "not built yet". Every cla
 against the code, not read back. Says three times that nothing emails a client by itself.
 
 **⛔ From today this log is written the same day, every day. The 13-day gap cost us D-310.**
+
+2026-08-19 | 📤 team (Rey) | **GUIDE SENT** — `GUIDE-how-the-system-works.md` as a PDF plus a covering
+email, after three audit rounds and a reconciliation of every open input against it. Two errors
+caught before sending: the draft said *"fifteen questions"* when `YM-DQ-e573` carried **nineteen**
+(and they answered twelve), and an unverifiable page count. Also corrected the wrong claim that
+Partner visas are uncovered — the 820/801 checklist exists and M4 files it; one row just reads
+`PARTNER VISA` and needs relabelling. **GOPI's email added as a P.S.** (A-33): he is in no dropdown,
+and MASTER's is `setAllowInvalid(false)`, so from go-live nobody could assign him a client at all.
+Team asks now total 8; Robinder's Friday list totals 9, with GOPI conditional so it is never asked twice.
+
+2026-08-19 | internal | **M5a + M8 ARE ACTUALLY RUNNING — first unattended automation of the build.**
+`installDailyTriggers()` + `verifyDailyTriggers()` written and run. 🔑 **The M5a trigger existed all
+along** — "no record it was created" had been read as "it was never created", and `grep
+ScriptApp.newTrigger` proves only that no *code* made one. 🔴 **M8 was NOT DEPLOYED**: the .gs had
+never been pasted into the project, while WHERE-WE-STAND said "✅ COMPLETE" on one row and "needs one
+script run" four rows below. **Tests passing is not deployment.** Both now daily, owner `project1@`
+(so the D-153 handover risk is smaller than feared — they run as the client, not as us).
+Before installing anything: `updateFollowUps()` held **no lock** on a read-all → write-back-by-index
+over MASTER while M4 writes AE on those rows. Document lock added first. Flood guards added to
+**both** M5a and M8 — forget a baseline at import and M5a would raise ~38 CHASE flags, and M4 route C
+drafts an email for every one. 36→44 and 32→37 tests.
+
+2026-08-19 | internal | **M9 PROVEN END TO END on a real Department email.** Gmail → Claude
+(`tool_use`) → Sheets → parser → verifier. **3 operations per email, measured.** Correctly classified
+a bridging-visa **grant** as NOT an s56 request — a model that labelled every Department email an s56
+request would have looked identical on a green run. 🔑 The scenario **already existed** (6781676,
+1 Aug) and was found only by noticing `scenarioUsages`, after a blueprint had been written from
+scratch. **Six silent-failure classes found and fixed**, none caught by any validator: `onerror:Ignore`
+turning a total write failure into a green run · `input_schema.type` being a Make *form* default not
+applied at runtime · `toJSON()` not existing in Make · the verifier reporting *"every deadline
+matches"* after checking **zero** · conditional rules stacking on re-run · setup-vs-data guards
+**deadlocking** so lost dropdowns could never be repaired on a tab holding real deadlines
+(`repairS56Dropdowns()` added). 🔑 **The run also answered I-20 for us**: the Department's real sender
+is `noreply.skilled@homeaffairs.gov.au` — the mailbox held it all along, and it had been logged as
+never-asked since 29 Jul. Tracker 25/25. 58→72 tests.
+
+2026-08-19 | internal | **CR-013 corrected and quoted.** The register said *"six visa lines"* and then
+listed **five** — and one of the five, `PARTNER VISA`, is **already covered**. Real scope is **four**:
+186 · 600 · ART · Citizenship. Quoting six would have overcharged a family referral by 50%.
+`QUOTE-CR-013-visa-lines.md`: 8 h @ USD 35 = **USD 280**, clock starting when Robinder supplies the
+document lists — ⛔ **we cannot author them; deciding which documents a visa requires is migration
+advice and only the RMA gives it.**
+
+2026-08-19 | internal | ⚠️ **CORRECTION TO MY OWN ADVICE.** I told Sharjeel to raise the hours overrun
+on Friday. `HOURS-LEDGER.md:75` says the opposite and is right: contracted delivery is ~25 of 40
+build-hours, so we are **under**-delivered on contract, not over. The extra ~26 h went into work
+nobody asked us to bill for. Calling it an overrun would ask Robinder to pay for a decision he was
+never part of. **No invoice, no back-billing on Friday.** `BRIEF-friday-hours-and-scope.md`.
