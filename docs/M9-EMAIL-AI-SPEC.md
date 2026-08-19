@@ -375,3 +375,34 @@ field renders empty — and that is **visible, not silent**: `Category` becomes 
 **`test_s56_parse.js`: 36 → 43.** Every previous test used native JSON types, so the shape Make
 actually sends — every value a string — had never been exercised. It now is, along with the
 all-empty payload.
+
+### ✅ END TO END, 19 Aug 2026 — 3 operations, row 2 written
+
+| module | | |
+|---|---|---|
+| Gmail | ✅ 1 op | real Department email fetched |
+| Anthropic | ✅ 1 op | `Stop Reason: tool_use` — the tool was called |
+| Google Sheets | ✅ 1 op | `Table Range: 'S56 TRACKER'!A1:S1` · **Row Number: 2** |
+
+**3 operations per email.** At their volume that is the number to use in the plan conversation.
+
+#### 🔑 The run answered an input we had been about to ask the client for
+
+The fetched message was:
+
+```
+subject:   IMMI Bridging Visa Grant Notification - BCC2025/79853 - 18570…
+fromEmail: noreply.skilled@homeaffairs.gov.au
+```
+
+**That is the Department's real sender address**, and it is a large part of what I-20 (*"a real
+`.eml` with headers intact"*) existed to obtain — logged as never-asked since 29 July because every
+sample we hold is an image-only scan with no sender or subject. **The mailbox had it all along.**
+G2 again: search our own reach before asking.
+
+⚠️ It also confirms the filter behaves correctly on a **non-S56** Department email. A bridging-visa
+grant is not a request for more information, so this row is the ideal first test of whether the
+classifier sets `is_department_request: false` rather than forcing everything into the S56 shape.
+
+`noreply.skilled@` is one sender. Other Department correspondence may come from other `@homeaffairs.gov.au`
+addresses, so the `from:homeaffairs.gov.au` domain filter stays — it is broader than any one address.
