@@ -5487,3 +5487,90 @@ attached to the recipient's Facebook account.
 the A-18 script marked verbal-only. ⚠️ Meta's own help pages are JS-rendered and unreadable by
 fetch; the Meta steps come from **two independent third-party guides that agree**, while the
 Microsoft and Meta-for-Developers pages were read directly. Sources listed in the file.
+
+## D-342 | M9 built the safe way — and four Make/API facts learned by probing, not reading
+
+M9 (Gmail triage / s56 detection) is 5 contracted hours and the largest buildable block. The
+Anthropic connection went live tonight (D-340), so it stopped being blocked.
+
+### 🔴 First, the constraint that decides how it ships
+
+`organizations_get` on 8469720: **`"scenarios": 2`**. A hard cap on ACTIVE scenarios, and M3 + M4
+are those two. **M9 can be built. It cannot be switched on** without either merging M3 and M4 into
+one scenario or moving to a paid plan. That is a go-live decision, not a build blocker, and it is
+recorded rather than discovered later.
+
+⚠️ There is a second, larger cost nobody has costed: at ~10 emails a day, M9 is roughly **1 trigger
+op + 1 Claude op per email** ≈ 600 ops/month against a 1,000 total already carrying M3 and M4.
+**M9 realistically needs the paid plan for operations, not just for a slot.**
+
+### Four facts learned by probing the live API — none of them in any doc I read
+
+Built a throwaway on-demand scenario, ran it, read the errors, deleted it. Cost: **2 operations.**
+
+1. `tools[].input_schema.properties` must be a **JSON OBJECT**. Passing the documented-looking JSON
+   *string* returns `[400] properties: Input should be an object`.
+2. `max_tokens` must be a real **integer**. A string works when the scenario is built in the UI (the
+   UI coerces) and **fails via the API** — `[400] max_tokens: Input should be a valid integer`.
+   🔑 A blueprint copied from a UI-built scenario will not necessarily survive being posted back.
+3. `tool_choice: {"type": "any"}` works and forces the tool call.
+4. `claude-haiku-4-5-20251001` + tool use = **1 operation, 100 centicredits, ~1.9s**.
+
+⛔ **What I could NOT verify: the exact path of the tool-use result in the module's output.**
+`executions_get-detail` returns status only; API-created scenarios store no designer sample. The
+obvious next probe — writing candidate mappings into a scratch tab — **was correctly blocked**,
+because it is a write into the client's live spreadsheet. I did not route around it.
+
+### 🔑 So the architecture changed, and for the better
+
+The obvious build is fifteen Make mappings from the model's nested response into fifteen sheet
+columns. I did not build that, and the block above is only half the reason:
+
+- **A Make mapping cannot be unit-tested.** It is verified by running it, which costs operations and
+  needs a real Department email to arrive.
+- **A wrong path writes an EMPTY CELL, not an error.** A blank deadline column looks exactly like
+  "this email had no deadline in it". That is the worst failure this module can have.
+
+**So Make writes ONE field — the model's raw JSON — and Apps Script does the rest.** One uncertain
+mapping instead of fifteen, and the fragile part now lives where `node` can hammer it.
+
+### Three scripts, 58 tests, all against the shipped files
+
+| | |
+|---|---|
+| `setup_s56_tracker_tab.gs` | a **separate tab**, never MASTER. MASTER is addressed by numeric index by M4, and matching an inbound letter to a client row means guessing — a wrong guess writes a legal deadline onto the wrong client. The tab records the FACT without having to guess the LINK; a human joins them in seconds |
+| `s56_parse_classifications.gs` | transcribes the JSON into columns. **36 tests** — fenced blocks, prose-wrapped JSON, double-encoded strings, camelCase keys, arrays, `[object Object]`, and garbage. ⛔ Unparseable becomes a **visible `UNPARSEABLE` + Needs Review**, never a blank row |
+| `s56_deadline_verifier.gs` | **recomputes every due date independently** from letter date + days allowed and flags disagreement. **22 tests** |
+
+**The parser transcribes and the verifier computes.** Two scripts, two jobs — if one file did both,
+there would be one computation of a legal deadline instead of two.
+
+### The checks that matter most
+
+- 🔴 **A Department request with no deadline sentence, or no letter date / days allowed, is flagged.**
+  Without that it looks like an ordinary logged email — the silent failure this whole module exists
+  to prevent.
+- 🔴 The verifier's third check reads the day count **back out of the sentence the model itself
+  quoted**. A model that misquotes its own source is caught with no access to the letter.
+- ⛔ **Nothing is auto-corrected.** On disagreement we do not know which side is wrong — the
+  arithmetic is sound but `letter_date` may have been mis-read. It flags both values and a human
+  adjudicates. Silently "fixing" one would hide the disagreement that says *open the PDF*.
+- ⛔ **A passed deadline is reported, never actioned.** Deadlines are extendable ("We might let you
+  have more time"). Nothing closes, cancels or clears.
+- **Never assume 28 days.** Tested with a 14-day letter.
+- Both scripts **ABORT** rather than write if a column has shifted.
+
+### Also hardened tonight
+
+`repo_hygiene.py`'s collision gate **now fingerprints function bodies**. Two same-named functions
+were both recorded as `None`, so the gate called them "same value" and only **warned** — even with
+completely different implementations. Proven by planting one: it now exits 1. Caught a real
+collision on `columnLetter_` in the process.
+
+### Still needed before M9 can run
+
+1. The **one output mapping** — 30 seconds in the Make UI, where the field picker shows the real path.
+2. A **real `.eml`** with headers. The spec has said since 29 Jul that no sample carries a sender or
+   subject, which are the cheapest classifier features — and without one the trigger filter cannot
+   be designed honestly.
+3. A **slot and the operations** to run it in.
