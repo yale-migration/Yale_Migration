@@ -165,8 +165,11 @@
           "Received": "{{2.internalDate}}",
           "Subject": "{{2.subject}}",
           "Gmail Link": "https://mail.google.com/mail/u/0/#inbox/{{2.id}}",
-          "Raw Classification": "{{toJSON(first(map(3.content; \"input\"; \"type\"; \"tool_use\")))}}"
-        }
+          "Raw Classification": "{{toJSON(first(map(3.content; \"input\"; \"type\"; \"tool_use\")))}}",
+          "Status": "New",
+          "Assigned To": "Unassigned"
+        },
+        "insertUnformatted": false
       },
       "metadata": {
         "designer": {
@@ -206,9 +209,5 @@
     "designer": {
       "orphans": []
     }
-  },
-  "scheduling": {
-    "type": "indefinitely",
-    "interval": 900
   }
 }

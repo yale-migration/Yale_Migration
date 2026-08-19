@@ -243,3 +243,39 @@ validate it, and the blueprint is complete.
 
 ⚠️ Even complete, M9 cannot be **activated**: the Free plan caps ACTIVE scenarios at 2 and M3 + M4
 hold both slots. That is a plan decision (I-21), not build work.
+
+### ✅ BLUEPRINT COMPLETE — 19 Aug 2026
+
+`setupS56Tracker()` + `verifyS56Tracker()` ran clean (**25/25**), the tab exists, and all three
+modules now validate against Make's own validator:
+
+| module | |
+|---|---|
+| `google-email:triggerWatchNewEmails` v4 | preserved verbatim from the live scenario |
+| `anthropic-claude:createAMessage` v1 | ✅ valid |
+| `google-sheets:addRow` v2 | ✅ valid |
+| whole blueprint | ✅ valid against the schema |
+
+Two more things the validator taught, both of which would have failed at apply time:
+
+- **`insertUnformatted` is mandatory** on `addRow`. Its absence had been masked: the earlier run
+  reported *"Unknown field 'values'"*, which looked like a wrong mapper shape but was **cascading
+  from the unresolved header row**. With the tab present, `values` is accepted exactly as written.
+  🔑 An error message can be a downstream symptom of a completely different cause.
+- **⛔ `scheduling` must NOT be inside the blueprint** — *"blueprint must NOT have additional
+  properties"*. It is a scenario-level field. Note that `scenarios_get` **returns it nested inside
+  the blueprint it hands back**, so round-tripping that response straight into `scenarios_update`
+  fails. Strip it first.
+
+### ⬜ Remaining, and neither is build work
+
+1. **One live test run (1 operation)** — confirms `toJSON(first(map(...)))` behaves in this exact
+   nesting. Check the cell holds `{"category":...}` and not `[object Object]`.
+2. **A Make scenario slot + operations.** Free plan caps ACTIVE scenarios at 2; M3 and M4 hold both.
+   Plan decision (I-21), for Friday.
+
+### ⚠️ GOPI is missing here too
+
+`S56_ASSIGNEES` lists nine names and GOPI is not among them — the same gap as MASTER's consultant
+dropdown (A-33). Unlike MASTER this list is `setAllowInvalid(true)`, so it will not hard-reject him,
+but he cannot be picked from the dropdown. **Add him to both the moment Rey answers.**
