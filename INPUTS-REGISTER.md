@@ -65,6 +65,19 @@ marked it 🟢.
 
 ---
 
+## 1c · 📤 ASKED vs NEVER ASKED — the distinction that matters
+
+⛔ **"Open" is not one state.** D-331 found two inputs that had **never been requested at all**,
+hiding among items that were merely awaiting a reply. So every open row below must say which it is.
+
+| Asked, awaiting reply | Never asked / not yet asked |
+|---|---|
+| **I-5 · I-9 · I-10 · I-13 · I-14 · I-15 · I-16 · I-17 · I-18 · I-19** — all in the team email of **18 Aug** (`SENT-2026-08-18-team-email.md`) | **I-3 Meta · I-4 WhatsApp · I-8 OneDrive** — Robinder's, going to **Friday's call** |
+| | **I-20** real `.eml` — in the spec since 29 Jul, still never chased |
+| | **I-21** M9 slot + operations — a decision, not an ask |
+
+**I-7 · I-11 · I-12** are deliberately deferred, not blocked.
+
 ## 2 · 🔴 NOT HELD — and each one blocks contracted hours
 
 | # | Input | Blocks | h | Ever asked? |

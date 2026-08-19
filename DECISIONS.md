@@ -5574,3 +5574,41 @@ collision on `columnLetter_` in the process.
    subject, which are the cheapest classifier features — and without one the trigger filter cannot
    be designed honestly.
 3. A **slot and the operations** to run it in.
+
+## D-343 | "We already asked them, right?" — yes, but the record could not prove it
+
+Sharjeel asked whether the checklist-currency confirmation and the anyone-else-on-the-application
+question had actually gone to the team. **They had, in the 18 Aug email.** But answering it properly
+took three greps, because:
+
+1. **The email was never saved.** `CLIENT-QUESTIONS-team.md` preserved the 16 Aug document; the
+   18 Aug follow-up existed only as prose in a chat window.
+2. **The `CLIENT-LOG` entry named three of the fifteen items** — the corrected column answer, the
+   client codes, the CR-013 response. It did not mention the checklist confirmation or Q5, which are
+   the two that actually block M4.
+3. **`INPUTS-REGISTER.md` showed all of them as "open"** — with no way to tell *asked, awaiting
+   reply* from *never asked*.
+
+🔑 **That third point is the real defect, and it is D-331 from the other side.** D-331 found two
+inputs that had never been requested at all, hiding among items that were merely awaiting an answer.
+The register was built to stop that — and it still collapsed both states into one word. A register
+that cannot distinguish "they owe us" from "we owe them the question" is only half a register.
+
+### Fixed
+
+- **`SENT-2026-08-18-team-email.md`** — the full contents, mapped to I-numbers, including what was
+  deliberately left out and why.
+- **`INPUTS-REGISTER.md` §1c** — an explicit ASKED vs NEVER-ASKED split. Ten items are with the team
+  since 18 Aug; three are Robinder's for Friday; two have still never been asked (I-20 the real
+  `.eml`, I-21 the M9 slot).
+- **The log entry rewritten** to name what was asked rather than summarise it.
+
+⛔ **Rule going forward: a client message is not sent until it is saved.** A one-line log entry is a
+record that *something* was sent, not a record of *what was asked* — and four weeks in, "did we ask
+that?" is a question that gets asked often enough to need a file rather than a memory.
+
+### The answer to the question itself
+
+**Every blocker the team can clear has been asked.** What remains is Robinder's — Meta, WhatsApp
+verification status, and OneDrive — and all three are on Friday's call. Plus one decision that is
+not an ask at all: M9's scenario slot and its ~600 ops/month.

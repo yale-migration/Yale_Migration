@@ -432,9 +432,12 @@ live sheet that returns **no rows and no error**. `build_master_import.py` now a
 ⛔ The email already sent asks for the re-share they have already done — covered in the WhatsApp
 follow-up rather than by re-asking.
 
-2026-08-18 | 📤 **Email + WhatsApp SENT to the team.** Access confirmed received; the corrected
-assessing-authority answer (no new column — write `485 TRA` in the existing visa cell), yes to the
-client codes, and the CR-013 response on the six visa lines all went with it.
+2026-08-18 | 📤 **Email + WhatsApp SENT to the team** — full contents now recorded in
+`SENT-2026-08-18-team-email.md` (D-343). Three yeses (client codes · no new column, write `485 TRA`
+in the existing cell · the six visa lines acknowledged with a cost to follow), the 🔴 **checklist-
+currency confirmation**, **Q5 anyone-else-on-the-application**, the four sheet fixes, Q10, and six
+lower-priority asks. ⚠️ At the time this log line named only three of the fifteen items — a
+one-line summary is not a record of what was asked.
 
 2026-08-18 | internal | **Live-sheet audit through Make's own RPC (D-338), 0 operations.** 🔴 Their
 live `LODGEMENT: JULY TO PRESENT` has **11 columns and none of them is TEAM, CONSULTANT or EMAIL** —

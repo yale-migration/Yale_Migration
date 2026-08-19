@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 480K /     5576 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 424K /     5614 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 08:48
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:02
 
 | # | Decision |
 |---|---|
@@ -339,3 +339,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 08:4
 | **D-340** | The Anthropic key existed all along — and the module can read PDFs, which changes M9 |
 | **D-341** | Friday call runbook — and the OneDrive instruction we have been carrying is impossible |
 | **D-342** | M9 built the safe way — and four Make/API facts learned by probing, not reading |
+| **D-343** | "We already asked them, right?" — yes, but the record could not prove it |
