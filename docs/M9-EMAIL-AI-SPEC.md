@@ -184,3 +184,62 @@ It must be serialised:
 from the module schema and are verified; `toJSON`/`map`/`first` behaving as expected in this exact
 nesting is the part a single execution proves. Check the cell holds `{"category":...}` and not
 `[object Object]`.
+
+---
+
+## 🏗 BLUEPRINT BUILD — 19 Aug 2026
+
+`scenarios/M9-email-triage.blueprint.json`. Three modules: the existing Gmail trigger →
+Anthropic classify → Sheets log. Validated module-by-module against Make's own validator.
+
+### 🔴 Four corrections found by validating instead of assuming
+
+**1. The scenario already existed.** `YM-M9-email-triage` = **6781676**, created 1 Aug, inactive,
+trigger already configured and **already proven against a real message on 3 Aug**. It was found only
+by listing connections and noticing `scenarioUsages`. A whole blueprint had been written from scratch
+before that. **Check what exists before building it.**
+
+**2. ⛔ The trigger is `google-email:triggerWatchNewEmails` v4 — NOT `TriggerNewEmail` v1.**
+`app-modules_list` returns only the latter; the former is not exposed by the API at all. They are
+different modules with **different output field names**:
+
+| this scenario uses | the API's module |
+|---|---|
+| `fullTextBody` | `text` |
+| `fromEmail` | `from.address` |
+| `internalDate` | `date` |
+| `id` | `messageId` |
+| **no link field — build the URL from `id`** | `messageLink` |
+
+Mapping against the wrong one yields empty cells, not errors. The live blueprint is the source of
+truth here, not the module catalogue.
+
+**3. Make's wrapper ≠ the Anthropic API shape.** Proven by `validate_module_configuration`:
+`messages[]` needs `inputType: "single"` beside `content`; a tool needs `type: "custom"` and its
+`input_schema` takes only `properties` + `required`; and `tool_choice` requires
+`disable_parallel_tool_use`. The raw-API shape fails validation on all three.
+
+**4. The Gmail-side filter replaces a Make filter entirely.** `includeWords` ("Has the words") is
+executed **by Gmail**, accepts full search syntax including `from:`, and costs no operations —
+which matters because Make's own `text:contains` is accepted and then evaluates FALSE silently
+(D-255). `limit` also raised 1 → 10 so a burst of Department mail is not missed.
+
+### ⬜ The one thing still open
+
+`google-sheets:addRow` cannot be finished yet:
+
+```
+Unable to parse range: 'S56 TRACKER'!A1:ZZ1
+Value 'S56 TRACKER' not found in options
+```
+
+**The tab does not exist** — `setupS56Tracker()` has never been run. With `useColumnHeaders`, Make
+resolves the column names from the live header row, so the mapper's final shape cannot be determined
+until the tab is there. Two further errors (`insertUnformatted` mandatory, `values` not a recognised
+key) are blocked behind the same resolution.
+
+▶ **ACTION (Sharjeel): run `setupS56Tracker()` then `verifyS56Tracker()`.** Then I finish the mapper,
+validate it, and the blueprint is complete.
+
+⚠️ Even complete, M9 cannot be **activated**: the Free plan caps ACTIVE scenarios at 2 and M3 + M4
+hold both slots. That is a plan decision (I-21), not build work.

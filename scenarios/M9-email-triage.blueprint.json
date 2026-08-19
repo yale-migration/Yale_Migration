@@ -1,0 +1,214 @@
+{
+  "name": "YM-M9-email-triage",
+  "flow": [
+    {
+      "id": 2,
+      "module": "google-email:triggerWatchNewEmails",
+      "version": 4,
+      "mapper": {},
+      "parameters": {
+        "__IMTCONN__": 9452213,
+        "filterType": "simpleSearch",
+        "format": "full",
+        "folder": "INBOX",
+        "criteria": "all",
+        "markSeen": false,
+        "limit": 10,
+        "from": "",
+        "subject": "",
+        "includeWords": "\"We need more information to help us assess your application\" OR \"Request for more information for a\" OR from:homeaffairs.gov.au",
+        "excludeWords": "",
+        "size": {
+          "unit": "M",
+          "amount": null,
+          "criteria": "larger"
+        },
+        "hasAttachment": false
+      },
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "anthropic-claude:createAMessage",
+      "version": 1,
+      "parameters": {
+        "__IMTCONN__": 9948850
+      },
+      "mapper": {
+        "model": "claude-haiku-4-5-20251001",
+        "max_tokens": 2000,
+        "temperature": 0,
+        "system": "You classify email arriving at an Australian registered migration agent's lodgement mailbox.\n\nCRITICAL: the Department of Home Affairs NEVER writes \"Section 56\" or \"s56\" \u2014 Yale's own staff do. A real request for more information reads like:\n  \"We need more information to help us assess your application.\"\n  \"Request for more information for a ... visa application\"\n  \"When do you need to give us the information\"\nTreat a literal \"s56\" as a sign of INTERNAL staff email, not a Department letter.\n\nTHE DEADLINE IS NEVER PRINTED AS A DATE. It is always relative \u2014 e.g. \"You have 28 days starting on the day after we emailed this request\". Copy that sentence verbatim into deadline_sentence and read days_allowed out of it. DO NOT ASSUME 28: the number varies, and a wrong number is a missed legal deadline.\n\nIgnore quoted reply history; classify only the newest message.\n\nYou are NOT giving migration advice and NOT deciding anything \u2014 you are transcribing what the letter says so a person can act on it. If ANY field is uncertain, set needs_review true and lower confidence. Admitting uncertainty is always better than guessing about a legal date.",
+        "messages": [
+          {
+            "role": "user",
+            "inputType": "single",
+            "content": "Subject: {{2.subject}}\nFrom: {{2.fromEmail}}\nDate: {{2.internalDate}}\n\n---\n{{first(split(2.fullTextBody; \"[Quoted text hidden]\"))}}\n---\n\nClassify this email using the record_classification tool."
+          }
+        ],
+        "tools": [
+          {
+            "type": "custom",
+            "name": "record_classification",
+            "description": "Record the classification of this email.",
+            "input_schema": {
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "description": "Department correspondence | Client reply | Internal | System notification | Other"
+                },
+                "is_department_request": {
+                  "type": "boolean",
+                  "description": "True ONLY if the Department is asking the applicant for more information."
+                },
+                "client_name": {
+                  "type": "string"
+                },
+                "subclass": {
+                  "type": "string",
+                  "description": "Digits only, e.g. 500, 485, 482."
+                },
+                "letter_date": {
+                  "type": "string",
+                  "description": "yyyy-MM-dd, the date the Department sent the request."
+                },
+                "days_allowed": {
+                  "type": "integer",
+                  "description": "The number of days quoted IN THE LETTER. Never assume 28."
+                },
+                "due_date": {
+                  "type": "string",
+                  "description": "yyyy-MM-dd = letter_date + 1 + days_allowed."
+                },
+                "internal_due_date": {
+                  "type": "string",
+                  "description": "yyyy-MM-dd, two days before due_date."
+                },
+                "deadline_sentence": {
+                  "type": "string",
+                  "description": "The VERBATIM sentence stating the time limit. Quote exactly; never paraphrase."
+                },
+                "trn": {
+                  "type": "string"
+                },
+                "application_id": {
+                  "type": "string"
+                },
+                "file_number": {
+                  "type": "string"
+                },
+                "confidence": {
+                  "type": "number",
+                  "description": "0.0-1.0"
+                },
+                "needs_review": {
+                  "type": "boolean",
+                  "description": "True if anything at all is uncertain."
+                }
+              },
+              "required": [
+                "category",
+                "is_department_request",
+                "confidence",
+                "needs_review"
+              ]
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "any",
+          "disable_parallel_tool_use": false
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0
+        }
+      },
+      "onerror": [
+        {
+          "id": 5,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+            "designer": {
+              "x": 300,
+              "y": 150
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {
+        "__IMTCONN__": 9501125
+      },
+      "mapper": {
+        "from": "drive",
+        "mode": "select",
+        "sheetId": "S56 TRACKER",
+        "spreadsheetId": "1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k",
+        "includesHeaders": true,
+        "useColumnHeaders": true,
+        "insertDataOption": "INSERT_ROWS",
+        "valueInputOption": "USER_ENTERED",
+        "values": {
+          "Received": "{{2.internalDate}}",
+          "Subject": "{{2.subject}}",
+          "Gmail Link": "https://mail.google.com/mail/u/0/#inbox/{{2.id}}",
+          "Raw Classification": "{{toJSON(first(map(3.content; \"input\"; \"type\"; \"tool_use\")))}}"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0
+        }
+      },
+      "onerror": [
+        {
+          "id": 6,
+          "module": "builtin:Ignore",
+          "version": 1,
+          "metadata": {
+            "designer": {
+              "x": 600,
+              "y": 150
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  },
+  "scheduling": {
+    "type": "indefinitely",
+    "interval": 900
+  }
+}
