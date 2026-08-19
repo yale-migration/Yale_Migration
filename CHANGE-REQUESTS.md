@@ -14,8 +14,7 @@ CORRECTED 2026-07-29: capacity is NOT a risk — BRISBANE OFFICE alone is 68.2 G
 Microsoft plan (1TB+). The remaining issue is governance/ownership: ~150 clients' passports and police
 checks sit under one individual's personal account. Phase 2/3 recommendation only, not a blocker.
 
-CR-013 | 2026-08-18 | 🔴 **CLIENT-REQUESTED: cover the six visa lines the MVP does not** — 186 ·
-600 · ART · Citizenship · PARTNER VISA | **NEW — needs a quote, do not start** | ⚠️ **Found late.**
+CR-013 | 2026-08-18 | 🔴 **CLIENT-REQUESTED: cover the visa lines the MVP does not.** ⚠️ **CORRECTED 19 Aug — it is FOUR, not six: `186 · 600 · ART · Citizenship`.** This row said *"six"* and then listed *five*; `PARTNER VISA` was one of the five and **is already covered** — the 820/801 checklist exists and M4 files it, so that row needs a CELL RELABELLED, not a build, and Rey has already been asked to do it at no charge. Verified against `docs/05-canonical-checklists/` (30 files: 101 189 190 407 417 482 485 491 494 500 802 820) and the guide's own line 70. 🔑 **Quoting six lines would have overcharged a family referral by 50%** | **NEW — needs a quote, do not start** | ⚠️ **Found late.**
 Their reply is a five-word bracket appended INSIDE our own paragraph in `ANSWERED.docx`, not on an
 `Answer:` line: our text read *"If you want any of those lines covered properly, tell me and I will
 talk it through with Robinder"* and they wrote **"(we need to covered it properly)"**. That is a
