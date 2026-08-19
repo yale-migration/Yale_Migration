@@ -33,6 +33,14 @@ var TRIGGER_PLAN = [
 // M9 is not live, its Make scenario is incomplete and the S56 TRACKER tab may not exist.
 // A daily trigger against a missing tab would log an error every morning forever.
 
+// Legitimate triggers that are NOT daily, so they do not belong in TRIGGER_PLAN — but
+// must not be reported as strays either. `assignMissingCodes` is the client-code assigner
+// on a 5-minute timer, installed 3 Aug (ROADMAP T2.3). It takes the DOCUMENT lock, so it
+// is already mutually exclusive with the daily jobs.
+// ⚠️ Anything NOT in either list is genuinely unaccounted for — say so loudly.
+var KNOWN_NON_DAILY = { 'assignMissingCodes': 'client-code assigner, 5-minute timer (ROADMAP T2.3)',
+                        'onEdit':             'simple trigger, MASTER edits' };
+
 var EXPECTED_TZ = 'Australia/Brisbane';
 
 
@@ -113,7 +121,9 @@ function verifyDailyTriggers() {
   for (var k = 0; k < TRIGGER_PLAN.length; k++) planned[TRIGGER_PLAN[k].fn] = true;
   for (var m = 0; m < triggers.length; m++) {
     var h = triggers[m].getHandlerFunction();
-    if (!planned[h]) Logger.log('  ⚠️ UNPLANNED  ' + h + ' — not in TRIGGER_PLAN. Intended?');
+    if (planned[h]) continue;
+    if (KNOWN_NON_DAILY[h]) Logger.log('  ·  known     ' + h + ' — ' + KNOWN_NON_DAILY[h]);
+    else Logger.log('  ⚠️ UNACCOUNTED  ' + h + ' — in neither list. Who created it, and why?');
   }
 
   Logger.log('');
