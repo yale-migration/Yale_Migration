@@ -318,3 +318,28 @@ Trigger `limit` dropped 10 → 1 so a diagnostic run costs 2 operations instead 
 `validate_module_configuration`, so it is a runtime fault, not a shape fault — most likely
 `sheetId: "S56 TRACKER"` needing a numeric gid at runtime, or the `values`-by-header-name form
 resolving differently live. The next run will say, because the error is no longer suppressed.
+
+### 🔴 A VALIDATOR PASS IS NOT A RUNTIME PASS
+
+Second run, with `onerror` removed so failures surface:
+
+```
+[400] tools.0.custom.input_schema.type: Field required
+```
+
+`validate_module_configuration` had returned **`"valid": true`** for this exact tool definition.
+It is not wrong — Make's own form schema declares `input_schema.type` with `"default": "object"`,
+so from the validator's point of view the field is satisfied. **Make's defaults are applied by the
+UI form, not by the API call.** Anthropic receives the object literally as written and rejects it.
+
+🔑 **A schema default is a form convenience, not a runtime guarantee.** Anything Make marks
+`default` must be written explicitly when a blueprint is authored outside the UI. This is the third
+UI-vs-API divergence in this project (D-342 found two: `input_schema.properties` accepted as a
+string in the UI, and `max_tokens`/`temperature` coerced from strings in the UI).
+
+Fixed by writing `type: "object"` and `additionalProperties: false` explicitly.
+
+⚠️ It also explains the first run: Anthropic consumed 10 operations and **succeeded** there, because
+that import went through the UI form, which filled the default in. The re-import applied the
+blueprint literally. **The same blueprint behaves differently depending on how it entered Make** —
+so a scenario proven by a UI-configured run is not proof that the JSON on disk is correct.

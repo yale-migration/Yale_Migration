@@ -57,6 +57,7 @@
             "name": "record_classification",
             "description": "Record the classification of this email.",
             "input_schema": {
+              "type": "object",
               "properties": {
                 "category": {
                   "type": "string",
@@ -116,7 +117,8 @@
                 "is_department_request",
                 "confidence",
                 "needs_review"
-              ]
+              ],
+              "additionalProperties": false
             }
           }
         ],
