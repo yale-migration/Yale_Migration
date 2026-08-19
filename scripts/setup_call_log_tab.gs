@@ -294,3 +294,133 @@ function clWriteConditionalFormat_(sh) {
   sh.setConditionalFormatRules(kept);
   Logger.log('  2 highlight rules set (any earlier copies replaced)');
 }
+
+
+/**
+ * Proves the tab is what M7 expects — and, crucially, proves THE LOOKUP ACTUALLY
+ * RESOLVES against live MASTER data.
+ *
+ * ⚠️ Header checks and dropdown checks are cheap and prove almost nothing here. The
+ * whole value of this tab is that typing a number identifies the caller. A formula can
+ * be present, correctly spelled, and return "" for every real client — a wrong sheet
+ * reference, a shifted MASTER column, a normalisation that strips too much. Every one
+ * of those looks identical to "this caller is not a client", which is the single most
+ * dangerous thing this tab can say.
+ *
+ * So this takes a REAL phone number out of MASTER, types it into a probe row, and
+ * checks the match comes back with that same client's code. Then clears the row.
+ */
+function verifyCallLogTab() {
+  var ss = SpreadsheetApp.openById(CL_SHEET_ID);
+  var sh = ss.getSheetByName(CL_TAB);
+  var pass = 0, fail = 0, warn = 0;
+  function check(label, ok, detail) {
+    Logger.log((ok ? '  PASS  ' : '  FAIL  ') + label + (detail ? '  — ' + detail : ''));
+    ok ? pass++ : fail++;
+  }
+  if (!sh) { Logger.log('FAIL — no tab named ' + CL_TAB); return; }
+
+  Logger.log('=== CALL LOG ===');
+  var got = sh.getRange(1, 1, 1, CL_HEADERS.length).getValues()[0]
+              .map(function (h) { return String(h || '').trim(); });
+  check('column count is ' + CL_HEADERS.length, sh.getLastColumn() >= CL_HEADERS.length,
+        'found ' + sh.getLastColumn());
+  CL_HEADERS.forEach(function (h, i) {
+    check('col ' + clLetter_(i + 1) + ' is "' + h + '"', got[i] === h, 'found "' + got[i] + '"');
+  });
+
+  Logger.log('=== dropdowns must NOT block script writes ===');
+  ['New or Existing', 'ID Verified', 'Callback Status', 'Handled By', 'Becomes Enquiry']
+    .forEach(function (h) {
+      var r = sh.getRange(CL_FIRST, CL_HEADERS.indexOf(h) + 1).getDataValidation();
+      check(h + ' has a list', !!r);
+      if (r) check(h + ' allows invalid (does not block a script write)',
+                   r.getAllowInvalid() === true);
+    });
+
+  Logger.log('=== the lookup formulas are present ===');
+  ['Matched Code', 'Matched Client', 'Matched On', 'Outstanding'].forEach(function (h) {
+    var f = sh.getRange(CL_FIRST, CL_HEADERS.indexOf(h) + 1).getFormula();
+    check(h + ' carries a formula', String(f).charAt(0) === '=', f ? 'ok' : '(empty)');
+  });
+
+  Logger.log('=== 🔴 THE ONE THAT MATTERS — does the lookup RESOLVE? ===');
+  var probe = sh.getLastRow() + 1;
+  if (probe < CL_FIRST) probe = CL_FIRST;
+  try {
+    var ms = ss.getSheetByName('MASTER');
+    if (!ms) {
+      Logger.log('  ⚠️  SKIPPED — no MASTER tab. The lookup cannot be proven.');
+      warn++;
+    } else {
+      // Find a real client who actually has a phone number. D-54: Contact Number is
+      // often blank, so most rows are unusable for this and that is expected.
+      var mLast = ms.getLastRow();
+      var codes = ms.getRange(2, 1, Math.max(mLast - 1, 1), 5).getValues();
+      var sample = null;
+      for (var i = 0; i < codes.length; i++) {
+        var digits = String(codes[i][4] || '').replace(/[^0-9]/g, '');
+        if (digits.length >= 6 && String(codes[i][0] || '').trim()) {
+          sample = { code: String(codes[i][0]).trim(), phone: String(codes[i][4]).trim() };
+          break;
+        }
+      }
+      if (!sample) {
+        Logger.log('  ⚠️  SKIPPED — no MASTER row has a usable phone number yet (D-54 says');
+        Logger.log('      Contact Number is often blank). Re-run this after the client import;');
+        Logger.log('      until then the lookup is UNPROVEN against real data.');
+        warn++;
+      } else {
+        // Make sure the probe row carries the formulas — it may be past the armed range.
+        var f = clFormulas_(probe);
+        ['Matched Code', 'Matched Client', 'Matched On', 'Outstanding'].forEach(function (h) {
+          sh.getRange(probe, CL_HEADERS.indexOf(h) + 1).setFormula(f[h]);
+        });
+        sh.getRange(probe, CL_HEADERS.indexOf('Phone') + 1).setValue(sample.phone);
+        SpreadsheetApp.flush();
+
+        var gotCode = String(sh.getRange(probe, CL_HEADERS.indexOf('Matched Code') + 1)
+                               .getDisplayValue()).trim();
+        var gotOn   = String(sh.getRange(probe, CL_HEADERS.indexOf('Matched On') + 1)
+                               .getDisplayValue()).trim();
+        check('a real MASTER number resolves to that client (' + sample.code + ')',
+              gotCode === sample.code, 'got "' + gotCode + '"');
+        check('...and reports it matched on PHONE, not name', gotOn === 'phone', 'got "' + gotOn + '"');
+
+        // An unknown number must say "no match" — never silently resolve to somebody.
+        sh.getRange(probe, CL_HEADERS.indexOf('Phone') + 1).setValue('0400000000');
+        SpreadsheetApp.flush();
+        var unknown = String(sh.getRange(probe, CL_HEADERS.indexOf('Matched Code') + 1)
+                               .getDisplayValue()).trim();
+        check('🔴 an unknown number matches NOBODY', unknown === '', 'got "' + unknown + '"');
+
+        // 🔴 The dangerous one: a junk value normalises to nothing and must not match
+        // whichever client has a blank number on file.
+        sh.getRange(probe, CL_HEADERS.indexOf('Phone') + 1).setValue('unknown');
+        SpreadsheetApp.flush();
+        var junk = String(sh.getRange(probe, CL_HEADERS.indexOf('Matched Code') + 1)
+                            .getDisplayValue()).trim();
+        check('🔴 "unknown" in Phone matches NOBODY (not the blank-number client)',
+              junk === '', 'got "' + junk + '"');
+      }
+    }
+  } catch (e) {
+    check('the lookup could be exercised', false, e.message);
+  } finally {
+    try {
+      sh.getRange(probe, 1, 1, CL_HEADERS.length).clearContent();
+      SpreadsheetApp.flush();
+    } catch (ignore) {}
+  }
+
+  Logger.log('');
+  Logger.log(pass + '/' + (pass + fail) + ' checks passed' + (warn ? '  (' + warn + ' skipped)' : ''));
+  if (fail === 0 && warn === 0) {
+    Logger.log('CALL LOG READY — and the lookup is proven against real client data.');
+  } else if (fail === 0) {
+    Logger.log('⚠️  Structure is correct, but THE LOOKUP IS UNPROVEN — see the skip above.');
+    Logger.log('   Do not rely on "no match" meaning "not a client" until this passes.');
+  } else {
+    Logger.log('🔴 DO NOT USE THIS TAB for call handling until the failures above are fixed.');
+  }
+}
