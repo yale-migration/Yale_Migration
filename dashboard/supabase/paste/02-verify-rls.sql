@@ -26,7 +26,7 @@ create temporary table _r(ok boolean, label text);
 -- ⛔ This grants on the SCRATCH RESULTS TABLE only. It is not one of the tables
 -- under test and has no RLS on it, so it cannot flatter the result — every
 -- count below is still read through the real policies.
-grant all on _r to authenticated, anon;
+grant all on pg_temp._r to authenticated, anon;
 
 insert into auth.users (id, email, instance_id, aud, role)
 values ('00000000-0000-0000-0000-00000000d001','dir@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
@@ -59,9 +59,20 @@ begin
     json_build_object('sub', uid, 'role','authenticated')::text, true);
 end $$;
 
+-- ⚠️ `pg_temp._r`, FULLY QUALIFIED, not bare `_r`.
+--
+-- Supabase pins a search_path on the `authenticated` role, and it does not
+-- include pg_temp. So the moment this function is called under an impersonated
+-- role, a bare `_r` resolves to nothing: "relation _r does not exist". The
+-- table is right there — the role just cannot see the schema it lives in.
+--
+-- `pg_temp` is an alias that always points at this session's temp schema
+-- (pg_temp_29, or whatever number it got), so qualifying it is stable.
 create or replace function pg_temp.chk(label text, got int, want int) returns void
 language plpgsql as $$
-begin insert into _r values (got = want, label || '  (got ' || got || ', want ' || want || ')'); end $$;
+begin
+  insert into pg_temp._r values (got = want, label || '  (got ' || got || ', want ' || want || ')');
+end $$;
 
 -- ── DIRECTOR ──────────────────────────────────────────────────────────────
 select pg_temp.act('00000000-0000-0000-0000-00000000d001');
@@ -115,8 +126,8 @@ select
   case when bool_and(ok) then '✅ ALL ' || count(*) || ' CHECKS PASSED — the policies hold'
        else '🔴 ' || count(*) filter (where not ok) || ' FAILED — DO NOT PUT REAL DATA IN'
   end as verdict
-from _r;
+from pg_temp._r;
 
-select case when ok then '  PASS  ' else '  FAIL  ' end || label as detail from _r order by ok, label;
+select case when ok then '  PASS  ' else '  FAIL  ' end || label as detail from pg_temp._r order by ok, label;
 
 rollback;   -- ⛔ nothing above is kept
