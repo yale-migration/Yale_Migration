@@ -4,13 +4,17 @@ All of these paste into the **Supabase SQL editor**. No CLI, no login, no person
 
 | # | File | Does | Safe to re-run |
 |---|---|---|---|
-| 1 | `01-schema-and-rls.sql` | tables, indexes, policies | ✅ yes — nothing is dropped |
-| 2 | `07-verify-full-matrix.sql` | 🔴 **proves every role against every table** | ✅ seeds, asserts, **rolls back** |
-| 3 | `06-enquiries.sql` | enquiries table, policies, 6 demo leads | ✅ yes |
-| 4 | `03-seed-demo-data.sql` | 7 demo matters + 3 deadlines | ⚠️ **commits** — prefixed `YM-DEMO-` |
-| 5 | `05-grant-access.sql` | links a signed-in email to a role | ✅ yes |
+| **1** | `01-schema-and-rls.sql` | tables, indexes, policies | ✅ yes — nothing is dropped |
+| **2** | `06-enquiries.sql` | enquiries table, policies, 6 demo leads | ✅ yes |
+| **3** | `07-verify-full-matrix.sql` | 🔴 **proves every role against every table** | ✅ seeds, asserts, **rolls back** |
+| **4** | `03-seed-demo-data.sql` | 7 demo matters + 3 deadlines | ⚠️ **commits** — prefixed `YM-DEMO-` |
+| **5** | `05-grant-access.sql` | links a signed-in email to a role | ✅ yes |
 | — | `04-remove-demo-data.sql` | deletes every `YM-DEMO-` row | run before real data |
 | — | `02-verify-rls.sql` | superseded by **07** | keep for history |
+
+🔴 **06 before 07.** I had these the wrong way round on first writing: 07 *tests* the enquiries
+table, so 06 has to create it. 07 now refuses with an instruction rather than a raw
+`relation does not exist`.
 
 ⚠️ **Run 07, not 02.** `02` was written before the enquiries table existed and never touches it —
 it would pass while the lead pipeline sat unproven.

@@ -21,6 +21,21 @@
 -- ═══════════════════════════════════════════════════════════════════════════
 begin;
 
+-- ── prerequisite check, before anything is seeded ─────────────────────────
+-- ⚠️ A raw "relation does not exist" tells you what broke but not what to do.
+-- This says which script to run first. The ordering caught me out too: 07
+-- TESTS the enquiries table, so 06 has to create it first.
+do $pre$
+begin
+  if to_regclass('public.matters') is null then
+    raise exception E'\n\n  Run 01-schema-and-rls.sql first — the core tables do not exist yet.\n';
+  end if;
+  if to_regclass('public.enquiries') is null then
+    raise exception E'\n\n  Run 06-enquiries.sql first — this script tests the enquiries table\n  and it has not been created yet.\n\n  Order: 01 → 06 → 07 → 03 → 05\n';
+  end if;
+end
+$pre$;
+
 insert into auth.users (id, email, instance_id, aud, role) values
   ('00000000-0000-0000-0000-00000000d001','dir@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
   ('00000000-0000-0000-0000-00000000a001','bne@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
