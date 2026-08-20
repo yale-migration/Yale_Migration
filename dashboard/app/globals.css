@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens lifted verbatim from the published design canvas. Do not invent
+   colours here — if a value is needed that is not below, it belongs in the
+   canvas first so the design and the build cannot drift. */
+@layer base {
+  :root {
+    --paper:#f4f6f4; --card:#ffffff; --card-sunk:#fafbfa;
+    --ink:#141a1e; --ink-2:#4d5860; --ink-3:#7d878e;
+    --rule:#e3e7e4; --rule-strong:#cfd6d1;
+    --accent:#0d5c63; --accent-soft:#e4efef;
+    --good:#1baf7a; --warn:#eda100; --crit:#c9453b;
+    --good-soft:#e6f6ef; --warn-soft:#fdf3dd; --crit-soft:#fbeae8;
+    --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+    --shadow:0 1px 2px rgba(20,26,30,.05), 0 8px 24px -12px rgba(20,26,30,.12);
+    --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+    --r:10px;
+    color-scheme: light;
+  }
+  /* Dark carried over from the canvas. Staff open this at 7am and at 9pm. */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#0f1316; --card:#171d21; --card-sunk:#131a1e;
+      --ink:#eef2f0; --ink-2:#a3aeb4; --ink-3:#78848a;
+      --rule:#262f34; --rule-strong:#333f45;
+      --accent:#4fb3ba; --accent-soft:#122a2c;
+      --good:#199e70; --warn:#c98500; --crit:#e07067;
+      --good-soft:#10231c; --warn-soft:#241d0c; --crit-soft:#2a1513;
+      --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -.01em; }
+  /* Numbers in tables and tiles must align down the column. */
+  .num { font-variant-numeric: tabular-nums; }
+  /* Never remove the focus ring — staff drive this with a keyboard all day. */
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+}
