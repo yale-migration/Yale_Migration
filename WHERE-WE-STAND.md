@@ -1,4 +1,4 @@
-# WHERE WE STAND — 18 Aug 2026
+# WHERE WE STAND — 20 Aug 2026
 **The one file to read after a context reset.** Position, gaps, resume point.
 `STATUS.md` is history only. `DECISIONS-INDEX.md` → `DECISIONS.md` is why.
 
@@ -68,7 +68,8 @@ in a feature.
 | M9 | Email triage / s56 | ✅ **BUILT, PROVEN END TO END, TRACKER 25/25** | Gmail → Claude (`tool_use`) → Sheets → parser → verifier, on a **real Department email**. **3 ops/email**, measured. Correctly classified a bridging-visa grant as **NOT** an s56 request. 🔑 **Six silent-failure classes found and fixed getting here** — `onerror:Ignore` turning a total write failure into a green run · `input_schema.type` being a Make FORM default not applied at runtime · `toJSON()` not existing in Make at all · the verifier reporting *"every deadline matches"* after checking **zero** · conditional-format rules stacking on every re-run · setup-vs-data guards **deadlocking** so lost dropdowns could never be repaired on a tab holding real deadlines. **65 → 72 tests.** ⬜ Before go-live: restore trigger `limit` 1→10 · triggers for the parser + verifier · **a scenario slot** (I-21, Friday) |
 | M10 | Testing | ⬜ | needs 2–3 real files from Robinder |
 | M11 | Handover | 🔴 | **OneDrive on OUR personal account** — §5 |
-| — | Dashboard | ✅ **DONE for MVP — 9 views, all verified against data** | goodwill, not MVP scope. Not being worked on further |
+| — | Dashboard (Sheet tab) | ✅ **DONE for MVP — 9 views, all verified against data** | goodwill, not MVP scope. Not being worked on further |
+| — | **Dashboard (Phase 3 web app)** | 🟢 **BUILT, RLS PROVEN LIVE 22/22, demo-ready 20 Aug** | Separate workstream, **unquoted ~21h**. `DASHBOARD-TRACKER.md` for requirements, **`dashboard/STATE.md`** for the code. Not MVP scope and must not be counted toward it |
 | — | C-1 … C-5 | C-3 ✅ C-4 ✅ C-5 half ✅ · C-1 ⬜ C-2 🔴 | the five contracted items |
 
 ## 🔄 DECISIONS THAT REVERSED — do not re-litigate, do not re-inherit the old one
@@ -85,8 +86,26 @@ in a feature.
 | `SUMMARY OF CLIENTS` is the import source | **`LODGEMENT JULY TO PRESENT`** | We recommended it without opening it (D-315) |
 | Dashboard "Going quiet" = last contact −14 | **= Next Follow-up Due, same as its KPI** | Tile said 10, list shaded 5, same screen (D-326) |
 
-**Honest: ~36%** — 14.5 of 40 contracted build-hours. **~47 of 48 contract hours consumed**;
-the gap is ~16h of absorbed out-of-scope work. See `HOURS-LEDGER.md`.
+**Honest, restated 20 Aug: ~68% BUILT · ~20% RUNNING.** The two numbers are far apart and the gap
+is the whole story — nine modules are built and tested, and almost none of them are switched on.
+
+| | | |
+|---|---|---|
+| **Built and test-proven** | M1 M2 M3 M4a M4b M5a M5b M8 M9, and half of M7 | ~68% |
+| **Actually executing against live data** | M5a + M8 daily triggers, nothing else | ~20% |
+| **Remaining contracted work** | **12.6 h** | |
+| **Of that, blocked on the client** | **12.6 h — all of it** | 🔴 100% |
+
+**Nothing on the remaining list is blocked on engineering.** M6 7h (Meta/WhatsApp access, never
+asked for) · M7 2h (their own enquiry form) · M10 2h (2–3 real client files) · M11 1.1h (OneDrive on
+a Yale account) · M9 0.5h (a Make scenario slot). ▶ **`INPUTS-REGISTER.md`** is the authority.
+
+⛔ **Do not read "68% built" to the client as progress.** Built-and-off is worth nothing to them.
+The honest sentence is: *the build is nearly done and it is waiting on five things from your side.*
+
+**Hours:** ~74 spent against a firm 48-hour cap, but **contracted delivery is ~25 of 40 build-hours**
+— we are *under*-delivered on contract, and over on absorbed Phase-2/3 extras (~16h). 🔴 **Do not
+raise an overrun with Robinder.** See `HOURS-LEDGER.md`.
 
 **Ops: 485 / 1,000 · 515 left · resets Tue 25 Aug.** All scenarios **OFF** (`activeScenarios: 0`).
 The 4 ops since 16 Aug were the Anthropic smoke test and the M9 API probe — both bought a fact that
@@ -146,26 +165,50 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **M6 — BUILT 18 Aug (D-328).** 7/30 cadence, historical baseline, never writes Status | — | 22/22 |
 | ~~—~~ | ✅ **M8 COMPLETE 18 Aug (D-339)** — stop-on-reply added, 32/32 | — | needs one script run |
 | **0** | 🟢 **CLIENT IMPORT — 38 rows ready, `build_master_import.py`.** Runs the moment Q9 lands and the demo rows come out | 1 | ⛔ **Q9 (A-20) only** |
+| **4** | 🟢 **Switch Google on as a Supabase Auth provider** — Authentication → Providers → Google, a Google Cloud OAuth client on the client's account, redirect `https://rmvvlvjjebsskbhjxnap.supabase.co/auth/v1/callback`. ⛔ **G1: do not demo the Google button before doing this** — it renders and fails | 0.3 | 🟢 |
+| **5** | 🟢 **Restore M9 trigger `limit` 1 → 10** (dropped to make diagnostic runs cheap) and add `parseS56Classifications` + `verifyS56Deadlines` to `installDailyTriggers()` | 0.5 | 🟢 |
+| **6** | 🟢 **Brand hexes off Robinder's logo** — dashboard navy/gold are currently eyeballed | 0.2 | 🟢 |
 
-### 🟢 PHASE 3 DASHBOARD — RLS VERIFIED LIVE, 20 Aug
+### 🗓 The Friday call with Robinder — 9 runbook items
+⛔ **A-18, the ~1,200 plaintext credentials, is item 1 and is VERBAL ONLY, one-to-one.** Written down
+and addressed to a Registered Migration Agent it becomes discoverable. Script at the bottom of
+`CLIENT-QUESTIONS-robinder.md`. The other eight: OneDrive re-authorisation onto a Yale account · the
+Make scenario slot / paid plan · the go-live date · Meta + WhatsApp access (M6) · their Client
+Enquiry Form (M7/C-1) · 2–3 real client files (M10) · the checklist-currency confirmation · and the
+Phase-3 dashboard quote, **in writing, never a number on the call**.
 
-Supabase project `rmvvlvjjebsskbhjxnap` (client-owned Google account, Sydney region, Pro).
-Schema and policies applied; **`02-verify-rls.sql` returned ALL 11 CHECKS PASSED against the real
-database.** Not a local simulation — the actual policies, on the actual project.
+### 🟢 PHASE 3 DASHBOARD — DEMO-READY, 20 Aug
+
+Supabase `rmvvlvjjebsskbhjxnap` (client-owned Google account, Sydney, Pro). Schema, policies and the
+full access matrix applied to the real project. **`07-verify-full-matrix.sql` returned 22/22 PASSED
+against the live database** — not a local simulation, the actual policies on the actual project.
 
 The assertions that matter all held: a manager receives **zero** rows from the other branch, a
-logged-in user with no profile sees **nothing**, `anon` sees nothing, and — the one worth naming —
-**a client cannot see the matter that shares their email address.** Two seeded rows deliberately
-share one address, exactly as two rows in Yale's own list do, so a policy written against
-`auth.email()` instead of `client_code` fails that assertion and only that one.
+logged-in user with no profile sees **nothing**, `anon` over HTTP gets `[]` and a write is refused
+401, and — the one worth naming — **a client cannot see the matter that shares their email address.**
+Two seeded rows deliberately share one address, exactly as two rows in Yale's own list do, so a
+policy written against `auth.email()` instead of `client_code` fails that assertion and only that one.
 
 ⚠️ **It took three attempts to get the verifier to run**, and every failure was in the harness, not
 the policies: a temp table the impersonated role could not write, then could not see. The policies
-themselves were never edited. The fix was to stop patching and remove temp tables from the design.
+were never edited. The fix was to stop patching and remove temp tables from the design entirely.
 
-⬜ Still open: the app has never been run against the live database · no profile rows exist yet
-(deliberate — signup is off, staff invite) · **the work is unquoted** · the company-vs-client-owned
-hosting question is unresolved.
+**Two specialist UI/UX reviews, 20 Aug**, found five demo-critical defects and closed them. The worst
+was not cosmetic: with `.env.local` populated the role switcher disappeared and only one profile
+existed, so **the client portal and manager view could not be shown at all** — and the RBAC story
+*is* the demo. `npm run dev:demo` now runs the real app on fixtures with the full switcher.
+⛔ Deliberately **not** a live-mode role preview: rows come from RLS bound to the real JWT, so a
+preview would paint client chrome over director data and lie about who can see what.
+
+**Then four requirements gaps were closed** — the s56/enquiries sync allowlists, the hourly cron,
+Google sign-in for staff, and views 1/2/3, two of which had read ✅ in the tracker while being wrong.
+
+**Green as at 20 Aug:** typecheck 0 · 100 unit checks · production build · 82 e2e on desktop + 390px.
+
+⬜ Still open: **the work is unquoted** (~21h, `QUOTE-P3-DASHBOARD.md`) · Google must be switched on
+as a Supabase Auth provider before that button works · `/api/sync` returns 503 by design until Sheets
+credentials exist · brand hexes are eyeballed · **the company-vs-client-owned hosting question is
+unresolved**, and it has to be settled before one row of real client data reaches a deployment.
 
 ---
 

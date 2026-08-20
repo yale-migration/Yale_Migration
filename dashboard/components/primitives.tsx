@@ -133,7 +133,8 @@ export function StatTile({ label, value, sub, tone = 'neutral', href }: {
           </svg>
         )}
       </div>
-      <div className={`font-serif text-[30px] leading-tight mt-1.5 num ${alert ? TONE_FG[tone] : ''}`}>
+      <div data-stat={label}
+           className={`font-serif text-[30px] leading-tight mt-1.5 num ${alert ? TONE_FG[tone] : ''}`}>
         {value}
       </div>
       {sub && <div className="text-[11.5px] text-ink-3 mt-0.5">{sub}</div>}

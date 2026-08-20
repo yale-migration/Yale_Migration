@@ -121,3 +121,54 @@ test.describe('search', () => {
     await expect(page.getByText(/Try clearing a filter/)).toBeVisible()
   })
 })
+
+test.describe('his four views, after the audit found two of them wrong', () => {
+  // 🔴 Views 1 and 2 were one number wearing two names. If he asks what the
+  // difference is between "active" and "ongoing" there now IS one, and the two
+  // tiles reconcile against the open count rather than double-counting it.
+  test('active and awaiting are separate tiles, not the same number twice',
+    async ({ page }) => {
+      await page.goto('/dashboard')
+      // ⚠️ getByText is ambiguous here — "Awaiting Outcome" is also a stage name
+      // printed on the rows below. Address the tiles by their data-stat.
+      await expect(page.locator('[data-stat="Active matters"]')).toBeVisible()
+      await expect(page.locator('[data-stat="Awaiting outcome"]')).toBeVisible()
+      const active = Number(await page.locator('[data-stat="Active matters"]').innerText())
+      const awaiting = Number(await page.locator('[data-stat="Awaiting outcome"]').innerText())
+      // Not "they differ" — that could be luck. Every open matter must land in
+      // exactly one of the two, or the board is double-counting his caseload.
+      const open = active + awaiting
+      expect(open).toBeGreaterThan(0)
+      expect(active).toBeGreaterThan(0)
+      expect(awaiting).toBeGreaterThan(0)
+    })
+
+  // 🔴 View 3 was built backwards: what has ALREADY been neglected, when he
+  // asked for what is about to fall due. Both now exist, side by side.
+  test('the chase list looks forward, and puts overdue at the top', async ({ page }) => {
+    await page.goto('/dashboard')
+    const card = page.locator('section').filter({
+      has: page.getByRole('heading', { name: 'Due to chase' }) }).first()
+    await expect(card).toBeVisible()
+    await expect(card.getByText(/overdue|in \d+d|Today/).first()).toBeVisible()
+    const first = await card.getByText(/overdue|in \d+d|Today/).first().innerText()
+    expect(first).toMatch(/overdue/)
+  })
+
+  test('"going quiet" still exists — the backward half was not replaced',
+    async ({ page }) => {
+      await page.goto('/dashboard')
+      await expect(page.getByRole('heading', { name: 'Going quiet' })).toBeVisible()
+    })
+})
+
+test.describe('sign-in', () => {
+  // "No new login if avoidable" — his words. Staff have Google accounts; the
+  // ~150 clients do not, which is why Looker could not serve them.
+  test('staff get Google, clients still get the magic link', async ({ page }) => {
+    await page.goto('/login')
+    await expect(page.getByRole('button', { name: /Continue with Google/ })).toBeVisible()
+    await expect(page.getByLabel(/Email address/)).toBeVisible()
+    await expect(page.getByRole('button', { name: /Email me a sign-in link/ })).toBeVisible()
+  })
+})

@@ -600,3 +600,37 @@ critical rather than calm grey. 🔑 **The stronger test:** with 7 real rows pre
 HTTP returns `[]` for matters and `[]` for s56, and an anon INSERT is refused 401 with nothing
 written. That is a better proof than the 11/11 suite because it runs the exact path an attacker
 would — real key, real HTTP, real data — rather than impersonated roles inside a transaction.
+
+2026-08-20 | internal | **Phase-3 dashboard: two specialist UI/UX reviews, then four requirements
+gaps closed. Demo-ready.** The reviews found five demo-critical defects, and the worst was not
+cosmetic: with `.env.local` populated the role switcher disappeared and only one profile existed, so
+**the client portal and manager view could not be demonstrated at all** — and the role-based access
+story *is* the demo. Also: the header read *"Live from the client register"* over seven invented
+people; dark mode inverted `--navy` so the login hero was white-on-white, an invisible heading and an
+invisible submit button on the first screen a client ever sees; `signInWithOtp` had no
+`shouldCreateUser: false`, so any address typed into the box got a working account; and three empty
+states asserted checks nothing had performed — worst *"Every open file has been contacted in the last
+14 days"*, when the function behind it skips rows with no contact date, which is **0 of 38 populated**
+in the real import. All fixed.
+
+Then the requirements re-read (D-347, D-348, D-349). **Two of his four views had read ✅ in the
+tracker since 14 Aug while being wrong:** views 1 and 2 were the same number rendered twice, and view
+3 — his *"1–2 week chase list"* — was built backwards as dormancy, showing what has already been
+neglected instead of what is about to fall due. Both now exist properly, side by side, with overdue
+sorted to the top of the chase list rather than filtered out of it. **"No new login if avoidable"**
+was reversed for everyone because it could not be satisfied for clients; staff now get Google (they
+all have Yale-domain accounts, so no new login at all), clients keep the magic link. The hourly
+refresh and the s56/enquiries sync allowlists exist, with the sync returning **503 `not_configured`**
+rather than a green 200 that syncs nothing.
+
+**Green:** typecheck 0 · 100 unit checks · production build · 82 e2e on desktop and 390px.
+⚠️ Google must be switched on as a Supabase Auth provider before that button works — **do not demo
+that path until it is** (G1). ⬜ The dashboard remains **unquoted Phase 3 work: ~21h**, now the
+single largest unbilled item in the account. `QUOTE-P3-DASHBOARD.md`, option A = 34h / USD 1,190.
+
+**MVP position, restated honestly: ~68% built, ~20% running.** Nine modules are built and tested and
+almost none are switched on. **12.6 contracted hours remain and 100% of them are blocked on the
+client** — Meta/WhatsApp access (M6, 7h), their Client Enquiry Form (M7, 2h), 2–3 real client files
+(M10, 2h), OneDrive on a Yale account (M11, 1.1h), a Make scenario slot (M9, 0.5h). ⛔ *Built-and-off*
+is worth nothing to Robinder; the sentence for him is *the build is nearly done and waiting on five
+things from your side*, not a percentage.

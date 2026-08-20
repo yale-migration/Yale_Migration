@@ -23,13 +23,21 @@ of my 48 hours are left?"* this file is the answer. Update it at the end of ever
 | | Client communication (messages, briefs, scripts) | ~6 |
 | **16–19 Aug** | **M4b · M5b (M4 v4 route C) · M8 + stop-on-reply · dashboard 6→9 views · ENQUIRIES + MASTER importers · four audit rounds (D-323…D-326, D-331…D-338) · hook + skills infrastructure · 20 decision entries** | **~20** |
 | 19 Aug | **M9** tracker + parser + independent deadline verifier (58 tests) · **M11** user guide (client-requested) | **~5** |
-| | **BUILD SUBTOTAL** | **~66** |
-| | Client communication (messages, briefs, scripts, the 19-question document + follow-ups) | **~8** |
-| | **TOTAL** | **~74** |
+| 20 Aug | **M7** CALL LOG tab + in-row lookup formula + one-way promotion (63 tests) · trigger installer · M5a/M8 flood guards | **~4** |
+| **20 Aug** | 🔴 **PHASE 3 WEB DASHBOARD — OUT OF SCOPE, UNQUOTED.** Next.js + Supabase, RLS proven 22/22 live, two specialist UI/UX reviews, four requirements gaps closed, 100 unit + 82 e2e tests | **~21** |
+| | **BUILD SUBTOTAL** | **~91** |
+| | Client communication (messages, briefs, scripts, the 19-question document + follow-ups) | **~9** |
+| | **TOTAL** | **~100** |
 
-## 🔴 WHERE THIS ACTUALLY STANDS — updated 19 Aug 2026
+## 🔴 WHERE THIS ACTUALLY STANDS — updated 20 Aug 2026
 
-**~74 hours spent against a firm 48-hour cap. ~26 hours over. ~40% of contracted modules delivered.**
+**~100 hours spent against a firm 48-hour cap.** But the headline number is the wrong one to read:
+**~37 of those hours are out of scope and unquoted** (~16h absorbed Phase 2/3 + **~21h Phase-3 web
+dashboard, built 20 Aug**). Contracted delivery sits at **~25 of 40 build-hours — under, not over.**
+
+🔴 **The dashboard is the single largest unbilled item in the account, and it happened in one day.**
+Our own rule — *"never absorb Phase 2/3 into the MVP"* — was written 6 Aug and has now been broken
+twice by the same workstream. `QUOTE-P3-DASHBOARD.md` exists; **quote it before any further hour.**
 
 ⛔ **The cap is the contract's central term:** *"Firm 48-hour cap; anything beyond is quoted as a
 written change order **before any additional hours are used**."* No change order has been raised.
@@ -67,7 +75,8 @@ The gap is **absorbed out-of-scope work** — none of it quoted, none of it auth
 | Competitor analysis | ~1 | pre-sales for unquoted Phase 3 |
 | Credential-exposure security audit | ~1 | unbilled security consulting |
 | Checklist library curation (67→28 files) | ~3 | borderline; proposal excludes content work |
-| | **~16 h** | |
+| **Phase-3 web dashboard (Next.js + Supabase + RLS), 20 Aug** | **~21** | 🔴 **never in scope, never quoted, largest single item** |
+| | **~37 h** | |
 
 **Deduct that and contracted delivery sits at ~25 h of 40 — consistent with the 26% completion figure.**
 

@@ -106,3 +106,36 @@ export function fmtDate(d: string | null | undefined): string {
   if (Number.isNaN(dt.getTime())) return '—'
   return dt.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
 }
+
+/**
+ * View 3 — "1–2 week chase list", his words.
+ *
+ * 🔴 This was built BACKWARDS. What existed was `goingQuiet`: files with no
+ * contact for OVER 14 days — a look at what has already been neglected. He
+ * asked for the opposite: what falls due in the NEXT one to two weeks, so it
+ * can be chased before it slips. Both are useful; only one is what he asked for,
+ * and the missing one is the preventive half.
+ *
+ * Reads `next_due`, which the sync already carries and which nothing rendered.
+ */
+export function dueWithin(matters: Matter[], today: Date, days = 14) {
+  return matters
+    .filter(isOpen)
+    .map((m) => ({ m, inDays: m.next_due ? -(daysBetween(m.next_due, today) ?? 0) : null }))
+    // Overdue included — a follow-up that has already slipped belongs at the top
+    // of a chase list, not filtered out of it.
+    .filter((x): x is { m: Matter; inDays: number } => x.inDays !== null && x.inDays <= days)
+    .sort((a, b) => a.inDays - b.inDays)
+}
+
+/**
+ * View 1 vs View 2 — "active matters" and "ongoing" were one concept wearing
+ * two names, so if he asked what the difference was there wasn't one.
+ *
+ * Their own stage vocabulary already draws the line (D-51..56): a matter being
+ * WORKED, versus one lodged and waiting on the Department. Nothing to do at all
+ * on the second kind — which is exactly why they should not sit in one number.
+ */
+const AWAITING = ['Lodged', 'Awaiting Outcome']
+export const isActive   = (m: Matter) => isOpen(m) && !AWAITING.includes(m.processing_stage ?? '')
+export const isAwaiting = (m: Matter) => isOpen(m) &&  AWAITING.includes(m.processing_stage ?? '')

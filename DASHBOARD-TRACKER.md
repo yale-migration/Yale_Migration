@@ -1,6 +1,6 @@
 # DASHBOARD TRACKER — the single source for this workstream
 
-**Updated 14 Aug 2026.** Everything dashboard lives here: what he asked for, what is built, what is
+**Updated 20 Aug 2026.** Everything dashboard lives here: what he asked for, what is built, what is
 blocked, and what it costs. Other files own other things — see `STATUS.md` for the whole project.
 
 ---
@@ -40,9 +40,17 @@ blocked, and what it costs. Other files own other things — see `STATUS.md` for
 | 7 | **New enquiries this week** | 🟡 **source found** — `DATA SHEET.xlsx` (D-300) · needs ENQUIRIES wired |
 
 ### Non-functional
-- **Laptop primary, responsive on mobile** ✅
-- **Hourly refresh** ✅ Looker handles it natively
-- **No new login if avoidable** ✅ Google-native throughout
+| Ask | Sheet / Looker layer | **Phase-3 web app** |
+|---|---|---|
+| Laptop primary, responsive on mobile | ✅ | ✅ **tested at 390px, 41 layout assertions** |
+| Hourly refresh | ✅ Looker native | ✅ `vercel.json` cron `0 * * * *` → `/api/sync` |
+| No new login if avoidable | ✅ Google-native | ✅ **staff: Google · clients: magic link** — see below |
+
+🔑 **"No new login if avoidable" cannot be satisfied the same way on both sides.** The ~10 staff all
+have Yale-domain Google accounts, so for them there is genuinely no new login. The ~150 clients have
+none — which is exactly *why* Looker could not serve them and why the web app exists at all. Giving
+staff Google and clients a magic link honours the ask on the half where it is possible; treating the
+impossible half as licence to ignore both was the state this sat in until 20 Aug.
 
 ---
 
@@ -124,6 +132,56 @@ Proven against 14 seeded rows on 13 Aug — **all six headline numbers matched p
 | 7 | Build `STAFF` tab | us | needs A-16 |
 | 8 | Looker Studio + row-level security | us | needs A-16 |
 | 9 | Client portal | — | Phase 3, unscoped |
+
+---
+
+## 🟢 PHASE 3 — THE WEB DASHBOARD, as at 20 Aug 2026
+
+Lives in **`yale-build/dashboard/`**. Its own compaction handoff is **`dashboard/STATE.md`** — read
+that before touching code; this section is the commercial and requirements view.
+
+### Live
+Supabase **`rmvvlvjjebsskbhjxnap`** — client-owned Google account, Sydney region, Pro plan.
+7 matters · 3 s56 · 6 enquiries · 1 profile (`sharry00010@gmail.com` = director).
+**Access matrix proven 22/22 against the live database**, every role against every table.
+
+### His four views, and what happened to two of them
+| # | View | State 20 Aug |
+|---|---|---|
+| 1 | Active matters | ✅ **now genuinely distinct** — matters being *worked* |
+| 2 | Ongoing | ✅ **"Awaiting outcome"** — lodged, sitting with the Department, nothing to do |
+| 3 | 1–2 week chase list | ✅ **"Due to chase"**, forward-looking, overdue sorted to the top |
+| 4 | Granted vs refused | ✅ rate renders `—`, never `0`, when nothing is decided |
+| 5 | Who is stuck at which stage | ✅ by stage, by consultant, by branch |
+| 6 | Deadlines | ✅ visa expiry + s56 ladder (7/14/21/26, rungs dropped past a short deadline) |
+| 7 | New enquiries this week | ✅ built · ⬜ no sync feeding it yet |
+
+🔴 **Views 1 and 2 were one number wearing two names**, and **view 3 was built backwards** — dormancy
+(what has already been neglected) in place of the forward chase list he actually described. Both had
+read ✅ in this table since 14 Aug. A row marked built is a claim about a name, not about behaviour;
+these were caught by a specialist review, not by the tracker.
+
+### Access control — the thing that ends the spreadsheet approach
+**RLS in Postgres is the access control, not the app.** `lib/data/matters.ts` runs an unfiltered
+`select *` **on purpose** — adding `.eq('office')` would make the app *look* like it enforces access
+and hide whether the database actually does.
+- Client is bound to **`client_code`, never `auth.email()`** — two rows in Yale's own list share an
+  address, and a policy written on email hands one client the other's file.
+- Client sees **no s56 date and no enquiries** — not restricted, **no policy at all**, so RLS denies
+  by default. Absence is the rule.
+- One message for "not found" and "not yours", or the error text enumerates their client list.
+
+### Verified green, 20 Aug
+`npm run check` — typecheck 0 · **100 unit checks** · production build · **82 e2e** on desktop and
+390px, including link-crawl, tap-target, contrast and "no page renders undefined/NaN".
+
+### Open before this is a product
+- ⚠️ **Google sign-in needs the provider switched on** in Supabase Auth before the button works.
+- ⚠️ `/api/sync` deliberately returns **503 `not_configured`** until Sheets credentials are connected.
+- ⬜ Brand navy/gold are **eyeballed** — get the hexes off Robinder's logo.
+- ⬜ **Unquoted.** ~21h already built. `QUOTE-P3-DASHBOARD.md` — option A = 34h / USD 1,190.
+- ⬜ **Hosting undecided**: company Vercel + company Supabase is required the moment real client data
+  lands. The demo runs on fixtures, which is what makes the shareable link permissible today.
 
 ---
 

@@ -88,3 +88,45 @@ export function assertNoCredentialColumns(headers: readonly string[]): void {
     )
   }
 }
+
+
+/**
+ * The other two tabs. `matters` had a sync path; `s56_deadlines` and
+ * `enquiries` did not — so both surfaces were real UI over data nobody fed.
+ *
+ * ⛔ Same rule: an ALLOWLIST. A denylist fails open the moment somebody adds a
+ * column, and the S56 TRACKER sits in the same workbook as the credential-heavy
+ * tabs.
+ */
+export const S56_ALLOWLIST = {
+  A: 'received_UNUSED',      // Gmail timestamp, not needed here
+  B: 'client_name',
+  C: 'subclass',
+  D: 'due_date_legal',
+  E: 'due_date_internal',
+  F: 'days_allowed',
+  G: 'letter_date',
+  H: 'deadline_sentence',
+  N: 'needs_review',
+  R: 'status',
+  // ⛔ I, J, K (TRN · Application ID · File Number) are DELIBERATELY not synced.
+  // They identify a person to the Department. The dashboard never needs them to
+  // show a deadline, and a web-facing copy of a TRN buys nothing and risks a lot.
+} as const
+
+export const ENQUIRY_ALLOWLIST = {
+  A: 'enquiry_date',
+  B: 'name',
+  C: 'phone',
+  D: 'email',
+  E: 'channel',
+  F: 'visa_interest',
+  G: 'office',
+  H: 'assigned_to',
+  I: 'status',
+  J: 'follow_up_due',
+  L: 'last_contact',
+} as const
+
+export const syncedColumns = (map: Record<string, string>) =>
+  Object.entries(map).filter(([, c]) => !c.endsWith('_UNUSED')).map(([letter, col]) => ({ letter, col }))

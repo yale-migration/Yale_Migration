@@ -5762,3 +5762,80 @@ D-345's check verified every claim against the *code* and none against the *rest
 ⛔ Added to `/yale-client-message`: before any generated document goes out, check it against
 **itself** — cross-references, counts against the things counted, and quantity words against the
 lists they describe.
+
+## D-347 | "No new login if avoidable" was honoured for nobody because it could not be honoured for everybody
+**20 Aug 2026 — "No new login if avoidable" was honoured for nobody because it could not be honoured
+for everybody. Split it.**
+
+The non-functional requirement came from the Looker plan, where it was free: staff live in Google, so
+a Google-native dashboard needs no new login at all. When the plan moved to a Next.js portal the line
+was carried forward unchanged and then quietly failed — magic link for every role — and the tracker
+kept the ✅ next to it.
+
+The reasoning that produced that outcome is the interesting part. Clients have no Google account.
+Therefore the requirement cannot be met. Therefore it is met the same (non-)way for everyone. Each
+step follows, and the conclusion is wrong, because **the requirement was never one requirement.** The
+~10 staff and the ~150 clients are different populations with different accounts, and the fact that
+clients have no Google account is not an obstacle to the requirement — **it is the reason this build
+exists at all**, since it is precisely why Looker could not serve them.
+
+**Decided:** staff get `signInWithOAuth({provider:'google'})`, clients keep the magic link, one login
+screen offering both with the Google path first. `shouldCreateUser: false` stays on the OTP path —
+without it any address that types itself into the box gets a working account.
+
+⚠️ **The button does not work until Google is enabled as a Supabase Auth provider** (Authentication →
+Providers → Google, a Google Cloud OAuth client on the client's account, redirect
+`https://rmvvlvjjebsskbhjxnap.supabase.co/auth/v1/callback`). Recorded in `WHERE-WE-STAND.md` §4 as a
+task, and gated by G1: **do not demo the Google path before switching it on.**
+
+**The transferable rule:** when a requirement cannot be met for one population, check whether it is
+one requirement or two before recording it as unmet. A blanket ✅ and a blanket ❌ hide the same thing.
+
+## D-348 | Two of his four dashboard views read ✅ for six days while being wrong
+**20 Aug 2026 — Two of his four views had read ✅ for six days while being wrong. A row marked built
+is a claim about a name, not about behaviour.**
+
+`DASHBOARD-TRACKER.md` listed views 1–5 as ✅ built on 14 Aug. A requirements re-read on 20 Aug found:
+
+- **View 1 "Active matters" and view 2 "Ongoing" were the same number.** Both rendered `isOpen`.
+  If Robinder had asked what the difference was on the demo call, there was none to give.
+- **View 3 "1–2 week chase list" was built backwards.** What shipped was `goingQuiet` — files with no
+  contact for *over* 14 days, a look at what has already been neglected. He asked for what falls due
+  in the *next* one to two weeks. Both are useful; only one is what he asked for, and the missing one
+  is the preventive half. A practice that only ever sees what it has already dropped cannot stop
+  dropping things.
+
+**Fixed:** `isActive` / `isAwaiting` split the caseload on their own stage vocabulary — being *worked*
+versus *lodged and waiting on the Department*, where there is nothing to do and it should not inflate
+a "needs attention" count. `dueWithin(matters, today, 14)` plus a **"Due to chase"** card is the
+forward half, with **overdue sorted to the top rather than filtered out** — a follow-up that has
+already slipped belongs at the head of a chase list, not excluded from it for being in the past.
+`goingQuiet` stays: the backward half was added to, not replaced.
+
+Nine unit checks and three e2e now hold it, including the one that matters: **every open matter falls
+into exactly one of active or awaiting**, so the two tiles reconcile against the open count instead
+of double-counting his caseload.
+
+🔑 **Why this survived six days:** the tracker row and the component both said "active matters", so
+every check of one against the other passed. This is the same shape as D-292…D-296 and the `onerror:
+Ignore` failure — **a check that passes for the wrong reason.** Matching a requirement against an
+implementation by name is not verification; it only ever proves the label was copied correctly.
+
+## D-349 | A cron that silently succeeds without syncing is worse than one that fails loudly
+**20 Aug 2026 — A cron that silently succeeds without syncing is worse than one that fails loudly.**
+
+`/api/sync` and a `vercel.json` hourly cron close the "hourly refresh" requirement, which Looker gave
+for free and the Next.js build did not. But Google Sheets credentials are not connected yet, so there
+is nothing to sync.
+
+The tempting shape is a 200 with an empty result — the cron goes green, the log is clean, and the
+board keeps showing the last data written. That is exactly the failure that produced D-292…D-296: an
+empty dashboard and a correct one render identically, and a green run is read as a working run.
+
+**Decided:** it returns **503 with `status: 'not_configured'`** and a sentence naming what is missing
+and what the board is therefore showing. It is guarded by `SYNC_SECRET` or Vercel's `x-vercel-cron`
+header — an unauthenticated public sync endpoint is a free way to hammer the database.
+
+Also decided at the same time: `S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST` **deliberately exclude TRN,
+Application ID and File Number.** They identify a person to the Department, the dashboard never needs
+them to show a deadline, and a web-facing copy buys nothing and risks a lot.

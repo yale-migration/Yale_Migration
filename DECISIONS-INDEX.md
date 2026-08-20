@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 432K /     5764 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 440K /     5841 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:58
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-20 22:52
 
 | # | Decision |
 |---|---|
@@ -343,3 +343,6 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-19 09:5
 | **D-344** | Rey asked for a user guide — which is M11, and it unlocks the blockers |
 | **D-345** | Auditing the guide before it went out — three defects, one of them a false claim to the client |
 | **D-346** | Second guide audit — the layout fix moved the content the prose pointed at |
+| **D-347** | "No new login if avoidable" was honoured for nobody because it could not be honoured for everybody |
+| **D-348** | Two of his four dashboard views read ✅ for six days while being wrong |
+| **D-349** | A cron that silently succeeds without syncing is worse than one that fails loudly |

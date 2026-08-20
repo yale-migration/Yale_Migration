@@ -1,0 +1,9 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync",
+      "//": "Hourly, on the hour. One of his four non-functional asks.",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

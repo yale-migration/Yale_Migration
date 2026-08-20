@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { Card, CardHead, Chip, Row, Empty, StatTile, Owner, type Tone } from './primitives'
 import { NeedsToday, type Action } from './needs-today'
 import { S56Card } from './s56-card'
-import { goingQuiet, expiringSoon, isOpen, daysBetween } from '@/lib/data/matters'
+import { goingQuiet, expiringSoon, isOpen, daysBetween, dueWithin,
+         isActive, isAwaiting, fmtDate } from '@/lib/data/matters'
 import type { Matter, S56Deadline, Viewer, Enquiry } from '@/lib/data/types'
 import { OutcomesCard } from './outcomes-card'
 import { EnquiriesCard } from './enquiries-card'
@@ -28,6 +29,9 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
   // 🔴 Counted, not hidden. A file with no contact date is not a quiet file —
   // it is a file nobody can tell about, which is worse.
   const noContactDate = open.filter((m) => !m.last_contact).length
+  const dueSoon = dueWithin(matters, today)
+  const active = matters.filter(isActive)
+  const awaiting = matters.filter(isAwaiting)
   const expiring = expiringSoon(matters, today)
   const s56Near = s56.filter((d) => {
     const left = d.due_date_internal ? -(daysBetween(d.due_date_internal, today) ?? 0) : null
@@ -91,8 +95,12 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
       <NeedsToday actions={actions} />
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 my-3.5">
-        <StatTile label="Open matters" value={open.length}
-                  sub={viewer.office ?? 'all offices'} href={listHref('open')} />
+        {/* His views 1 and 2, finally distinct: work in hand, versus work
+            sitting with the Department where there is nothing to do. */}
+        <StatTile label="Active matters" value={active.length}
+                  sub="being worked now" href={listHref('open')} />
+        <StatTile label="Awaiting outcome" value={awaiting.length}
+                  sub="lodged, with the Department" />
         {/* s56 has no client list of its own — the card below IS the list, so
             this scrolls to it rather than opening a page that repeats it. */}
         <StatTile label="Section 56 live" value={s56.length} sub="legal deadlines running"
@@ -126,6 +134,24 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
 
       <div className="grid grid-cols-12 gap-3.5">
         <S56Card rows={s56} today={today} as={as} />
+
+        <Card className="col-span-12 lg:col-span-6">
+          <CardHead title="Due to chase" tag="next 14 days"
+                    hint="Follow-ups falling due, soonest first. Overdue ones come first — a
+                          follow-up that has already slipped belongs at the top of a chase list." />
+          {dueSoon.length === 0 ? (
+            <Empty>Nothing falls due for a follow-up in the next fortnight.</Empty>
+          ) : dueSoon.map(({ m, inDays }) => {
+            const tone: Tone = inDays < 0 ? 'crit' : inDays <= 3 ? 'warn' : 'good'
+            return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
+                        title={`${m.full_name} · ${m.visa_type ?? '—'}`}
+                        meta={<><Owner value={m.consultant} /> · {fmtDate(m.next_due)}</>}
+                        chip={<Chip tone={tone} solid={inDays < 0}>
+                          {inDays < 0 ? `${Math.abs(inDays)}d overdue`
+                           : inDays === 0 ? 'Today' : `in ${inDays}d`}
+                        </Chip>} />
+          })}
+        </Card>
 
         <Card className="col-span-12 lg:col-span-6">
           <CardHead title="Going quiet" tag="oldest first"

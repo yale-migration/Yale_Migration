@@ -15,6 +15,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle')
 
+  async function signInWithGoogle() {
+    await createClient().auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
+  }
+
   async function send(e: React.FormEvent) {
     e.preventDefault()
     if (state === 'sending') return
@@ -78,7 +85,31 @@ export default function LoginPage() {
         See where your application is up to.
       </p>
 
-      <form onSubmit={send} className="mt-7 flex flex-col gap-2.5">
+      {/* 🔑 "No new login if avoidable" (his non-functional ask). Staff already
+          have a Google account on the Yale domain — for them there is no new
+          login at all. Clients have none, which is exactly why Looker could not
+          serve them, so they keep the magic link. Honouring the ask for the half
+          where it is possible beats treating the other half as an excuse. */}
+      <button type="button" onClick={signInWithGoogle}
+        className="mt-7 w-full min-h-[50px] rounded-xl border border-rule-strong bg-card
+                   font-semibold text-[15px] flex items-center justify-center gap-2.5
+                   transition-colors hover:bg-[var(--card-sunk)]">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.5h4.8a4.1 4.1 0 01-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.6z"/>
+          <path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 009 18z"/>
+          <path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 010-3.4V5H.9a9 9 0 000 8l3-2.3z"/>
+          <path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 00.9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div className="flex items-center gap-3 my-5">
+        <span className="h-px flex-1 bg-rule" />
+        <span className="text-[12px] text-ink-3">or, if you are a client</span>
+        <span className="h-px flex-1 bg-rule" />
+      </div>
+
+      <form onSubmit={send} className="flex flex-col gap-2.5">
         <label htmlFor="email" className="text-[13px] font-medium text-accent hover:underline underline-offset-4">Email address</label>
         <input
           id="email" type="email" required autoComplete="email" inputMode="email"
@@ -98,8 +129,8 @@ export default function LoginPage() {
       </form>
 
       <p className="text-[12.5px] text-ink-3 mt-4 leading-relaxed">
-        We send a one-time link instead of using a password — nothing to remember, and nothing
-        to lose.
+        Yale staff sign in with their work Google account. Clients get a one-time link instead of
+        a password — nothing to remember, and nothing to lose.
       </p>
 
       <p className="text-[12px] text-ink-3 mt-8 pt-5 border-t border-rule">

@@ -8,7 +8,8 @@
  * they could not be tested without mocking a database, so none of them were.
  */
 import { daysBetween, isOpen, goingQuiet, expiringSoon, isLiveLead,
-         recentEnquiries, outcomes, ladderFor, LADDER } from './derive.ts'
+         recentEnquiries, outcomes, ladderFor, LADDER,
+         dueWithin, isActive, isAwaiting } from './derive.ts'
 
 let pass = 0, fail = 0
 const check = (l, ok, d) => { console.log((ok ? '  PASS  ' : '  FAIL  ') + l + (d ? `   — ${d}` : ''))
@@ -101,6 +102,39 @@ console.log('\n=== the s56 ladder — the compression rule ===')
   check('no day count → not placeable', ladderFor({letter_date:'2026-08-14',days_allowed:null},T).placeable === false)
   check('progress never exceeds 100%', d(7,'2026-06-01').pct === 100, String(d(7,'2026-06-01').pct))
   check('progress never goes negative for a future letter', d(28,'2026-09-01').pct === 0)
+}
+
+console.log('\n=== the chase list — the half that was built backwards ===')
+{
+  const rows = [m({ client_code:'A', next_due:'2026-08-24' }),   // in 3
+                m({ client_code:'B', next_due:'2026-08-18' }),   // 3 overdue
+                m({ client_code:'C', next_due:'2026-09-30' }),   // far out
+                m({ client_code:'D', next_due:null }),
+                m({ client_code:'E', next_due:'2026-08-22', visa_outcome:'Granted' })]
+  const d = dueWithin(rows, T)
+  check('only what falls due inside the fortnight', d.length === 2, `${d.length}`)
+  // 🔴 The point of the whole card. `goingQuiet` looks BACKWARD at what has
+  // already been neglected; he asked for what is ABOUT to be.
+  check('🔴 overdue sorts FIRST, not filtered out',
+        d[0].m.client_code === 'B' && d[0].inDays === -3, JSON.stringify(d[0]?.inDays))
+  check('a granted file is never chased', !d.some((x) => x.m.client_code === 'E'))
+  check('a file with no due date is not silently treated as due', !d.some((x) => x.m.client_code === 'D'))
+  check('nothing due → empty, not a thrown error', dueWithin([m()], T).length === 0)
+}
+
+console.log('\n=== active vs awaiting — views 1 and 2 were one number ===')
+{
+  const rows = [m({ processing_stage:'Docs Collection' }),
+                m({ processing_stage:'Lodged' }),
+                m({ processing_stage:'Awaiting Outcome' }),
+                m({ processing_stage:'Lodged', visa_outcome:'Granted' })]
+  check('active = being worked, Department cases excluded', rows.filter(isActive).length === 1)
+  check('awaiting = lodged + awaiting outcome', rows.filter(isAwaiting).length === 2)
+  // 🔴 If a matter fell into both or neither the two tiles would not reconcile
+  // against the open count, and he would be the one to notice.
+  check('🔴 every open matter is in exactly one of the two',
+        rows.filter(isOpen).every((r) => isActive(r) !== isAwaiting(r)))
+  check('a null stage counts as active, not lost', isActive(m({ processing_stage:null })))
 }
 
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed')
