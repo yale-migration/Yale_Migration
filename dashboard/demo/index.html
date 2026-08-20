@@ -1,0 +1,443 @@
+<title>Yale Practice Board</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --paper:#f4f6f4; --card:#fff; --card-sunk:#fafbfa;
+  --ink:#141a1e; --ink-2:#4d5860; --ink-3:#7d878e;
+  --rule:#e3e7e4; --rule-strong:#cfd6d1;
+  --accent:#0d5c63; --accent-soft:#e4efef;
+  --good:#1baf7a; --warn:#eda100; --crit:#c9453b;
+  --good-soft:#e6f6ef; --warn-soft:#fdf3dd; --crit-soft:#fbeae8;
+  --s1:#2a78d6;
+  --shadow:0 1px 2px rgba(20,26,30,.05),0 8px 24px -12px rgba(20,26,30,.12);
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+  --sans:ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --r:10px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  --paper:#0f1316; --card:#171d21; --card-sunk:#131a1e;
+  --ink:#eef2f0; --ink-2:#a3aeb4; --ink-3:#78848a;
+  --rule:#262f34; --rule-strong:#333f45;
+  --accent:#4fb3ba; --accent-soft:#122a2c;
+  --good:#199e70; --warn:#c98500; --crit:#e07067;
+  --good-soft:#10231c; --warn-soft:#241d0c; --crit-soft:#2a1513; --s1:#3987e5;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6); color-scheme:dark;
+}}
+:root[data-theme=dark]{
+  --paper:#0f1316; --card:#171d21; --card-sunk:#131a1e;
+  --ink:#eef2f0; --ink-2:#a3aeb4; --ink-3:#78848a;
+  --rule:#262f34; --rule-strong:#333f45; --accent:#4fb3ba; --accent-soft:#122a2c;
+  --good:#199e70; --warn:#c98500; --crit:#e07067;
+  --good-soft:#10231c; --warn-soft:#241d0c; --crit-soft:#2a1513; --s1:#3987e5;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+     font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.wrap{max-width:1240px;margin:0 auto;padding:20px 20px 64px}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;
+     padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.brand h1{font-size:21px}
+.brand p{margin:4px 0 0;color:var(--ink-3);font-size:12.5px;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-soft);flex:none}
+.roles{display:flex;flex-direction:column;gap:6px}
+.roles>span{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.seg{display:flex;background:var(--card-sunk);border:1px solid var(--rule);border-radius:8px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:12.5px;font-weight:500;color:var(--ink-2);background:none;border:0;
+     padding:7px 13px;border-radius:6px;cursor:pointer;white-space:nowrap;min-height:34px;transition:background .12s,color .12s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--card);color:var(--accent);box-shadow:var(--shadow);font-weight:600}
+.viewnote{margin:14px 0 0;padding:10px 14px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:12.5px}
+.viewnote b{font-weight:600}
+
+.today{margin-top:16px;border:1px solid var(--rule);border-radius:var(--r);background:var(--card);overflow:hidden}
+.today>header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+     padding:13px 17px 11px;border-bottom:1px solid var(--rule)}
+.today h2{font-size:15px}.today .count{font-size:12px;color:var(--ink-3)}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.act{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px 17px;border-right:1px solid var(--rule)}
+.act:last-child{border-right:0}
+.act .n{font-family:var(--serif);font-size:27px;line-height:.95}
+.act .t{font-size:13.5px;font-weight:600}
+.act .d{font-size:12px;color:var(--ink-3);margin-top:3px;overflow-wrap:anywhere}
+.act.crit .n{color:var(--crit)} .act.warn .n{color:color-mix(in srgb,var(--warn) 78%,var(--ink))}
+.act.calm{color:var(--ink-3)}
+@media(max-width:700px){.act{border-right:0;border-bottom:1px solid var(--rule)}.act:last-child{border-bottom:0}}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px;margin:14px 0 18px}
+.kpi{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:13px 15px}
+.kpi .lab{font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.kpi .val{font-family:var(--serif);font-size:30px;line-height:1.1;margin-top:7px}
+.kpi .sub{font-size:11.5px;color:var(--ink-3);margin-top:3px}
+.kpi.crit{background:var(--crit-soft);border-color:color-mix(in srgb,var(--crit) 28%,transparent)}
+.kpi.crit .val,.kpi.crit .lab{color:var(--crit)}
+.kpi.warn{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 32%,transparent)}
+.kpi.warn .val,.kpi.warn .lab{color:color-mix(in srgb,var(--warn) 78%,var(--ink))}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:16px 17px;min-width:0}
+.c6{grid-column:span 6}.c12{grid-column:span 12}
+@media(max-width:940px){.c6{grid-column:span 12}}
+.card h2{font-size:15px}
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.hint{font-size:12px;color:var(--ink-3);margin:4px 0 14px}
+.tag{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;white-space:nowrap}
+
+.item{display:grid;grid-template-columns:3px 1fr auto;gap:12px;align-items:center;
+      padding:11px 0;border-bottom:1px solid var(--rule)}
+.item:last-child{border-bottom:0}
+.rail{width:3px;height:28px;border-radius:2px}
+.who{font-size:13.5px;font-weight:500}
+.meta{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.chip{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:20px;white-space:nowrap}
+.chip.crit{background:var(--crit-soft);color:var(--crit)}
+.chip.warn{background:var(--warn-soft);color:color-mix(in srgb,var(--warn) 75%,var(--ink))}
+.chip.good{background:var(--good-soft);color:color-mix(in srgb,var(--good) 82%,var(--ink))}
+.chip.accent{background:var(--accent-soft);color:var(--accent)}
+.empty{padding:24px 0;text-align:center;color:var(--ink-3);font-size:13px}
+
+.bar-row{display:grid;grid-template-columns:120px 1fr 34px;gap:11px;align-items:center;margin-bottom:11px}
+.bar-row:last-child{margin-bottom:0}
+.bar-row .nm{font-size:12.5px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-row .nm.un{color:var(--crit);font-weight:600}
+.track{height:9px;background:var(--card-sunk);border-radius:5px;overflow:hidden;box-shadow:inset 0 0 0 1px var(--rule)}
+.fill{height:100%;border-radius:5px;transition:width .4s cubic-bezier(.2,.7,.3,1)}
+.bar-row .v{font-size:13px;font-weight:600;text-align:right}
+@media(max-width:560px){.bar-row{grid-template-columns:96px 1fr 30px}}
+
+/* client */
+.owe{margin-top:16px;border-radius:var(--r);overflow:hidden;background:var(--warn-soft);
+     border:1px solid color-mix(in srgb,var(--warn) 34%,transparent)}
+.owe>header{padding:14px 17px 11px;border-bottom:1px solid color-mix(in srgb,var(--warn) 24%,transparent)}
+.owe h2{font-size:15px;color:color-mix(in srgb,var(--warn) 80%,var(--ink))}
+.owe .due{margin:3px 0 0;font-size:12.5px;font-weight:600;color:color-mix(in srgb,var(--warn) 80%,var(--ink))}
+.docs{padding:2px 17px 10px;list-style:none;margin:0}
+.docs li{display:grid;grid-template-columns:20px 1fr;gap:11px;align-items:start;padding:11px 0;min-height:44px;
+     border-bottom:1px solid color-mix(in srgb,var(--warn) 18%,transparent)}
+.docs li:last-child{border-bottom:0}
+.docs .nm{font-size:14px;font-weight:600}
+.docs .hw{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.next{margin-top:14px;padding:14px 17px;border:1px solid var(--rule);border-radius:var(--r);background:var(--card)}
+.next h3{font-size:14px}.next p{margin:5px 0 0;font-size:13px;color:var(--ink-2)}
+.next .upd{margin-top:9px;font-size:11.5px;color:var(--ink-3)}
+.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{flex:1;min-width:150px;min-height:48px;display:flex;align-items:center;justify-content:center;
+     border-radius:10px;font-size:14.5px;font-weight:600;text-decoration:none;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+.btn.ghost{background:var(--card);color:var(--accent);border-color:var(--rule-strong)}
+
+/* sign-in preview */
+.signin{max-width:400px;margin:52px auto;padding:0 20px}
+.signin h1{font-size:22px}.signin>p{font-size:13px;color:var(--ink-3);margin:5px 0 0}
+.field{display:flex;flex-direction:column;gap:9px;margin-top:22px}
+.field label{font-size:13px;font-weight:500}
+.field input{min-height:48px;padding:0 14px;border-radius:10px;border:1px solid var(--rule-strong);
+     background:var(--card);color:var(--ink);font-size:15px;font-family:inherit}
+.note{font-size:12px;color:var(--ink-3);margin-top:10px}
+.backlink{display:inline-block;margin-top:22px;font-size:13px}
+
+.foot{margin-top:26px;padding-top:15px;border-top:1px solid var(--rule);color:var(--ink-3);
+      font-size:11.5px;display:flex;flex-wrap:wrap;gap:6px 18px}
+.demoflag{margin-top:14px;padding:9px 14px;border-radius:8px;background:var(--card-sunk);
+     border:1px dashed var(--rule-strong);color:var(--ink-3);font-size:12px}
+</style>
+
+<div id="root"></div>
+
+<script>
+"use strict";
+/* ── data ── invented people. Shapes mirror awkward real cases: two clients
+   sharing an email, a matter with no consultant, a 14-day s56 (never 28). ── */
+const TODAY = new Date('2026-08-21T09:00:00');
+const MATTERS = [
+ {code:'YM-2026-00001',name:'A. NGUYEN',office:'BRISBANE',team:'Filipino',con:'Rey',visa:'485',
+  stage:'Documents Pending',outcome:'Pending',expiry:'2026-08-26',contact:'2026-08-14',
+  docs:'Bank statements — last 3 months|Health insurance certificate'},
+ {code:'YM-2026-00002',name:'B. SHARMA',office:'BRISBANE',team:'Indian',con:'RJ',visa:'482',
+  stage:'Documents Pending',outcome:'Pending',expiry:'2026-09-12',contact:'2026-07-29',
+  docs:'Employment contract'},
+ {code:'YM-2026-00003',name:'C. REYES',office:'TOWNSVILLE',team:'Filipino',con:'Star',visa:'189',
+  stage:'Lodged',outcome:'Pending',expiry:'2027-01-04',contact:'2026-08-18',docs:''},
+ {code:'YM-2026-00004',name:'D. SINGH',office:'BRISBANE',team:'Indian',con:'Priyanka',visa:'500',
+  stage:'Awaiting Outcome',outcome:'Pending',expiry:'2026-10-30',contact:'2026-08-19',docs:''},
+ {code:'YM-2026-00005',name:'E. TAN',office:'TOWNSVILLE',team:'Filipino',con:null,visa:'491',
+  stage:'Documents Pending',outcome:'Pending',expiry:'2026-11-15',contact:'2026-07-19',
+  docs:'Skills assessment|Police check'},
+ {code:'YM-2026-00006',name:'F. KAUR',office:'BRISBANE',team:'Indian',con:'Inder',visa:'820/801',
+  stage:'Closed',outcome:'Granted',expiry:null,contact:'2026-08-01',docs:''},
+ {code:'YM-2026-00007',name:'G. OKAFOR',office:'BRISBANE',team:'Filipino',con:'Rey',visa:'500',
+  stage:'Documents Complete',outcome:'Pending',expiry:'2026-12-01',contact:'2026-08-20',docs:''},
+ {code:'YM-2026-00008',name:'H. PATEL',office:'TOWNSVILLE',team:'Indian',con:'Cristelle',visa:'482',
+  stage:'Ready for Lodgement',outcome:'Pending',expiry:'2026-09-30',contact:'2026-08-06',docs:''}
+];
+const S56 = [
+ {id:1,code:'YM-2026-00001',name:'A. NGUYEN',office:'BRISBANE',sub:'485',letter:'2026-08-14',
+  days:28,legal:'2026-09-12',internal:'2026-09-10',review:false},
+ {id:2,code:'YM-2026-00005',name:'E. TAN',office:'TOWNSVILLE',sub:'491',letter:'2026-08-18',
+  days:14,legal:'2026-09-02',internal:'2026-08-31',review:true},
+ {id:3,code:'YM-2026-00002',name:'B. SHARMA',office:'BRISBANE',sub:'482',letter:'2026-08-19',
+  days:28,legal:null,internal:null,review:true}
+];
+const VIEWS={
+ director:{role:'director',office:null,code:null,label:'Robinder — Director',
+   note:'You are seeing <b>every branch</b>. Managers see only their own.'},
+ brisbane:{role:'manager',office:'BRISBANE',code:null,label:'Branch manager — Brisbane',
+   note:'Brisbane only. Townsville rows are <b>not returned</b> to this view.'},
+ townsville:{role:'manager',office:'TOWNSVILLE',code:null,label:'Branch manager — Townsville',
+   note:'Townsville only. Brisbane rows are <b>not returned</b> to this view.'},
+ client:{role:'client',office:null,code:'YM-2026-00001',label:'Client portal — A. NGUYEN',
+   note:'You see <b>your own matter and nothing else</b>. No totals, no other names.'}
+};
+
+const OPEN_EXCLUDED=['Granted','Refused','Withdrawn'];
+const isOpen=m=>!OPEN_EXCLUDED.includes(m.outcome||'');
+const days=(from,to)=>{if(!from)return null;const d=new Date(from+'T00:00:00');
+  return isNaN(d)?null:Math.floor((to-d)/86400000);};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const el=(t,c,h)=>`<${t}${c?` class="${c}"`:''}>${h==null?'':h}</${t}>`;
+
+/* ⚠️ Demo-only scoping. Stands in for what Postgres RLS does in the real build.
+   A stage prop, never a security boundary. */
+function scope(rows,v,kind){
+  // ⛔ A client is never shown a Section 56 deadline — not here, and not in the
+  // real build, where RLS has no client policy on that table at all. It is a
+  // legal instrument the RMA explains with the letter in hand; a date appearing
+  // unannounced on a portal is how a client panics, or acts on it themselves.
+  // The client view does not render s56, so this changes nothing on screen —
+  // it is here so the demo and production answer the same question the same way.
+  if(kind==='s56'&&v.role==='client')return [];
+  if(v.role==='director')return rows;
+  if(v.role==='manager')return rows.filter(r=>r.office===v.office);
+  return rows.filter(r=>r.code===v.code);
+}
+
+function staffView(v){
+  const ms=scope(MATTERS,v), s56=scope(S56,v,'s56');
+  const open=ms.filter(isOpen);
+  const quiet=open.map(m=>({m,d:days(m.contact,TODAY)}))
+    .filter(x=>x.d!==null&&x.d>14).sort((a,b)=>b.d-a.d);
+  const exp=open.map(m=>({m,l:m.expiry?-days(m.expiry,TODAY):null}))
+    .filter(x=>x.l!==null&&x.l<=60).sort((a,b)=>a.l-b.l);
+  const s56d=s56.map(d=>({...d,left:d.internal?-days(d.internal,TODAY):null}));
+  const near=s56d.filter(d=>d.left!==null&&d.left<=7);
+  const noDate=s56d.filter(d=>d.left===null);
+
+  const acts=[];
+  if(near.length)acts.push({c:'crit',n:near.length,t:'Section 56 due inside a week',
+    d:near.map(d=>`${d.name} (${d.left}d internal)`).join(' · ')});
+  // A deadline with no date means nothing is watching it — worse than a near one.
+  if(noDate.length)acts.push({c:'crit',n:noDate.length,t:'Section 56 with NO deadline recorded',
+    d:noDate.map(d=>d.name).join(' · ')+' — not being tracked. Open the letter.'});
+  const urg=exp.filter(x=>x.l<=14);
+  if(urg.length)acts.push({c:'crit',n:urg.length,t:'Visa expiring within 14 days',
+    d:urg.map(x=>`${x.m.name} (${x.l}d)`).join(' · ')});
+  const cold=quiet.filter(q=>q.d>=21);
+  if(cold.length)acts.push({c:'crit',n:cold.length,t:'No contact for 21 days or more',
+    d:cold.map(q=>`${q.m.name} · ${q.m.con||'unassigned'}`).join(' · ')});
+
+  const load=new Map();
+  open.forEach(m=>{const k=m.con||'Unassigned';load.set(k,(load.get(k)||0)+1)});
+  const staff=[...load].sort((a,b)=>b[1]-a[1]);
+  const mx=Math.max(...staff.map(s=>s[1]),1);
+
+  const row=(tone,who,meta,chip)=>el('div','item',
+    `<span class="rail" style="background:var(--${tone==='neutral'?'rule-strong':tone})"></span>
+     <div style="min-width:0"><div class="who">${who}</div><div class="meta">${meta}</div></div>
+     <span class="chip ${tone}">${chip}</span>`);
+
+  return `
+  <section class="today">
+    <header><h2>Needs you today</h2><span class="count">${acts.length?acts.reduce((a,b)=>a+b.n,0)+' items':'all clear'}</span></header>
+    <div class="acts">${acts.length?acts.map(a=>
+      `<div class="act ${a.c}"><div class="n num">${a.n}</div>
+        <div><div class="t">${esc(a.t)}</div><div class="d">${esc(a.d)}</div></div></div>`).join('')
+      :`<div class="act calm"><div class="n">—</div><div><div class="t">Nothing needs chasing</div>
+        <div class="d">No Section 56 deadline inside a week, no visa expiring within 14 days,
+        and no open file left quiet for 21 days.</div></div></div>`}</div>
+  </section>
+
+  <section class="kpis">
+    ${[['Open matters',open.length,v.office||'all offices',''],
+       ['Section 56 live',s56.length,'legal deadlines running',near.length||noDate.length?'crit':''],
+       ['Going quiet',quiet.length,'no contact 14 days+',quiet.length?'crit':''],
+       ['Expiring 60 days',exp.length,'visa expiry approaching',exp.length?'warn':'']]
+      .map(([l,val,s,c])=>`<div class="kpi ${c}"><div class="lab">${l}</div>
+        <div class="val num">${val}</div><div class="sub">${esc(s)}</div></div>`).join('')}
+  </section>
+
+  <div class="grid">
+    <section class="card c12">
+      <div class="chead"><h2>Section 56 — Department deadlines</h2><span class="tag">internal · legal</span></div>
+      <p class="hint">Miss one and the Department decides on what it already has, without asking again.
+        Internal dates run two days ahead of the legal date.</p>
+      ${s56d.length?s56d.map(d=>{
+        const t=d.left===null?'crit':d.left<0?'crit':d.left<=7?'crit':d.left<=14?'warn':'good';
+        const lab=d.left===null?'NO DATE — not tracked'
+          :d.left<0?`${Math.abs(d.left)}d PAST internal`
+          :`${d.left}d internal · ${-days(d.legal,TODAY)}d legal`;
+        return row(t,`${esc(d.name)} · ${esc(d.sub)}`,
+          `${d.office} · letter ${d.letter} · ${d.days} days allowed${d.review?' · NEEDS REVIEW':''}`,lab);
+      }).join(''):el('p','empty','No Section 56 requests are open. Nothing is running against a Department clock.')}
+    </section>
+
+    <section class="card c6">
+      <div class="chead"><h2>Going quiet</h2><span class="tag">oldest first</span></div>
+      <p class="hint">Open files with no contact for over 14 days.</p>
+      ${quiet.length?quiet.map(({m,d})=>row(d>=21?'crit':'warn',
+        `${esc(m.name)} · ${esc(m.visa)}`,`${esc(m.con||'Unassigned')} · ${m.office} · ${esc(m.stage)}`,
+        d+' days')).join('')
+        :el('p','empty','Nobody has gone quiet. Every open file has been contacted in the last 14 days.')}
+    </section>
+
+    <section class="card c6">
+      <div class="chead"><h2>Visa expiring soon</h2><span class="tag">next 60 days</span></div>
+      <p class="hint">Counted from the expiry date on each file.</p>
+      ${exp.length?exp.map(({m,l})=>row(l<0?'crit':l<=14?'crit':l<=30?'warn':'good',
+        `${esc(m.name)} · ${esc(m.visa)}`,`${esc(m.con||'Unassigned')} · ${m.office}`,
+        l<0?`EXPIRED ${Math.abs(l)}d ago`:l+' days')).join('')
+        :el('p','empty','No visa on an open file expires in the next 60 days.')}
+    </section>
+
+    <section class="card c6">
+      <div class="chead"><h2>Consultant workload</h2><span class="tag">open files</span></div>
+      <p class="hint">Who is carrying the most right now.</p>
+      ${staff.map(([n,c])=>`<div class="bar-row">
+        <div class="nm ${n==='Unassigned'?'un':''}">${esc(n)}</div>
+        <div class="track"><div class="fill" style="width:${c/mx*86}%;
+          background:${n==='Unassigned'?'var(--crit)':'var(--s1)'}"></div></div>
+        <div class="v num">${c}</div></div>`).join('')}
+    </section>
+
+    <section class="card c6">
+      <div class="chead"><h2>Where matters are stuck</h2><span class="tag">by stage</span></div>
+      <p class="hint">The largest queue is the bottleneck.</p>
+      ${(()=>{const st=new Map();open.forEach(m=>st.set(m.stage,(st.get(m.stage)||0)+1));
+        const arr=[...st].sort((a,b)=>b[1]-a[1]);const m2=Math.max(...arr.map(a=>a[1]),1);
+        return arr.length?arr.map(([s,c])=>`<div class="bar-row">
+          <div class="nm">${esc(s)}</div>
+          <div class="track"><div class="fill" style="width:${c/m2*86}%;background:var(--accent)"></div></div>
+          <div class="v num">${c}</div></div>`).join('')
+          :el('p','empty','No open matters.');})()}
+    </section>
+  </div>`;
+}
+
+function clientView(v){
+  const m=scope(MATTERS,v)[0];
+  if(!m)return el('section','card','<h2>We could not find your file</h2>'+
+    el('p','hint','Your login is not linked to an open application. Please contact your consultant.'));
+  const owed=(m.docs||'').split('|').filter(Boolean);
+  const left=m.expiry?-days(m.expiry,TODAY):null;
+  const HOW={'Bank statements — last 3 months':'A PDF from your online banking. Every page, including blank ones.',
+    'Health insurance certificate':'The certificate of currency — not the tax statement.',
+    'Employment contract':'Signed by both you and your employer.',
+    'Skills assessment':'The full outcome letter from the assessing authority.',
+    'Police check':'Issued within the last 12 months.'};
+  return `
+  ${owed.length?`<section class="owe">
+    <header><h2>What we still need from you</h2>
+      <p class="due">${owed.length} ${owed.length===1?'item':'items'} outstanding</p></header>
+    <ul class="docs">${owed.map(d=>`<li>
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="8" stroke="var(--warn)" stroke-width="1.5"/>
+        <path d="M10 6v4.5M10 13.6v.1" stroke="var(--warn)" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <div><div class="nm">${esc(d)}</div><div class="hw">${esc(HOW[d]||'')}</div></div></li>`).join('')}</ul>
+  </section>`:`<section class="card" style="margin-top:16px">
+    <h2>Nothing needed from you</h2>
+    <p class="hint" style="margin-bottom:0">Everything we asked for has arrived. Your file is with your agent.</p>
+  </section>`}
+
+  <div class="next">
+    <h3>What happens next</h3>
+    <p>${owed.length?'As soon as those documents arrive, your agent reviews the file and lodges it with the Department. We will email you the moment it is lodged.':'Your agent is reviewing the file. Once that is done it is lodged with the Department, and we will email you the same day.'}</p>
+    <div class="upd">Last updated 20 Aug 2026 · we do not control Department processing times,
+      so we never quote a decision date.</div>
+  </div>
+
+  <div class="actions">
+    <a class="btn primary" href="#">Email my documents</a>
+    <a class="btn ghost" href="#">Call Yale</a>
+  </div>
+
+  <section class="kpis" style="margin-top:16px">
+    ${[['Your visa',m.visa,m.code,''],
+       ['Stage',m.stage,owed.length?'waiting on you':'with your agent',owed.length?'warn':''],
+       ['Documents',owed.length?owed.length+' needed':'All received',owed.length?'see the list above':'nothing outstanding',owed.length?'warn':''],
+       ...(left!==null?[['Current visa expires',left<0?'Expired':left+' days',
+          left<0?'contact us today':'renewal in progress',left<=14?'crit':left<=30?'warn':'']]:[])]
+      .map(([l,val,s,c])=>`<div class="kpi ${c}"><div class="lab">${l}</div>
+        <div class="val" style="font-size:${String(val).length>12?'19px':'26px'}">${esc(val)}</div>
+        <div class="sub">${esc(s)}</div></div>`).join('')}
+  </section>
+
+  <section class="card">
+    <div class="chead"><h2>Your consultant</h2><span class="tag">${m.office}</span></div>
+    <p class="hint">Who to contact about this file.</p>
+    <div class="item"><span class="rail" style="background:var(--accent)"></span>
+      <div><div class="who">${esc(m.con||'Your Yale consultant')}</div>
+      <div class="meta">Assigned consultant</div></div><span></span></div>
+    <div class="item"><span class="rail" style="background:var(--accent)"></span>
+      <div><div class="who">Robinder Pal Singh</div>
+      <div class="meta">Registered Migration Agent · MARN 1573959</div></div><span></span></div>
+  </section>`;
+}
+
+function signIn(){
+  return `<div class="signin">
+    <h1>Yale Migration</h1>
+    <p>Sign in to see your application.</p>
+    <div class="field">
+      <label for="em">Email address</label>
+      <input id="em" type="email" placeholder="you@example.com" autocomplete="email">
+      <button class="btn primary" style="flex:none" onclick="alert('Demo only — no email is sent.')">
+        Email me a sign-in link</button>
+    </div>
+    <p class="note">We use a one-time link instead of a password, so there is no password to
+      remember or lose.</p>
+    <p class="note">The message is identical whether or not the address is on a Yale file —
+      a form that says &ldquo;unknown email&rdquo; would confirm to anyone who asks whether a person
+      is a client of an immigration practice.</p>
+    <a class="backlink" href="#" onclick="go('director');return false">← Back to the board</a>
+  </div>`;
+}
+
+let role='director';
+function go(r){role=r;render();window.scrollTo(0,0);}
+function render(){
+  if(role==='signin'){document.getElementById('root').innerHTML=signIn();return;}
+  const v=VIEWS[role];
+  document.getElementById('root').innerHTML=`
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <h1>Yale Migration — Practice Board</h1>
+        <p><span class="dot"></span> Sample data — no real client is shown · 21 Aug, 9:00 am</p>
+      </div>
+      <div class="roles"><span>Signed in as</span>
+        <div class="seg" role="group" aria-label="Preview a role">
+          ${[['director','Director'],['brisbane','Brisbane manager'],
+             ['townsville','Townsville manager'],['client','Client']]
+            .map(([k,l])=>`<button aria-pressed="${role===k}" onclick="go('${k}')">${l}</button>`).join('')}
+        </div>
+      </div>
+    </header>
+    <p class="viewnote"><b>${v.label}</b> · ${v.note}</p>
+    ${v.role==='client'?clientView(v):staffView(v)}
+    <p class="demoflag">Preview build with invented data. In the live system your role comes from
+      your account — there is no switcher, because a control the viewer can toggle is not a control.
+      Access is enforced in the database, not in this page.
+      <a href="#" onclick="go('signin');return false">See the sign-in screen</a>.</p>
+    <div class="foot">
+      <span>Open matters exclude Granted, Refused and Withdrawn.</span>
+      <span>Yale Migration and Education Consultants · MARN 1573959</span>
+    </div>
+  </div>`;
+}
+render();
+</script>
