@@ -550,3 +550,30 @@ on Friday. `HOURS-LEDGER.md:75` says the opposite and is right: contracted deliv
 build-hours, so we are **under**-delivered on contract, not over. The extra ~26 h went into work
 nobody asked us to bill for. Calling it an overrun would ask Robinder to pay for a decision he was
 never part of. **No invoice, no back-billing on Friday.** `BRIEF-friday-hours-and-scope.md`.
+
+2026-08-20 | internal | **M7 BUILT — the last thing buildable without the client.** `CALL LOG` tab
+(A–Q + 2 hidden helpers), in-row lookup formula, one-way promotion into ENQUIRIES.
+**27/27 offline, 36/36 live including a real MASTER number resolving to its client.**
+🔴 Two findings from auditing the FLOW before writing code: **(1) their phone SOP requires a
+name + DOB identity check and MASTER holds no DOB** — no passport either, no second identity factor
+anywhere. Silently substituting name-only matching and calling it verified would be worse than
+offering nothing, so `ID Verified` stays blank until a human sets it and the lookup states which
+field matched (**A-35**). **(2) Phone is an enquiry SOURCE, not a parallel pipeline** — a standalone
+call log holding its own leads would fork the pipeline and give one person two nurture clocks; but a
+call is not an enquiry either, so CALL LOG records calls, ENQUIRIES holds leads, M8 owns all cadence.
+Four defects caught during the build: an unreachable duplicate guard, a test harness that counted
+leads by name only, a per-row ARRAYFORMULA that would have recalculated ~1,000,000 operations on every
+edit, and Phone stored as a number so leading zeros vanished on screen.
+
+2026-08-20 | internal | 🔴 **AUDIT: the go-live GATE and the go-live CHECK had drifted.** The written
+gate has six items; `preflightGoLive()` checked **one**. That is exactly the failure the script was
+created to end (D-323) — an instruction living in a document nobody opens while switching a system on.
+Added as blockers: **both baselines must be set**, and **both daily triggers must exist**. Items 2/3/4
+stay human because Apps Script can see neither Make nor Robinder.
+
+2026-08-20 | internal | **POSITION: 27.1 of 40 contracted build-hours = 68% built · 20% running.**
+**12.6 h of build work remains and 100% of it is blocked on the client.** M6 7 h (Meta/WhatsApp
+access, never startable at any point in the engagement) · M7 2 h (their enquiry form) · M10 2 h (real
+client files) · M11 1.1 h (OneDrive) · M9 0.5 h (a Make slot). 🔑 **Nothing is left that I can build
+alone.** Tomorrow's call with Robinder is now the entire critical path: every remaining hour unblocks
+there, and if it delivers, the MVP finishes inside about a week.
