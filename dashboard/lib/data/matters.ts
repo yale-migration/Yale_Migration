@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { isLive } from '@/lib/supabase/config'
-import { DEMO_MATTERS, DEMO_S56 } from './fixtures'
-import type { Matter, S56Deadline, Viewer } from './types'
+import { DEMO_MATTERS, DEMO_S56, DEMO_ENQUIRIES } from './fixtures'
+import type { Matter, S56Deadline, Viewer, Enquiry } from './types'
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
@@ -133,4 +133,59 @@ export async function getMatterS56(code: string, viewer: Viewer): Promise<S56Dea
   if (viewer.role === 'client') return []
   const all = await getS56Deadlines(viewer)
   return all.filter((d) => d.client_code === code)
+}
+
+/**
+ * Enquiries — leads, not clients.
+ *
+ * ⛔ Clients never see this. There is no client RLS policy on the table at all,
+ * and this returns early so the UI does not render a card it would then find
+ * empty — "you have no enquiries" is a different statement from "not shown".
+ */
+export async function getEnquiries(viewer: Viewer): Promise<Enquiry[]> {
+  if (viewer.role === 'client') return []
+  if (!isLive()) {
+    return viewer.role === 'director'
+      ? DEMO_ENQUIRIES
+      : DEMO_ENQUIRIES.filter((e) => e.office === viewer.office)
+  }
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('enquiries')
+    .select('id, enquiry_date, name, phone, email, channel, visa_interest, office, assigned_to, status, follow_up_due, last_contact')
+    .order('enquiry_date', { ascending: false, nullsFirst: false })
+
+  if (error) throw new Error(`enquiries query failed: ${error.message}`)
+  return (data ?? []) as Enquiry[]
+}
+
+/** Enquiries received in the last `days`. View 7 of the seven he named. */
+export function recentEnquiries(rows: Enquiry[], today: Date, days = 7) {
+  return rows.filter((e) => {
+    const d = daysBetween(e.enquiry_date, today)
+    return d !== null && d <= days && d >= 0
+  })
+}
+
+const CLOSED_LEAD = ['Not Proceeding', 'Lost Lead', 'Converted']
+export const isLiveLead = (e: Enquiry) => !CLOSED_LEAD.includes(e.status ?? '')
+
+/** Outcomes — view 4. Decided matters only; Pending is not an outcome. */
+export function outcomes(matters: Matter[]) {
+  const counts = new Map<string, number>()
+  for (const m of matters) {
+    const o = m.visa_outcome
+    if (!o || o === 'Pending') continue     // undecided is not a result
+    counts.set(o, (counts.get(o) ?? 0) + 1)
+  }
+  const decided = [...counts.values()].reduce((a, b) => a + b, 0)
+  const granted = counts.get('Granted') ?? 0
+  return {
+    rows: [...counts.entries()].sort((a, b) => b[1] - a[1]),
+    decided,
+    granted,
+    // ⚠️ null, not 0, when nothing has been decided. A 0% grant rate on a
+    // practice that has decided nothing is a libel on the practice.
+    rate: decided > 0 ? Math.round((granted / decided) * 100) : null,
+  }
 }

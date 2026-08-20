@@ -2,11 +2,14 @@ import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from './primiti
 import { NeedsToday, type Action } from './needs-today'
 import { S56Card } from './s56-card'
 import { goingQuiet, expiringSoon, isOpen, daysBetween } from '@/lib/data/matters'
-import type { Matter, S56Deadline, Viewer } from '@/lib/data/types'
+import type { Matter, S56Deadline, Viewer, Enquiry } from '@/lib/data/types'
+import { OutcomesCard } from './outcomes-card'
+import { EnquiriesCard } from './enquiries-card'
 
 /** Director and branch-manager view. Identical component — RLS decides the rows. */
-export function StaffView({ matters, s56, viewer, today, as }: {
-  matters: Matter[]; s56: S56Deadline[]; viewer: Viewer; today: Date; as?: string
+export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
+  matters: Matter[]; s56: S56Deadline[]; enquiries: Enquiry[]
+  viewer: Viewer; today: Date; as?: string
 }) {
   // ⚠️ Carry `as` across the navigation. Without it, clicking a row during a
   // demo silently drops you back to the director view — which would look like
@@ -152,6 +155,8 @@ export function StaffView({ matters, s56, viewer, today, as }: {
             </div>
           )}
         </Card>
+        <OutcomesCard matters={matters} />
+        <EnquiriesCard rows={enquiries} today={today} />
       </div>
     </>
   )

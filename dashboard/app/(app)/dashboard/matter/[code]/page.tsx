@@ -1,24 +1,9 @@
 import Link from 'next/link'
-import { isLive } from '@/lib/supabase/config'
-import { createClient } from '@/lib/supabase/server'
 import { getMatter, getMatterS56, daysBetween, isOpen } from '@/lib/data/matters'
-import { DEMO_VIEWERS } from '@/lib/data/fixtures'
 import { Card, CardHead, Chip, Row, StatTile, type Tone } from '@/components/primitives'
-import type { Viewer, Role, Office } from '@/lib/data/types'
+import { resolveViewer } from '@/lib/viewer'
 
 export const dynamic = 'force-dynamic'
-
-async function resolveViewer(sp: { as?: string }): Promise<Viewer | null> {
-  if (!isLive()) return DEMO_VIEWERS[sp.as ?? 'director'] ?? DEMO_VIEWERS.director!
-  const supabase = await createClient()
-  const { data: claims } = await supabase.auth.getClaims()
-  if (!claims?.claims?.sub) return null
-  const { data } = await supabase.from('profiles')
-    .select('role, office, client_code, full_name').single()
-  if (!data) return null
-  return { role: data.role as Role, office: (data.office ?? null) as Office | null,
-           clientCode: data.client_code ?? null, displayName: data.full_name ?? 'Yale Migration' }
-}
 
 const fmt = (d: string | null) =>
   d ? new Date(d + 'T00:00:00').toLocaleDateString('en-AU',

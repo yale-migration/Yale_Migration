@@ -42,3 +42,18 @@ export interface Viewer {
   clientCode: string | null
   displayName: string
 }
+
+export interface Enquiry {
+  id: number
+  enquiry_date: string | null
+  name: string | null          // 🔑 nullable — 82 rows in their own log are a number and no name
+  phone: string | null
+  email: string | null
+  channel: string | null
+  visa_interest: string | null
+  office: Office | null
+  assigned_to: string | null
+  status: string | null
+  follow_up_due: string | null
+  last_contact: string | null
+}

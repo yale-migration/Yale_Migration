@@ -1,46 +1,15 @@
 import { Suspense } from 'react'
 import { isLive } from '@/lib/supabase/config'
-import { createClient } from '@/lib/supabase/server'
-import { getMatters, getS56Deadlines } from '@/lib/data/matters'
+import { getMatters, getS56Deadlines, getEnquiries } from '@/lib/data/matters'
 import { DEMO_VIEWERS } from '@/lib/data/fixtures'
 import { StaffView } from '@/components/staff-view'
 import { ClientView } from '@/components/client-view'
 import { DemoSwitcher } from '@/components/demo-switcher'
+import { Nav } from '@/components/nav'
+import { resolveViewer } from '@/lib/viewer'
 import { YaleMark } from '@/components/brand'
-import type { Viewer, Role, Office } from '@/lib/data/types'
 
 export const dynamic = 'force-dynamic'   // per-user data; never statically cached
-
-/**
- * Resolve who is asking.
- *
- * 🔴 In LIVE mode the role comes from the database, and the `?as=` parameter is
- * ignored completely. It would otherwise be a privilege-escalation query string
- * — and even though RLS would still refuse the rows, an app that *tries* to
- * honour it is one policy edit away from succeeding.
- */
-async function resolveViewer(searchParams: { as?: string }): Promise<Viewer | null> {
-  if (!isLive()) {
-    return DEMO_VIEWERS[searchParams.as ?? 'director'] ?? DEMO_VIEWERS.director!
-  }
-
-  const supabase = await createClient()
-  const { data: claims } = await supabase.auth.getClaims()
-  if (!claims?.claims?.sub) return null
-
-  const { data } = await supabase
-    .from('profiles')
-    .select('role, office, client_code, full_name')
-    .single()
-
-  if (!data) return null   // authenticated but unlinked — sees nothing, by design
-  return {
-    role: data.role as Role,
-    office: (data.office ?? null) as Office | null,
-    clientCode: data.client_code ?? null,
-    displayName: data.full_name ?? 'Yale Migration',
-  }
-}
 
 export default async function DashboardPage(
   { searchParams }: { searchParams: Promise<{ as?: string }> },
@@ -90,15 +59,18 @@ export default async function DashboardPage(
     )
   }
 
-  const [matters, s56] = await Promise.all([getMatters(viewer), getS56Deadlines(viewer)])
+  const [matters, s56, enquiries] = await Promise.all([
+    getMatters(viewer), getS56Deadlines(viewer), getEnquiries(viewer),
+  ])
   const stamp = today.toLocaleString('en-AU',
     { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' })
 
   return (
     <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+      {viewer.role !== 'client' && <Nav current="board" as={sp.as} />}
       <header className="flex flex-wrap gap-4 items-end justify-between pb-4 border-b border-rule">
         <div>
-          <h1 className="text-[21px]">Yale Migration — Practice Board</h1>
+          <h1 className="text-[21px]">Practice Board</h1>
           <p className="text-[12.5px] text-ink-3 mt-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--good)]
                              shadow-[0_0_0_3px_var(--good-soft)]" aria-hidden="true" />
@@ -126,7 +98,8 @@ export default async function DashboardPage(
 
       {viewer.role === 'client'
         ? <ClientView matter={matters[0] ?? null} today={today} />
-        : <StaffView matters={matters} s56={s56} viewer={viewer} today={today} as={sp.as} />}
+        : <StaffView matters={matters} s56={s56} enquiries={enquiries}
+                     viewer={viewer} today={today} as={sp.as} />}
 
       <footer className="mt-7 pt-4 border-t border-rule text-[11.5px] text-ink-3
                          flex flex-wrap gap-x-5 gap-y-1.5">

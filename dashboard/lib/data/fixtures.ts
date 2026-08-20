@@ -1,4 +1,4 @@
-import type { Matter, S56Deadline, Viewer } from './types'
+import type { Matter, S56Deadline, Viewer, Enquiry } from './types'
 
 /**
  * Synthetic data for local development and demos.
@@ -60,3 +60,25 @@ export const DEMO_VIEWERS: Record<string, Viewer> = {
   townsville: { role:'manager',  office:'TOWNSVILLE', clientCode:null,            displayName:'Branch manager — Townsville' },
   client:     { role:'client',   office:null,         clientCode:'YM-2026-00001', displayName:'Client portal — A. NGUYEN' },
 }
+
+export const DEMO_ENQUIRIES: Enquiry[] = [
+  { id:1, enquiry_date:'2026-08-19', name:'Priya R.', phone:'0400 111 222', email:'priya@example.com',
+    channel:'Facebook', visa_interest:'500', office:'BRISBANE', assigned_to:'Rey',
+    status:'New', follow_up_due:'2026-08-26', last_contact:null },
+  { id:2, enquiry_date:'2026-08-18', name:'Chen W.', phone:'0400 333 444', email:'chen@example.com',
+    channel:'Website', visa_interest:'485', office:'BRISBANE', assigned_to:'RJ',
+    status:'Contacted', follow_up_due:'2026-08-25', last_contact:'2026-08-19' },
+  { id:3, enquiry_date:'2026-08-16', name:'Amara O.', phone:'0400 555 666', email:null,
+    channel:'WhatsApp', visa_interest:'482', office:'TOWNSVILLE', assigned_to:'Star',
+    status:'New', follow_up_due:'2026-08-23', last_contact:null },
+  // a number and no name — any view that drops these under-reports the pipeline
+  { id:4, enquiry_date:'2026-08-15', name:null, phone:'0400 777 888', email:null,
+    channel:'Phone', visa_interest:null, office:'BRISBANE', assigned_to:null,
+    status:'New', follow_up_due:'2026-08-22', last_contact:null },
+  { id:5, enquiry_date:'2026-08-11', name:'Sofia M.', phone:'0400 999 000', email:'sofia@example.com',
+    channel:'Referral', visa_interest:'189', office:'BRISBANE', assigned_to:'Priyanka',
+    status:'Pending Decision', follow_up_due:'2026-08-18', last_contact:'2026-08-12' },
+  { id:6, enquiry_date:'2026-07-17', name:'Ken T.', phone:'0401 222 333', email:'ken@example.com',
+    channel:'Instagram', visa_interest:'600', office:'TOWNSVILLE', assigned_to:'Cristelle',
+    status:'Not Proceeding', follow_up_due:null, last_contact:'2026-07-21' },
+]
