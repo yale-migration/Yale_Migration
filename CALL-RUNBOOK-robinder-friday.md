@@ -1,13 +1,82 @@
 # 📞 CALL RUNBOOK — Robinder, Friday 21 Aug 2026
 
-**Purpose:** three setup items, done live while Robinder screen-shares. **You read, he clicks.**
-Budget **25 minutes**. Researched and verified 19 Aug — sources at the bottom.
+**Purpose:** a 30-second progress opener, then **three setup items done live** while Robinder
+screen-shares, then the dashboard demo if there is time. **You read, he clicks.**
+Budget **40 minutes** (5 progress · 25 setup · 10 demo). Verified 19–20 Aug — sources at the bottom.
+
+**Running order — do not reshuffle it.** ⓪ progress first, so the three asks read as *the last steps*
+rather than as *the project is stuck*. Then ①②③, which are the ones with real lead time. The
+**dashboard demo goes LAST**, because it is the part he will most enjoy and the part that can be cut
+without costing the build a single day. ▶ Its own script: **`DASHBOARD-DEMO-WALKTHROUGH.md`**.
 
 > ⚠️ **He drives, always.** Robinder shares HIS screen and types on HIS machine. You never ask him
 > to type a password into your browser, and you never take control (established working method).
 
 **Order matters.** Item 1 is quick and gives an early win. Item 2 is a *question* before it is a
 task. Item 3 is the one with a genuine unknown, so it goes last with time to spare.
+
+---
+
+# ⓪ FIRST — WHERE THE BUILD IS. Say this before you ask him for anything.
+
+**Why this goes first:** you are about to ask him for five things. If you ask before you show, it
+sounds like the project is stuck. If you show first, the same five asks sound like *the last five
+steps*. Same words, completely different call.
+
+## The 30-second version — say it in Roman Urdu, in this order
+
+> *"Sir, build ka kaam taqreeban ho chuka hai. Nau modules bane hain aur test ho chuke hain. Do abhi
+> roz chal rahe hain, baaqi tayyar hain lekin band hain — is liye ke woh aapki cheezon ka intezaar
+> kar rahe hain. Jo kaam bacha hai woh sirf **saadhe baarah ghante** ka hai, aur us ka **har ghanta**
+> aap ki taraf se aane wali paanch cheezon par ruka hua hai. Aaj woh paanch cheezein le lein, to
+> kaam khatam."*
+
+⛔ **Never say a percentage.** "68% built" invites *"so what is the other 32%?"* — and the honest
+answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say **five
+things**. Hours are a promise; percentages are an argument.
+
+## What is actually true, so you can answer any follow-up
+
+| | |
+|---|---|
+| Built and test-proven | **9 modules** — M1 M2 M3 M4a M4b M5a M5b M8 M9, plus half of M7 |
+| Running against live data today | **2** — the dormancy check and the lead follow-up, both daily |
+| Contracted work remaining | **12.6 hours** |
+| Of that, waiting on Robinder | **12.6 hours — all of it** |
+| Waiting on us | **zero** |
+
+🔑 **That last row is the whole point of the call.** There is nothing left that we can unblock from
+our side. Not "mostly waiting" — *entirely* waiting.
+
+## The five things, and exactly what each one releases
+
+| # | What you need from him | Where in this runbook | Releases | Live after |
+|---|---|---|---|---|
+| 1 | **Meta / Facebook + Instagram access** | § ① | **M6 — 7 h.** Enquiry capture: an enquiry from a Facebook or Instagram ad lands in the sheet by itself | ~2 days after access |
+| 2 | **Their Client Enquiry Form** | § ④ item 3-ish / C-1 | **M7 — 2 h.** The phone-intake half we could not build, because we will not invent their questions | same week |
+| 3 | **2–3 real client files** | § ④ item 3 | **M10 — 2 h.** End-to-end testing on real data instead of invented rows | same week |
+| 4 | **OneDrive onto a Yale account** | § ③ | **M11 — 1.1 h.** Handover. Right now the folder automation runs on *our* personal login — this has to change before go-live regardless | same day he does it |
+| 5 | **A Make scenario slot** (paid plan) | § ④ item 2-ish | **M9 — 0.5 h.** Email triage + Section 56 deadlines. Built and proven; the free plan allows 2 running scenarios and folders already use both | immediately |
+
+### If he asks *"to phir go-live kab?"*
+> *"Jis din ye paanch cheezein mil jayein, us ke baad do hafte. Ek hafta baqi kaam ka, ek hafta
+> testing aur aap ki team ki training ka. Tareekh aap den, main us se ulta chal kar plan bana dunga."*
+
+⛔ **Do not give a date yourself.** He gives the date; we work backwards from it. A date we invent
+becomes a promise we did not agree to.
+
+### If he asks *"kitna kaam ho chuka hai, paise ke hisaab se?"*
+Answer the work, not the money, and move on: *"Contracted kaam ka teen-chauthai ban chuka hai."*
+⛔ **Do not open the hours conversation on this call.** We are ~25 of 40 contracted build-hours —
+**under**-delivered on contract, not over — and the extra time went into unbilled extras we chose to
+give. Raising it here turns a good call into a billing argument. (`HOURS-LEDGER.md`)
+
+### 🔴 The one thing you must NOT let him believe
+Built is not running. If he walks away thinking the system is live, the first Monday he checks and
+nothing has moved, we lose more trust than the whole build earned. Say it plainly, once:
+
+> *"Ye sab band hai abhi — jaan boojh kar. Jab tak aap ki asli files ka test na ho jaye aur aap
+> tareekh na den, main kuch chalu nahi karunga. Jo chalta hai wo chup chaap ghalat chalta hai."*
 
 ---
 

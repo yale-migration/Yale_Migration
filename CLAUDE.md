@@ -102,6 +102,8 @@ broken formula and a correct one identically (D-292…D-296).
 | `CLIENT-DATA-INVENTORY.md` | every client file, what is in it, what is forbidden |
 | `CLIENT-SOP-WORKFLOWS.md` | their own 12 process SOPs — the spec for M5/M6/M7/M9 |
 | `DASHBOARD-TRACKER.md` | the dashboard workstream end to end |
+| `DASHBOARD-DEMO-WALKTHROUGH.md` | 🖥 screen-by-screen demo script — what is real, what is not, what not to promise |
+| `dashboard/STATE.md` | the Phase-3 web app's own handoff — read before touching that code |
 | `HOURS-LEDGER.md` | hours vs the 48h cap |
 | `DECISIONS-INDEX.md` → `DECISIONS.md` | why anything was decided |
 | `CHANGE-REQUESTS.md` · `PHASE-2-3-BACKLOG.md` | billable work beyond MVP |

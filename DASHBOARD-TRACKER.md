@@ -76,7 +76,13 @@ and every viewer needs a Google login. Fine for ~10 staff. Unworkable for ~150 c
 ---
 
 ## 🔗 LIVE DESIGN PROTOTYPE
-**https://claude.ai/code/artifact/e21c10b5-4de1-4b41-8ac2-62102e6838ec**
+⛔ **SUPERSEDED — that link is the 15 Aug design canvas.** The one to send Robinder is the working
+demo, republished 20 Aug with the corrected views:
+**https://claude.ai/code/artifact/93a02ec7-dccc-40f2-9327-e96a3591117b**
+Source is `dashboard/demo/index.html`; republish that same path and the URL stays the same.
+▶ Screen-by-screen script for the call: **`DASHBOARD-DEMO-WALKTHROUGH.md`**.
+Old design canvas, kept only for reference:
+https://claude.ai/code/artifact/e21c10b5-4de1-4b41-8ac2-62102e6838ec
 Working role switcher — Director / Brisbane manager / Townsville manager / **Client**. Opens on a
 phone, no login. Sample data, footnoted as such. Built to answer the question he could not picture:
 *what does each person actually see?* Competitive reasoning in `COMPETITOR-ANALYSIS-dashboards.md`.

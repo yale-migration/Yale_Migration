@@ -634,3 +634,24 @@ client** — Meta/WhatsApp access (M6, 7h), their Client Enquiry Form (M7, 2h), 
 (M10, 2h), OneDrive on a Yale account (M11, 1.1h), a Make scenario slot (M9, 0.5h). ⛔ *Built-and-off*
 is worth nothing to Robinder; the sentence for him is *the build is nearly done and waiting on five
 things from your side*, not a percentage.
+
+2026-08-20 | internal | **Demo artifact republished with the corrected views, and the Friday call
+re-sequenced.** The shareable page had gone stale the moment the app was fixed — it still showed
+"Open matters" as one number and only the backward-looking dormancy list, i.e. **exactly the two
+things the requirements re-read found wrong.** Robinder would have been shown the defective version.
+Now rebuilt to match: Active/Awaiting split, the forward "Due to chase" card, and both sign-in paths.
+Same URL — `93a02ec7-…` — verified in a headless browser across all four roles with no JS errors, and
+the role numbers reconcile (Brisbane 3+1, Townsville 2+1, director 5+2 = 7 open).
+
+⛔ **Nothing is deployed.** The only shareable thing is that one self-contained page with invented
+people in it; the real Next.js app runs locally against his live Supabase. That is deliberate — real
+client data requires company Vercel + company Supabase, and the hosting decision is still open. The
+demo running on fixtures is precisely what makes a shareable link permissible.
+
+Two documents written for the call: **`DASHBOARD-DEMO-WALKTHROUGH.md`** (screen by screen, plain
+words, what not to promise, the eight questions he will ask with the answer to each) and a new
+opening section **⓪** in `CALL-RUNBOOK-robinder-friday.md` stating the build position *before* the
+three asks — so five requests read as *the last five steps* rather than as *the project is stuck*.
+⛔ It says hours, never a percentage: "68% built" invites *"what is the other 32%?"*, whose honest
+answer is *nothing, it is waiting on you* — which sounds like blame. **12.6 hours, five things.**
+Demo goes LAST in the call: the access items have days of lead time and the demo has none.

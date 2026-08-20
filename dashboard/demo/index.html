@@ -158,23 +158,23 @@ const TODAY = new Date('2026-08-21T09:00:00');
 const MATTERS = [
  {code:'YM-2026-00001',name:'A. NGUYEN',office:'BRISBANE',team:'Filipino',con:'Rey',visa:'485',
   stage:'Documents Pending',outcome:'Pending',expiry:'2026-08-26',contact:'2026-08-14',
-  docs:'Bank statements — last 3 months|Health insurance certificate'},
+  due:'2026-08-21',docs:'Bank statements — last 3 months|Health insurance certificate'},
  {code:'YM-2026-00002',name:'B. SHARMA',office:'BRISBANE',team:'Indian',con:'RJ',visa:'482',
   stage:'Documents Pending',outcome:'Pending',expiry:'2026-09-12',contact:'2026-07-29',
-  docs:'Employment contract'},
+  due:'2026-08-05',docs:'Employment contract'},
  {code:'YM-2026-00003',name:'C. REYES',office:'TOWNSVILLE',team:'Filipino',con:'Star',visa:'189',
-  stage:'Lodged',outcome:'Pending',expiry:'2027-01-04',contact:'2026-08-18',docs:''},
+  stage:'Lodged',outcome:'Pending',expiry:'2027-01-04',contact:'2026-08-18',due:null,docs:''},
  {code:'YM-2026-00004',name:'D. SINGH',office:'BRISBANE',team:'Indian',con:'Priyanka',visa:'500',
-  stage:'Awaiting Outcome',outcome:'Pending',expiry:'2026-10-30',contact:'2026-08-19',docs:''},
+  stage:'Awaiting Outcome',outcome:'Pending',expiry:'2026-10-30',contact:'2026-08-19',due:null,docs:''},
  {code:'YM-2026-00005',name:'E. TAN',office:'TOWNSVILLE',team:'Filipino',con:null,visa:'491',
   stage:'Documents Pending',outcome:'Pending',expiry:'2026-11-15',contact:'2026-07-19',
-  docs:'Skills assessment|Police check'},
+  due:'2026-07-26',docs:'Skills assessment|Police check'},
  {code:'YM-2026-00006',name:'F. KAUR',office:'BRISBANE',team:'Indian',con:'Inder',visa:'820/801',
-  stage:'Closed',outcome:'Granted',expiry:null,contact:'2026-08-01',docs:''},
+  stage:'Closed',outcome:'Granted',expiry:null,contact:'2026-08-01',due:null,docs:''},
  {code:'YM-2026-00007',name:'G. OKAFOR',office:'BRISBANE',team:'Filipino',con:'Rey',visa:'500',
-  stage:'Documents Complete',outcome:'Pending',expiry:'2026-12-01',contact:'2026-08-20',docs:''},
+  stage:'Documents Complete',outcome:'Pending',expiry:'2026-12-01',contact:'2026-08-20',due:null,docs:''},
  {code:'YM-2026-00008',name:'H. PATEL',office:'TOWNSVILLE',team:'Indian',con:'Cristelle',visa:'482',
-  stage:'Ready for Lodgement',outcome:'Pending',expiry:'2026-09-30',contact:'2026-08-06',docs:''}
+  stage:'Ready for Lodgement',outcome:'Pending',expiry:'2026-09-30',contact:'2026-08-06',due:'2026-08-28',docs:''}
 ];
 const S56 = [
  {id:1,code:'YM-2026-00001',name:'A. NGUYEN',office:'BRISBANE',sub:'485',letter:'2026-08-14',
@@ -197,6 +197,12 @@ const VIEWS={
 
 const OPEN_EXCLUDED=['Granted','Refused','Withdrawn'];
 const isOpen=m=>!OPEN_EXCLUDED.includes(m.outcome||'');
+/* His view 1 and his view 2 were the same number rendered twice. Their own
+   stage vocabulary already draws the line: a matter being WORKED, versus one
+   lodged and sitting with the Department where there is nothing to do. */
+const AWAITING=['Lodged','Awaiting Outcome'];
+const isActive=m=>isOpen(m)&&!AWAITING.includes(m.stage||'');
+const isAwaiting=m=>isOpen(m)&&AWAITING.includes(m.stage||'');
 const days=(from,to)=>{if(!from)return null;const d=new Date(from+'T00:00:00');
   return isNaN(d)?null:Math.floor((to-d)/86400000);};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -224,6 +230,10 @@ function staffView(v){
     .filter(x=>x.d!==null&&x.d>14).sort((a,b)=>b.d-a.d);
   const exp=open.map(m=>({m,l:m.expiry?-days(m.expiry,TODAY):null}))
     .filter(x=>x.l!==null&&x.l<=60).sort((a,b)=>a.l-b.l);
+  /* 🔴 `quiet` looks BACKWARD at what has already been neglected. He asked for
+     what falls due in the NEXT one to two weeks. Both matter; only one was built. */
+  const chase=open.map(m=>({m,inD:m.due?days(m.due,TODAY)*-1:null}))
+    .filter(x=>x.inD!==null&&x.inD<=14).sort((a,b)=>a.inD-b.inD);
   const s56d=s56.map(d=>({...d,left:d.internal?-days(d.internal,TODAY):null}));
   const near=s56d.filter(d=>d.left!==null&&d.left<=7);
   const noDate=s56d.filter(d=>d.left===null);
@@ -263,7 +273,8 @@ function staffView(v){
   </section>
 
   <section class="kpis">
-    ${[['Open matters',open.length,v.office||'all offices',''],
+    ${[['Active matters',open.filter(isActive).length,'being worked now',''],
+       ['Awaiting outcome',open.filter(isAwaiting).length,'lodged, with the Department',''],
        ['Section 56 live',s56.length,'legal deadlines running',near.length||noDate.length?'crit':''],
        ['Going quiet',quiet.length,'no contact 14 days+',quiet.length?'crit':''],
        ['Expiring 60 days',exp.length,'visa expiry approaching',exp.length?'warn':'']]
@@ -284,6 +295,16 @@ function staffView(v){
         return row(t,`${esc(d.name)} · ${esc(d.sub)}`,
           `${d.office} · letter ${d.letter} · ${d.days} days allowed${d.review?' · NEEDS REVIEW':''}`,lab);
       }).join(''):el('p','empty','No Section 56 requests are open. Nothing is running against a Department clock.')}
+    </section>
+
+    <section class="card c6">
+      <div class="chead"><h2>Due to chase</h2><span class="tag">next 14 days</span></div>
+      <p class="hint">Follow-ups falling due, soonest first. Overdue ones come first — a follow-up
+        that has already slipped belongs at the top of a chase list, not filtered out of it.</p>
+      ${chase.length?chase.map(({m,inD})=>row(inD<0?'crit':inD<=3?'warn':'good',
+        `${esc(m.name)} · ${esc(m.visa)}`,`${esc(m.con||'Unassigned')} · ${m.office} · due ${m.due}`,
+        inD<0?`${Math.abs(inD)}d overdue`:inD===0?'Today':`in ${inD}d`)).join('')
+        :el('p','empty','Nothing falls due for a follow-up in the next fortnight.')}
     </section>
 
     <section class="card c6">
@@ -392,14 +413,28 @@ function signIn(){
   return `<div class="signin">
     <h1>Yale Migration</h1>
     <p>Sign in to see your application.</p>
+    <button class="btn ghost" style="flex:none;width:100%;margin-top:22px;gap:10px"
+            onclick="alert('Demo only — no sign-in happens.')">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" style="flex:none">
+        <path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.5h4.8a4.1 4.1 0 01-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.6z"/>
+        <path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 009 18z"/>
+        <path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 010-3.4V5H.9a9 9 0 000 8l3-2.3z"/>
+        <path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 00.9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z"/>
+      </svg>Continue with Google</button>
+    <div style="display:flex;align-items:center;gap:12px;margin:18px 0 0">
+      <span style="height:1px;flex:1;background:var(--rule)"></span>
+      <span style="font-size:12px;color:var(--ink-3)">or, if you are a client</span>
+      <span style="height:1px;flex:1;background:var(--rule)"></span>
+    </div>
     <div class="field">
       <label for="em">Email address</label>
       <input id="em" type="email" placeholder="you@example.com" autocomplete="email">
       <button class="btn primary" style="flex:none" onclick="alert('Demo only — no email is sent.')">
         Email me a sign-in link</button>
     </div>
-    <p class="note">We use a one-time link instead of a password, so there is no password to
-      remember or lose.</p>
+    <p class="note">Yale staff sign in with their work Google account — no new login to create.
+      Clients get a one-time link instead of a password, so there is no password to remember
+      or lose.</p>
     <p class="note">The message is identical whether or not the address is on a Yale file —
       a form that says &ldquo;unknown email&rdquo; would confirm to anyone who asks whether a person
       is a client of an immigration practice.</p>
@@ -434,7 +469,7 @@ function render(){
       Access is enforced in the database, not in this page.
       <a href="#" onclick="go('signin');return false">See the sign-in screen</a>.</p>
     <div class="foot">
-      <span>Open matters exclude Granted, Refused and Withdrawn.</span>
+      <span>Active and Awaiting exclude Granted, Refused and Withdrawn.</span>
       <span>Yale Migration and Education Consultants · MARN 1573959</span>
     </div>
   </div>`;
