@@ -591,3 +591,12 @@ fixing errors and remove temp tables from the design entirely. 🔑 Also caught 
 than reading: the sync's credential guard let `portal_pwd` and `user_name` through, because `\b`
 finds no boundary at an underscore — and sheet columns are named with underscores far more often
 than spaces. ⬜ The dashboard remains **unquoted Phase 3 work**.
+
+2026-08-20 | internal | **Demo data seeded and RLS re-proven against a POPULATED database.** 7
+matters, 3 s56 rows, 0 profiles. Verified the awkward cases actually landed rather than trusting the
+insert: 1 matter with no consultant, 1 already-expired visa, 3 owing documents, and an s56 row with
+**no dates at all** — the case where nothing is watching a legal deadline, which must render
+critical rather than calm grey. 🔑 **The stronger test:** with 7 real rows present, the anon key over
+HTTP returns `[]` for matters and `[]` for s56, and an anon INSERT is refused 401 with nothing
+written. That is a better proof than the 11/11 suite because it runs the exact path an attacker
+would — real key, real HTTP, real data — rather than impersonated roles inside a transaction.
