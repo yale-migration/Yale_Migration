@@ -7,6 +7,13 @@ assets/samples/*
 *.env
 .env
 .env.*
+# ...but the TEMPLATES carry no secrets and MUST be committed — otherwise the
+# next person has no idea which variables the app needs. `.env.*` above is
+# deliberately broad; these two are the deliberate exceptions.
+!.env.example
+!*.env.example
+!.env.local.template
+!*.env.local.template
 *.pem
 *credentials*.json
 creds*.json
