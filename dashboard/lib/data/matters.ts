@@ -2,6 +2,9 @@ import { createClient } from '@/lib/supabase/server'
 import { isLive } from '@/lib/supabase/config'
 import { DEMO_MATTERS, DEMO_S56, DEMO_ENQUIRIES } from './fixtures'
 import type { Matter, S56Deadline, Viewer, Enquiry } from './types'
+// Pure derivations live in derive.ts so they can be tested without a database.
+import { daysBetween } from './derive'
+export * from './derive'
 
 /**
  * ═══════════════════════════════════════════════════════════════════════════
@@ -68,37 +71,6 @@ export async function getS56Deadlines(viewer: Viewer): Promise<S56Deadline[]> {
 }
 
 // ── derived views ──────────────────────────────────────────────────────────
-// Computed from the rows the caller was ALLOWED to see, never from a wider set.
-// A count computed before filtering is how a manager learns how many clients
-// the other branch has.
-
-const OPEN_EXCLUDED = ['Granted', 'Refused', 'Withdrawn']
-export const isOpen = (m: Matter) => !OPEN_EXCLUDED.includes(m.visa_outcome ?? '')
-
-export function daysBetween(from: string | null, to: Date): number | null {
-  if (!from) return null
-  const d = new Date(from + 'T00:00:00')
-  if (Number.isNaN(d.getTime())) return null
-  return Math.floor((to.getTime() - d.getTime()) / 86_400_000)
-}
-
-/** Files with no contact for over `threshold` days. Open matters only. */
-export function goingQuiet(matters: Matter[], today: Date, threshold = 14) {
-  return matters
-    .filter(isOpen)
-    .map((m) => ({ m, days: daysBetween(m.last_contact, today) }))
-    .filter((x): x is { m: Matter; days: number } => x.days !== null && x.days > threshold)
-    .sort((a, b) => b.days - a.days)
-}
-
-/** Visas expiring within `within` days. Negative = already expired, still shown. */
-export function expiringSoon(matters: Matter[], today: Date, within = 60) {
-  return matters
-    .filter(isOpen)
-    .map((m) => ({ m, left: m.visa_expiry ? -(daysBetween(m.visa_expiry, today) ?? 0) : null }))
-    .filter((x): x is { m: Matter; left: number } => x.left !== null && x.left <= within)
-    .sort((a, b) => a.left - b.left)
-}
 
 /**
  * One matter, by code.
@@ -157,35 +129,4 @@ export async function getEnquiries(viewer: Viewer): Promise<Enquiry[]> {
 
   if (error) throw new Error(`enquiries query failed: ${error.message}`)
   return (data ?? []) as Enquiry[]
-}
-
-/** Enquiries received in the last `days`. View 7 of the seven he named. */
-export function recentEnquiries(rows: Enquiry[], today: Date, days = 7) {
-  return rows.filter((e) => {
-    const d = daysBetween(e.enquiry_date, today)
-    return d !== null && d <= days && d >= 0
-  })
-}
-
-const CLOSED_LEAD = ['Not Proceeding', 'Lost Lead', 'Converted']
-export const isLiveLead = (e: Enquiry) => !CLOSED_LEAD.includes(e.status ?? '')
-
-/** Outcomes — view 4. Decided matters only; Pending is not an outcome. */
-export function outcomes(matters: Matter[]) {
-  const counts = new Map<string, number>()
-  for (const m of matters) {
-    const o = m.visa_outcome
-    if (!o || o === 'Pending') continue     // undecided is not a result
-    counts.set(o, (counts.get(o) ?? 0) + 1)
-  }
-  const decided = [...counts.values()].reduce((a, b) => a + b, 0)
-  const granted = counts.get('Granted') ?? 0
-  return {
-    rows: [...counts.entries()].sort((a, b) => b[1] - a[1]),
-    decided,
-    granted,
-    // ⚠️ null, not 0, when nothing has been decided. A 0% grant rate on a
-    // practice that has decided nothing is a libel on the practice.
-    rate: decided > 0 ? Math.round((granted / decided) * 100) : null,
-  }
 }

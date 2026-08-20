@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { publicConfig } from './config'
 
@@ -16,7 +16,9 @@ export async function createClient() {
   return createServerClient(url, anonKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
-      setAll: (toSet) => {
+      // Typed from the library rather than silenced with `any` — the shape of a
+      // cookie write is exactly the thing you want the compiler checking.
+      setAll: (toSet: { name: string; value: string; options?: CookieOptions }[]) => {
         try {
           toSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
         } catch {

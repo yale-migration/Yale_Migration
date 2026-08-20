@@ -178,7 +178,7 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
                                   background: name === 'Unassigned' ? 'var(--crit)' : 'var(--s1)' }} />
                   </div>
                   <div className="text-[13px] font-semibold text-right num">{n}</div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
