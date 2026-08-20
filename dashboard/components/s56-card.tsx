@@ -41,7 +41,7 @@ export function S56Card({ rows, today }: { rows: S56Deadline[]; today: Date }) {
             // extracted, so nothing is watching it — worse than a near one, and it
             // must never render as a calm grey row that reads as "no deadline".
             const label =
-              internal === null ? 'NO DATE — not being tracked'
+              internal === null ? 'NO DATE — not tracked'
               : internal < 0 ? `${Math.abs(internal)}d PAST internal`
               : `${internal}d internal · ${legal}d legal`
 

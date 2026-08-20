@@ -46,6 +46,17 @@ export function StaffView({ matters, s56, viewer, today }: {
   const staff = [...byConsultant.entries()].sort((a, b) => b[1] - a[1])
   const maxLoad = Math.max(...staff.map(([, n]) => n), 1)
 
+  // Stage distribution. Computed from the rows this viewer was ALLOWED to see —
+  // a count taken before scoping is how a branch manager learns the size of the
+  // other branch's pipeline.
+  const stageCount = new Map<string, number>()
+  for (const m of open) {
+    const k = m.processing_stage ?? 'Not set'
+    stageCount.set(k, (stageCount.get(k) ?? 0) + 1)
+  }
+  const byStage = [...stageCount.entries()].sort((a, b) => b[1] - a[1])
+  const maxStage = Math.max(...byStage.map(([, n]) => n), 1)
+
   return (
     <>
       <NeedsToday actions={actions} />
@@ -93,6 +104,25 @@ export function StaffView({ matters, s56, viewer, today }: {
                           {left < 0 ? `EXPIRED ${Math.abs(left)}d ago` : `${left} days`}
                         </Chip>} />
           })}
+        </Card>
+
+        <Card className="col-span-12 lg:col-span-6">
+          <CardHead title="Where matters are stuck" tag="by stage"
+                    hint="The largest queue is the bottleneck." />
+          {byStage.length === 0 ? <Empty>No open matters to place.</Empty> : (
+            <div className="flex flex-col gap-2.5">
+              {byStage.map(([stage, n]) => (
+                <div key={stage} className="grid grid-cols-[116px_1fr_34px] gap-2.5 items-center">
+                  <div className="text-[12.5px] text-ink-2 truncate">{stage}</div>
+                  <div className="h-[9px] bg-card-sunk rounded-[5px] overflow-hidden shadow-[inset_0_0_0_1px_var(--rule)]">
+                    <div className="h-full rounded-[5px] bg-[var(--accent)]"
+                         style={{ width: `${(n / maxStage) * 86}%` }} />
+                  </div>
+                  <div className="text-[13px] font-semibold text-right num">{n}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
 
         <Card className="col-span-12 lg:col-span-6">
