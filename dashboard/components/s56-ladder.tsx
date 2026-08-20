@@ -84,7 +84,7 @@ export function S56Ladder({ d, today }: { d: S56Deadline; today: Date }) {
                 style={done
                   ? { background: isFinal ? 'var(--crit)' : 'var(--accent)' }
                   : undefined} />
-              <span className={`text-[10px] mt-1 num ${done ? 'text-ink-2 font-semibold' : 'text-ink-3'}`}>
+              <span className={`text-[11px] mt-1 num ${done ? 'text-ink-2 font-semibold' : 'text-ink-3'}`}>
                 {r}
               </span>
             </div>

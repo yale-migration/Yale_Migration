@@ -20,7 +20,7 @@ export function Nav({ current, as }: { current: 'board' | 'clients' | 'enquiries
       <div className="flex gap-1">
         {items.map(([key, label, href]) => (
           <Link key={key} href={href} aria-current={current === key ? 'page' : undefined}
-            className={`text-[13.5px] px-3.5 min-h-[40px] flex items-center rounded-lg transition-colors
+            className={`text-[13.5px] px-3.5 min-h-[44px] flex items-center rounded-lg transition-colors
               ${current === key
                 ? 'bg-[var(--accent-soft)] text-accent font-semibold'
                 : 'text-ink-2 hover:text-ink hover:bg-[var(--card-sunk)]'}`}>

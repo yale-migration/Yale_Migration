@@ -22,7 +22,7 @@ export function S56Card({ rows, today, as }: {
   rows: S56Deadline[]; today: Date; as?: string
 }) {
   return (
-    <Card className="col-span-12">
+    <Card className="col-span-12" id="s56">
       <CardHead
         title="Section 56 — Department deadlines"
         tag="internal date · legal date"

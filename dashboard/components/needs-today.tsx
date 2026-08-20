@@ -1,7 +1,12 @@
 import type { ReactNode } from 'react'
+import Link from 'next/link'
 import type { Tone } from './primitives'
 
-export interface Action { tone: Tone; count: number; title: string; detail: string }
+export interface Action {
+  tone: Tone; count: number; title: string; detail: string
+  /** Where this number lives. Omitted only when there is genuinely nowhere. */
+  href?: string
+}
 
 /**
  * The band above everything else.
@@ -36,16 +41,36 @@ export function NeedsToday({ actions }: { actions: Action[] }) {
               </div>
             </div>
           </div>
-        ) : actions.map((a) => (
-          <div key={a.title}
-               className="grid grid-cols-[auto_1fr] gap-3 items-start px-4 py-3.5 border-r border-rule last:border-r-0 max-[700px]:border-r-0 max-[700px]:border-b">
-            <div className={`font-serif text-[27px] leading-none num ${N[a.tone]}`}>{a.count}</div>
-            <div className="min-w-0">
-              <div className="text-[13.5px] font-semibold">{a.title}</div>
-              <div className="text-xs text-ink-3 mt-0.5">{a.detail}</div>
-            </div>
-          </div>
-        ))}
+        ) : actions.map((a) => {
+          const body = (
+            <>
+              <div className={`font-serif text-[27px] leading-none num ${N[a.tone]}`}>{a.count}</div>
+              <div className="min-w-0">
+                <div className="text-[13.5px] font-semibold flex items-center gap-1.5">
+                  {a.title}
+                  {a.href && (
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+                         className="text-ink-3 shrink-0">
+                      <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" strokeWidth="1.8"
+                            strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
+                </div>
+                <div className="text-xs text-ink-3 mt-0.5">{a.detail}</div>
+              </div>
+            </>
+          )
+          const cls = 'grid grid-cols-[auto_1fr] gap-3 items-start px-4 py-3.5 border-r border-rule '
+            + 'last:border-r-0 max-[700px]:border-r-0 max-[700px]:border-b'
+          // 🔑 These are the most urgent numbers on the screen. Leaving them as
+          // text makes someone read "2 files have gone quiet" and then go and
+          // find those two by hand — the exact work the band exists to remove.
+          return a.href
+            ? <Link key={a.title} href={a.href}
+                    className={`${cls} transition-colors hover:bg-[var(--card-sunk)]
+                                focus-visible:bg-[var(--card-sunk)]`}>{body}</Link>
+            : <div key={a.title} className={cls}>{body}</div>
+        })}
       </div>
     </section>
   )

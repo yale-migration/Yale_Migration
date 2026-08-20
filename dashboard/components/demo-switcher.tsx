@@ -20,10 +20,10 @@ export function DemoSwitcher({ current }: { current: string }) {
 
   return (
     <div className="flex flex-col gap-1.5 print-hide">
-      <span className="text-[10px] tracking-[.09em] uppercase text-ink-3 font-semibold">
+      <span className="text-[11px] tracking-[.09em] uppercase text-ink-3 font-semibold">
         Signed in as
       </span>
-      <div className="flex bg-card-sunk border border-rule rounded-lg p-[3px] gap-0.5"
+      <div className="flex flex-wrap bg-card-sunk border border-rule rounded-lg p-[3px] gap-0.5"
            role="group" aria-label="Preview a role">
         {ROLES.map(([key, label]) => {
           const on = current === key
@@ -34,7 +34,7 @@ export function DemoSwitcher({ current }: { current: string }) {
                 next.set('as', key)
                 router.push(`?${next.toString()}`)
               }}
-              className={`text-[12.5px] px-3 py-1.5 rounded-md whitespace-nowrap min-h-[34px] transition-colors
+              className={`text-[12.5px] px-3 rounded-md whitespace-nowrap min-h-[44px] transition-colors
                 ${on ? 'bg-card text-accent font-semibold shadow-card' : 'text-ink-2 hover:text-ink font-medium'}`}>
               {label}
             </button>

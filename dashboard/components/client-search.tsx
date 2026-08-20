@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Chip, type Tone } from './primitives'
 import type { Matter } from '@/lib/data/types'
+import { daysBetween } from '@/lib/data/derive'
 
 /**
  * The full client list, with search.
@@ -17,10 +18,16 @@ import type { Matter } from '@/lib/data/types'
  * is convenience, not access control — the list never contains a row RLS did
  * not return, so a filter cannot leak one.
  */
-export function ClientSearch({ matters, as }: { matters: Matter[]; as?: string }) {
+export type ClientFilter = 'all' | 'open' | 'owing' | 'quiet' | 'expiring' | 's56'
+
+export function ClientSearch({ matters, as, initial = 'all', today = new Date() }: {
+  matters: Matter[]; as?: string; initial?: ClientFilter; today?: Date
+}) {
   const [q, setQ] = useState('')
   const [office, setOffice] = useState<string>('all')
-  const [only, setOnly] = useState<'all' | 'open' | 'owing'>('all')
+  // Seeded from the URL so a tile on the board lands you on the list it counted.
+  // A number you cannot click is a number you have to go and find by hand.
+  const [only, setOnly] = useState<ClientFilter>(initial)
 
   const offices = useMemo(
     () => [...new Set(matters.map((m) => m.office))].sort(), [matters])
@@ -31,8 +38,20 @@ export function ClientSearch({ matters, as }: { matters: Matter[]; as?: string }
     const needle = q.trim().toLowerCase()
     return matters.filter((m) => {
       if (office !== 'all' && m.office !== office) return false
-      if (only === 'open' && ['Granted','Refused','Withdrawn'].includes(m.visa_outcome ?? '')) return false
+      const open = !['Granted','Refused','Withdrawn'].includes(m.visa_outcome ?? '')
+      if (only === 'open' && !open) return false
       if (only === 'owing' && !m.docs_outstanding) return false
+      // ⚠️ These reuse the SAME thresholds as the board's cards. If they drifted,
+      // a tile would say 2 and the list it opens would show 3, and the person
+      // would stop trusting both numbers.
+      if (only === 'quiet') {
+        const d = daysBetween(m.last_contact, today)
+        if (!open || d === null || d <= 14) return false
+      }
+      if (only === 'expiring') {
+        const left = m.visa_expiry ? -(daysBetween(m.visa_expiry, today) ?? 0) : null
+        if (!open || left === null || left > 60) return false
+      }
       if (!needle) return true
       // Search everything a person on the phone might say: name, code, visa,
       // consultant. Not just the name — half the time they lead with "it's
@@ -74,9 +93,10 @@ export function ClientSearch({ matters, as }: { matters: Matter[]; as?: string }
           {offices.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
         <div className="flex bg-card-sunk border border-rule rounded-xl p-[3px] gap-0.5">
-          {([['all','All'],['open','Open'],['owing','Owing docs']] as const).map(([k, label]) => (
+          {([['all','All'],['open','Open'],['owing','Owing docs'],
+             ['quiet','Going quiet'],['expiring','Expiring']] as const).map(([k, label]) => (
             <button key={k} type="button" onClick={() => setOnly(k)} aria-pressed={only === k}
-              className={`text-[13px] px-3 min-h-[38px] rounded-lg whitespace-nowrap
+              className={`text-[13px] px-3 min-h-[44px] rounded-lg whitespace-nowrap
                 ${only === k ? 'bg-card text-accent font-semibold shadow-card' : 'text-ink-2'}`}>
               {label}
             </button>
@@ -95,7 +115,8 @@ export function ClientSearch({ matters, as }: { matters: Matter[]; as?: string }
           <p className="py-10 text-center text-[13px] text-ink-3 px-6">
             No client matches {q ? <>“<b className="text-ink">{q}</b>”</> : 'these filters'}
             {office !== 'all' && <> in {office}</>}
-            {only !== 'all' && <> ({only === 'open' ? 'open matters' : 'owing documents'})</>}.
+            {only !== 'all' && <> ({({open:'open matters', owing:'owing documents',
+              quiet:'gone quiet', expiring:'expiring soon', s56:'with a deadline', all:''})[only]})</>}.
             {' '}Try clearing a filter.
           </p>
         ) : shown.map((m) => (

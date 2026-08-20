@@ -18,9 +18,12 @@ const TONE_RAIL: Record<Tone, string> = {
   neutral: 'bg-[var(--rule-strong)]', accent: 'bg-[var(--accent)]',
 }
 
-export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function Card({ children, className = '', id }: {
+  children: ReactNode; className?: string; id?: string
+}) {
   return (
-    <section className={`bg-card border border-rule rounded-card p-4 min-w-0 ${className}`}>
+    <section id={id}
+             className={`bg-card border border-rule rounded-card p-4 min-w-0 scroll-mt-24 ${className}`}>
       {children}
     </section>
   )
@@ -32,7 +35,7 @@ export function CardHead({ title, tag, hint }: { title: string; tag?: string; hi
       <div className="flex justify-between items-baseline gap-3">
         <h2 className="text-[15px]">{title}</h2>
         {tag && (
-          <span className="text-[10.5px] tracking-[.06em] uppercase text-ink-3 font-semibold">
+          <span className="text-[11px] tracking-[.06em] uppercase text-ink-3 font-semibold">
             {tag}
           </span>
         )}
@@ -106,19 +109,39 @@ export function Empty({ children }: { children: ReactNode }) {
   return <p className="py-6 text-center text-ink-3 text-[13px]">{children}</p>
 }
 
-export function StatTile({ label, value, sub, tone = 'neutral' }: {
-  label: string; value: ReactNode; sub?: string; tone?: Tone
+export function StatTile({ label, value, sub, tone = 'neutral', href }: {
+  label: string; value: ReactNode; sub?: string; tone?: Tone; href?: string
 }) {
   const alert = tone === 'crit' || tone === 'warn'
-  return (
-    <div className={`rounded-card border p-3.5 ${alert ? `${TONE_BG[tone]} border-transparent` : 'bg-card border-rule'}`}>
-      <div className={`text-[10.5px] tracking-[.07em] uppercase font-semibold ${alert ? TONE_FG[tone] : 'text-ink-3'}`}>
+  const body = (
+    <>
+      <div className={`flex items-center justify-between gap-2 text-[11px] tracking-[.07em]
+                       uppercase font-semibold ${alert ? TONE_FG[tone] : 'text-ink-3'}`}>
         {label}
+        {href && (
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+               className="opacity-45 shrink-0">
+            <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" strokeWidth="1.8"
+                  strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
       </div>
       <div className={`font-serif text-[30px] leading-tight mt-1.5 num ${alert ? TONE_FG[tone] : ''}`}>
         {value}
       </div>
       {sub && <div className="text-[11.5px] text-ink-3 mt-0.5">{sub}</div>}
-    </div>
+    </>
+  )
+
+  const base = `rounded-card border p-3.5 ${alert ? `${TONE_BG[tone]} border-transparent` : 'bg-card border-rule'}`
+  // A tile without a destination stays a plain div — no chevron, no hover, no
+  // pointer. A card that looks clickable and is not is worse than a flat one.
+  if (!href) return <div className={base}>{body}</div>
+  return (
+    <Link href={href}
+          className={`${base} block transition-shadow hover:shadow-card
+                      focus-visible:shadow-card`}>
+      {body}
+    </Link>
   )
 }

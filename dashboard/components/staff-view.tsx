@@ -17,6 +17,11 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
   // the access control failing, in front of the person being shown it.
   const matterHref = (code: string) =>
     `/dashboard/matter/${encodeURIComponent(code)}${as ? `?as=${as}` : ''}`
+  // Every counted number gets somewhere to go. A tile that states a figure and
+  // cannot open it makes the reader go and find those rows by hand, which is
+  // the work the board was supposed to remove.
+  const listHref = (f: string) =>
+    `/dashboard/clients?filter=${f}${as ? `&as=${as}` : ''}`
 
   const open = matters.filter(isOpen)
   const quiet = goingQuiet(matters, today)
@@ -33,16 +38,23 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
   if (s56Near.length) actions.push({
     tone: 'crit', count: s56Near.length, title: 'Section 56 due inside a week',
     detail: s56Near.map((d) => d.client_name ?? d.client_code ?? 'Unnamed').join(' · '),
+    // One deadline → straight to that file. Several → the card listing them.
+    href: s56Near.length === 1 && s56Near[0]?.client_code
+      ? matterHref(s56Near[0]!.client_code!) : '#s56',
   })
   const urgentExp = expiring.filter((x) => x.left <= 14)
   if (urgentExp.length) actions.push({
     tone: 'crit', count: urgentExp.length, title: 'Visa expiring within 14 days',
     detail: urgentExp.map((x) => `${x.m.full_name} (${x.left}d)`).join(' · '),
+    href: urgentExp.length === 1 && urgentExp[0]
+      ? matterHref(urgentExp[0].m.client_code) : listHref('expiring'),
   })
   const coldest = quiet.filter((q) => q.days >= 21)
   if (coldest.length) actions.push({
     tone: 'crit', count: coldest.length, title: 'No contact for 21 days or more',
     detail: coldest.map((q) => `${q.m.full_name} · ${q.m.consultant ?? 'unassigned'}`).join(' · '),
+    href: coldest.length === 1 && coldest[0]
+      ? matterHref(coldest[0].m.client_code) : listHref('quiet'),
   })
 
   const byConsultant = new Map<string, number>()
@@ -77,13 +89,15 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 my-3.5">
         <StatTile label="Open matters" value={open.length}
-                  sub={viewer.office ?? 'all offices'} />
+                  sub={viewer.office ?? 'all offices'} href={listHref('open')} />
+        {/* s56 has no client list of its own — the card below IS the list, so
+            this scrolls to it rather than opening a page that repeats it. */}
         <StatTile label="Section 56 live" value={s56.length} sub="legal deadlines running"
-                  tone={s56Near.length ? 'crit' : 'neutral'} />
+                  tone={s56Near.length ? 'crit' : 'neutral'} href="#s56" />
         <StatTile label="Going quiet" value={quiet.length} sub="no contact 14 days+"
-                  tone={quiet.length ? 'crit' : 'neutral'} />
+                  tone={quiet.length ? 'crit' : 'neutral'} href={listHref('quiet')} />
         <StatTile label="Expiring 60 days" value={expiring.length} sub="visa expiry approaching"
-                  tone={expiring.length ? 'warn' : 'neutral'} />
+                  tone={expiring.length ? 'warn' : 'neutral'} href={listHref('expiring')} />
       </div>
 
       {/* 🔑 The five-times ask. A combined board answers "how is the practice";
@@ -97,7 +111,7 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
           {offices.map(([office, n]) => (
             <Link key={office}
                   href={`/dashboard/branch/${encodeURIComponent(office)}${as ? `?as=${as}` : ''}`}
-                  className="inline-flex items-center gap-2 min-h-[38px] px-3.5 rounded-xl
+                  className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-xl
                              border border-rule bg-card text-[13px] font-medium
                              hover:border-[var(--accent)] transition-colors">
               {office}
@@ -167,7 +181,7 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
             <div className="flex flex-col gap-2.5">
               {staff.map(([name, n]) => (
                 <Link key={name} href={`/dashboard/consultant/${encodeURIComponent(name)}${as ? `?as=${as}` : ''}`}
-                      className="grid grid-cols-[116px_1fr_34px] gap-2.5 items-center min-h-[36px]
+                      className="grid grid-cols-[116px_1fr_34px] gap-2.5 items-center min-h-[44px]
                                  -mx-1.5 px-1.5 rounded-md hover:bg-[var(--card-sunk)] transition-colors">
                   <div className={`text-[12.5px] truncate ${name === 'Unassigned' ? 'text-[var(--crit)] font-semibold' : 'text-ink-2'}`}>
                     {name}

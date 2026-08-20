@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
 import { getMatters } from '@/lib/data/matters'
-import { ClientSearch } from '@/components/client-search'
+import { ClientSearch, type ClientFilter } from '@/components/client-search'
 import { Nav } from '@/components/nav'
 
 export const metadata = { title: 'Clients · Yale Migration' }
 export const dynamic = 'force-dynamic'
 
 export default async function ClientsPage(
-  { searchParams }: { searchParams: Promise<{ as?: string }> },
+  { searchParams }: { searchParams: Promise<{ as?: string; filter?: string }> },
 ) {
   const sp = await searchParams
   const viewer = await resolveViewer(sp)
@@ -19,6 +19,11 @@ export default async function ClientsPage(
   if (viewer.role === 'client') redirect(`/dashboard${sp.as ? `?as=${sp.as}` : ''}`)
 
   const matters = await getMatters(viewer)
+  const allowed: ClientFilter[] = ['all','open','owing','quiet','expiring']
+  // ⚠️ Validated against a list, not cast. A junk ?filter= should land on "all"
+  // rather than silently matching nothing and reading as an empty practice.
+  const filter = (allowed as string[]).includes(sp.filter ?? '')
+    ? (sp.filter as ClientFilter) : 'all'
 
   return (
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
@@ -32,7 +37,7 @@ export default async function ClientsPage(
           {' '}Search by name, code, visa type or consultant.
         </p>
       </header>
-      <ClientSearch matters={matters} as={sp.as} />
+      <ClientSearch matters={matters} as={sp.as} initial={filter} today={new Date()} />
     </main>
   )
 }

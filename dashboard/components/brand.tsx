@@ -26,7 +26,7 @@ export function YaleMark({ className = '' }: { className?: string }) {
       </svg>
       <div className="leading-tight">
         <div className="font-serif text-[17px] font-semibold text-[var(--navy)]">Yale Migration</div>
-        <div className="text-[10.5px] tracking-[.08em] uppercase text-ink-3">
+        <div className="text-[11px] tracking-[.08em] uppercase text-ink-3">
           Education Consultants
         </div>
       </div>
@@ -63,7 +63,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
           </svg>
           <div className="leading-tight">
             <div className="font-serif text-[17px] font-semibold">Yale Migration</div>
-            <div className="text-[10.5px] tracking-[.08em] uppercase text-white/55">
+            <div className="text-[11px] tracking-[.08em] uppercase text-white/55">
               Education Consultants
             </div>
           </div>
