@@ -19,6 +19,15 @@ begin;
 
 create temporary table _r(ok boolean, label text);
 
+-- ⚠️ The script impersonates `authenticated` and `anon` to test the policies,
+-- and those roles cannot write to a table postgres created. Without this the
+-- run dies at the first assertion with "permission denied for table _r".
+--
+-- ⛔ This grants on the SCRATCH RESULTS TABLE only. It is not one of the tables
+-- under test and has no RLS on it, so it cannot flatter the result — every
+-- count below is still read through the real policies.
+grant all on _r to authenticated, anon;
+
 insert into auth.users (id, email, instance_id, aud, role)
 values ('00000000-0000-0000-0000-00000000d001','dir@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
        ('00000000-0000-0000-0000-00000000a001','bne@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
@@ -97,7 +106,11 @@ select pg_temp.chk('*** anon sees nothing',
   (select count(*)::int from public.matters), 0);
 
 -- ── RESULTS ───────────────────────────────────────────────────────────────
-select set_config('role','postgres', true);
+-- RESET, not `set role postgres` — the editor's session role is not guaranteed
+-- to be postgres, and naming a role we cannot assume would fail here instead of
+-- reporting the results we just gathered.
+reset role;
+select set_config('request.jwt.claims', null, true);
 select
   case when bool_and(ok) then '✅ ALL ' || count(*) || ' CHECKS PASSED — the policies hold'
        else '🔴 ' || count(*) filter (where not ok) || ' FAILED — DO NOT PUT REAL DATA IN'
