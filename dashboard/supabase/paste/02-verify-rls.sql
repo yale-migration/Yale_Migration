@@ -1,33 +1,28 @@
 -- ═══════════════════════════════════════════════════════════════════════════
 -- RLS VERIFICATION — paste into the Supabase SQL editor and Run.
 --
--- The pgTAP suite in supabase/tests needs the CLI. This does the same job with
--- plain SQL so the policies can be proven with nothing installed.
---
 -- 🔴 RUN THIS BEFORE ANY REAL CLIENT DATA GOES IN. A policy that leaks a row is
 -- the only defect in this build that cannot be walked back: one client seeing
 -- another client's matter is a notifiable breach, not a bug report.
 --
--- ⚠️ It seeds fake rows, checks, and ROLLS BACK. Nothing survives. It cannot
--- touch real data even if real data is already present.
+-- ⚠️ Seeds fake rows, checks, and ROLLS BACK. Nothing survives. It cannot touch
+-- real data even if real data is already present.
 --
--- ⚠️ Every zero-assertion is paired with a NON-ZERO baseline. A test that
--- passes because the table is empty proves nothing — that exact trap has bitten
--- this project three times already in Apps Script.
+-- ═══════════ WHY THIS IS ONE FUNCTION AND NOT A SCRIPT ═══════════
+-- Two earlier versions collected results in a TEMP TABLE and both failed in the
+-- Supabase SQL editor — first "permission denied for table _r", then "relation
+-- _r does not exist" even fully qualified. Chasing each error was the wrong
+-- move: a temp table has to survive role switches AND whatever connection
+-- handling the editor does, and neither is something this script controls.
+--
+-- So there is no temp table. Everything happens inside ONE plpgsql function
+-- that holds its results in a local variable — no cross-role table access, no
+-- reliance on session state outliving a statement. The failure mode is designed
+-- out rather than worked around.
 -- ═══════════════════════════════════════════════════════════════════════════
 begin;
 
-create temporary table _r(ok boolean, label text);
-
--- ⚠️ The script impersonates `authenticated` and `anon` to test the policies,
--- and those roles cannot write to a table postgres created. Without this the
--- run dies at the first assertion with "permission denied for table _r".
---
--- ⛔ This grants on the SCRATCH RESULTS TABLE only. It is not one of the tables
--- under test and has no RLS on it, so it cannot flatter the result — every
--- count below is still read through the real policies.
-grant all on pg_temp._r to authenticated, anon;
-
+-- ── seed, as the editor's own role ────────────────────────────────────────
 insert into auth.users (id, email, instance_id, aud, role)
 values ('00000000-0000-0000-0000-00000000d001','dir@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
        ('00000000-0000-0000-0000-00000000a001','bne@example.com','00000000-0000-0000-0000-000000000000','authenticated','authenticated'),
@@ -38,7 +33,7 @@ on conflict (id) do nothing;
 
 insert into public.matters (client_code, full_name, client_email, office, visa_type) values
   ('ZZ-TEST-0001','TEST ONE','shared@example.com','BRISBANE','485'),
-  ('ZZ-TEST-0002','TEST TWO','shared@example.com','BRISBANE','500'),   -- SAME email as above
+  ('ZZ-TEST-0002','TEST TWO','shared@example.com','BRISBANE','500'),   -- SAME email, on purpose
   ('ZZ-TEST-0003','TEST THREE','three@example.com','TOWNSVILLE','482');
 
 insert into public.s56_deadlines (client_code, client_name, office, subclass)
@@ -52,82 +47,118 @@ insert into public.profiles (user_id, role, office, client_code) values
   ('00000000-0000-0000-0000-00000000c002','client',   null,      'ZZ-TEST-0002');
 -- f001 deliberately has NO profile row.
 
-create or replace function pg_temp.act(uid text) returns void language plpgsql as $$
+-- ── one function, one local variable, no shared state ─────────────────────
+create or replace function public._yale_verify_rls()
+returns table(result text)
+language plpgsql
+as $fn$
+declare
+  orig  text := current_setting('role', true);
+  fails int  := 0;
+  total int  := 0;
+  out_  text[] := '{}';
+  n     int;
+  line  text;
 begin
+  if orig is null or orig = '' then orig := 'none'; end if;
+
+  -- DIRECTOR ---------------------------------------------------------------
   perform set_config('role','authenticated', true);
   perform set_config('request.jwt.claims',
-    json_build_object('sub', uid, 'role','authenticated')::text, true);
-end $$;
+    '{"sub":"00000000-0000-0000-0000-00000000d001","role":"authenticated"}', true);
 
--- ⚠️ `pg_temp._r`, FULLY QUALIFIED, not bare `_r`.
---
--- Supabase pins a search_path on the `authenticated` role, and it does not
--- include pg_temp. So the moment this function is called under an impersonated
--- role, a bare `_r` resolves to nothing: "relation _r does not exist". The
--- table is right there — the role just cannot see the schema it lives in.
---
--- `pg_temp` is an alias that always points at this session's temp schema
--- (pg_temp_29, or whatever number it got), so qualifying it is stable.
-create or replace function pg_temp.chk(label text, got int, want int) returns void
-language plpgsql as $$
-begin
-  insert into pg_temp._r values (got = want, label || '  (got ' || got || ', want ' || want || ')');
-end $$;
+  select count(*) into n from public.matters where client_code like 'ZZ-TEST-%';
+  total := total+1; if n <> 3 then fails := fails+1; end if;
+  out_ := out_ || format('%s  director sees every office (got %s, want 3)',
+                         case when n=3 then 'PASS' else 'FAIL' end, n);
 
--- ── DIRECTOR ──────────────────────────────────────────────────────────────
-select pg_temp.act('00000000-0000-0000-0000-00000000d001');
-select pg_temp.chk('director sees every office',
-  (select count(*)::int from public.matters where client_code like 'ZZ-TEST-%'), 3);
-select pg_temp.chk('director sees every s56',
-  (select count(*)::int from public.s56_deadlines where client_code like 'ZZ-TEST-%'), 2);
-select pg_temp.chk('even the director reads only their OWN profile row',
-  (select count(*)::int from public.profiles), 1);
+  select count(*) into n from public.s56_deadlines where client_code like 'ZZ-TEST-%';
+  total := total+1; if n <> 2 then fails := fails+1; end if;
+  out_ := out_ || format('%s  director sees every s56 (got %s, want 2)',
+                         case when n=2 then 'PASS' else 'FAIL' end, n);
 
--- ── BRISBANE MANAGER ──────────────────────────────────────────────────────
-select pg_temp.act('00000000-0000-0000-0000-00000000a001');
--- baseline FIRST — prove it reads anything, so the next zero means something
-select pg_temp.chk('BASELINE: manager can read at all',
-  (select count(*)::int from public.matters where client_code like 'ZZ-TEST-%'), 2);
-select pg_temp.chk('*** manager gets ZERO rows from the other branch',
-  (select count(*)::int from public.matters where office = 'TOWNSVILLE'), 0);
-select pg_temp.chk('*** manager gets ZERO s56 from the other branch',
-  (select count(*)::int from public.s56_deadlines where office = 'TOWNSVILLE'), 0);
+  select count(*) into n from public.profiles;
+  total := total+1; if n <> 1 then fails := fails+1; end if;
+  out_ := out_ || format('%s  even the director reads only their OWN profile row (got %s, want 1)',
+                         case when n=1 then 'PASS' else 'FAIL' end, n);
 
--- ── CLIENT ────────────────────────────────────────────────────────────────
-select pg_temp.act('00000000-0000-0000-0000-00000000c001');
-select pg_temp.chk('BASELINE: client sees their own matter',
-  (select count(*)::int from public.matters where client_code = 'ZZ-TEST-0001'), 1);
--- 🔴 THE EMAIL TRAP. Rows 1 and 2 share an address, exactly as two rows in
--- Yale's own list do. A policy written against auth.email() passes everything
--- else here and fails this — by showing one client the other's file.
-select pg_temp.chk('*** client CANNOT see the matter sharing their email',
-  (select count(*)::int from public.matters where client_code = 'ZZ-TEST-0002'), 0);
-select pg_temp.chk('*** a client sees NO s56 deadlines at all',
-  (select count(*)::int from public.s56_deadlines), 0);
+  -- BRISBANE MANAGER -------------------------------------------------------
+  perform set_config('request.jwt.claims',
+    '{"sub":"00000000-0000-0000-0000-00000000a001","role":"authenticated"}', true);
 
--- ── AUTHENTICATED, NO PROFILE ─────────────────────────────────────────────
-select pg_temp.act('00000000-0000-0000-0000-00000000f001');
-select pg_temp.chk('*** logged in with no profile sees NOTHING',
-  (select count(*)::int from public.matters), 0);
+  -- baseline FIRST, so the zeros that follow mean something
+  select count(*) into n from public.matters where client_code like 'ZZ-TEST-%';
+  total := total+1; if n <> 2 then fails := fails+1; end if;
+  out_ := out_ || format('%s  BASELINE: manager can read at all (got %s, want 2)',
+                         case when n=2 then 'PASS' else 'FAIL' end, n);
 
--- ── ANON ──────────────────────────────────────────────────────────────────
-select set_config('role','anon', true);
-select set_config('request.jwt.claims', null, true);
-select pg_temp.chk('*** anon sees nothing',
-  (select count(*)::int from public.matters), 0);
+  select count(*) into n from public.matters where office = 'TOWNSVILLE';
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** manager gets ZERO rows from the other branch (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
 
--- ── RESULTS ───────────────────────────────────────────────────────────────
--- RESET, not `set role postgres` — the editor's session role is not guaranteed
--- to be postgres, and naming a role we cannot assume would fail here instead of
--- reporting the results we just gathered.
-reset role;
-select set_config('request.jwt.claims', null, true);
-select
-  case when bool_and(ok) then '✅ ALL ' || count(*) || ' CHECKS PASSED — the policies hold'
-       else '🔴 ' || count(*) filter (where not ok) || ' FAILED — DO NOT PUT REAL DATA IN'
-  end as verdict
-from pg_temp._r;
+  select count(*) into n from public.s56_deadlines where office = 'TOWNSVILLE';
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** manager gets ZERO s56 from the other branch (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
 
-select case when ok then '  PASS  ' else '  FAIL  ' end || label as detail from pg_temp._r order by ok, label;
+  -- CLIENT -----------------------------------------------------------------
+  perform set_config('request.jwt.claims',
+    '{"sub":"00000000-0000-0000-0000-00000000c001","role":"authenticated"}', true);
+
+  select count(*) into n from public.matters where client_code = 'ZZ-TEST-0001';
+  total := total+1; if n <> 1 then fails := fails+1; end if;
+  out_ := out_ || format('%s  BASELINE: client sees their own matter (got %s, want 1)',
+                         case when n=1 then 'PASS' else 'FAIL' end, n);
+
+  -- 🔴 THE EMAIL TRAP. Rows 1 and 2 share an address, exactly as two rows in
+  -- Yale's own list do. A policy written against auth.email() instead of
+  -- client_code passes everything else here and fails THIS — by showing one
+  -- client the other's file.
+  select count(*) into n from public.matters where client_code = 'ZZ-TEST-0002';
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** client CANNOT see the matter sharing their email (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
+
+  select count(*) into n from public.s56_deadlines;
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** a client sees NO s56 deadlines at all (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
+
+  -- AUTHENTICATED, NO PROFILE ----------------------------------------------
+  perform set_config('request.jwt.claims',
+    '{"sub":"00000000-0000-0000-0000-00000000f001","role":"authenticated"}', true);
+  select count(*) into n from public.matters;
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** logged in with no profile sees NOTHING (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
+
+  -- ANON -------------------------------------------------------------------
+  perform set_config('role','anon', true);
+  perform set_config('request.jwt.claims', '', true);
+  select count(*) into n from public.matters;
+  total := total+1; if n <> 0 then fails := fails+1; end if;
+  out_ := out_ || format('%s  *** anon sees nothing (got %s, want 0)',
+                         case when n=0 then 'PASS' else 'FAIL' end, n);
+
+  -- back to where we started, before returning anything
+  perform set_config('role', orig, true);
+  perform set_config('request.jwt.claims', '', true);
+
+  result := case when fails = 0
+    then format('✅ ALL %s CHECKS PASSED — the policies hold', total)
+    else format('🔴 %s of %s FAILED — DO NOT PUT REAL DATA IN', fails, total) end;
+  return next;
+
+  result := '────────────────────────────────────────────'; return next;
+  foreach line in array out_ loop
+    result := line; return next;
+  end loop;
+end
+$fn$;
+
+select * from public._yale_verify_rls();
+
+drop function public._yale_verify_rls();
 
 rollback;   -- ⛔ nothing above is kept
