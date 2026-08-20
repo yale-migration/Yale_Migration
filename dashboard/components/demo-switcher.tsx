@@ -19,7 +19,7 @@ export function DemoSwitcher({ current }: { current: string }) {
   const params = useSearchParams()
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5 print-hide">
       <span className="text-[10px] tracking-[.09em] uppercase text-ink-3 font-semibold">
         Signed in as
       </span>
