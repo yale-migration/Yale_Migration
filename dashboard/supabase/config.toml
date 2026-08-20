@@ -1,0 +1,26 @@
+# Supabase CLI project config.
+# `supabase link --project-ref <ref>` fills in the rest.
+project_id = "yale-dashboard"
+
+[db]
+major_version = 15
+
+[auth]
+enabled = true
+# ⛔ Set this to the deployed URL before go-live. Left wrong, magic links point
+# at localhost and every client who clicks one lands nowhere.
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/callback"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+
+# ⛔ Passwords are OFF by design. Their estate already holds ~1,200 plaintext
+# credentials (A-18); adding ~150 client passwords would be irresponsible, and a
+# password that is never set cannot be leaked, reused or forgotten.
+[auth.email]
+enable_signup = false          # 🔴 staff invite clients. Nobody self-registers.
+double_confirm_changes = true
+enable_confirmations = true
+
+[analytics]
+enabled = false
