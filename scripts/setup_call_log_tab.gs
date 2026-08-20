@@ -41,6 +41,24 @@ var CL_TAB      = 'CALL LOG';
 var CL_FIRST    = 2;
 var CL_ROWS     = 500;      // formula rows laid down up front
 
+/**
+ * 🔴 HIDDEN HELPER COLUMNS — R and S. A performance fix, and a correctness one.
+ *
+ * The first build normalised MASTER's phone and name columns INSIDE every row's
+ * formula: 500 rows × 2 ARRAYFORMULAs × ~1,000 MASTER rows = about a million
+ * REGEXREPLACE/TRIM operations recalculated on EVERY keystroke-commit in the tab.
+ * Sheets would have crawled, and it would have crawled worst exactly when someone is
+ * on the phone waiting for the match.
+ *
+ * The normalisation depends only on MASTER, not on the row asking. So it is computed
+ * ONCE here and every row MATCHes against the result — one array, not five hundred.
+ *
+ * They are hidden because they are machinery, not data. They carry underscore names so
+ * that if anyone unhides them it is obvious they are not a field to fill in.
+ */
+var CL_HELPER_PHONE = 18;   // R
+var CL_HELPER_NAME  = 19;   // S
+
 // A..P. Order is the contract with m7_callback_queue.gs — change one, change both.
 var CL_HEADERS = [
   'Received',        // A  when the call came in
@@ -96,11 +114,14 @@ function clFormulas_(row) {
   var N = '$' + clCol_('Caller Name') + row;
   var F = '$' + clCol_('Matched Code') + row;
 
-  // Digits only, last 9 — survives +61 / 0 / spaces / (07) on either side.
-  var normCall  = 'RIGHT(REGEXREPLACE(TO_TEXT(' + P + '),"[^0-9]",""),9)';
-  var normMaster= 'ARRAYFORMULA(RIGHT(REGEXREPLACE(TO_TEXT(MASTER!$E$2:$E),"[^0-9]",""),9))';
-  var phoneHit  = 'IFERROR(MATCH(' + normCall + ',' + normMaster + ',0),0)';
-  var nameHit   = 'IFERROR(MATCH(UPPER(TRIM(' + N + ')),ARRAYFORMULA(UPPER(TRIM(MASTER!$C$2:$C))),0),0)';
+  // Digits only, last 9 — survives +61 / 0 / spaces / (07) on either side, and
+  // survives Sheets storing a typed number as a number and dropping the leading zero.
+  var normCall = 'RIGHT(REGEXREPLACE(TO_TEXT(' + P + '),"[^0-9]",""),9)';
+  // ⚡ MATCH against the precomputed helper columns, not a per-row ARRAYFORMULA.
+  var HP = '$' + clLetter_(CL_HELPER_PHONE) + '$2:$' + clLetter_(CL_HELPER_PHONE);
+  var HN = '$' + clLetter_(CL_HELPER_NAME)  + '$2:$' + clLetter_(CL_HELPER_NAME);
+  var phoneHit = 'IFERROR(MATCH(' + normCall + ',' + HP + ',0),0)';
+  var nameHit  = 'IFERROR(MATCH(UPPER(TRIM(' + N + ')),' + HN + ',0),0)';
 
   // 🔴 A blank OR unusable phone must not match a blank MASTER cell — that would
   // "identify" every such caller as whichever client has no number on file, and the
@@ -163,6 +184,12 @@ function setupCallLogTab() {
     clWriteFormulas_(sh);
     clWriteValidation_(sh);
 
+    // 🔴 Phone as PLAIN TEXT. Left as a number, Sheets stores 0400111222 as 400111222 —
+    // the leading zero is gone from what the consultant SEES, and a '+61...' entry can
+    // error outright. The match itself survives (both sides reduce to the last 9 digits)
+    // but a phone number that displays wrongly on screen is its own defect: someone will
+    // read it back to a caller.
+    sh.getRange(CL_FIRST, CL_HEADERS.indexOf('Phone') + 1, CL_ROWS, 1).setNumberFormat('@');
     sh.getRange(CL_FIRST, CL_HEADERS.indexOf('Received') + 1, CL_ROWS, 1)
       .setNumberFormat('yyyy-mm-dd hh:mm');
     sh.getRange(CL_FIRST, CL_HEADERS.indexOf('Callback Due') + 1, CL_ROWS, 1)
@@ -228,8 +255,9 @@ function repairCallLogTab() {
     clWriteFormulas_(sh);
     clWriteValidation_(sh);
     clWriteConditionalFormat_(sh);
+    sh.getRange(CL_FIRST, CL_HEADERS.indexOf('Phone') + 1, CL_ROWS, 1).setNumberFormat('@');
     SpreadsheetApp.flush();
-    Logger.log('Formulas, dropdowns and highlighting restored. NO data was changed.');
+    Logger.log('Formulas, helpers, dropdowns, text format and highlighting restored. NO data changed.');
     Logger.log('Now run verifyCallLogTab().');
   } finally {
     lock.releaseLock();
@@ -238,6 +266,19 @@ function repairCallLogTab() {
 
 
 function clWriteFormulas_(sh) {
+  // The two helper arrays. Row 2 only — ARRAYFORMULA spills the rest.
+  // ⛔ IF(...="","") on each: a blank MASTER cell must normalise to blank, never to a
+  // value a blank caller field could match. The 6-digit guard on the call side is the
+  // other half of that; neither is sufficient alone.
+  sh.getRange(1, CL_HELPER_PHONE).setValue('_master_phone_normalised');
+  sh.getRange(1, CL_HELPER_NAME).setValue('_master_name_normalised');
+  sh.getRange(2, CL_HELPER_PHONE).setFormula(
+    '=ARRAYFORMULA(IF(MASTER!$E$2:$E="","",RIGHT(REGEXREPLACE(TO_TEXT(MASTER!$E$2:$E),"[^0-9]",""),9)))');
+  sh.getRange(2, CL_HELPER_NAME).setFormula(
+    '=ARRAYFORMULA(IF(MASTER!$C$2:$C="","",UPPER(TRIM(MASTER!$C$2:$C))))');
+  sh.hideColumns(CL_HELPER_PHONE, 2);
+  Logger.log('  2 hidden helper columns (R,S) — MASTER normalised ONCE, not per row');
+
   var cols = ['Matched Code', 'Matched Client', 'Matched On', 'Outstanding'];
   var byCol = {};
   cols.forEach(function (c) { byCol[c] = []; });
