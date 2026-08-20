@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Link from 'next/link'
 
 /** Severity, named once. Every status colour in the app resolves through here. */
 export type Tone = 'good' | 'warn' | 'crit' | 'neutral' | 'accent'
@@ -56,18 +57,39 @@ export function Chip({ tone, children }: { tone: Tone; children: ReactNode }) {
  * chip repeats it in words. About 1 in 12 men has a colour vision deficiency,
  * and this is a screen someone triages a legal deadline from.
  */
-export function Row({ tone, title, meta, chip }: {
-  tone: Tone; title: ReactNode; meta?: ReactNode; chip?: ReactNode
+export function Row({ tone, title, meta, chip, href }: {
+  tone: Tone; title: ReactNode; meta?: ReactNode; chip?: ReactNode; href?: string
 }) {
-  return (
-    <div className="grid grid-cols-[3px_1fr_auto] gap-3 items-center py-2.5 border-b border-rule last:border-b-0">
+  const inner = (
+    <>
       <span className={`w-[3px] h-[26px] rounded-sm ${TONE_RAIL[tone]}`} aria-hidden="true" />
       <div className="min-w-0">
         <div className="text-[13.5px] font-medium truncate">{title}</div>
         {meta && <div className="text-[11.5px] text-ink-3 mt-px truncate">{meta}</div>}
       </div>
       {chip}
-    </div>
+      {href && (
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+             className="text-ink-3 shrink-0">
+          <path d="M6 3.5L10.5 8 6 12.5" stroke="currentColor" strokeWidth="1.6"
+                strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      )}
+    </>
+  )
+  // A row that is not a link keeps its old shape exactly — no chevron column,
+  // no hover state promising something that will not happen.
+  const cols = href ? 'grid-cols-[3px_1fr_auto_15px]' : 'grid-cols-[3px_1fr_auto]'
+  const base = `grid ${cols} gap-3 items-center py-2.5 border-b border-rule last:border-b-0`
+
+  if (!href) return <div className={base}>{inner}</div>
+  return (
+    // ⚠️ min-h-[44px]: this is now a tap target, and staff use this on phones.
+    <Link href={href}
+          className={`${base} min-h-[44px] -mx-2 px-2 rounded-md transition-colors
+                      hover:bg-[var(--card-sunk)] focus-visible:bg-[var(--card-sunk)]`}>
+      {inner}
+    </Link>
   )
 }
 

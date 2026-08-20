@@ -126,7 +126,7 @@ export default async function DashboardPage(
 
       {viewer.role === 'client'
         ? <ClientView matter={matters[0] ?? null} today={today} />
-        : <StaffView matters={matters} s56={s56} viewer={viewer} today={today} />}
+        : <StaffView matters={matters} s56={s56} viewer={viewer} today={today} as={sp.as} />}
 
       <footer className="mt-7 pt-4 border-t border-rule text-[11.5px] text-ink-3
                          flex flex-wrap gap-x-5 gap-y-1.5">

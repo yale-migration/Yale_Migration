@@ -5,9 +5,15 @@ import { goingQuiet, expiringSoon, isOpen, daysBetween } from '@/lib/data/matter
 import type { Matter, S56Deadline, Viewer } from '@/lib/data/types'
 
 /** Director and branch-manager view. Identical component — RLS decides the rows. */
-export function StaffView({ matters, s56, viewer, today }: {
-  matters: Matter[]; s56: S56Deadline[]; viewer: Viewer; today: Date
+export function StaffView({ matters, s56, viewer, today, as }: {
+  matters: Matter[]; s56: S56Deadline[]; viewer: Viewer; today: Date; as?: string
 }) {
+  // ⚠️ Carry `as` across the navigation. Without it, clicking a row during a
+  // demo silently drops you back to the director view — which would look like
+  // the access control failing, in front of the person being shown it.
+  const matterHref = (code: string) =>
+    `/dashboard/matter/${encodeURIComponent(code)}${as ? `?as=${as}` : ''}`
+
   const open = matters.filter(isOpen)
   const quiet = goingQuiet(matters, today)
   const expiring = expiringSoon(matters, today)
@@ -73,7 +79,7 @@ export function StaffView({ matters, s56, viewer, today }: {
       </div>
 
       <div className="grid grid-cols-12 gap-3.5">
-        <S56Card rows={s56} today={today} />
+        <S56Card rows={s56} today={today} as={as} />
 
         <Card className="col-span-12 lg:col-span-6">
           <CardHead title="Going quiet" tag="oldest first"
@@ -82,7 +88,7 @@ export function StaffView({ matters, s56, viewer, today }: {
             <Empty>Nobody has gone quiet. Every open file has been contacted in the last 14 days.</Empty>
           ) : quiet.map(({ m, days }) => {
             const tone: Tone = days >= 21 ? 'crit' : 'warn'
-            return <Row key={m.client_code} tone={tone}
+            return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
                         title={`${m.full_name} · ${m.visa_type ?? '—'}`}
                         meta={`${m.consultant ?? 'Unassigned'} · ${m.office} · ${m.processing_stage ?? '—'}`}
                         chip={<Chip tone={tone}>{days} days</Chip>} />
@@ -97,7 +103,7 @@ export function StaffView({ matters, s56, viewer, today }: {
           ) : expiring.map(({ m, left }) => {
             // Already expired is its own state, not just "very soon".
             const tone: Tone = left < 0 ? 'crit' : left <= 14 ? 'crit' : left <= 30 ? 'warn' : 'good'
-            return <Row key={m.client_code} tone={tone}
+            return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
                         title={`${m.full_name} · ${m.visa_type ?? '—'}`}
                         meta={`${m.consultant ?? 'Unassigned'} · ${m.office}`}
                         chip={<Chip tone={tone}>

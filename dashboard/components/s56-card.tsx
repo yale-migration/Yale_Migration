@@ -18,7 +18,9 @@ import { daysBetween } from '@/lib/data/matters'
  * as 28, and every part of this build is written so that a hardcoded 28 cannot
  * creep in anywhere.
  */
-export function S56Card({ rows, today }: { rows: S56Deadline[]; today: Date }) {
+export function S56Card({ rows, today, as }: {
+  rows: S56Deadline[]; today: Date; as?: string
+}) {
   return (
     <Card className="col-span-12">
       <CardHead
@@ -48,6 +50,9 @@ export function S56Card({ rows, today }: { rows: S56Deadline[]; today: Date }) {
             return (
               <Row
                 key={d.id}
+                href={d.client_code
+                  ? `/dashboard/matter/${encodeURIComponent(d.client_code)}${as ? `?as=${as}` : ''}`
+                  : undefined}
                 tone={internal === null ? 'crit' : tone}
                 title={`${d.client_name ?? 'Unnamed'}${d.subclass ? ` · ${d.subclass}` : ''}`}
                 meta={

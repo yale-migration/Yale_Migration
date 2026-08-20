@@ -99,3 +99,38 @@ export function expiringSoon(matters: Matter[], today: Date, within = 60) {
     .filter((x): x is { m: Matter; left: number } => x.left !== null && x.left <= within)
     .sort((a, b) => a.left - b.left)
 }
+
+/**
+ * One matter, by code.
+ *
+ * 🔴 THE SECURITY PROPERTY IS THAT THIS LOOKS IDENTICAL WHEN THE ROW DOES NOT
+ * EXIST AND WHEN YOU ARE NOT ALLOWED TO SEE IT. Both return null.
+ *
+ * RLS gives us that for free — a row you cannot read simply is not returned —
+ * and the page must not undo it by saying "no such client" versus "not
+ * permitted". The difference between those two messages is an enumeration
+ * oracle: walk YM-2026-00001 upward and the error text tells you exactly how
+ * many clients the practice has and which codes are real.
+ */
+export async function getMatter(code: string, viewer: Viewer): Promise<Matter | null> {
+  if (!isLive()) {
+    const rows = demoScope(DEMO_MATTERS, viewer)
+    return rows.find((m) => m.client_code === code) ?? null
+  }
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('matters')
+    .select('client_code, full_name, office, team, consultant, visa_type, processing_stage, visa_outcome, visa_expiry, last_contact, next_due, docs_outstanding')
+    .eq('client_code', code)
+    .maybeSingle()
+
+  if (error) throw new Error(`matter query failed: ${error.message}`)
+  return (data as Matter | null) ?? null
+}
+
+/** Deadlines for one matter. Staff only — same rule as the list. */
+export async function getMatterS56(code: string, viewer: Viewer): Promise<S56Deadline[]> {
+  if (viewer.role === 'client') return []
+  const all = await getS56Deadlines(viewer)
+  return all.filter((d) => d.client_code === code)
+}
