@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root {
+      --paper:#f4f6f4; --card:#ffffff; --card-sunk:#fafbfa;
+      --ink:#141a1e; --ink-2:#4d5860; --ink-3:#7d878e;
+      --rule:#e3e7e4; --rule-strong:#cfd6d1;
+      --accent:#0d5c63; --accent-soft:#e4efef;
+      --good:#1baf7a; --warn:#eda100; --crit:#c9453b;
+      --good-soft:#e6f6ef; --warn-soft:#fdf3dd; --crit-soft:#fbeae8;
+      --shadow:0 1px 2px rgba(20,26,30,.05), 0 8px 24px -12px rgba(20,26,30,.12);
+      --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+      --sans:ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      --r:10px;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink);
+           font-family:var(--sans); font-size:15px; line-height:1.5;
+           -webkit-font-smoothing:antialiased; }
+    h1,h2,h3 { font-family:var(--serif); font-weight:600; margin:0; letter-spacing:-.01em; }
+    a { color:var(--accent); } a:hover { color:#0a4a50; }
+    .phone { width:390px; min-height:844px; display:flex; flex-direction:column;
+             background:var(--paper); }
+    /* ⛔ No fake status bar — the real one renders over this on a real device. */
+    .bar { padding:18px 18px 14px; background:var(--card);
+           border-bottom:1px solid var(--rule); }
+    .bar h1 { font-size:17px; }
+    .bar p { margin:3px 0 0; font-size:12.5px; color:var(--ink-3); }
+    .body { padding:16px 16px 96px; display:flex; flex-direction:column; gap:14px; }
+
+    /* the headline: what they owe. Same warm-warning language as the desktop board. */
+    .owe { border:1px solid color-mix(in srgb,var(--warn) 34%,transparent);
+           border-radius:var(--r); background:var(--warn-soft); overflow:hidden; }
+    .owe header { padding:14px 16px 11px;
+                  border-bottom:1px solid color-mix(in srgb,var(--warn) 24%,transparent); }
+    .owe h2 { font-size:16px; color:color-mix(in srgb,var(--warn) 80%,var(--ink)); }
+    .owe .due { margin:3px 0 0; font-size:12.5px; font-weight:600;
+                color:color-mix(in srgb,var(--warn) 80%,var(--ink)); }
+    .docs { display:flex; flex-direction:column; padding:2px 16px 10px; }
+    .doc { display:grid; grid-template-columns:20px 1fr; gap:11px; align-items:start;
+           padding:12px 0; min-height:44px;
+           border-bottom:1px solid color-mix(in srgb,var(--warn) 18%,transparent); }
+    .doc:last-child { border-bottom:0; }
+    .doc .nm { font-size:14.5px; font-weight:600; }
+    .doc .hw { font-size:12.5px; color:var(--ink-2); margin-top:2px; }
+    .tick { width:20px; height:20px; margin-top:1px; }
+
+    .card { background:var(--card); border:1px solid var(--rule);
+            border-radius:var(--r); padding:15px 16px; }
+    .card h3 { font-size:15px; margin-bottom:5px; }
+    .card p { margin:0; font-size:13.5px; color:var(--ink-2); }
+    .upd { margin-top:9px; font-size:12px; color:var(--ink-3); }
+
+    .status { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .st { background:var(--card); border:1px solid var(--rule);
+          border-radius:var(--r); padding:12px 14px; }
+    .st .lab { font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+               color:var(--ink-3); font-weight:600; }
+    .st .val { font-family:var(--serif); font-size:22px; line-height:1.15; margin-top:6px; }
+    .st .sub { font-size:11.5px; color:var(--ink-3); margin-top:2px; }
+    .st.alert { background:var(--crit-soft); border-color:color-mix(in srgb,var(--crit) 28%,transparent); }
+    .st.alert .val, .st.alert .lab { color:var(--crit); }
+    .st.warn { background:var(--warn-soft); border-color:color-mix(in srgb,var(--warn) 30%,transparent); }
+    .st.warn .val, .st.warn .lab { color:color-mix(in srgb,var(--warn) 78%,var(--ink)); }
+
+    .steps { display:flex; flex-direction:column; }
+    .step { display:grid; grid-template-columns:20px 1fr; gap:12px; align-items:start;
+            padding:11px 0; border-bottom:1px solid var(--rule); min-height:44px; }
+    .step:last-child { border-bottom:0; }
+    .step .w { font-size:14px; font-weight:500; }
+    .step .m { font-size:12px; color:var(--ink-3); margin-top:1px; }
+
+    /* one action, pinned. A client's only job here is to send documents or ask. */
+    .actionbar { position:sticky; bottom:0; margin-top:auto; padding:12px 16px 16px;
+                 background:linear-gradient(to top,var(--paper) 72%,transparent);
+                 display:flex; gap:10px; }
+    .btn { flex:1; min-height:48px; display:flex; align-items:center; justify-content:center;
+           gap:8px; border-radius:10px; font-size:14.5px; font-weight:600;
+           text-decoration:none; border:1px solid transparent; }
+    .btn.primary { background:var(--accent); color:#fff; box-shadow:var(--shadow); }
+    .btn.primary:hover { background:#0a4a50; color:#fff; }
+    .btn.ghost { background:var(--card); color:var(--accent); border-color:var(--rule-strong); }
+    .btn.ghost:hover { color:#0a4a50; }
+    .foot { padding:0 16px; font-size:11.5px; color:var(--ink-3); }
+  </style>
+</helmet>
+
+<div class="phone">
+  <div class="bar">
+    <h1>Your 485 application</h1>
+    <p>Yale Migration · updated {{lastUpdate}}</p>
+  </div>
+
+  <div class="body">
+    <section class="owe">
+      <header>
+        <h2>{{oweTitle}}</h2>
+        <p class="due">{{oweDue}}</p>
+      </header>
+      <div class="docs">
+        <sc-for list="{{owed}}" as="d" hint-placeholder-count="3">
+          <div class="doc">
+            <svg class="tick" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="8" stroke="{{d.col}}" stroke-width="1.5"></circle>
+              <path d="{{d.path}}" stroke="{{d.col}}" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <div><div class="nm">{{d.nm}}</div><div class="hw">{{d.hw}}</div></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <div class="status">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="4">
+        <div class="st {{t.cls}}">
+          <div class="lab">{{t.lab}}</div>
+          <div class="val">{{t.val}}</div>
+          <div class="sub">{{t.sub}}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="card">
+      <h3>What happens next</h3>
+      <p>{{nextStep}}</p>
+      <div class="upd">{{noEstimate}}</div>
+    </div>
+
+    <div class="card">
+      <h3>Your application so far</h3>
+      <div class="steps">
+        <sc-for list="{{timeline}}" as="s" hint-placeholder-count="5">
+          <div class="step">
+            <svg class="tick" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="8" stroke="{{s.col}}" stroke-width="1.5"></circle>
+              <path d="{{s.path}}" stroke="{{s.col}}" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <div><div class="w">{{s.w}}</div><div class="m">{{s.m}}</div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Your consultant</h3>
+      <p><b>Rey</b> · Brisbane<br>Robinder Pal Singh · Registered Migration Agent, MARN 1573959</p>
+    </div>
+
+    <p class="foot">Sample data. You can only ever see your own file.</p>
+  </div>
+
+  <div class="actionbar">
+    <a class="btn primary" href="#">Email my documents</a>
+    <a class="btn ghost" href="#">Call Yale</a>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"complete":{"editor":"boolean","default":false,"section":"State"},"lastUpdate":{"editor":"text","default":"20 Aug 2026","section":"State"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // The one lever worth a tweak: what the screen becomes once the client has
+    // actually sent everything. Robinder should be able to see BOTH states.
+    const complete = this.props.complete === true;
+    const CHECK = 'M6.5 10.2l2.4 2.4 4.6-5';
+    const WAIT  = 'M10 6v4.5M10 13.6v.1';
+    const DOT   = 'M10 9.6v.1';
+
+    return {
+      lastUpdate: this.props.lastUpdate ?? '20 Aug 2026',
+      oweTitle: complete ? 'Nothing needed from you' : 'What we still need from you',
+      oweDue: complete
+        ? 'Everything has arrived — thank you.'
+        : '2 items outstanding · needed by 27 Aug',
+      owed: complete
+        ? [{ nm:'All documents received', hw:'Your file is complete and with your agent.',
+             col:'var(--good)', path:CHECK }]
+        : [
+            { nm:'Bank statements — last 3 months',
+              hw:'A PDF from your online banking. Every page, including blank ones.',
+              col:'var(--warn)', path:WAIT },
+            { nm:'Health insurance certificate',
+              hw:'The certificate of currency — not the tax statement.',
+              col:'var(--warn)', path:WAIT },
+            { nm:'Passport bio page', hw:'Received 28 Jun 2026.',
+              col:'var(--good)', path:CHECK }
+          ],
+      tiles: [
+        { lab:'Your visa', val:'485', sub:'Temporary Graduate', cls:'' },
+        { lab:'Stage', val: complete ? 'With your agent' : 'Documents pending',
+          sub: complete ? 'being reviewed' : 'waiting on you', cls: complete ? '' : 'warn' },
+        { lab:'Documents', val: complete ? '12 of 12' : '10 of 12',
+          sub: complete ? 'all received' : '2 still needed', cls: complete ? '' : 'warn' },
+        { lab:'Current visa expires', val:'6 days', sub:'renewal in progress', cls:'alert' }
+      ],
+      nextStep: complete
+        ? 'Your agent is reviewing the file now. Once the review is done it is lodged with the '
+          + 'Department, and we will email you the same day.'
+        : 'As soon as those two documents arrive, your agent reviews the file and lodges it with '
+          + 'the Department. We will email you the moment it is lodged.',
+      // ⛔ Never a predicted decision date. On an agent's own portal that reads as a
+      // commitment, and nobody at Yale controls Department processing times.
+      noEstimate: 'We do not control Department processing times, so we never quote a decision date.',
+      timeline: [
+        { w:'Checklist sent to you', m:'23 Jun 2026', col:'var(--good)', path:CHECK },
+        { w:'Passport and ID received', m:'28 Jun 2026', col:'var(--good)', path:CHECK },
+        { w:'Employment evidence received', m:'4 Jul 2026', col:'var(--good)', path:CHECK },
+        { w:'Financial and health documents',
+          m: complete ? 'received 20 Aug 2026' : '2 items outstanding',
+          col: complete ? 'var(--good)' : 'var(--warn)', path: complete ? CHECK : WAIT },
+        { w:'Review by your agent',
+          m: complete ? 'in progress' : 'starts when your file is complete',
+          col: complete ? 'var(--warn)' : 'var(--rule-strong)', path: complete ? WAIT : DOT },
+        { w:'Lodged with the Department', m:'not yet', col:'var(--rule-strong)', path:DOT }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1280, "h": 1180,
+      "title": "Practice Board — all roles" },
+    { "file": "ClientMobile.dc.html", "x": 1360, "y": 0, "w": 390, "h": 844,
+      "title": "Client on a phone" }
+  ],
+  "annotations": [
+    { "id": "how-to", "x": 0, "y": -132, "w": 620,
+      "text": "Click the role buttons in the header — Director, Brisbane manager, Townsville manager, Client.\nEach role re-filters the whole board. A manager never receives another branch's rows; a client sees only their own file." },
+    { "id": "whats-new", "x": 660, "y": -132, "w": 600,
+      "text": "Changed from the 14 Aug version:\n1. The client view now OPENS on what the client owes us — dormancy is the practice's real pain (D-34).\n2. Section 56 deadlines have their own card. They outrank everything else on the board.\n3. No predicted decision date, anywhere. Yale does not control Department processing times." },
+    { "id": "mobile-note", "x": 1360, "y": -132, "w": 390,
+      "text": "Clients are on phones; staff are at desks.\nOne action pinned at the bottom, 48px targets, no fake status bar.\nToggle the \"complete\" tweak to see the state after everything arrives." }
+  ],
+  "launch": { "view": "canvas" }
+}

@@ -1,0 +1,514 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    :root {
+      --paper:#f4f6f4; --card:#ffffff; --card-sunk:#fafbfa;
+      --ink:#141a1e; --ink-2:#4d5860; --ink-3:#7d878e;
+      --rule:#e3e7e4; --rule-strong:#cfd6d1;
+      --accent:#0d5c63; --accent-soft:#e4efef;
+      --good:#1baf7a; --warn:#eda100; --crit:#c9453b;
+      --good-soft:#e6f6ef; --warn-soft:#fdf3dd; --crit-soft:#fbeae8;
+      --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+      --shadow:0 1px 2px rgba(20,26,30,.05), 0 8px 24px -12px rgba(20,26,30,.12);
+      --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+      --sans:ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      --r:10px;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink);
+           font-family:var(--sans); font-size:14px; line-height:1.5;
+           -webkit-font-smoothing:antialiased; }
+    h1,h2,h3 { font-family:var(--serif); font-weight:600; margin:0;
+               text-wrap:balance; letter-spacing:-.01em; }
+    .num { font-variant-numeric:tabular-nums; }
+    a { color:var(--accent); } a:hover { color:#0a4a50; }
+    .wrap { max-width:1240px; margin:0 auto; padding:22px 20px 56px; }
+    .top { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end;
+           justify-content:space-between; padding-bottom:16px; border-bottom:1px solid var(--rule); }
+    .brand h1 { font-size:21px; }
+    .brand p { margin:3px 0 0; color:var(--ink-3); font-size:12.5px;
+               display:inline-flex; align-items:center; gap:6px; }
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--good);
+           box-shadow:0 0 0 3px var(--good-soft); }
+    .roles { display:flex; flex-direction:column; gap:6px; }
+    .roles > span { font-size:10px; letter-spacing:.09em; text-transform:uppercase;
+                    color:var(--ink-3); font-weight:600; }
+    .seg { display:flex; background:var(--card-sunk); border:1px solid var(--rule);
+           border-radius:8px; padding:3px; gap:2px; }
+    .seg button { font:inherit; font-size:12.5px; font-weight:500; color:var(--ink-2);
+                  background:none; border:0; padding:6px 13px; border-radius:6px;
+                  cursor:pointer; white-space:nowrap; transition:background .12s,color .12s; }
+    .seg button:hover { color:var(--ink); }
+    .seg button.on { background:var(--card); color:var(--accent);
+                     box-shadow:var(--shadow); font-weight:600; }
+    .seg button:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+    .viewnote { margin:14px 0 0; padding:9px 13px; border-radius:8px;
+                background:var(--accent-soft); color:var(--accent); font-size:12.5px; }
+    .viewnote b { font-weight:600; }
+    .today { margin-top:16px; border:1px solid var(--rule); border-radius:var(--r);
+             background:var(--card); overflow:hidden; }
+    .today > header { display:flex; align-items:baseline; justify-content:space-between;
+                      gap:12px; padding:13px 17px 11px; border-bottom:1px solid var(--rule); }
+    .today h2 { font-size:15px; }
+    .today .count { font-size:12px; color:var(--ink-3); }
+    .acts { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .act { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start;
+           padding:14px 17px; border-right:1px solid var(--rule); }
+    .act:last-child { border-right:0; }
+    .act .n { font-family:var(--serif); font-size:27px; line-height:.95; }
+    .act .t { font-size:13.5px; font-weight:600; }
+    .act .d { font-size:12px; color:var(--ink-3); margin-top:2px; }
+    .act.crit .n { color:var(--crit); }
+    .act.warn .n { color:color-mix(in srgb,var(--warn) 78%,var(--ink)); }
+    .act.legal .n { color:var(--crit); }
+    .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
+            gap:10px; margin:14px 0 20px; }
+    .kpi { background:var(--card); border:1px solid var(--rule); border-radius:var(--r);
+           padding:13px 15px; }
+    .kpi .lab { font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+                color:var(--ink-3); font-weight:600; }
+    .kpi .val { font-family:var(--serif); font-size:30px; line-height:1.1; margin-top:7px; }
+    .kpi .sub { font-size:11.5px; color:var(--ink-3); margin-top:3px; }
+    .kpi.alert { background:var(--crit-soft); border-color:color-mix(in srgb,var(--crit) 28%,transparent); }
+    .kpi.alert .val, .kpi.alert .lab { color:var(--crit); }
+    .kpi.warn { background:var(--warn-soft); border-color:color-mix(in srgb,var(--warn) 32%,transparent); }
+    .kpi.warn .val, .kpi.warn .lab { color:color-mix(in srgb,var(--warn) 78%,var(--ink)); }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+    .card { background:var(--card); border:1px solid var(--rule); border-radius:var(--r);
+            padding:16px 17px; min-width:0; }
+    .c6 { grid-column:span 6; } .c4 { grid-column:span 4; }
+    .c8 { grid-column:span 8; } .c12 { grid-column:span 12; }
+    .card h2 { font-size:15px; }
+    .card .hint { font-size:12px; color:var(--ink-3); margin:3px 0 15px; }
+    .chead { display:flex; justify-content:space-between; align-items:baseline; gap:10px; }
+    .tag { font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+           color:var(--ink-3); font-weight:600; }
+    .bars { display:flex; flex-direction:column; gap:11px; }
+    .bar-row { display:grid; grid-template-columns:116px 1fr 34px; gap:11px; align-items:center; }
+    .bar-row .nm { font-size:12.5px; color:var(--ink-2); overflow:hidden;
+                   text-overflow:ellipsis; white-space:nowrap; }
+    .track { height:9px; background:var(--card-sunk); border-radius:5px; overflow:hidden;
+             box-shadow:inset 0 0 0 1px var(--rule); }
+    .fill { height:100%; border-radius:5px; }
+    .bar-row .v { font-size:13px; font-weight:600; text-align:right; }
+    .list { display:flex; flex-direction:column; }
+    .item { display:grid; grid-template-columns:3px 1fr auto; gap:12px; align-items:center;
+            padding:10px 0; border-bottom:1px solid var(--rule); }
+    .item:last-child { border-bottom:0; }
+    .rail { width:3px; height:26px; border-radius:2px; }
+    .item .who { font-size:13.5px; font-weight:500; }
+    .item .meta { font-size:11.5px; color:var(--ink-3); margin-top:1px; }
+    .chip { font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:20px; white-space:nowrap; }
+    .chip.crit { background:var(--crit-soft); color:var(--crit); }
+    .chip.warn { background:var(--warn-soft); color:color-mix(in srgb,var(--warn) 75%,var(--ink)); }
+    .chip.good { background:var(--good-soft); color:color-mix(in srgb,var(--good) 82%,var(--ink)); }
+    .chip.accent { background:var(--accent-soft); color:var(--accent); }
+    /* NEW — the client's outstanding-document band. Same anatomy as .today so the
+       client view and the staff view are visibly the same product. */
+    .owe { margin-top:16px; border:1px solid color-mix(in srgb,var(--warn) 34%,transparent);
+           border-radius:var(--r); background:var(--warn-soft); overflow:hidden; }
+    .owe > header { display:flex; align-items:baseline; justify-content:space-between;
+                    gap:12px; padding:13px 17px 11px;
+                    border-bottom:1px solid color-mix(in srgb,var(--warn) 26%,transparent); }
+    .owe h2 { font-size:15px; color:color-mix(in srgb,var(--warn) 80%,var(--ink)); }
+    .owe .due { font-size:12px; font-weight:600; color:color-mix(in srgb,var(--warn) 80%,var(--ink)); }
+    .docs { display:flex; flex-direction:column; padding:4px 17px 12px; }
+    .doc { display:grid; grid-template-columns:18px 1fr auto; gap:11px; align-items:center;
+           padding:9px 0; border-bottom:1px solid color-mix(in srgb,var(--warn) 20%,transparent); }
+    .doc:last-child { border-bottom:0; }
+    .doc .nm { font-size:13.5px; font-weight:500; }
+    .doc .hw { font-size:11.5px; color:var(--ink-2); margin-top:1px; }
+    .tick { width:18px; height:18px; }
+    .next { margin-top:14px; padding:13px 16px; border:1px solid var(--rule);
+            border-radius:var(--r); background:var(--card); }
+    .next h3 { font-size:14px; margin-bottom:4px; }
+    .next p { margin:0; font-size:13px; color:var(--ink-2); }
+    .next .upd { margin-top:8px; font-size:11.5px; color:var(--ink-3); }
+    .foot { margin-top:26px; padding-top:15px; border-top:1px solid var(--rule);
+            color:var(--ink-3); font-size:11.5px; display:flex; flex-wrap:wrap; gap:6px 18px; }
+    @media (max-width:900px) { .c6,.c4,.c8 { grid-column:span 12; } .top { align-items:flex-start; } }
+    @media (max-width:700px) { .act { border-right:0; border-bottom:1px solid var(--rule); }
+                               .act:last-child { border-bottom:0; } }
+    @media (max-width:560px) { .wrap { padding:16px 13px 40px; }
+                               .bar-row { grid-template-columns:92px 1fr 30px; }
+                               .seg button { padding:6px 9px; font-size:12px; } }
+  </style>
+</helmet>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Yale Migration — Practice Board</h1>
+      <p><span class="dot"></span> Live from the client register · updated {{stamp}}</p>
+    </div>
+    <div class="roles">
+      <span>Signed in as</span>
+      <div class="seg" role="group" aria-label="Choose a role">
+        <sc-for list="{{roles}}" as="r" hint-placeholder-count="4">
+          <button class="{{r.cls}}" onClick="{{r.pick}}">{{r.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+  </header>
+
+  <p class="viewnote"><b>{{view.label}}</b> · {{view.note}}</p>
+
+  <!-- ══ STAFF ══ -->
+  <sc-if value="{{isStaff}}" hint-placeholder-val="{{true}}">
+    <section class="today">
+      <header><h2>Needs you today</h2><span class="count">{{actCount}}</span></header>
+      <div class="acts">
+        <sc-for list="{{acts}}" as="a" hint-placeholder-count="3">
+          <div class="act {{a.c}}">
+            <div class="n num">{{a.n}}</div>
+            <div><div class="t">{{a.t}}</div><div class="d">{{a.d}}</div></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="5">
+        <div class="kpi {{k.cls}}">
+          <div class="lab">{{k.lab}}</div>
+          <div class="val num">{{k.val}}</div>
+          <div class="sub">{{k.sub}}</div>
+        </div>
+      </sc-for>
+    </section>
+
+    <div class="grid">
+      <!-- NEW: legal deadlines outrank everything else on this board -->
+      <section class="card c12">
+        <div class="chead">
+          <h2>Section 56 — Department deadlines</h2>
+          <span class="tag">internal date · legal date</span>
+        </div>
+        <p class="hint">Miss one and the Department decides on what it already has, without asking
+          again. Internal dates run two days ahead of the legal date.</p>
+        <div class="list">
+          <sc-for list="{{s56}}" as="d" hint-placeholder-count="3">
+            <div class="item">
+              <div class="rail" style="background:{{d.col}}"></div>
+              <div>
+                <div class="who">{{d.nm}} · {{d.vis}}</div>
+                <div class="meta">{{d.meta}}</div>
+              </div>
+              <div class="chip {{d.cls}}">{{d.left}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="card c6">
+        <div class="chead"><h2>Branch performance</h2><span class="tag">{{branchTag}}</span></div>
+        <p class="hint">Open matters by office and team.</p>
+        <div class="bars">
+          <sc-for list="{{branches}}" as="b" hint-placeholder-count="4">
+            <div class="bar-row">
+              <div class="nm">{{b.nm}}</div>
+              <div class="track"><div class="fill" style="width:{{b.w}};background:{{b.col}}"></div></div>
+              <div class="v num">{{b.n}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="card c6">
+        <div class="chead"><h2>Going quiet</h2><span class="tag">oldest first</span></div>
+        <p class="hint">Open files with no contact for over 14 days.</p>
+        <div class="list">
+          <sc-for list="{{quiet}}" as="q" hint-placeholder-count="4">
+            <div class="item">
+              <div class="rail" style="background:{{q.col}}"></div>
+              <div><div class="who">{{q.nm}}</div><div class="meta">{{q.meta}}</div></div>
+              <div class="chip {{q.cls}}">{{q.days}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="card c6">
+        <div class="chead"><h2>Visa expiring soon</h2><span class="tag">next 60 days</span></div>
+        <p class="hint">Counted from the expiry date on each file.</p>
+        <div class="list">
+          <sc-for list="{{expiry}}" as="x" hint-placeholder-count="3">
+            <div class="item">
+              <div class="rail" style="background:{{x.col}}"></div>
+              <div><div class="who">{{x.nm}}</div><div class="meta">{{x.meta}}</div></div>
+              <div class="chip {{x.cls}}">{{x.left}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="card c6">
+        <div class="chead"><h2>Consultant workload</h2><span class="tag">open files</span></div>
+        <p class="hint">Who is carrying the most right now.</p>
+        <div class="bars">
+          <sc-for list="{{staff}}" as="s" hint-placeholder-count="5">
+            <div class="bar-row">
+              <div class="nm">{{s.nm}}</div>
+              <div class="track"><div class="fill" style="width:{{s.w}};background:var(--s1)"></div></div>
+              <div class="v num">{{s.n}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <!-- ══ CLIENT ══ opens on what THEY owe, not on a tidy timeline -->
+  <sc-if value="{{isClient}}" hint-placeholder-val="{{true}}">
+    <section class="owe">
+      <header>
+        <h2>What we still need from you</h2>
+        <span class="due">{{oweDue}}</span>
+      </header>
+      <div class="docs">
+        <sc-for list="{{owed}}" as="d" hint-placeholder-count="3">
+          <div class="doc">
+            <svg class="tick" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="8" stroke="{{d.col}}" stroke-width="1.5"></circle>
+              <path d="{{d.path}}" stroke="{{d.col}}" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <div><div class="nm">{{d.nm}}</div><div class="hw">{{d.hw}}</div></div>
+            <div class="chip {{d.cls}}">{{d.state}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <div class="next">
+      <h3>What happens next</h3>
+      <p>{{nextStep}}</p>
+      <div class="upd">Last updated {{lastUpdate}} · we do not control Department processing times,
+        so we never quote a decision date.</div>
+    </div>
+
+    <section class="kpis">
+      <sc-for list="{{clientKpis}}" as="k" hint-placeholder-count="4">
+        <div class="kpi {{k.cls}}">
+          <div class="lab">{{k.lab}}</div>
+          <div class="val">{{k.val}}</div>
+          <div class="sub">{{k.sub}}</div>
+        </div>
+      </sc-for>
+    </section>
+
+    <div class="grid">
+      <section class="card c8">
+        <div class="chead"><h2>Your application so far</h2><span class="tag">{{clientRef}}</span></div>
+        <p class="hint">Everything Yale has recorded on your file. You cannot see any other client.</p>
+        <div class="list">
+          <sc-for list="{{timeline}}" as="t" hint-placeholder-count="5">
+            <div class="item">
+              <div class="rail" style="background:{{t.col}}"></div>
+              <div><div class="who">{{t.w}}</div><div class="meta">{{t.m}}</div></div>
+              <div class="chip {{t.cls}}">{{t.s}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <section class="card c4">
+        <div class="chead"><h2>Your consultant</h2><span class="tag">Brisbane</span></div>
+        <p class="hint">Who to contact about this file.</p>
+        <div class="list">
+          <sc-for list="{{people}}" as="p" hint-placeholder-count="2">
+            <div class="item">
+              <div class="rail" style="background:var(--accent)"></div>
+              <div><div class="who">{{p.n}}</div><div class="meta">{{p.r}}</div></div>
+              <div></div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <div class="foot">
+    <span><b>Sample data</b> — shaped from Yale's own register. Real client names are not shown.</span>
+    <span>Open matters exclude Granted, Refused and Withdrawn.</span>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"role":{"editor":"enum","options":["director","brisbane","townsville","client"],"default":"director","section":"View"},"stamp":{"editor":"text","default":"20 Aug, 4:15 pm","section":"View"}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { role: null }; }
+
+  data() {
+    return {
+      branches: [
+        { office:'Brisbane',   team:'Indian',   n:34 },
+        { office:'Brisbane',   team:'Filipino', n:41 },
+        { office:'Townsville', team:'Filipino', n:9  },
+        { office:'Townsville', team:'Indian',   n:6  }
+      ],
+      staff: [
+        { nm:'Rey', office:'Brisbane', n:26 }, { nm:'RJ', office:'Brisbane', n:22 },
+        { nm:'Priyanka', office:'Brisbane', n:15 }, { nm:'Inder', office:'Brisbane', n:12 },
+        { nm:'Star', office:'Townsville', n:9 }, { nm:'Cristelle', office:'Townsville', n:6 }
+      ],
+      quiet: [
+        { nm:'Client 109 · 491', who:'RJ', office:'Townsville', days:31, stage:'Documents pending' },
+        { nm:'Client 107 · 485', who:'RJ', office:'Brisbane', days:25, stage:'Documents pending' },
+        { nm:'Client 141 · 482', who:'Priyanka', office:'Brisbane', days:22, stage:'Documents pending' },
+        { nm:'Client 108 · 820/801', who:'Rey', office:'Brisbane', days:19, stage:'Documents pending' },
+        { nm:'Client 110 · 189', who:'Star', office:'Townsville', days:16, stage:'Documents pending' }
+      ],
+      expiry: [
+        { nm:'Client 118 · 485', who:'Rey', office:'Brisbane', left:6 },
+        { nm:'Client 126 · 500', who:'Priyanka', office:'Brisbane', left:14 },
+        { nm:'Client 102 · 482', who:'RJ', office:'Brisbane', left:23 },
+        { nm:'Client 149 · 407', who:'Star', office:'Townsville', left:38 }
+      ],
+      // internal date = legal - 2 (D-58). Both shown; the board works to the internal one.
+      s56: [
+        { nm:'Client 118', vis:'485', who:'Rey', office:'Brisbane',
+          internal:3, legal:5, letter:'14 Aug', days:28 },
+        { nm:'Client 141', vis:'482', who:'Priyanka', office:'Brisbane',
+          internal:9, legal:11, letter:'20 Aug', days:28 },
+        { nm:'Client 110', vis:'189', who:'Star', office:'Townsville',
+          internal:19, legal:21, letter:'30 Aug', days:28 }
+      ]
+    };
+  }
+
+  pick(r) { this.setState({ role: r }); }
+
+  renderVals() {
+    const D = this.data();
+    const role = this.state.role ?? this.props.role ?? 'director';
+    const VIEWS = {
+      director:   { office:null, label:'Robinder — Director',
+        note:'You are seeing every branch. Managers see only their own.' },
+      brisbane:   { office:'Brisbane', label:'Branch manager — Brisbane',
+        note:'Brisbane only. Townsville rows are not returned to this view.' },
+      townsville: { office:'Townsville', label:'Branch manager — Townsville',
+        note:'Townsville only. Brisbane rows are not returned to this view.' },
+      client:     { office:'__c', label:'Client portal — Client 118',
+        note:'A client sees their own matter and nothing else. No totals, no other names.' }
+    };
+    const view = VIEWS[role] || VIEWS.director;
+    const isClient = view.office === '__c';
+    const off = (isClient || !view.office) ? null : view.office;
+    const keep = r => !off || r.office === off;
+    const pct = (n, max) => (n / Math.max(max, 1) * 86) + '%';
+
+    const roles = [
+      ['director','Director'], ['brisbane','Brisbane manager'],
+      ['townsville','Townsville manager'], ['client','Client']
+    ].map(([k, label]) => ({ label, cls: role === k ? 'on' : '', pick: () => this.pick(k) }));
+
+    const branches = D.branches.filter(keep);
+    const staff    = D.staff.filter(keep);
+    const quiet    = D.quiet.filter(keep);
+    const expiry   = D.expiry.filter(keep);
+    const s56      = D.s56.filter(keep);
+    const openTot  = branches.reduce((a, b) => a + b.n, 0);
+    const bmax = Math.max(...branches.map(b => b.n), 1);
+    const smax = Math.max(...staff.map(s => s.n), 1);
+
+    const urgentExp = expiry.filter(x => x.left <= 14);
+    const coldest   = quiet.filter(q => q.days >= 21);
+    const s56Near   = s56.filter(d => d.internal <= 7);
+    const acts = [];
+    if (s56Near.length) acts.push({ c:'legal', n:s56Near.length,
+      t:'Section 56 due inside a week',
+      d:s56Near.map(d => d.nm + ' (' + d.internal + 'd internal)').join(' · ') });
+    if (urgentExp.length) acts.push({ c:'crit', n:urgentExp.length,
+      t:'Visa expiring within 14 days',
+      d:urgentExp.map(x => x.nm + ' (' + x.left + 'd)').join(' · ') });
+    if (coldest.length) acts.push({ c:'crit', n:coldest.length,
+      t:'No contact for 21 days or more',
+      d:coldest.map(q => q.nm.split(' · ')[0] + ' · ' + q.who).join(' · ') });
+
+    return {
+      stamp: this.props.stamp ?? '20 Aug, 4:15 pm',
+      roles, view, isClient, isStaff: !isClient,
+
+      acts,
+      actCount: acts.length ? acts.reduce((a, b) => a + b.n, 0) + ' items' : 'all clear',
+      kpis: [
+        { lab:'Open matters', val:openTot, sub: off ? off : 'across both offices', cls:'' },
+        { lab:'Section 56 live', val:s56.length, sub:'legal deadlines running',
+          cls: s56Near.length ? 'alert' : '' },
+        { lab:'Going quiet', val:quiet.length, sub:'no contact 14 days+',
+          cls: quiet.length ? 'alert' : '' },
+        { lab:'Expiring 60 days', val:expiry.length, sub:'visa expiry approaching',
+          cls: expiry.length ? 'warn' : '' }
+      ],
+      s56: s56.map(d => ({
+        nm:d.nm, vis:d.vis,
+        meta: d.who + ' · ' + d.office + ' · letter ' + d.letter + ' · ' + d.days + ' days allowed',
+        left: d.internal + 'd internal · ' + d.legal + 'd legal',
+        cls: d.internal <= 7 ? 'crit' : d.internal <= 14 ? 'warn' : 'good',
+        col: d.internal <= 7 ? 'var(--crit)' : d.internal <= 14 ? 'var(--warn)' : 'var(--good)'
+      })),
+      branchTag: branches.length + (branches.length === 1 ? ' team' : ' teams'),
+      branches: branches.map(b => ({
+        nm: b.office + ' · ' + b.team, n: b.n, w: pct(b.n, bmax),
+        col: b.team === 'Indian' ? 'var(--s1)' : 'var(--s2)'
+      })),
+      quiet: quiet.map(q => ({
+        nm:q.nm, meta:q.who + ' · ' + q.office + ' · ' + q.stage, days:q.days + ' days',
+        cls: q.days >= 21 ? 'crit' : 'warn',
+        col: q.days >= 21 ? 'var(--crit)' : 'var(--warn)'
+      })),
+      expiry: expiry.map(x => ({
+        nm:x.nm, meta:x.who + ' · ' + x.office, left:x.left + ' days',
+        cls: x.left <= 14 ? 'crit' : x.left <= 30 ? 'warn' : 'good',
+        col: x.left <= 14 ? 'var(--crit)' : x.left <= 30 ? 'var(--warn)' : 'var(--good)'
+      })),
+      staff: [...staff].sort((a, b) => b.n - a.n)
+        .map(s => ({ nm:s.nm, n:s.n, w: pct(s.n, smax) })),
+
+      // ── client ──
+      oweDue: '2 items outstanding · needed by 27 Aug',
+      owed: [
+        { nm:'Bank statements — last 3 months', hw:'PDF from your online banking. All pages.',
+          state:'Waiting', cls:'warn', col:'var(--warn)', path:'M10 6v4.5M10 13.6v.1' },
+        { nm:'Health insurance certificate', hw:'The certificate of currency, not the tax statement.',
+          state:'Waiting', cls:'warn', col:'var(--warn)', path:'M10 6v4.5M10 13.6v.1' },
+        { nm:'Passport bio page', hw:'Received 28 Jun 2026.',
+          state:'Received', cls:'good', col:'var(--good)', path:'M6.5 10.2l2.4 2.4 4.6-5' }
+      ],
+      nextStep: 'Once those two documents arrive, your agent reviews the file and lodges it with '
+              + 'the Department. We will email you the moment it is lodged.',
+      lastUpdate: '20 Aug 2026',
+      clientRef: 'Client 118',
+      clientKpis: [
+        { lab:'Your visa', val:'485', sub:'Temporary Graduate', cls:'' },
+        { lab:'Stage', val:'Documents pending', sub:'waiting on you', cls:'warn' },
+        { lab:'Documents', val:'10 of 12', sub:'2 still needed', cls:'warn' },
+        { lab:'Current visa expires', val:'6 days', sub:'renewal in progress', cls:'alert' }
+      ],
+      timeline: [
+        { w:'Checklist sent to you', m:'23 Jun 2026', s:'Done', cls:'good', col:'var(--good)' },
+        { w:'Passport and ID received', m:'28 Jun 2026', s:'Done', cls:'good', col:'var(--good)' },
+        { w:'Employment evidence received', m:'4 Jul 2026', s:'Done', cls:'good', col:'var(--good)' },
+        { w:'Financial and health documents', m:'2 items outstanding', s:'Waiting on you',
+          cls:'warn', col:'var(--warn)' },
+        { w:'Review by your agent', m:'starts when the file is complete', s:'Not started',
+          cls:'accent', col:'var(--rule-strong)' }
+      ],
+      people: [
+        { n:'Rey', r:'Assigned consultant' },
+        { n:'Robinder Pal Singh', r:'Registered Migration Agent · MARN 1573959' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
