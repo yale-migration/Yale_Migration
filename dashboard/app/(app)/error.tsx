@@ -15,7 +15,7 @@ import Link from 'next/link'
  */
 export default function Error({ reset }: { error: Error; reset: () => void }) {
   return (
-    <main className="max-w-[560px] mx-auto px-5 py-20">
+    <main id="main" className="max-w-[560px] mx-auto px-5 py-20">
       <div className="w-11 h-11 rounded-xl grid place-items-center mb-5"
            style={{ background: 'var(--crit-soft)' }}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">

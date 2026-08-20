@@ -4,6 +4,7 @@ import { getEnquiries, daysBetween, isLiveLead } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from '@/components/primitives'
 
+export const metadata = { title: 'Enquiries · Yale Migration' }
 export const dynamic = 'force-dynamic'
 
 export default async function EnquiriesPage(
@@ -28,7 +29,7 @@ export default async function EnquiriesPage(
   })
 
   return (
-    <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <Nav current="enquiries" as={sp.as} />
       <header className="my-4">
         <h1 className="text-[21px]">Enquiries</h1>

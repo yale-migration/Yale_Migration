@@ -8,6 +8,13 @@ import { StatTile, Card, Empty } from '@/components/primitives'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata(
+  { params }: { params: Promise<{ name: string }> },
+) {
+  const p = await params
+  return { title: `${decodeURIComponent(p.name)} · Yale Migration` }
+}
+
 /**
  * One consultant's caseload.
  *
@@ -39,7 +46,7 @@ export default async function ConsultantPage(
   const expiring = expiringSoon(matters, today)
 
   return (
-    <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <Nav current="clients" as={sp.as} />
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}

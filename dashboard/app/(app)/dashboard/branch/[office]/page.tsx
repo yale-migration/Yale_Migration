@@ -9,6 +9,13 @@ import { StatTile, Card, CardHead, Empty } from '@/components/primitives'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata(
+  { params }: { params: Promise<{ office: string }> },
+) {
+  const p = await params
+  return { title: `${decodeURIComponent(p.office)} · Yale Migration` }
+}
+
 /**
  * One branch, on its own.
  *
@@ -47,7 +54,7 @@ export default async function BranchPage(
   const o = outcomes(matters)
 
   return (
-    <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <Nav current="clients" as={sp.as} />
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}

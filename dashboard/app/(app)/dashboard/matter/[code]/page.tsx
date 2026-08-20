@@ -6,6 +6,20 @@ import { resolveViewer } from '@/lib/viewer'
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * ⚠️ The title is the client CODE, not their name. Staff work with several tabs
+ * open, and a browser tab, a shared screenshot or a printed page carrying a
+ * real client's name is PII leaving the app in a place nobody audits. The code
+ * identifies the file to the person who opened it and to nobody else.
+ */
+export async function generateMetadata(
+  { params }: { params: Promise<{ code: string }> },
+) {
+  const { code } = await params
+  return { title: `${decodeURIComponent(code)} · Yale Migration` }
+}
+
+
 const fmt = (d: string | null) =>
   d ? new Date(d + 'T00:00:00').toLocaleDateString('en-AU',
       { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
@@ -26,7 +40,7 @@ export default async function MatterPage(
   // would let anyone walk the client-code sequence and learn which are real.
   if (!viewer || !matter) {
     return (
-      <main className="max-w-[720px] mx-auto px-5 py-16">
+      <main id="main" className="max-w-[720px] mx-auto px-5 py-16">
         <Link href={back} className="text-[13px] font-medium">← Back to the board</Link>
         <h1 className="text-[24px] mt-6">That file is not available</h1>
         <p className="text-[14px] text-ink-2 mt-2 leading-relaxed">

@@ -9,6 +9,7 @@ import { Nav } from '@/components/nav'
 import { resolveViewer } from '@/lib/viewer'
 import { YaleMark } from '@/components/brand'
 
+export const metadata = { title: 'Practice Board · Yale Migration' }
 export const dynamic = 'force-dynamic'   // per-user data; never statically cached
 
 export default async function DashboardPage(
@@ -25,7 +26,7 @@ export default async function DashboardPage(
   // and give them the next move rather than a dead end.
   if (!viewer) {
     return (
-      <main className="min-h-dvh grid place-items-center px-6 py-16">
+      <main id="main" className="min-h-dvh grid place-items-center px-6 py-16">
         <div className="w-full max-w-[460px]">
           <YaleMark className="mb-9" />
           <div className="w-11 h-11 rounded-xl grid place-items-center mb-5"

@@ -4,6 +4,7 @@ import { getMatters } from '@/lib/data/matters'
 import { ClientSearch } from '@/components/client-search'
 import { Nav } from '@/components/nav'
 
+export const metadata = { title: 'Clients · Yale Migration' }
 export const dynamic = 'force-dynamic'
 
 export default async function ClientsPage(
@@ -20,7 +21,7 @@ export default async function ClientsPage(
   const matters = await getMatters(viewer)
 
   return (
-    <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <Nav current="clients" as={sp.as} />
       <header className="my-4">
         <h1 className="text-[21px]">Clients</h1>

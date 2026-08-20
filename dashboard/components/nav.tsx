@@ -9,9 +9,13 @@ export function Nav({ current, as }: { current: 'board' | 'clients' | 'enquiries
     ['clients', 'Clients', `/dashboard/clients${q}`],
     ['enquiries', 'Enquiries', `/dashboard/enquiries${q}`],
   ] as const
+  // Sticky: the board scrolls well past this, and losing the way back to
+  // Clients halfway down a list is how people start using the back button as
+  // navigation. print-hide because a printed page needs no nav.
   return (
-    <nav className="flex flex-wrap items-center gap-x-6 gap-y-3 justify-between
-                    pb-3.5 mb-1 border-b border-rule">
+    <nav className="sticky top-0 z-30 -mx-5 px-5 pt-4 pb-3.5 mb-1 flex flex-wrap items-center
+                    gap-x-6 gap-y-3 justify-between border-b border-rule
+                    bg-[var(--paper)]/95 backdrop-blur print-hide">
       <YaleMark />
       <div className="flex gap-1">
         {items.map(([key, label, href]) => (
