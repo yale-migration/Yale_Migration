@@ -14,13 +14,13 @@ const FORBIDDEN = new RegExp([
   'otp', `one${SEP}time`,
   '\\bpin\\b', `${SEP}pin${SEP}`,
   `security${SEP}question`, `secret${SEP}answer`,
-  'secret', 'token', 'credential', 'immiaccount',
+  'secret', 'token', 'credential', `immi${SEP}account`,
 ].join('|'), 'i')
 
 // Keep the test's copy honest — if the module's regex is edited and this is
 // not, the assertions below would be testing a regex nothing uses.
 const src = readFileSync(new URL('./columns.ts', import.meta.url), 'utf8')
-const inSync = ['passwd', 'pwd', 'immiaccount', 'credential', 'token'].every((t) => src.includes(t))
+const inSync = ['passwd', 'pwd', 'immi${SEP}account', 'credential', 'token'].every((t) => src.includes(t))
 
 let pass = 0, fail = 0
 const check = (label, ok) => { console.log((ok ? '  PASS  ' : '  FAIL  ') + label); ok ? pass++ : fail++ }

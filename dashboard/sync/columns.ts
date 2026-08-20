@@ -69,7 +69,7 @@ const FORBIDDEN = new RegExp(
     'otp', `one${SEP}time`,
     `\\bpin\\b`, `${SEP}pin${SEP}`,             // 'pin' alone is too broad to match bare
     `security${SEP}question`, `secret${SEP}answer`,
-    'secret', 'token', 'credential', 'immiaccount',
+    'secret', 'token', 'credential', `immi${SEP}account`,
   ].join('|'),
   'i',
 )
