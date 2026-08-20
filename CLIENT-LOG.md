@@ -577,3 +577,17 @@ access, never startable at any point in the engagement) · M7 2 h (their enquiry
 client files) · M11 1.1 h (OneDrive) · M9 0.5 h (a Make slot). 🔑 **Nothing is left that I can build
 alone.** Tomorrow's call with Robinder is now the entire critical path: every remaining hour unblocks
 there, and if it delivers, the MVP finishes inside about a week.
+
+2026-08-20 | internal | **🟢 PHASE 3 RLS VERIFIED AGAINST THE REAL DATABASE — 11/11.** Supabase
+project live on the client's own Google account (Sydney, Pro $25/mo). Schema + policies applied by
+pasting SQL, no CLI and **no personal access token** — that credential controls a whole Supabase
+account rather than one project, and it was never needed. **All 11 assertions passed**, including
+the one that matters most: *a client cannot see the matter sharing their email address.* Two seeded
+rows share an address on purpose, mirroring two real rows in their own list, so a policy written
+against `auth.email()` fails that check specifically. ⚠️ **Three attempts to get the verifier to
+run** — permission denied on a temp table, then the impersonated role could not see `pg_temp` at
+all. Both failures were in the harness; **the policies were never edited**. The fix was to stop
+fixing errors and remove temp tables from the design entirely. 🔑 Also caught by testing rather
+than reading: the sync's credential guard let `portal_pwd` and `user_name` through, because `\b`
+finds no boundary at an underscore — and sheet columns are named with underscores far more often
+than spaces. ⬜ The dashboard remains **unquoted Phase 3 work**.

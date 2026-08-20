@@ -147,6 +147,28 @@ prompt** (D-320) — that is how the check got defeated.
 | ~~—~~ | ✅ **M8 COMPLETE 18 Aug (D-339)** — stop-on-reply added, 32/32 | — | needs one script run |
 | **0** | 🟢 **CLIENT IMPORT — 38 rows ready, `build_master_import.py`.** Runs the moment Q9 lands and the demo rows come out | 1 | ⛔ **Q9 (A-20) only** |
 
+### 🟢 PHASE 3 DASHBOARD — RLS VERIFIED LIVE, 20 Aug
+
+Supabase project `rmvvlvjjebsskbhjxnap` (client-owned Google account, Sydney region, Pro).
+Schema and policies applied; **`02-verify-rls.sql` returned ALL 11 CHECKS PASSED against the real
+database.** Not a local simulation — the actual policies, on the actual project.
+
+The assertions that matter all held: a manager receives **zero** rows from the other branch, a
+logged-in user with no profile sees **nothing**, `anon` sees nothing, and — the one worth naming —
+**a client cannot see the matter that shares their email address.** Two seeded rows deliberately
+share one address, exactly as two rows in Yale's own list do, so a policy written against
+`auth.email()` instead of `client_code` fails that assertion and only that one.
+
+⚠️ **It took three attempts to get the verifier to run**, and every failure was in the harness, not
+the policies: a temp table the impersonated role could not write, then could not see. The policies
+themselves were never edited. The fix was to stop patching and remove temp tables from the design.
+
+⬜ Still open: the app has never been run against the live database · no profile rows exist yet
+(deliberate — signup is off, staff invite) · **the work is unquoted** · the company-vs-client-owned
+hosting question is unresolved.
+
+---
+
 ### ⛔ THE GO-LIVE GATE — nothing is activated until all FIVE are true
 
 | | Check | How |
