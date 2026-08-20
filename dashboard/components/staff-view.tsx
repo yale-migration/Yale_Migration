@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from './primitives'
 import { NeedsToday, type Action } from './needs-today'
 import { S56Card } from './s56-card'
@@ -63,6 +64,10 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
     const k = m.processing_stage ?? 'Not set'
     stageCount.set(k, (stageCount.get(k) ?? 0) + 1)
   }
+  const officeCount = new Map<string, number>()
+  for (const m of open) officeCount.set(m.office, (officeCount.get(m.office) ?? 0) + 1)
+  const offices = [...officeCount.entries()].sort((a, b) => b[1] - a[1])
+
   const byStage = [...stageCount.entries()].sort((a, b) => b[1] - a[1])
   const maxStage = Math.max(...byStage.map(([, n]) => n), 1)
 
@@ -80,6 +85,27 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
         <StatTile label="Expiring 60 days" value={expiring.length} sub="visa expiry approaching"
                   tone={expiring.length ? 'warn' : 'neutral'} />
       </div>
+
+      {/* 🔑 The five-times ask. A combined board answers "how is the practice";
+          it never answers "how is Townsville", which is the question he keeps
+          asking. Only rendered for someone who can see more than one branch —
+          a Brisbane manager does not need a link to the only branch they have. */}
+      {offices.length > 1 && (
+        <div className="flex flex-wrap gap-2 mb-3.5">
+          <span className="text-[11px] tracking-[.06em] uppercase text-ink-3 font-semibold
+                           self-center mr-1">Branches</span>
+          {offices.map(([office, n]) => (
+            <Link key={office}
+                  href={`/dashboard/branch/${encodeURIComponent(office)}${as ? `?as=${as}` : ''}`}
+                  className="inline-flex items-center gap-2 min-h-[38px] px-3.5 rounded-xl
+                             border border-rule bg-card text-[13px] font-medium
+                             hover:border-[var(--accent)] transition-colors">
+              {office}
+              <span className="text-ink-3 num">{n}</span>
+            </Link>
+          ))}
+        </div>
+      )}
 
       <div className="grid grid-cols-12 gap-3.5">
         <S56Card rows={s56} today={today} as={as} />
@@ -140,7 +166,9 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
           {staff.length === 0 ? <Empty>No open matters to assign.</Empty> : (
             <div className="flex flex-col gap-2.5">
               {staff.map(([name, n]) => (
-                <div key={name} className="grid grid-cols-[116px_1fr_34px] gap-2.5 items-center">
+                <Link key={name} href={`/dashboard/consultant/${encodeURIComponent(name)}${as ? `?as=${as}` : ''}`}
+                      className="grid grid-cols-[116px_1fr_34px] gap-2.5 items-center min-h-[36px]
+                                 -mx-1.5 px-1.5 rounded-md hover:bg-[var(--card-sunk)] transition-colors">
                   <div className={`text-[12.5px] truncate ${name === 'Unassigned' ? 'text-[var(--crit)] font-semibold' : 'text-ink-2'}`}>
                     {name}
                   </div>

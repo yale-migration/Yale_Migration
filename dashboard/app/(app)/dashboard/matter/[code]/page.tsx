@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { getMatter, getMatterS56, daysBetween, isOpen } from '@/lib/data/matters'
 import { Card, CardHead, Chip, Row, StatTile, type Tone } from '@/components/primitives'
+import { S56Ladder } from '@/components/s56-ladder'
 import { resolveViewer } from '@/lib/viewer'
 
 export const dynamic = 'force-dynamic'
@@ -125,6 +126,7 @@ export default async function MatterPage(
                       “{d.deadline_sentence}”
                     </p>
                   )}
+                  <S56Ladder d={d} today={today} />
                   {d.needs_review && (
                     <p className="text-[12px] text-[var(--crit)] font-medium mt-2">
                       Flagged for review — check this against the letter before acting on it.
