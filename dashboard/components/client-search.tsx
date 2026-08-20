@@ -18,7 +18,7 @@ import { daysBetween } from '@/lib/data/derive'
  * is convenience, not access control — the list never contains a row RLS did
  * not return, so a filter cannot leak one.
  */
-export type ClientFilter = 'all' | 'open' | 'owing' | 'quiet' | 'expiring' | 's56'
+export type ClientFilter = 'all' | 'open' | 'owing' | 'quiet' | 'expiring'
 
 export function ClientSearch({ matters, as, initial = 'all', today = new Date() }: {
   matters: Matter[]; as?: string; initial?: ClientFilter; today?: Date
@@ -88,7 +88,9 @@ export function ClientSearch({ matters, as, initial = 'all', today = new Date() 
           />
         </div>
         <select value={office} onChange={(e) => setOffice(e.target.value)} aria-label="Office"
-          className="min-h-[44px] px-3 rounded-xl border border-rule bg-card text-[13.5px]">
+          className="min-h-[44px] px-3 rounded-xl border border-rule bg-card text-[14px]
+                     focus:outline-none focus:border-[var(--accent)]
+                     focus:ring-4 focus:ring-[var(--accent)]/10">
           <option value="all">All offices</option>
           {offices.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
@@ -97,7 +99,8 @@ export function ClientSearch({ matters, as, initial = 'all', today = new Date() 
              ['quiet','Going quiet'],['expiring','Expiring']] as const).map(([k, label]) => (
             <button key={k} type="button" onClick={() => setOnly(k)} aria-pressed={only === k}
               className={`text-[13px] px-3 min-h-[44px] rounded-lg whitespace-nowrap
-                ${only === k ? 'bg-card text-accent font-semibold shadow-card' : 'text-ink-2'}`}>
+                ${only === k ? 'bg-card text-accent font-semibold shadow-card'
+                            : 'text-ink-2 hover:text-ink font-medium'}`}>
               {label}
             </button>
           ))}
@@ -116,7 +119,7 @@ export function ClientSearch({ matters, as, initial = 'all', today = new Date() 
             No client matches {q ? <>“<b className="text-ink">{q}</b>”</> : 'these filters'}
             {office !== 'all' && <> in {office}</>}
             {only !== 'all' && <> ({({open:'open matters', owing:'owing documents',
-              quiet:'gone quiet', expiring:'expiring soon', s56:'with a deadline', all:''})[only]})</>}.
+              quiet:'gone quiet', expiring:'expiring soon', all:''})[only]})</>}.
             {' '}Try clearing a filter.
           </p>
         ) : shown.map((m) => (

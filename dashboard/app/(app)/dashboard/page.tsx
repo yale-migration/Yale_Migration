@@ -67,15 +67,20 @@ export default async function DashboardPage(
     { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' })
 
   return (
-    <main className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
-      {viewer.role !== 'client' && <Nav current="board" as={sp.as} />}
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+      {viewer.role !== 'client' && <Nav current="board" as={sp.as} live={isLive()} />}
       <header className="flex flex-wrap gap-4 items-end justify-between pb-4 border-b border-rule">
         <div>
-          <h1 className="text-[21px]">Practice Board</h1>
+          <h1 className="text-[24px]">Practice Board</h1>
           <p className="text-[12.5px] text-ink-3 mt-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--good)]
                              shadow-[0_0_0_3px_var(--good-soft)]" aria-hidden="true" />
-            {isLive() ? 'Live from the client register' : 'Sample data — no real client shown'}
+            {/* ⚠️ Was "Live from the client register" whenever a database was
+                connected — over seven invented people, because the live project
+                currently holds only demo rows. "Is that my client?" would have
+                had an embarrassing answer. It now describes the SOURCE, and the
+                sync is not scheduled yet, so it does not claim freshness. */}
+            {isLive() ? 'From the client register' : 'Sample data — no real client shown'}
             {' · updated '}{stamp}
           </p>
         </div>
@@ -86,9 +91,11 @@ export default async function DashboardPage(
         )}
       </header>
 
-      <p className="mt-3.5 px-3.5 py-2.5 rounded-lg text-[12.5px]
-                    bg-[var(--accent-soft)] text-[var(--accent)]">
-        <b className="font-semibold">{viewer.displayName}</b>
+      {/* Demoted from a full-width filled strip. It was the only saturated
+          block above the fold and it explained the ACCESS MODEL rather than the
+          practice — scaffolding, sitting above the thing that needs you today. */}
+      <p className="mt-3 text-[12.5px] text-ink-3">
+        <b className="font-semibold text-ink-2">{viewer.displayName}</b>
         {' · '}
         {viewer.role === 'director'
           ? 'You are seeing every branch. Managers see only their own.'
@@ -98,7 +105,7 @@ export default async function DashboardPage(
       </p>
 
       {viewer.role === 'client'
-        ? <ClientView matter={matters[0] ?? null} today={today} />
+        ? <ClientView matter={matters[0] ?? null} today={today} live={isLive()} />
         : <StaffView matters={matters} s56={s56} enquiries={enquiries}
                      viewer={viewer} today={today} as={sp.as} />}
 

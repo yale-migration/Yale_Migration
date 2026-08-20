@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
+import { isLive } from '@/lib/supabase/config'
 import { getMatters, getS56Deadlines, getEnquiries,
          goingQuiet, expiringSoon, isOpen, outcomes } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
@@ -55,10 +56,10 @@ export default async function BranchPage(
 
   return (
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
-      <Nav current="clients" as={sp.as} />
+      <Nav current="clients" as={sp.as} live={isLive()} />
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}
-              className="text-[13px] font-medium">← Board</Link>
+              className="text-[13px] font-medium text-accent hover:underline underline-offset-4">← Board</Link>
         <h1 className="text-[24px] mt-1.5">{office}</h1>
         <p className="text-[12.5px] text-ink-3 mt-1">
           {matters.length} {matters.length === 1 ? 'matter' : 'matters'} on file in this branch.
@@ -74,7 +75,7 @@ export default async function BranchPage(
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 mb-4">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 mb-4">
             <StatTile label="Open matters" value={open.length} sub="excludes decided" />
             <StatTile label="Section 56" value={s56.length} sub="legal deadlines"
                       tone={s56.length ? 'crit' : 'neutral'} />

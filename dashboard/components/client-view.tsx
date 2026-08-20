@@ -1,4 +1,5 @@
-import { Card, CardHead, Chip, Row, StatTile } from './primitives'
+import { Card, CardHead, Row, StatTile } from './primitives'
+import { SignOut } from './sign-out'
 import type { Matter } from '@/lib/data/types'
 import { daysBetween } from '@/lib/data/matters'
 
@@ -22,7 +23,9 @@ import { daysBetween } from '@/lib/data/matters'
  * letter in hand. A date appearing unannounced on a portal is how a client
  * panics — or acts on it themselves.
  */
-export function ClientView({ matter, today }: { matter: Matter | null; today: Date }) {
+export function ClientView({ matter, today, live = false }: {
+  matter: Matter | null; today: Date; live?: boolean
+}) {
   // Reachable if staff link a login to a code that later closes. Say something
   // human, not "no rows".
   if (!matter) {
@@ -82,6 +85,27 @@ export function ClientView({ matter, today }: { matter: Matter | null; today: Da
         </section>
       )}
 
+      {/* 🔑 The shared demo carries these two buttons and the app did not, so a
+          client shown the demo would have found the real thing could do less.
+          Both are mailto/tel — honest about what they are. ⛔ Deliberately NOT
+          an upload button: the app does not write, and offering a control that
+          silently does nothing is worse than not offering it. */}
+      <div className="flex flex-wrap gap-2.5 mt-3.5">
+        <a href={`mailto:info@yalemigration.com.au?subject=${encodeURIComponent(
+              `Documents for ${matter.client_code}`)}`}
+           className="flex-1 min-w-[170px] min-h-[48px] flex items-center justify-center
+                      rounded-xl text-white font-semibold text-[14.5px]"
+           style={{ background: 'var(--accent)' }}>
+          Email my documents
+        </a>
+        <a href="tel:+61405268738"
+           className="flex-1 min-w-[170px] min-h-[48px] flex items-center justify-center
+                      rounded-xl border border-rule-strong bg-card text-accent
+                      font-semibold text-[14.5px]">
+          Call Yale
+        </a>
+      </div>
+
       <div className="rounded-card border border-rule bg-card p-4 mt-3.5">
         <h3 className="text-[14px]">What happens next</h3>
         <p className="text-[13px] text-ink-2 mt-1">
@@ -94,7 +118,7 @@ export function ClientView({ matter, today }: { matter: Matter | null; today: Da
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 my-3.5">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 my-3.5">
         <StatTile label="Your visa" value={matter.visa_type ?? '—'} sub={matter.client_code} />
         <StatTile label="Stage" value={matter.processing_stage ?? '—'}
                   sub={owed.length ? 'waiting on you' : 'with your agent'}
@@ -110,6 +134,13 @@ export function ClientView({ matter, today }: { matter: Matter | null; today: Da
         )}
       </div>
 
+      {/* A client may open this on a shared or borrowed machine. */}
+      {live && (
+        <div className="flex justify-end mb-2 -mt-1">
+          <SignOut live={live} />
+        </div>
+      )}
+
       <Card>
         <CardHead title="Your consultant" tag={matter.office}
                   hint="Who to contact about this file." />
@@ -119,6 +150,34 @@ export function ClientView({ matter, today }: { matter: Matter | null; today: Da
             registered agent is responsible for their matter. */}
         <Row tone="accent" title="Robinder Pal Singh"
              meta="Registered Migration Agent · MARN 1573959" />
+        {/* ⚠️ Rows, not inline text. As links inside a paragraph these were 15px
+            tall — a phone number you cannot reliably tap is decoration, and the
+            client reading this is almost certainly on a phone. */}
+        <div className="mt-3 pt-3 border-t border-rule flex flex-col">
+          <a href="mailto:info@yalemigration.com.au"
+             className="min-h-[44px] flex items-center gap-2.5 text-[13.5px] font-medium
+                        -mx-1.5 px-1.5 rounded-md hover:bg-[var(--card-sunk)]">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+                 className="text-ink-3 shrink-0">
+              <rect x="2" y="4.5" width="16" height="11" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+              <path d="M2.8 5.8L10 11l7.2-5.2" stroke="currentColor" strokeWidth="1.5"
+                    strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            info@yalemigration.com.au
+          </a>
+          <a href="tel:+61405268738"
+             className="min-h-[44px] flex items-center gap-2.5 text-[13.5px] font-medium
+                        -mx-1.5 px-1.5 rounded-md hover:bg-[var(--card-sunk)]">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+                 className="text-ink-3 shrink-0">
+              <path d="M4.5 3.5h3l1.2 3-1.8 1.3a10 10 0 004.3 4.3l1.3-1.8 3 1.2v3a1.5 1.5 0 01-1.7 1.5
+                       A13 13 0 013 5.2 1.5 1.5 0 014.5 3.5z"
+                    stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+            </svg>
+            0405 268 738
+          </a>
+          <p className="text-[12px] text-ink-3 mt-1.5">Monday to Friday, 9am – 5:30pm</p>
+        </div>
       </Card>
     </>
   )

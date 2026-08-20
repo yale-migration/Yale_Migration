@@ -49,7 +49,11 @@
       --good:#199e70; --warn:#c98500; --crit:#e07067;
       --good-soft:#10231c; --warn-soft:#241d0c; --crit-soft:#2a1513;
       --s1:#3987e5; --s2:#d95926; --s3:#199e70;
-      --navy:#e8eef6; --navy-2:#c3d2e4; --gold:#d8a45f; --gold-soft:#2a2113;
+      /* ⛔ --navy and --gold are NOT inverted. They paint a fixed dark panel
+         that always carries white text; flipping them made the login hero
+         near-white with invisible copy. Only --gold-soft moves, because it is
+         used as a tint behind icons on the themed surface. */
+      --gold-soft:#2a2113;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
       color-scheme: dark;
     }
@@ -73,7 +77,9 @@
     body { background: #fff; }
     .print-hide { display: none !important; }
     a[href]::after { content: ""; }        /* no URL clutter beside every link */
-    section, div { break-inside: avoid; }  /* never split a client card across pages */
+    /* ⚠️ Was `section, div` — applied to EVERY div, which blows a printed
+       matter file across mostly-empty pages. Cards only. */
+    section { break-inside: avoid; }
   }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
 }

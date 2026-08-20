@@ -35,9 +35,10 @@ export function NeedsToday({ actions }: { actions: Action[] }) {
             <div>
               <div className="text-[13.5px] font-semibold">Nothing needs chasing</div>
               {/* Says what was checked. "All clear" alone is not trustworthy. */}
+              {/* ⚠️ Previously listed three checks as though all three had run.
+                  Only the ones with a live data source are claimed. */}
               <div className="text-xs text-ink-3 mt-0.5">
-                No Section 56 deadline inside a week, no visa expiring within 14 days,
-                and no open file left quiet for 21 days.
+                Nothing on this board is overdue against the dates it holds.
               </div>
             </div>
           </div>

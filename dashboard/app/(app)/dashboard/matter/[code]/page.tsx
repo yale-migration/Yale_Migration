@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getMatter, getMatterS56, daysBetween, isOpen } from '@/lib/data/matters'
+import { getMatter, getMatterS56, daysBetween, isOpen, fmtDate as fmt } from '@/lib/data/matters'
 import { Card, CardHead, Chip, Row, StatTile, type Tone } from '@/components/primitives'
 import { S56Ladder } from '@/components/s56-ladder'
 import { resolveViewer } from '@/lib/viewer'
@@ -20,9 +20,6 @@ export async function generateMetadata(
 }
 
 
-const fmt = (d: string | null) =>
-  d ? new Date(d + 'T00:00:00').toLocaleDateString('en-AU',
-      { day: 'numeric', month: 'short', year: 'numeric' }) : '—'
 
 export default async function MatterPage(
   { params, searchParams }:
@@ -41,7 +38,7 @@ export default async function MatterPage(
   if (!viewer || !matter) {
     return (
       <main id="main" className="max-w-[720px] mx-auto px-5 py-16">
-        <Link href={back} className="text-[13px] font-medium">← Back to the board</Link>
+        <Link href={back} className="text-[13px] font-medium text-accent hover:underline underline-offset-4">← Back to the board</Link>
         <h1 className="text-[24px] mt-6">That file is not available</h1>
         <p className="text-[14px] text-ink-2 mt-2 leading-relaxed">
           Either it does not exist, or it is not one you have access to. If you believe you should
@@ -64,9 +61,9 @@ export default async function MatterPage(
     quietDays === null ? 'neutral' : quietDays >= 21 ? 'crit' : quietDays > 14 ? 'warn' : 'neutral'
 
   return (
-    <main className="max-w-[1000px] mx-auto px-5 pt-5 pb-16">
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <Link href={back}
-            className="text-[13px] font-medium inline-flex items-center gap-1.5 min-h-[44px]">
+            className="text-[13px] font-medium text-accent hover:underline underline-offset-4 inline-flex items-center gap-1.5 min-h-[44px]">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M10 3.5L5.5 8 10 12.5" stroke="currentColor" strokeWidth="1.6"
                 strokeLinecap="round" strokeLinejoin="round" />
@@ -76,7 +73,7 @@ export default async function MatterPage(
 
       <header className="pb-4 mt-1 border-b border-rule">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="text-[26px]">{matter.full_name}</h1>
+          <h1 className="text-[24px]">{matter.full_name}</h1>
           <span className="text-[13px] text-ink-3 num">{matter.client_code}</span>
           {!open && <Chip tone="neutral">{matter.visa_outcome}</Chip>}
         </div>
@@ -91,7 +88,7 @@ export default async function MatterPage(
         </p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 my-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 my-4">
         <StatTile label="Stage" value={matter.processing_stage ?? '—'}
                   sub={open ? 'open matter' : 'closed'} />
         <StatTile label="Documents"

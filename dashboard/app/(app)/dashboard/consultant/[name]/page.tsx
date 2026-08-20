@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
+import { isLive } from '@/lib/supabase/config'
 import { getMatters, goingQuiet, expiringSoon, isOpen } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { ClientSearch } from '@/components/client-search'
@@ -47,10 +48,10 @@ export default async function ConsultantPage(
 
   return (
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
-      <Nav current="clients" as={sp.as} />
+      <Nav current="clients" as={sp.as} live={isLive()} />
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}
-              className="text-[13px] font-medium">← Board</Link>
+              className="text-[13px] font-medium text-accent hover:underline underline-offset-4">← Board</Link>
         <h1 className={`text-[24px] mt-1.5 ${unassigned ? 'text-[var(--crit)]' : ''}`}>
           {unassigned ? 'Unassigned files' : name}
         </h1>
@@ -68,7 +69,7 @@ export default async function ConsultantPage(
         </Empty></Card>
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 mb-4">
             <StatTile label="Open matters" value={open.length} sub="excludes decided" />
             <StatTile label="Going quiet" value={quiet.length} sub="14 days+"
                       tone={quiet.length ? 'crit' : 'neutral'} />

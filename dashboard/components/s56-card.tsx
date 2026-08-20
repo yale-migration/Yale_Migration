@@ -1,6 +1,6 @@
 import { Card, CardHead, Chip, Row, Empty, type Tone } from './primitives'
 import type { S56Deadline } from '@/lib/data/types'
-import { daysBetween } from '@/lib/data/matters'
+import { daysBetween, fmtDate } from '@/lib/data/matters'
 
 /**
  * Section 56 deadlines — the highest-consequence card on the board.
@@ -29,7 +29,13 @@ export function S56Card({ rows, today, as }: {
         hint="Miss one and the Department decides on what it already has, without asking again. Internal dates run two days ahead of the legal date."
       />
       {rows.length === 0 ? (
-        <Empty>No Section 56 requests are open. Nothing is running against a Department clock.</Empty>
+        <Empty>
+          {/* ⚠️ Was "Nothing is running against a Department clock." Nothing
+              extracts s56 letters yet — that sentence stated "we are not
+              looking" as "there is nothing there", about legal deadlines. */}
+          No Section 56 requests have been recorded here yet. Deadlines appear once
+          Department email is being read — they are not detected automatically today.
+        </Empty>
       ) : (
         <div className="flex flex-col">
           {rows.map((d) => {
@@ -58,13 +64,14 @@ export function S56Card({ rows, today, as }: {
                 meta={
                   <>
                     {d.office}
-                    {d.letter_date && ` · letter ${d.letter_date}`}
+                    {d.letter_date && ` · letter ${fmtDate(d.letter_date)}`}
                     {/* parsed from the letter, never assumed */}
                     {d.days_allowed != null && ` · ${d.days_allowed} days allowed`}
                     {d.needs_review && ' · NEEDS REVIEW'}
                   </>
                 }
-                chip={<Chip tone={internal === null ? 'crit' : tone}>{label}</Chip>}
+                chip={<Chip tone={internal === null ? 'crit' : tone}
+                           solid={internal !== null && internal < 0}>{label}</Chip>}
               />
             )
           })}

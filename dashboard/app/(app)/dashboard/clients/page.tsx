@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
+import { isLive } from '@/lib/supabase/config'
 import { getMatters } from '@/lib/data/matters'
 import { ClientSearch, type ClientFilter } from '@/components/client-search'
 import { Nav } from '@/components/nav'
@@ -27,9 +28,9 @@ export default async function ClientsPage(
 
   return (
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
-      <Nav current="clients" as={sp.as} />
+      <Nav current="clients" as={sp.as} live={isLive()} />
       <header className="my-4">
-        <h1 className="text-[21px]">Clients</h1>
+        <h1 className="text-[24px]">Clients</h1>
         <p className="text-[12.5px] text-ink-3 mt-1">
           {viewer.role === 'director'
             ? 'Every branch.'

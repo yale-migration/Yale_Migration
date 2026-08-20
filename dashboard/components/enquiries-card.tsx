@@ -1,4 +1,4 @@
-import { Card, CardHead, Chip, Row, Empty, type Tone } from './primitives'
+import { Card, CardHead, Chip, Row, Empty, Owner, type Tone } from './primitives'
 import type { Enquiry } from '@/lib/data/types'
 import { daysBetween, isLiveLead } from '@/lib/data/matters'
 
@@ -19,7 +19,7 @@ export function EnquiriesCard({ rows, today }: { rows: Enquiry[]; today: Date })
       <CardHead title="New enquiries" tag="last 7 days"
                 hint="From the enquiry log. Follow-up runs on their own 7 then 30 day cadence." />
       <div className="flex items-baseline gap-2.5 mb-3.5">
-        <b className="font-serif text-[34px] leading-none num">{week.length}</b>
+        <b className="font-serif text-[28px] leading-none num">{week.length}</b>
         <span className="text-[12.5px] text-ink-3">this week · {rows.length} in the log</span>
         {overdue.length > 0 && <Chip tone="crit">{overdue.length} follow-up overdue</Chip>}
       </div>
@@ -34,10 +34,12 @@ export function EnquiriesCard({ rows, today }: { rows: Enquiry[]; today: Date })
                // in their own log are exactly that, and dropping them would
                // under-report the pipeline to the person judging it.
                title={e.name ?? e.phone ?? 'No name or number recorded'}
-               meta={`${e.channel ?? 'unknown channel'}${e.visa_interest ? ` · ${e.visa_interest}` : ''} · ${e.office ?? 'no office'} · ${e.assigned_to ?? 'Unassigned'}`}
+               meta={<>{e.channel ?? '—'}{e.visa_interest ? ` · ${e.visa_interest}` : ''} · {e.office ?? '—'} · <Owner value={e.assigned_to} /></>}
+               // Matches the enquiries page: a live lead reads green there and
+               // read grey here, two clicks apart, for the same status.
                chip={dueIn !== null && dueIn > 0
                  ? <Chip tone="crit">{dueIn}d overdue</Chip>
-                 : <Chip tone="neutral">{e.status ?? '—'}</Chip>} />
+                 : <Chip tone={isLiveLead(e) ? 'good' : 'neutral'}>{e.status ?? '—'}</Chip>} />
         )
       })}
     </Card>

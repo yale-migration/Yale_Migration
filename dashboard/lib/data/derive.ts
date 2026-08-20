@@ -95,3 +95,14 @@ export function ladderFor(d: Pick<S56Deadline, 'letter_date' | 'days_allowed'>, 
     pct: Math.min(100, Math.max(0, (elapsed / allowed) * 100)),
   }
 }
+
+/**
+ * The ONE date format. Four different shapes were rendering at once, including
+ * raw ISO strings straight out of the column, on a board a practice owner reads.
+ */
+export function fmtDate(d: string | null | undefined): string {
+  if (!d) return '—'
+  const dt = new Date(d.length <= 10 ? d + 'T00:00:00' : d)
+  if (Number.isNaN(dt.getTime())) return '—'
+  return dt.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+}

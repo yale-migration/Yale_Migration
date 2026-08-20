@@ -9,7 +9,7 @@ export default function NotFound() {
       </p>
       <Link href="/dashboard"
         className="inline-flex items-center min-h-[46px] px-5 mt-6 rounded-xl text-white
-                   font-semibold text-[14.5px]" style={{ background: 'var(--accent)' }}>
+                   font-semibold text-[14.5px] transition-opacity hover:opacity-90" style={{ background: 'var(--accent)' }}>
         Back to the board
       </Link>
     </main>

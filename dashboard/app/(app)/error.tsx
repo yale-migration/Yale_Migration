@@ -31,13 +31,14 @@ export default function Error({ reset }: { error: Error; reset: () => void }) {
       </p>
       <div className="flex flex-wrap gap-2.5 mt-6">
         <button onClick={reset}
-          className="min-h-[46px] px-5 rounded-xl text-white font-semibold text-[14.5px]"
+          className="min-h-[46px] px-5 rounded-xl text-white font-semibold text-[14.5px] transition-opacity hover:opacity-90 active:opacity-80"
           style={{ background: 'var(--accent)' }}>
           Try again
         </button>
         <Link href="/dashboard"
           className="min-h-[46px] px-5 rounded-xl border border-rule-strong bg-card
-                     text-accent font-semibold text-[14.5px] flex items-center">
+                     text-accent font-semibold text-[14.5px] flex items-center
+                     transition-colors hover:bg-[var(--card-sunk)]">
           Back to the board
         </Link>
       </div>

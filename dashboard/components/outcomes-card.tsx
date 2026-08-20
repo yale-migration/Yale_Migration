@@ -21,7 +21,7 @@ export function OutcomesCard({ matters }: { matters: Matter[] }) {
       ) : (
         <>
           <div className="flex items-baseline gap-2.5 mb-3.5">
-            <b className="font-serif text-[34px] leading-none num">{o.rate}%</b>
+            <b className="font-serif text-[28px] leading-none num">{o.rate}%</b>
             <span className="text-[12.5px] text-ink-3">
               granted · {o.decided} decided
             </span>

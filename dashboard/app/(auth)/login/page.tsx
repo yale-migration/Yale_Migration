@@ -22,7 +22,14 @@ export default function LoginPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        // 🔴 Without this, ANY address that touched this form got a working
+        // account. Signup is disabled in config.toml, but that governs the
+        // dashboard's own signup flow — not signInWithOtp, which happily
+        // creates a user. Staff invite people; the form does not.
+        shouldCreateUser: false,
+      },
     })
     // 🔴 ALWAYS reports "sent", even for an address we have never seen.
     // Distinguishing them turns this form into an oracle that confirms whether
@@ -72,7 +79,7 @@ export default function LoginPage() {
       </p>
 
       <form onSubmit={send} className="mt-7 flex flex-col gap-2.5">
-        <label htmlFor="email" className="text-[13px] font-medium">Email address</label>
+        <label htmlFor="email" className="text-[13px] font-medium text-accent hover:underline underline-offset-4">Email address</label>
         <input
           id="email" type="email" required autoComplete="email" inputMode="email"
           autoFocus value={email} onChange={(e) => setEmail(e.target.value)}

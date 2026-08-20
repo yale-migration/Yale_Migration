@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from './primitives'
+import { Card, CardHead, Chip, Row, Empty, StatTile, Owner, type Tone } from './primitives'
 import { NeedsToday, type Action } from './needs-today'
 import { S56Card } from './s56-card'
 import { goingQuiet, expiringSoon, isOpen, daysBetween } from '@/lib/data/matters'
@@ -25,6 +25,9 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
 
   const open = matters.filter(isOpen)
   const quiet = goingQuiet(matters, today)
+  // 🔴 Counted, not hidden. A file with no contact date is not a quiet file —
+  // it is a file nobody can tell about, which is worse.
+  const noContactDate = open.filter((m) => !m.last_contact).length
   const expiring = expiringSoon(matters, today)
   const s56Near = s56.filter((d) => {
     const left = d.due_date_internal ? -(daysBetween(d.due_date_internal, today) ?? 0) : null
@@ -128,12 +131,24 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
           <CardHead title="Going quiet" tag="oldest first"
                     hint="Open files with no contact for over 14 days." />
           {quiet.length === 0 ? (
-            <Empty>Nobody has gone quiet. Every open file has been contacted in the last 14 days.</Empty>
+            <Empty>
+              {/* 🔴 Was "Every open file has been contacted in the last 14 days."
+                  goingQuiet SKIPS rows with a null last_contact, and in the real
+                  import that is 0 of 38 rows populated — so the reassuring
+                  sentence would have been printed over a practice where nothing
+                  was known. Same defect already fixed once in the Sheet version. */}
+              No open file has a contact date older than 14 days.
+              {noContactDate > 0 && (
+                <> <b className="text-[var(--crit)]">{noContactDate} file
+                {noContactDate === 1 ? ' has' : 's have'} no contact date recorded at all</b> and
+                cannot be checked.</>
+              )}
+            </Empty>
           ) : quiet.map(({ m, days }) => {
             const tone: Tone = days >= 21 ? 'crit' : 'warn'
             return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
                         title={`${m.full_name} · ${m.visa_type ?? '—'}`}
-                        meta={`${m.consultant ?? 'Unassigned'} · ${m.office} · ${m.processing_stage ?? '—'}`}
+                        meta={<>{<Owner value={m.consultant} />} · {m.office} · {m.processing_stage ?? '—'}</>}
                         chip={<Chip tone={tone}>{days} days</Chip>} />
           })}
         </Card>
@@ -148,9 +163,9 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
             const tone: Tone = left < 0 ? 'crit' : left <= 14 ? 'crit' : left <= 30 ? 'warn' : 'good'
             return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
                         title={`${m.full_name} · ${m.visa_type ?? '—'}`}
-                        meta={`${m.consultant ?? 'Unassigned'} · ${m.office}`}
-                        chip={<Chip tone={tone}>
-                          {left < 0 ? `EXPIRED ${Math.abs(left)}d ago` : `${left} days`}
+                        meta={<>{<Owner value={m.consultant} />} · {m.office}</>}
+                        chip={<Chip tone={tone} solid={left < 0}>
+                          {left < 0 ? `Expired ${Math.abs(left)}d ago` : `${left} days`}
                         </Chip>} />
           })}
         </Card>
@@ -189,7 +204,7 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
                   <div className="h-[9px] bg-card-sunk rounded-[5px] overflow-hidden shadow-[inset_0_0_0_1px_var(--rule)]">
                     <div className="h-full rounded-[5px]"
                          style={{ width: `${(n / maxLoad) * 86}%`,
-                                  background: name === 'Unassigned' ? 'var(--crit)' : 'var(--s1)' }} />
+                                  background: name === 'Unassigned' ? 'var(--crit)' : 'var(--accent)' }} />
                   </div>
                   <div className="text-[13px] font-semibold text-right num">{n}</div>
                 </Link>

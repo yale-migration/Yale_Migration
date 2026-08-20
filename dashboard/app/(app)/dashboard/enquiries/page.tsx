@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
-import { getEnquiries, daysBetween, isLiveLead } from '@/lib/data/matters'
+import { isLive } from '@/lib/supabase/config'
+import { getEnquiries, daysBetween, isLiveLead, fmtDate } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from '@/components/primitives'
 
@@ -30,16 +31,16 @@ export default async function EnquiriesPage(
 
   return (
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
-      <Nav current="enquiries" as={sp.as} />
+      <Nav current="enquiries" as={sp.as} live={isLive()} />
       <header className="my-4">
-        <h1 className="text-[21px]">Enquiries</h1>
+        <h1 className="text-[24px]">Enquiries</h1>
         <p className="text-[12.5px] text-ink-3 mt-1">
           Leads, not clients. Follow-up runs on their own cadence — within 7 days, then again
           after 30 — and stops the moment a reply is logged.
         </p>
       </header>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-2.5 mb-4">
         <StatTile label="This week" value={week.length} sub="new enquiries" />
         <StatTile label="Live leads" value={live.length} sub="still being worked" />
         <StatTile label="Follow-up overdue" value={overdue.length} sub="past their due date"
@@ -58,7 +59,7 @@ export default async function EnquiriesPage(
           return (
             <Row key={e.id} tone={tone}
                  title={e.name ?? e.phone ?? 'No name or number recorded'}
-                 meta={`${e.enquiry_date ?? 'no date'} · ${e.channel ?? 'unknown channel'}${
+                 meta={`${fmtDate(e.enquiry_date)} · ${e.channel ?? '—'}${
                    e.visa_interest ? ` · ${e.visa_interest}` : ''} · ${e.office ?? 'no office'} · ${
                    e.assigned_to ?? 'Unassigned'}`}
                  chip={isOver ? <Chip tone="crit">{dueIn}d overdue</Chip>

@@ -45,9 +45,16 @@ export function CardHead({ title, tag, hint }: { title: string; tag?: string; hi
   )
 }
 
-export function Chip({ tone, children }: { tone: Tone; children: ReactNode }) {
+export function Chip({ tone, children, solid = false }: {
+  tone: Tone; children: ReactNode
+  /** Past a legal deadline. Solid fill, so it cannot be mistaken for "soon". */
+  solid?: boolean
+}) {
+  const style = solid
+    ? `text-white ${TONE_RAIL[tone]}`
+    : `${TONE_BG[tone]} ${TONE_FG[tone]}`
   return (
-    <span className={`text-[11.5px] font-semibold px-2.5 py-[3px] rounded-full whitespace-nowrap ${TONE_BG[tone]} ${TONE_FG[tone]}`}>
+    <span className={`text-[11.5px] font-semibold px-2.5 py-[3px] rounded-full whitespace-nowrap ${style}`}>
       {children}
     </span>
   )
@@ -144,4 +151,16 @@ export function StatTile({ label, value, sub, tone = 'neutral', href }: {
       {body}
     </Link>
   )
+}
+
+/**
+ * Who owns this file. ONE rendering, everywhere.
+ *
+ * "Unassigned" was red and bold in the client list, on the matter page and in
+ * the workload bars — and plain grey in Going quiet and Expiring, which are
+ * exactly the cards where an unowned file is the finding rather than a detail.
+ */
+export function Owner({ value }: { value: string | null | undefined }) {
+  if (value) return <>{value}</>
+  return <span className="text-[var(--crit)] font-semibold">Unassigned</span>
 }
