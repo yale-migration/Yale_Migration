@@ -144,6 +144,50 @@ function preflightGoLive() {
            noVisa.length + ' without one — M4 cannot choose a checklist');
 
   Logger.log('');
+  Logger.log('');
+  Logger.log('=== 4b · 🔴 THE TWO BASELINES AND THE TRIGGERS ===');
+  //
+  // Added 20 Aug. The written go-live gate in WHERE-WE-STAND has six items; this
+  // script checked ONE of them. That is the exact failure this file was created to
+  // end (D-323): an instruction that lives in a document nobody opens at go-live.
+  // Turning the remaining CHECKABLE ones into checks is the whole point of the file.
+  //
+  // Items 2 (Make scheduling), 3 (OneDrive account) and 4 (a date from Robinder) stay
+  // human — Apps Script cannot see Make or read Robinder's mind. Items 5 and 6 can be
+  // checked from right here, so they are.
+
+  if (typeof IMPORT_BASELINE === 'undefined') {
+    advisory('IMPORT_BASELINE is readable', false,
+             'm5_dormant_detector.gs is not in this project — cannot check it');
+  } else {
+    blocker('IMPORT_BASELINE is set (M5a)', String(IMPORT_BASELINE).trim() !== '',
+            'EMPTY → every imported row is treated as a NEW intake and flags dormant on '
+          + 'day 3, and M4 route C drafts a chase email for each one. Set it to the '
+          + 'import date, yyyy-MM-dd.');
+  }
+  if (typeof M8_BASELINE === 'undefined') {
+    advisory('M8_BASELINE is readable', false,
+             'm8_lead_followup.gs is not in this project — cannot check it');
+  } else {
+    blocker('M8_BASELINE is set (M8)', String(M8_BASELINE).trim() !== '',
+            'EMPTY → all 621 imported enquiries read as lapsed on day one. Set it to the '
+          + 'enquiry-import date, yyyy-MM-dd.');
+  }
+
+  // ⚠️ The scripts are useless unattended if nothing fires them. "It is built" and
+  // "it runs" are different facts — M8 sat COMPLETE in the repo for a day while its
+  // .gs had never been pasted into the project at all.
+  try {
+    var have = {};
+    ScriptApp.getProjectTriggers().forEach(function (t) { have[t.getHandlerFunction()] = true; });
+    ['updateFollowUps', 'updateEnquiryFollowUps'].forEach(function (fn) {
+      blocker('a trigger exists for ' + fn + '()', !!have[fn],
+              'NOT SCHEDULED — it will only ever run when somebody remembers to press Run');
+    });
+  } catch (e) {
+    advisory('triggers could be read', false, e.message);
+  }
+
   Logger.log('=== 5 · TABS — anything here we did not put here? ===');
   // `Sheet4` sat in this workbook for weeks and nobody had opened it. It IS empty
   // (checked 18 Aug) — but "probably empty" was a conclusion nobody had earned, and
