@@ -14,6 +14,18 @@
     --good:#1baf7a; --warn:#eda100; --crit:#c9453b;
     --good-soft:#e6f6ef; --warn-soft:#fdf3dd; --crit-soft:#fbeae8;
     --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+
+    /* ── Yale brand, for the surfaces a CLIENT sees first ──────────────────
+       yalemigration.com.au reads navy + warm gold on white, with the line
+       "Your Future. Our Expertise. Limitless Opportunities."
+       ⚠️ Their site does not publish hex values, so these are matched by eye
+       from the live site — close, not exact. Get the real ones off Robinder's
+       logo file before this goes in front of clients; a brand colour that is
+       nearly right looks worse than one that is obviously different. */
+    --navy:      #10243f;
+    --navy-2:    #1c3a5e;
+    --gold:      #b8893b;
+    --gold-soft: #f5ecdc;
     --shadow:0 1px 2px rgba(20,26,30,.05), 0 8px 24px -12px rgba(20,26,30,.12);
     --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
     --r:10px;
@@ -29,6 +41,7 @@
       --good:#199e70; --warn:#c98500; --crit:#e07067;
       --good-soft:#10231c; --warn-soft:#241d0c; --crit-soft:#2a1513;
       --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+      --navy:#e8eef6; --navy-2:#c3d2e4; --gold:#d8a45f; --gold-soft:#2a2113;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
       color-scheme: dark;
     }

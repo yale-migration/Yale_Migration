@@ -6,6 +6,7 @@ import { DEMO_VIEWERS } from '@/lib/data/fixtures'
 import { StaffView } from '@/components/staff-view'
 import { ClientView } from '@/components/client-view'
 import { DemoSwitcher } from '@/components/demo-switcher'
+import { YaleMark } from '@/components/brand'
 import type { Viewer, Role, Office } from '@/lib/data/types'
 
 export const dynamic = 'force-dynamic'   // per-user data; never statically cached
@@ -48,14 +49,43 @@ export default async function DashboardPage(
   const viewer = await resolveViewer(sp)
   const today = new Date()
 
+  // ⚠️ A REAL CLIENT CAN LAND HERE — invited, signed in, not yet linked. The
+  // first version was one line of grey text on an empty page, which reads as a
+  // broken app. It is not broken: it is the system correctly refusing to show
+  // anything until a human decides what this person may see. Say that, warmly,
+  // and give them the next move rather than a dead end.
   if (!viewer) {
     return (
-      <main className="max-w-2xl mx-auto px-5 py-16">
-        <h1 className="text-xl">Your account is not linked yet</h1>
-        <p className="text-[13px] text-ink-2 mt-2">
-          You are signed in, but nobody has connected this login to a file or a branch yet.
-          Your Yale consultant can do that. Nothing is shown until they do.
-        </p>
+      <main className="min-h-dvh grid place-items-center px-6 py-16">
+        <div className="w-full max-w-[460px]">
+          <YaleMark className="mb-9" />
+          <div className="w-11 h-11 rounded-xl grid place-items-center mb-5"
+               style={{ background: 'var(--gold-soft)' }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3.5l7.5 3.2v5c0 4.4-3.1 7.6-7.5 8.8-4.4-1.2-7.5-4.4-7.5-8.8v-5L12 3.5z"
+                    stroke="var(--gold)" strokeWidth="1.7" strokeLinejoin="round" />
+              <path d="M12 10.5v3.2M12 16.4v.1" stroke="var(--gold)" strokeWidth="1.8"
+                    strokeLinecap="round" />
+            </svg>
+          </div>
+          <h1 className="text-[26px] leading-tight">You are signed in</h1>
+          <p className="text-[14.5px] text-ink-2 mt-3 leading-relaxed">
+            Your account is not connected to a file yet. Nothing is shown until one of our
+            consultants links it — that is deliberate, so nobody ever sees a matter that is
+            not theirs.
+          </p>
+          <div className="mt-6 rounded-card border border-rule bg-card p-4">
+            <h2 className="text-[14px]">What to do</h2>
+            <p className="text-[13px] text-ink-2 mt-1.5">
+              Reply to the email that invited you, or call us on
+              {' '}<a href="tel:+61405268738" className="font-medium">0405 268 738</a>. Mention
+              the address you signed in with and we will connect it straight away.
+            </p>
+          </div>
+          <p className="text-[12px] text-ink-3 mt-8 pt-5 border-t border-rule">
+            Yale Migration and Education Consultants · Robinder Pal Singh, MARN 1573959
+          </p>
+        </div>
       </main>
     )
   }
