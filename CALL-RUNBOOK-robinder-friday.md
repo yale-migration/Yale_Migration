@@ -1,4 +1,6 @@
-# 📞 CALL RUNBOOK — Robinder, Friday 21 Aug 2026
+# 📞 CALL RUNBOOK — Robinder
+**Prepared for Friday 21 Aug 2026 · content refreshed 21 Aug after RJ answered everything.**
+⚠️ If the call has moved to Saturday 22nd, nothing here changes except the word "today".
 
 **Purpose:** a 30-second progress opener, then **three setup items done live** while Robinder
 screen-shares, then the dashboard demo if there is time. **You read, he clicks.**
@@ -27,50 +29,65 @@ task. Item 3 is the one with a genuine unknown, so it goes last with time to spa
 
 # ⓪ FIRST — WHERE THE BUILD IS. Say this before you ask him for anything.
 
-**Why this goes first:** you are about to ask him for five things. If you ask before you show, it
-sounds like the project is stuck. If you show first, the same five asks sound like *the last five
-steps*. Same words, completely different call.
+**Why this goes first:** you are about to ask him for several things. If you ask before you show, it
+sounds like the project is stuck. If you show first, the same asks sound like *the last few steps*.
+Same words, completely different call.
 
 ## The 30-second version — say it in Roman Urdu, in this order
 
-> *"Sir, build ka kaam taqreeban ho chuka hai. Nau modules bane hain aur test ho chuke hain. Do abhi
-> roz chal rahe hain, baaqi tayyar hain lekin band hain — is liye ke woh aapki cheezon ka intezaar
-> kar rahe hain. Jo kaam bacha hai woh sirf **saadhe baarah ghante** ka hai, aur us ka **har ghanta**
-> aap ki taraf se aane wali paanch cheezon par ruka hua hai. Aaj woh paanch cheezein le lein, to
-> kaam khatam."*
+> *"Sir, build ka kaam taqreeban ho chuka hai. Nau modules ban chuke hain aur test ho chuke hain.
+> Aaj aap ki team ne saari cheezein clear kar di hain — checklist confirm ho gayi, unka enquiry form
+> mil gaya, aur jo data chahiye tha woh aa gaya. **Ab jo bhi ruka hua hai, woh sirf aap ke paas hai.**
+> Chaar cheezein — Meta, WhatsApp, OneDrive, aur Make ka plan. Ye chaar mil jayein to kaam khatam."*
 
 ⛔ **Never say a percentage.** "68% built" invites *"so what is the other 32%?"* — and the honest
-answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say **five
+answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say **four
 things**. Hours are a promise; percentages are an argument.
+
+## 🎉 What changed today, and it is the best news of the project
+
+RJ answered everything. **The checklist confirmation landed — so M4, the checklist engine, is
+unblocked.** That was the single input deciding whether the most-tested thing we have built was
+allowed to run at all, and it had been sitting unanswered since 21 July.
+
+He also gave us their enquiry form, told us there is no website form and no walk-in sheet, named
+three clients for testing, sent the **186 checklist**, and offered to write **600 and Citizenship**
+too. Say this to Robinder — it is a compliment to his team and it is true.
 
 ## What is actually true, so you can answer any follow-up
 
-
-|                                 |                                                                 |
-| ------------------------------- | --------------------------------------------------------------- |
-| Built and test-proven           | **9 modules** — M1 M2 M3 M4a M4b M5a M5b M8 M9, plus half of M7 |
-| Running against live data today | **2** — the dormancy check and the lead follow-up, both daily   |
-| Contracted work remaining       | **12.6 hours**                                                  |
-| Of that, waiting on Robinder    | **12.6 hours — all of it**                                      |
-| Waiting on us                   | **zero**                                                        |
-
+| | |
+|---|---|
+| Built and test-proven | **9 modules** — M1 M2 M3 M4a M4b M5a M5b M8 M9, plus half of M7 |
+| Running against live data today | **2** — the dormancy check and the lead follow-up, both daily |
+| Contracted work remaining | **~10.6 hours** (was 12.6 — two of M6's four channels turned out not to exist) |
+| Waiting on **Robinder** | **~5.6 hours** |
+| Waiting on **his team** | **2 hours**, already asked this morning |
+| Waiting on **us** | **zero** |
 
 🔑 **That last row is the whole point of the call.** There is nothing left that we can unblock from
-our side. Not "mostly waiting" — *entirely* waiting.
+our side.
 
-## The five things, and exactly what each one releases
+## The four things, and exactly what each one releases
 
+| # | What you need from him | Where | Releases | Live after |
+|---|---|---|---|---|
+| 1 | **Meta — Facebook + Instagram access** | § ① | **M6, 3 h.** An enquiry from a Facebook or Instagram ad lands in the sheet by itself | ~2 days after access |
+| 2 | **WhatsApp Business verification status** | § ② | **M6's WhatsApp channel, 1 h.** ⚠️ **The longest lead time of anything left on this project** — the Engagement Letter said start it *"right away"* and 28+ days have passed | days to weeks |
+| 3 | **OneDrive onto a Yale account** | § ③ | **M11 handover, 1.1 h** + unblocks C-2. Right now the folder automation runs on *our* personal login, which has to change before go-live regardless | same day he does it |
+| 4 | **A Make scenario slot** (paid plan) | § ④-2 | **M9, 0.5 h.** Email triage + Section 56 deadlines. Built and proven, but the free plan allows only 2 running scenarios and the folder automation already uses both | immediately |
 
-| #   | What you need from him                 | Where in this runbook | Releases                                                                                                                                     | Live after           |
-| --- | -------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| 1   | **Meta / Facebook + Instagram access** | § ①                   | **M6 — 7 h.** Enquiry capture: an enquiry from a Facebook or Instagram ad lands in the sheet by itself                                       | ~2 days after access |
-| 2   | **Their Client Enquiry Form**          | § ④ item 3-ish / C-1  | **M7 — 2 h.** The phone-intake half we could not build, because we will not invent their questions                                           | same week            |
-| 3   | **2–3 real client files**              | § ④ item 3            | **M10 — 2 h.** End-to-end testing on real data instead of invented rows                                                                      | same week            |
-| 4   | **OneDrive onto a Yale account**       | § ③                   | **M11 — 1.1 h.** Handover. Right now the folder automation runs on *our* personal login — this has to change before go-live regardless       | same day he does it  |
-| 5   | **A Make scenario slot** (paid plan)   | § ④ item 2-ish        | **M9 — 0.5 h.** Email triage + Section 56 deadlines. Built and proven; the free plan allows 2 running scenarios and folders already use both | immediately          |
+**Plus three that cost no hours but block go-live:** **Gopi's email/team/visa line** (④-8), the
+**row 28 spelling** (④-4b), and a **go-live date** (④-2).
 
+## ⚠️ Two things on OUR side that must be done before import — do not promise a date without them
 
-
+Say nothing about these unless he asks how soon we can import. They are ours, they are half an hour
+each, and they are already logged:
+1. **`Citizenship` is missing from the sheet's visa-type list**, so two clients in the import would
+   be rejected outright. Same class of bug as Gopi's dropdown.
+2. **The 190 checklist may never have been uploaded** to the folder the system copies from — and
+   there is a 190 client in the import.
 
 ### If he asks *"to phir go-live kab?"*
 

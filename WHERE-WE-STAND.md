@@ -1,5 +1,6 @@
 # WHERE WE STAND — 21 Aug 2026
 **The one file to read after a context reset.** Position, gaps, resume point.
+🗣 **Talking to the client instead of to a machine? Read `MVP-STATUS-simple.md`** — same facts, plain words.
 `STATUS.md` is history only. `DECISIONS-INDEX.md` → `DECISIONS.md` is why.
 
 ---
