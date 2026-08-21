@@ -120,12 +120,31 @@ is the whole story — nine modules are built and tested, and almost none of the
 |---|---|---|
 | **Built and test-proven** | M1 M2 M3 M4a M4b M5a M5b M8 M9, and half of M7 | ~68% |
 | **Actually executing against live data** | M5a + M8 daily triggers, nothing else | ~20% |
-| **Remaining contracted work** | **12.6 h** | |
-| **Of that, blocked on the client** | **12.6 h — all of it** | 🔴 100% |
+| **Remaining contracted work** | **~10.6 h** | ⬇ from 12.6 — **M6 SHRANK**, see below |
+| **Of that, still blocked on the client** | **~7.6 h** | 🔴 72% |
+| **Unblocked today (21 Aug)** | **~3 h**, plus 2 h of scope that vanished | 🎉 |
 
-**Nothing on the remaining list is blocked on engineering.** M6 7h (Meta/WhatsApp access, never
-asked for) · M7 2h (their own enquiry form) · M10 2h (2–3 real client files) · M11 1.1h (OneDrive on
-a Yale account) · M9 0.5h (a Make scenario slot). ▶ **`INPUTS-REGISTER.md`** is the authority.
+🔑 **M6 got SMALLER, not just less blocked.** Two of its four enquiry channels turn out not to
+exist — RJ confirmed *"none"* for both the website form (I-5) and the walk-in sheet (I-6). That is
+~2 h of work we will now never do, rather than 2 h we were waiting to start. **An input closing as
+"there is no such thing" is the cheapest possible answer** and we had it logged as a blocker for a
+month.
+
+**Nothing on the remaining list is blocked on engineering.** Recounted 21 Aug against the register —
+**24 inputs: 9 closed · 9 open-but-harmless · 6 genuinely blocking.**
+
+| Still blocking | h | Owner |
+|---|---|---|
+| **I-3** Meta — Facebook + Instagram page access | 3.0 | Robinder · call ① |
+| **I-4** WhatsApp Business verification | 1.0 | Robinder · call ② — **longest lead time of anything left** |
+| **I-9** the 3 test clients' visa type, email, 485 authority | 2.0 | RJ — names given, details asked |
+| **I-8** OneDrive onto a Yale account | 1.1 | Robinder · call ③ |
+| **I-21** a Make scenario slot + the ops to run it | 0.5 | Robinder · call ④ |
+| **I-24** GOPI's email, team, visa line | — | Robinder · call ④-8. Zero hours, but a **go-live defect** |
+| | **~7.6** | |
+
+🔑 **Five of the six are Robinder's, and every one of them is on today's call.** ⛔ **Do not send the
+team another list — they have now answered everything they can.** ▶ **`INPUTS-REGISTER.md`** is the authority.
 
 ⛔ **Do not read "68% built" to the client as progress.** Built-and-off is worth nothing to them.
 The honest sentence is: *the build is nearly done and it is waiting on five things from your side.*
