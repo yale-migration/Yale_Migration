@@ -5839,3 +5839,153 @@ header — an unauthenticated public sync endpoint is a free way to hammer the d
 Also decided at the same time: `S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST` **deliberately exclude TRN,
 Application ID and File Number.** They identify a person to the Department, the dashboard never needs
 them to show a deadline, and a web-facing copy buys nothing and risks a lot.
+
+## D-350 | The checklist confirmation we had been chasing for two weeks was a confirmation of a NUMBER
+
+**21 Aug 2026.** I-13 was the single input gating whether M4 could be switched on: *"one line
+confirming these are the versions your team currently uses."* RJ answered it —
+*"all the checklists are currently in used"* — and M4 is unblocked.
+
+**Then I re-read what we actually asked.** `GUIDE-how-the-system-works.md:59` says *"The system
+chooses from **23 of your own checklists**"*. It gives a count. **It never names one.** The guide
+went out on 19 Aug and no list of filenames has ever been sent to Yale.
+
+So he confirmed that 23 documents he had not seen are current. He answered in good faith and the
+answer is worth having, but **it cannot mean what the question needed it to mean.** The risk the
+question existed to retire — *a client receives an outdated document list under an RMA's name* —
+is retired only if he looked at the documents.
+
+**Fixed the same day, not deferred:** the 21 Aug reply carries the breakdown — 485 × 8, 500 × 5,
+482 × 1, and one each of 407 · 417 · 189 · 190 · 491 · 494 · 802 · 101 · 820/801 — with *"I asked
+you to confirm 23 checklists without actually showing you which 23. That wasn't a fair thing to
+ask."* Owning it costs one sentence and makes the second confirmation worth something.
+
+🔑 **The rule.** This is the same shape as `onerror:Ignore` reporting SUCCESS on a total write
+failure, the verifier announcing *"every deadline matches"* after checking zero, and views 1–3
+reading ✅ because the tracker and the component shared a word (D-348). **A check that passes for
+the wrong reason.** Here it wore its best disguise yet: a real human, answering a real question,
+truthfully — about a set they could not see. **When a client confirms a quantity, ask what they
+were shown. An answer is only as good as the thing it was given about.**
+
+## D-351 | We addressed the client by a colleague's name for two weeks, and nobody corrected us
+
+**21 Aug 2026.** Every message since ~14 Aug opened *"Hi Rey,"*. The draft was even filed as
+`DRAFT-2026-08-19-rey-guide-email.md`. He signs **Reyward Jake Gamol**, his display name is
+**RJ YALE Philippines**, and he writes from `philippines@yalemigration.com.au`.
+
+`ACCESS.md`'s roster — which we transcribed ourselves on 15 Aug — lists them as two people:
+
+| | Team | Lines | Mailbox |
+|---|---|---|---|
+| **RJ** | Filipino | 189 · 190 · 491 · 482 · 494 · 186 | `philippines@` |
+| **Rey** | Filipino | Student · graduate · partner | `reynaldo@` |
+
+Confirmed by RJ on 21 Aug when asked neutrally: **Rey = Reynaldo Sombilon · RJ = Reyward Jake
+Gamol.** Two different people, and both are already correct in MASTER's consultant dropdown.
+
+**Why it went unseen.** The evidence was in a file we wrote, in a column we filled in. Nothing ever
+compared the roster against the greeting, because no process reads a salutation. And he never
+corrected us — which is the normal, polite thing to do and is exactly why it survived.
+
+**How it was caught:** auditing his reply for something else entirely, noticing that the client
+list said *"rows 22 and 23, both **RJ's**"* while our email said *"Hi **Rey**"*, and checking the
+roster. The question was then put to him as *"my list has RJ and Rey as two separate names — are
+these two different people?"* — a real question about the dashboard, not an apology, so he answers
+the useful part and nobody has an awkward moment.
+
+⚠️ **The second-order cost was the real one.** `Assigned Consultant` is a locked dropdown holding
+both names. Had we assigned RJ's clients to "Rey", the director's dashboard would have shown one
+consultant's caseload under a colleague's name — a silent attribution error in the exact view built
+to answer *"who is handling what"*. **A name is a foreign key. Getting it wrong is a data defect,
+not a courtesy defect.**
+
+## D-352 | Their answer dissolved three of our own open questions, and we nearly missed it
+
+**21 Aug 2026.** RJ answered a question with a question:
+
+> *"The clients mentioned in the lodgement sheet are already being processed, and we have already
+> shared the checklist with them. Will the system send the checklist to them again?"*
+
+**Verified before answering**, because this one had to be right. M4's live trigger is
+`A exist AND V exist AND V ≠ NEEDS ROUTING AND Y notexist`, and the email module is
+`google-email:ActionCreateDraft` on both routes. So: **nothing is ever sent** — a human opens the
+draft in `visa.lodgement@` and clicks Send — and **column Y is a permanent done-marker**.
+
+But on import all 38 arrive with Y blank, so M4 *would* run: **28 checklists filed, 19 drafts
+raised** (measured by running `build_master_import.py`, not estimated). His instinct was right.
+
+**Decided: pre-stamp `Checklist Filed` for all 38 at import.** They still get a folder and still
+appear on the dashboard; the checklist step is simply off for them. From client 39 it runs normally.
+Same mechanism as `IMPORT_BASELINE` and `M8_BASELINE` (D-322) — *the system did not exist when this
+work was done, so it must not act as though it did.* Third time that pattern has been needed; it is
+now the house move for any historical import.
+
+🔑 **The part worth keeping.** Column D `Party 2 Name` and column X `Skills Authority` feed **only**
+M4's checklist selection. Switch M4 off for the 38 and **both stop mattering for them.** That
+retires, at a stroke:
+
+- **I-16 / A-28** — *"is anyone else on the application?"*, returned 0 of 41, our loudest open ask
+- **I-10** — the four 485 assessing authorities
+
+Neither is closed; both are **downgraded to a go-forward data-entry rule** for new clients. Our
+biggest remaining data request was dissolved by the client's own answer to a different question —
+and only because we traced which columns actually consume those fields before replying. **Answer
+the question they asked, then check what else their answer changes. It is frequently more than they
+realise, and always more than you assumed.**
+
+## D-353 | 🔴 `Citizenship` is not in MASTER's dropdown, and the import contains two of them
+
+**21 Aug 2026 — found because RJ offered to write a Citizenship checklist.**
+
+`MASTER_DROPDOWNS[8]` (column H, Visa Type) holds 23 values and **`Citizenship` is not among them**.
+The column is built with `setAllowInvalid(false)`. The import CSV carries the client's raw value
+through untouched — `build_master_import.py:209` writes `vt` whether or not it is in `MAPPED`.
+
+Visa spread of the 38, from the tool: `500`×20 · `482`×6 · `485`×4 · **`Citizenship`×2** · `600`×1 ·
+**`PARTNER VISA`×1** · `186`×1 · `190`×1 · `491`×1 · `ART`×1.
+
+**Three rows would be rejected on import day** — two `Citizenship`, one `PARTNER VISA` — with the
+cell refusing the value and no explanation offered to whoever is doing the paste.
+
+🔑 **This is the third appearance of one bug.** `setup_master_sheet.gs:58` already carries the
+comment *"SBS + Nomination added 2 Aug (D-138) … `setAllowInvalid(false)` below would have REJECTED
+them — every sponsorship matter was a dead end."* Then GOPI (A-33/I-24), same mechanism on the
+consultant column. Now `Citizenship`. **A locked dropdown is a schema, and we have never once
+validated the import against it.**
+
+**Fix:** add `Citizenship` to column H; normalise `PARTNER VISA → 820/801` in the importer rather
+than relying on the client editing the cell; and add a **pre-import validation pass** that checks
+every value destined for a locked column against that column's own list. The third occurrence is
+where you stop fixing instances and fix the class.
+
+⛔ **Not raised with RJ.** It is our defect, on our side, and telling him would be noise.
+
+## D-354 | The coverage check verifies our repo, not the folder M4 actually reads from
+
+**21 Aug 2026 — caught while re-verifying a sentence in a client email, not by any test.**
+
+The 21 Aug draft to RJ said *"the 23 checklists sit in one OneDrive folder"*. Checking it against a
+primary source before sending (G1): **there is no record that `190_SKILLED-NOMINATED.docx` was ever
+uploaded.** D-280 (11 Aug) names the upload as one of *"two manual steps remaining"*; D-325 (18 Aug)
+did the second step — the CHECKLIST MAP rows — and nothing anywhere records the first being done.
+So the folder most likely holds **22**, not 23.
+
+**And there is a 190 client in the 38-row import.**
+
+🔴 **The check that should have caught this passes for the wrong reason.** D-325 added a coverage
+cross-check to `verify_blueprints.py` — *"router ⊆ map, **every mapped file exists on disk**"*. On
+disk **in our repository**. M4 does not read our repository. It reads
+`/drives/A0BABA3C2640082C/items/…78266e65…:/<filename>:/copy` — the OneDrive folder
+`INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS` (D-248). The verifier proves the file exists in the
+one place M4 will never look.
+
+**What a 190 client gets today:** the router accepts 190, the MAP resolves the filename, Graph
+returns 404, `onerror` writes *"AUTO: checklist copy FAILED"* into Notes and `Ignore`s the bundle —
+so **column Y is never stamped and the row retries on every single run, forever**, burning ops and
+filing nothing.
+
+**Fix before go-live:** list the folder's children over the API, reconcile against `MANIFEST.json`,
+upload whatever is missing, and make **that** the coverage check. **Verify the artefact where the
+consumer reads it, never where the producer left it.**
+
+**The email was corrected before sending** — the count was removed rather than guessed at.

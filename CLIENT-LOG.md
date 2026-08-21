@@ -655,3 +655,89 @@ three asks — so five requests read as *the last five steps* rather than as *th
 ⛔ It says hours, never a percentage: "68% built" invites *"what is the other 32%?"*, whose honest
 answer is *nothing, it is waiting on you* — which sounds like blame. **12.6 hours, five things.**
 Demo goes LAST in the call: the access items have days of lead time and the demo has none.
+
+2026-08-21 | RJ (IN + OUT ×2) | 🎉 **THE CHECKLIST CONFIRMATION LANDED — M4 IS UNBLOCKED.** RJ replied
+to the 19 Aug guide email: *"all the checklists are currently in used."* That was **I-13**, the one
+input gating whether the checklist engine could run at all, logged as a kick-off checklist item on
+21 July and **never chased once** until the guide went out. Six inputs closed in one morning
+(I-5 · I-6 · I-13 · I-14 · I-17 · I-18 · I-19) and two downgraded (I-10 · I-16). **The team's side is
+now essentially clear — everything left belongs to Robinder.**
+
+**He asked two questions back, and the second was the important one.** *"The clients mentioned in the
+lodgement sheet are already being processed, and we have already shared the checklist with them. Will
+the system send the checklist to them again?"* Verified before answering rather than after: M4's live
+trigger is `A exist AND V exist AND Y notexist`, and both email modules are
+`google-email:ActionCreateDraft` — **nothing is ever sent, a human clicks Send.** But on import all 38
+arrive with Y blank, so M4 *would* have run: **28 checklists filed and 19 drafts raised**, measured by
+running the importer rather than estimated. His instinct was right. → pre-stamp all 38 (**D-352**).
+
+🔑 **That decision then dissolved our two loudest data asks.** `Party 2 Name` and `Skills Authority`
+feed *only* M4's checklist selection; switch M4 off for the 38 and neither matters for them. **A-28
+(dependants, returned 0 of 41) and the four 485 authorities stop blocking the import** and become a
+go-forward data-entry rule. Our biggest outstanding request was retired by the client's answer to a
+different question — found only by tracing which columns actually consume those fields.
+
+**His other question — can checklists be updated when immigration changes something —** has a good
+answer, and it was verified in the blueprint before it was given: M4 copies **by filename** from
+`INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS`, so replacing a file in place and keeping the name
+means the next client gets the new version with no developer involved. Renaming, or adding a new visa
+line, needs a change from us (D-285).
+
+⚠️ **D-350 — the confirmation was of a NUMBER, not a LIST.** The guide only ever said *"23 of your own
+checklists"* and never named one, so he confirmed 23 documents he had not seen. Answered in good
+faith; cannot mean what the question needed it to mean. **Corrected the same day** — the reply carries
+the full breakdown with *"I asked you to confirm 23 checklists without actually showing you which 23.
+That wasn't a fair thing to ask."* Same family as `onerror:Ignore` and D-348, in its best disguise yet.
+
+🔴 **D-351 — RJ IS NOT REY, and we had been using the wrong name since ~14 Aug.** He signs *Reyward
+Jake Gamol*, writes from `philippines@`, and our own roster — transcribed by us on 15 Aug — lists
+**Rey** as a different consultant on `reynaldo@`. Confirmed by him: *Rey = Reynaldo Sombilon, RJ =
+Reyward Jake Gamol.* He never corrected us. Asked neutrally as a dropdown question so he answers the
+useful part without an awkward moment. **Both names are already correct in MASTER**, but the
+attribution risk was real: assigning RJ's clients to "Rey" would have shown one consultant's caseload
+under a colleague's name, in the exact view built to answer *who is handling what*.
+
+**Also received / answered today:**
+- ✅ **The 186 checklist** — `UPDATED 186 VISA CHECKLISTS.pdf`, opened and read (G8). Yale letterhead,
+  **one document**, employer + applicant + both fee tables, no bank details, no client PII. Companion
+  `EMPLOYEE DETAILS.docx` and a Form 80 came with it — both **blank templates**, verified. 186 re-priced
+  1.5h → **1.0h**: the real document has one variant, not the two we assumed.
+- 🟢 **He offered to write 600 and Citizenship too.** With 186 in hand that leaves only **ART** of
+  CR-013's four. ⛔ The content arriving does not make the plumbing free — quote unchanged in principle,
+  now **7.5h / USD 262.50**, and it goes to Robinder, never to RJ.
+- ✅ **The Client Enquiry Form** — public `/viewform` link, and **read**: `INQUIRY FORM YALE MIGRATION
+  PINOY`, 9 questions pulled from the form's own payload rather than guessed. **C-1 unblocked.** Three
+  fields (Age, Work Experience, Course completed) have no ENQUIRIES column → Notes, not new columns
+  (A-32). Titled *PINOY* — asked whether Brisbane/Indian has its own form.
+- ✅ **No website form. No walk-in sheet.** *"none"* to both — not gaps to fill, channels that don't exist.
+- ✅ **`Bne.skilled@` and `migrate@` are both Robinder's.**
+- ✅ **`REYWARD JAKE M GAMOL-2026` is live but personal** — *"I am the only one using it."* **The 247
+  stay out of MASTER**; pre-engagement people should not have a folder or a client record. ⚠️ Logged as
+  **P2-10**: a consultant's private list being invisible to the director *is* the multi-branch
+  oversight problem, arriving from the other direction. Not raised with him — Robinder's conversation.
+- 🟡 **Three real client files for M10** — one 500, one 485, one 482. 🔴 **None is on `LODGEMENT: JULY
+  TO PRESENT`** (checked tab by tab), so none is in the 38-row import. Reframed as a **pilot of three**
+  run end to end before the other 35 move; their visa type, email and the 485's authority requested.
+- 🟠 **Follow-up Email and SMS templates do not exist** — *"that is what we need to do and we need to
+  have."* Email wording offered (same register as the checklist/chase drafts we already author, RMA
+  approves). ⛔ **SMS needs a paid gateway** — no provider, no quote, no connection. **CR-015 / P2-09.**
+  The `SMS` value in the Source dropdown records where a lead came from; it is not a send path.
+- 🟠 **Row 28 spelling deferred to Robinder** by RJ. It becomes a folder name → Friday call.
+
+🔴 **TWO DEFECTS FOUND ON OUR SIDE, both would have surfaced on import day.**
+**D-353** — `Citizenship` is **not in MASTER's Visa Type dropdown** (`setAllowInvalid(false)`), and the
+import carries **two Citizenship rows plus one `PARTNER VISA`**: three cells rejected outright, with no
+explanation to whoever pastes. **Third appearance of this exact bug** — SBS/Nomination (D-138), GOPI
+(A-33), now this. A locked dropdown is a schema and we have never validated the import against it.
+**D-354** — `190_SKILLED-NOMINATED.docx` has **no record of ever being uploaded** to the OneDrive folder
+M4 reads from; D-280 named the upload as outstanding on 11 Aug and only the CHECKLIST MAP half was ever
+done. **There is a 190 client in the import.** The coverage check added in D-325 verifies *"every mapped
+file exists on disk"* — **in our repo, which M4 never reads.** Caught while verifying one sentence of a
+client email against a primary source, not by any test. Both are tasks 7 and 8 in `WHERE-WE-STAND` §4.
+
+**Two replies sent, both audited before sending.** The first draft claimed *"the 23 checklists sit in
+one OneDrive folder"* (unverifiable — see D-354) and *"you can see that tab too"* about a sheet marked
+**ours** in `ACCESS.md`; both were pulled before the message went out. The second draft claimed *"all
+four answered"* when row 28 had been deferred, and *"only ART uncovered"* which is true of CR-013's four
+but not of the system. Corrected. **Four wrong sentences caught across two messages by re-reading our
+own files** — G1 earning its keep three days running.

@@ -99,50 +99,56 @@ arrived with no email, and the tick on the parent carried the unanswered child a
 | ~~I-2~~ | ✅ **CLOSED 19 Aug — connection 9948850 live and PROVEN by a real call.** Robinder had already created the key; it had simply never reached Make. **M9's 5 hours are unblocked** (D-340) | — | ✅ **DONE** |
 | **I-3** | **Facebook + Instagram page access** (Meta) | M6 capture | ~3 of 8 | ⛔ **never asked** |
 | **I-4** | **WhatsApp Business verification status** | M6 WhatsApp channel | ~1 | 🟠 raised at proposal, never chased |
-| **I-5** | **Where the website form lands** | M6 website capture | ~1 | ⛔ never asked |
-| **I-6** | **Where the walk-in sheet lives** | M6 walk-in fold-in | ~1 | ⛔ never asked — ROADMAP says "location still to confirm" |
+| ~~I-5~~ | ✅ **CLOSED 21 Aug — there is NO website form.** RJ: *"none"*. Not a gap to fill; a channel that does not exist. ⛔ Do not build website capture |
+| ~~I-6~~ | ✅ **CLOSED 21 Aug — there is NO walk-in sheet.** RJ: *"none"*. ROADMAP's *"location still to confirm"* was looking for a file that was never created |
 | **I-7** | **👍 on the auto-reply wording** (A-10) | M6 going live | — | 🟠 held until M6 exists |
 | **I-8** | **OneDrive on a Yale account** | M11 · **C-2** | 2+2 | 🔴 **THE ASK WAS IMPOSSIBLE (D-341).** Checklist item 2 said create an `automation@` M365 user — **there is no M365 tenant**; the drive is Robinder's personal `@hotmail.com`. Revised ask: a Microsoft account on `project1@`, folder shared to it. Friday |
-| **I-9** | **2–3 real client files** (A-11) | M10 | 2 | 🟠 due at M10 |
-| **I-10** | **Skills authority for the 4 × 485** | 4 checklists at import | — | ✅ asked, returned blank |
+| **I-9** | **2–3 real client files** (A-11) | M10 | 2 | 🟡 **NAMES SUPPLIED 21 Aug — one 500, one 485, one 482.** ⛔ Names live in `client-data/`, never here. 🔴 **None of the three is on `LODGEMENT: JULY TO PRESENT`** — verified tab by tab, they sit in `LODGEMENTS` / `WORK VISA NEW` / `s56`. So they are **not in the 38-row import**, and their visa type, email and (for the 485) assessing authority were requested on 21 Aug. 🔑 Turned into a virtue: they run as a **pilot of three** end-to-end before the other 35 move |
+| **I-10** | **Skills authority for the 4 × 485** | 4 checklists at import | — | 🟢 **DOWNGRADED 21 Aug — no longer blocks the import (D-352).** All 38 are pre-stamped `Checklist Filed`, so M4 never evaluates them. Needed only for **new** clients from #39, and for the 485 among the three pilot files |
 | **I-11** | **Make paid plan** | the go-live gate | — | 🟢 deliberately deferred (D-291) |
 | **I-12** | Dashboard access list (A-30) | Looker row-level security | — | 🟠 team deferred to Robinder |
-| **I-13** | 🔴 **Confirmation the 23 checklists are CURRENT** (checklist item 14) | **M4 going live at all** | — | ⛔ **never chased** |
-| **I-14** | 🔴 **`Client Enquiry Form`** (checklist item 12) | **C-1**, and M6's field set | 2 | ⛔ **never asked** — D-314 said "ask for it, do not design it" |
-| **I-15** | Inquiry-SOP follow-up Email/SMS templates (item 10) | M8 wording, M6 auto-reply | — | 🟠 partial |
+| ~~I-13~~ | ✅ **CLOSED 21 Aug — `"all the checklists are currently in used"` (RJ).** **M4 IS UNBLOCKED.** ⚠️ But read D-350 before treating this as settled: he confirmed a **count**, not a **list** — the guide only ever said *"23 of your own checklists"* and never named one. The filenames were sent on 21 Aug so the confirmation has something to attach to. **A confirmation of a number is not a confirmation of the documents.** |
+| ~~I-14~~ | ✅ **CLOSED 21 Aug — HELD AND READ.** `INQUIRY FORM YALE MIGRATION PINOY`, public `/viewform`, **9 questions** extracted from the form's own payload, not guessed. **C-1 is unblocked.** Fields: Complete Name · Age · Mobile/WhatsApp · Email · Location (Australia\|Philippines) · Current Work Experience · Course completed · Interested in? (10-way checkbox) · free-text situation. ⚠️ **Three have no ENQUIRIES column** — Age, Work Experience, Course completed → Notes, not new columns (A-32: *"too much column is a lot to handle"*). ⚠️ Location needs translating: Australia→Onshore, Philippines→Offshore. ⚠️ Title says **PINOY** — asked whether Brisbane/Indian has its own form |
+| **I-15** | Inquiry-SOP follow-up Email/SMS templates (item 10) | M8 wording, M6 auto-reply | — | 🔴 **ANSWERED 21 Aug: THEY DO NOT EXIST.** RJ: *"it doesn't exist but that is what we need to do and we need to have."* Not a file we are missing — a thing they have never had. **Email:** we already author administrative wording (checklist + chase drafts), so drafting two lead templates for the RMA to approve is consistent, small and offered. **SMS: ⛔ NOT POSSIBLE TODAY** — sending texts needs a paid SMS provider that is in no plan, no quote and no connection. → `CHANGE-REQUESTS.md` CR-015 |
 | **I-20** | 🟡 **PARTLY ANSWERED BY OUR OWN MAILBOX, 19 Aug — not by the client** | M9's trigger filter | — | 🔑 The first live M9 run fetched a real Department email: sender `noreply.skilled@homeaffairs.gov.au`, full subject line, full body. **The sender and subject — the two 'cheapest classifier features' this row existed to obtain — were in the mailbox we already had access to.** Logged as never-asked since 29 Jul. ⬜ Still genuinely wanted: a real **s56 request** specifically (this one was a bridging-visa grant), to confirm the deadline sentence survives as text and is not trapped in an image-only PDF attachment |
 | **I-21** | 🔴 **A Make slot AND the operations for M9** | M9 running at all — `scenarios:2` cap, and ~600 ops/mo at their volume | — | go-live decision (D-342) |
 | **I-22** | Yale's **S56 client-request + follow-up wording** + the reminder cadence | M9's draft replies — the file sent under this name is WhatsApp screenshots (D-38) | — | ⛔ **never asked** — same 29 Jul batch as I-20 → A-34(b) |
 | **I-23** | S56 samples for **500 / 485 / 820-801** | confirms the 28-day figure holds beyond the one subclass we have seen | — | ⛔ **never asked** — same 29 Jul batch → A-34(c) |
 | **I-24** | 🔴 **GOPI's work email, team and visa line** | `MASTER` col L dropdown is `setAllowInvalid(false)` — **he cannot be assigned a client at all** until he is on the list | — | ⛔ **never asked.** Hidden by A-13 being closed into A-16 on 18 Aug → A-33, Friday item 8 |
-| **I-16** | 🔴 **"Anyone else on the application?" — Q5, returned 0/41** | **the RIGHT checklist per client** | — | ✅ asked, came back empty |
-| **I-17** | 🔴 **Which list is live — Q10, never answered** | whether **247 more people** from `REYWARD JAKE M GAMOL-2026` also import | ? | ✅ asked, **not answered** |
-| **I-18** | Where the **walk-in** enquiry sheet lives (checklist item 6 sibling) | M6 walk-in fold-in | ~1 | ⛔ never asked |
-| **I-19** | Whose are `Bne.skilled@` and `migrate@` — Q12 | roster completeness, M9 routing | — | ✅ asked, not answered |
+| **I-16** | 🔴 **"Anyone else on the application?" — Q5, returned 0/41** | **the RIGHT checklist per client** | — | 🟢 **DOWNGRADED 21 Aug — no longer blocks the import (D-352).** Column D `Party 2 Name` drives ONLY M4's checklist selection, and M4 is switched off for all 38. Becomes a **go-forward data-entry rule**, not a 38-row backfill. 🔑 His own answer dissolved our biggest data ask |
+| ~~I-17~~ | ✅ **CLOSED 21 Aug — LIVE, but personal.** RJ: *"This is live but I am the only one using it. Its my personal sheet before I can transfer them in the main lists."* 🔑 **Decision: the 247 stay OUT.** Every MASTER row creates a folder and a client record; people who are not engaged should have neither. Confirms A-17/D-330 — `LODGEMENT: JULY TO PRESENT` is the engaged-onwards subset and remains the single import source. ⚠️ **Phase-2 flag, not raised with him:** a consultant's private list is invisible to the director's dashboard. That IS the multi-branch oversight problem (CR-001→012) |
+| ~~I-18~~ | ✅ **CLOSED 21 Aug — duplicate of I-6, same answer: none.** Two rows for one input; G6 |
+| ~~I-19~~ | ✅ **CLOSED 21 Aug — both are Robinder's** (RJ: *"Robin"*). The roster's two unattributed mailboxes are resolved. ⚠️ Note D-94's trap was avoided here only because we asked |
 
 ---
 
-## 3 · 📊 What that means for the remaining hours
+## 3 · 📊 What that means for the remaining hours — **RECALCULATED 21 Aug**
 
 | Module | h | Buildable **today**? |
 |---|---|---|
-| M6 Enquiry capture hub | 8 | 🔴 **NO** — I-3 · I-4 · I-5 · I-6 |
-| M9 Gmail triage / s56 | 5 | 🔴 **NO** — I-2 |
-| M7 Phone intake | 4 | 🟢 **YES** — their phone SOP is transcribed |
-| M10 End-to-end testing | 2 | 🔴 NO — I-9 |
+| M6 Enquiry capture hub | 8 | 🟠 **PARTLY — and this changed today.** I-5 and I-6 closed as *"there is no such channel"*, and I-14 (their form) is now held and read. **Still blocked on I-3 Meta + I-4 WhatsApp**, which are the two channels that actually carry volume |
+| M9 Gmail triage / s56 | 5 | 🔴 **NO** — I-21, a Make slot and the ops to run it |
+| M7 Phone intake | 4 | 🟡 **half done.** The buildable half shipped 20 Aug, 63 tests. The intake question set now has a source — **I-14 is held** |
+| M10 End-to-end testing | 2 | 🟡 **names supplied 21 Aug**, details requested. Runs as a **pilot of three** |
 | M11 Handover | 2 | 🔴 NO — I-8 |
-| M8 Lead follow-up | 2 | ✅ **DONE** bar stop-on-reply (~0.5h) |
-| C-1 Intake form | 2 | 🟢 **YES** — built to their existing form |
+| M8 Lead follow-up | 2 | ✅ **DONE and triggered**, 37/37 |
+| C-1 Intake form | 2 | 🟢 **YES — UNBLOCKED 21 Aug.** Their nine fields are known, so we mirror rather than invent |
 | C-2 Upload link | 2 | 🔴 NO — I-8 |
 | C-5 capture path | 0.5 | 🔴 NO — same channels as M6 |
 
-**≈18.5 of the ~21 contracted hours left are blocked on inputs we do not hold.**
-🟢 **Genuinely unblocked: stop-on-reply (0.5h) + the half of M7 that does not need their form (~2h)
-— about 2.5 hours.** ⛔ Yesterday I said 6.5. That counted C-1 as buildable and it is not.
+**What actually moved today.** Five inputs closed (I-5 · I-6 · I-13 · I-14 · I-17 · I-19 — six) and
+two were **downgraded from blocking to go-forward** (I-10 · I-16) by D-352. 🔑 **The single biggest
+one is I-13: M4 can now be switched on.** That was the one input gating whether the checklist engine
+— the most-tested thing we have built — was allowed to run at all.
 
-🔑 **The constraint on this project is no longer engineering. It is inputs.** Two of the twelve
-missing ones — **I-2 and I-3** — were never asked for at all, and between them they gate
-**13 of the 40 contracted hours**.
+🔴 **But the shape of the constraint is unchanged: it is still inputs, not engineering.** What
+remains is **I-3 Meta · I-4 WhatsApp · I-8 OneDrive · I-21 the Make slot** — and all four go to
+**Robinder**, not the team. The team has now answered essentially everything they can answer.
+
+⚠️ **Two defects found on OUR side today, both of which would have surfaced at import** — neither is
+a client input and neither belongs in this register. They are tasks in `WHERE-WE-STAND.md` §4:
+`Citizenship` missing from MASTER's dropdown (D-353), and the 190 checklist that may never have been
+uploaded to the folder M4 reads from (D-354).
 
 ---
 
@@ -152,7 +158,12 @@ missing ones — **I-2 and I-3** — were never asked for at all, and between th
 2. ~~I-2 — the Anthropic key~~ ✅ **DONE 19 Aug.**
 3. **I-8** — OneDrive onto `project1@`. ⛔ **ADD first, remove ours only after it is proven.**
 4. **I-3 · I-5 · I-6** — the three M6 channel questions. One message, three lines.
-5. **I-10** — the four 485 authorities, plus the answer they asked us for (A-28).
+5. ~~I-10 — the four 485 authorities~~ ✅ **no longer blocking** (D-352). Still wanted for the 485
+   among the three pilot files, and asked for on 21 Aug.
+6. **I-21** — the Make scenario slot and the operations to run M9. Robinder, Friday.
+
+🔑 **As at 21 Aug the team's side is essentially clear.** Everything left is Robinder's: Meta,
+WhatsApp, OneDrive, the Make plan. ⛔ Do not send the team another list — send Robinder four things.
 
 ⛔ **Not four separate messages.** Cap is four items for Robinder (`VOICE-MESSAGE-robinder.md`);
 the team took nineteen in one document and answered twelve. **Channel questions to the team,

@@ -192,3 +192,29 @@ Supersedes CR-009 in scope. Clients see their own matter · managers see their b
 🔴 **Not deliverable in a Google Sheet.** Staged: Sheet tab (done) → Looker Studio for staff (~1–2 wks,
 free, real row-level security) → custom Next.js + Supabase portal for clients (Phase 3, 40–80h).
 **Log, quote after MVP go-live. Do not absorb.**
+
+## CR-015 — Lead follow-up templates: email drafting, and SMS sending (RJ, 21 Aug)
+> *"Your follow-up Email and SMS templates from the Inquiry SOP, if they exist as files."*
+> — *"it doesn't exist but that is what we need to do and we need to have."*
+
+🔑 **Not a file we are missing. A capability they have never had.** Their own SOP-CI-001 step 10D
+prescribes a 7-day and 30-day follow-up; M8 implements the *timing* and writes `Follow-up Due`, and
+that is all it does. **No wording exists anywhere**, so today a consultant sees a date and composes
+the message themselves. Two separate asks live inside one sentence:
+
+**(a) Email wording — 🟢 do it, small, consistent.** We already author administrative email copy for
+this client: M4's checklist draft and route C's chase draft are ours, and both went out without
+objection. Two lead-follow-up templates in the same register — no advice, no document lists, no
+dates promised — is the same work again. **Offered on 21 Aug.** ⛔ **The RMA approves the wording
+before it drafts to anyone**, exactly as with every other outbound.
+
+**(b) SMS sending — 🔴 NOT POSSIBLE, and it is not a wording problem.** Sending a text needs a paid
+SMS gateway (Twilio, MessageMedia, ClickSend) with its own account, per-message cost, sender-ID
+registration, and an Australian compliance obligation on opt-out. **There is no SMS provider in any
+plan, quote, connection or budget on this engagement**, and `Source`/`Channel` carrying the value
+`SMS` is a dropdown entry, not a send path (C-5). ⛔ **Never let "add SMS" be heard as free because
+the word already appears in the sheet.** Quote as its own line: provider selection, account setup,
+sender registration, send module, opt-out handling, and the per-message running cost **they** carry.
+
+**Position:** (a) absorbed deliberately and openly — it is minutes, it makes M8 useful, and refusing
+it on a family referral would be penny-wise. (b) `LOGGED`, quoted before a keystroke.

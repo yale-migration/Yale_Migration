@@ -163,21 +163,31 @@ anywhere"* (D-310). **This is the authority. Do not ask the client for it again.
 |---|---|---|---|
 | **Indian** | 189 · 190 · 491 · 482 · 494 · 186 | Robinder | `info@yalemigration.com.au` |
 | | | Inder | `skilled.visa@yalemigration.com.au` |
-| | | *(unattributed)* | `Bne.skilled@yalemigration.com.au` |
-| | | *(unattributed)* | `migrate@yalemigration.com.au` |
+| | | **Robinder** ✅ 21 Aug | `Bne.skilled@yalemigration.com.au` |
+| | | **Robinder** ✅ 21 Aug | `migrate@yalemigration.com.au` |
 | | Student | Gayatri | `student2@yalemigration.com.au` |
 | | Student | Priyanka | `admissions@yalemigration.com.au` |
 | | Partner · graduate · visitor | Fiza | `office@yalemigration.com.au` |
-| **Filipino** | 189 · 190 · 491 · 482 · 494 · 186 | RJ | `philippines@yalemigration.com.au` |
+| **Filipino** | 189 · 190 · 491 · 482 · 494 · 186 | **RJ = Reyward Jake Gamol** ✅ 21 Aug | `philippines@yalemigration.com.au` |
 | | Student · graduate · partner | Star | `star@yalemigration.com.au` |
-| | Student · graduate · partner | Rey | `reynaldo@yalemigration.com.au` |
+| | Student · graduate · partner | **Rey = Reynaldo Sombilon** ✅ 21 Aug | `reynaldo@yalemigration.com.au` |
 | **Townsville** | all | Cristelle | `info.tsv@yalemigration.com.au` |
 | **Marketing** | — | Manali | `manali@yalemigration.com.au` |
 
 **What the roster does NOT give us — the genuine residual of A-16:**
 1. **No role column.** It shows team and visa line, never who is a *manager*. The manager view needs that.
 2. **Mershe Ventura is absent** — she has been answering our questions since 11 Aug (D-269).
-3. **Two unattributed mailboxes:** `Bne.skilled@` and `migrate@`. Aliases, shared mailboxes, or former
+3. ~~**Two unattributed mailboxes**~~ ✅ **CLOSED 21 Aug — both are Robinder's.** Asked plainly, answered
+   in one word. The D-94 trap (five days spent treating `workvisa.bne@` as an open ask when the answer
+   was in a document we held) was avoided here only because the question was actually sent.
+
+🔴 **RJ AND REY ARE TWO DIFFERENT PEOPLE — confirmed by RJ, 21 Aug.** `RJ` = **Reyward Jake Gamol**,
+`philippines@`, Filipino skilled. `Rey` = **Reynaldo Sombilon**, `reynaldo@`, student/graduate/partner.
+Both are correct in MASTER's `Assigned Consultant` dropdown; nothing to change. ⚠️ **We addressed RJ as
+"Rey" in every message from ~14 Aug to 21 Aug** and he never corrected it — D-351. The consultant name
+is a foreign key into the dashboard, so getting it wrong is a data defect, not a courtesy one.
+
+*(historical note)* Two unattributed mailboxes: `Bne.skilled@` and `migrate@`. Aliases, shared mailboxes, or former
    staff — unknown. ⚠️ Note we spent five days in July treating `workvisa.bne@` as an open client ask
    when the answer was in a document we already held (D-94). **These two are the same trap, sitting in
    the same document.**

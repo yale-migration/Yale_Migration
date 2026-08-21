@@ -130,3 +130,19 @@ gets built twice.** Once real data is in, an AppSheet view over it is hours, not
 `ACCEPTED` — in writing, schedulable · `IN PROGRESS` · `DELIVERED`
 
 **Every item above is currently `LOGGED`.** Nothing is quoted, nothing is promised, nothing is started.
+
+---
+
+## P2-09 — SMS follow-up channel (from CR-015, raised by RJ 21 Aug)
+Their Inquiry SOP assumes SMS follow-up; no templates and **no send capability** exist. Needs a paid
+gateway, sender-ID registration, opt-out handling, and a per-message cost they carry. **`LOGGED`.**
+⛔ The `SMS` value in the `Source` and `Channel` dropdowns (C-5) records where a lead *came from*.
+It is not a send path, and it must never be cited as evidence the feature is nearly there.
+
+## P2-10 — A consultant's private client list is invisible to the director (surfaced 21 Aug)
+RJ confirmed `REYWARD JAKE M GAMOL-2026` is **live and personal** — ~247 people who exist nowhere the
+director can see until the consultant chooses to move them across. Correct to leave out of MASTER
+(they are pre-engagement, and every row creates a folder and a client record) — but **this IS the
+multi-branch oversight problem** Robinder has now asked for five times, CR-001 → 007 → 009 → 010 →
+012, arriving from the other direction. ⛔ **Not raised with RJ** — it reads as criticism of how he
+works, and it is Robinder's conversation. **`LOGGED`.** Strongest live evidence for the Phase-3 quote.

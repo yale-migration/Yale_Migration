@@ -1,10 +1,37 @@
-# WHERE WE STAND — 20 Aug 2026
+# WHERE WE STAND — 21 Aug 2026
 **The one file to read after a context reset.** Position, gaps, resume point.
 `STATUS.md` is history only. `DECISIONS-INDEX.md` → `DECISIONS.md` is why.
 
 ---
 
 # 1 · THE ONE-LINE POSITION
+
+## 🎉 21 Aug — M4 IS UNBLOCKED. THE CHECKLIST ENGINE CAN BE SWITCHED ON.
+
+RJ confirmed the checklists are current — *"all the checklists are currently in used"* — which was
+**the single input gating whether the most-tested thing we have built was allowed to run at all**
+(I-13, never chased since 21 July). Six inputs closed in one morning: **I-5 · I-6 · I-13 · I-14 ·
+I-17 · I-18 · I-19**, and two more downgraded from blocking to go-forward (**I-10 · I-16**).
+
+**The team's side is now essentially clear. Everything remaining belongs to Robinder** — Meta,
+WhatsApp, OneDrive, the Make slot.
+
+⚠️ **Three things from today that must not be lost:**
+- **D-350** — his confirmation was of a **count, not a list**. We had never sent the filenames. Sent
+  the same day, so the second confirmation is worth something. *A check that passes for the wrong
+  reason, wearing its best disguise yet: a real person answering truthfully about a set they could
+  not see.*
+- **D-351** — **RJ is not Rey.** Two different people (`Reyward Jake Gamol` / `Reynaldo Sombilon`),
+  both in MASTER's dropdown, and we used the wrong name in every message from ~14 Aug.
+- **D-352** — his own question dissolved our two loudest data asks. Pre-stamping `Checklist Filed`
+  for all 38 means `Party 2 Name` and `Skills Authority` stop mattering for them entirely.
+
+🔴 **Two defects found on our side, both would have bitten at import:** `Citizenship` is missing from
+MASTER's locked Visa Type dropdown while **two Citizenship rows sit in the import** (D-353, third
+appearance of this exact bug), and the 190 checklist **may never have been uploaded to the OneDrive
+folder M4 actually reads from** — our coverage check verifies our own repo instead (D-354).
+
+---
 
 🎉 **THE TEAM ANSWERED, 18 Aug — THE CLIENT IMPORT IS UNBLOCKED. 38 rows ready.**
 12 of 19 questions closed, the fee schedule corrected, and one answer reframed the whole pipeline:
@@ -58,7 +85,7 @@ in a feature.
 | M1 | Discovery | ✅ done | reopened twice |
 | M2 | Master data layer | ✅ built · 🟢 **38 rows ready · access LIVE** | MASTER A–AE **verified through Make's own RPC** (D-338). Waits only on the checklist-currency confirmation |
 | M3 | Intake → folders | ✅ **proven + hardened** | v2 catch-all (E1, D-315) · **OFF** |
-| M4a | Checklist select + file | ✅ **proven + hardened** | v2 guard · 190 mapped D-325 · **OFF** |
+| M4a | Checklist select + file | ✅ **proven + hardened · 🎉 UNBLOCKED 21 Aug** | v2 guard · 190 mapped D-325 · **OFF**. I-13 closed — the checklists are confirmed current, so the only remaining gate on switching this on is the go-live gate itself. ⚠️ **Do not switch on before tasks 7 and 8** (D-353, D-354) |
 | M4b | Checklist email draft | ✅ **live in M4 route A** | D-321 · **OFF** · draft only |
 | M5a | Dormancy detection | ✅ **TRIGGER CONFIRMED LIVE 19 Aug** — daily CLOCK, owner `project1@` | 🔑 **The trigger existed all along; what was missing was any RECORD of it.** "No record it was created" was true and was wrongly read as "it was never created" — `grep ScriptApp.newTrigger` proves only that no *code* made one, not that none exists. `verifyDailyTriggers()` settled it in 10 seconds. The guide's "every morning" was always true. · **40/40** (4 lock tests added 19 Aug) · 🔴 `updateFollowUps()` had held **NO lock** on a read-all → write-back-by-index over MASTER — document lock added before the trigger was touched · ⬜ **IMPORT_BASELINE is `''`** — must be set to the import date ON import day, or all 38 imported rows flag dormant on day 3 |
 | M5b | Chase email draft | ✅ **live in M4 route C** | D-322 · **OFF** · partition proved over 1,008 rows |
@@ -168,6 +195,11 @@ prompt** (D-320) — that is how the check got defeated.
 | **4** | 🟢 **Switch Google on as a Supabase Auth provider** — Authentication → Providers → Google, a Google Cloud OAuth client on the client's account, redirect `https://rmvvlvjjebsskbhjxnap.supabase.co/auth/v1/callback`. ⛔ **G1: do not demo the Google button before doing this** — it renders and fails | 0.3 | 🟢 |
 | **5** | 🟢 **Restore M9 trigger `limit` 1 → 10** (dropped to make diagnostic runs cheap) and add `parseS56Classifications` + `verifyS56Deadlines` to `installDailyTriggers()` | 0.5 | 🟢 |
 | **6** | 🟢 **Brand hexes off Robinder's logo** — dashboard navy/gold are currently eyeballed | 0.2 | 🟢 |
+| **7** | 🔴 **D-353 — add `Citizenship` to MASTER column H** (`setAllowInvalid(false)` will reject it), normalise `PARTNER VISA → 820/801` in the importer, and add a **pre-import validation pass** that checks every value bound for a locked column against that column's own list. **Three rows of the 38 fail today.** Third appearance of this bug — fix the class, not the instance | 0.5 | 🟢 **before import** |
+| **8** | 🔴 **D-354 — list the OneDrive checklist folder over the API and reconcile against `MANIFEST.json`.** `190_SKILLED-NOMINATED.docx` has no upload record and **there is a 190 client in the import**. Then move the coverage check in `verify_blueprints.py` from *"exists on disk"* to *"exists in the folder M4 reads"* | 0.5 | 🟢 **before import** |
+| **9** | 🟢 **Pre-stamp `Checklist Filed` for all 38 at import** (D-352) — the promise made to RJ in writing. Same shape as `IMPORT_BASELINE` / `M8_BASELINE` | 0.3 | 🟢 |
+| **10** | 🟢 **File the 186 checklist into the canonical set** — hash into `MANIFEST.json`, CHECKLIST MAP rows, **M4 router change (D-285)**, extend the partition proof. ⛔ Billable CR-013 work — **quote first** | — | ⛔ **quote before starting** |
+| **11** | 🟢 **Build C-1 to their nine form fields** — now held and read. Age · Work Experience · Course completed → Notes, not new columns (A-32). Location: Australia→Onshore, Philippines→Offshore | 2 | 🟢 **unblocked 21 Aug** |
 
 ### 🗓 The Friday call with Robinder — 9 runbook items
 ⛔ **A-18, the ~1,200 plaintext credentials, is item 1 and is VERBAL ONLY, one-to-one.** Written down

@@ -1,5 +1,38 @@
 # CR-013 — covering the four uncovered visa lines
-**Draft quote for Sharjeel's approval. Not sent.** 19 Aug 2026 · for the Friday 21 Aug call.
+**Draft quote for Sharjeel's approval. Not sent.** 19 Aug 2026 · **updated 21 Aug** · for the Friday call.
+
+## 🔄 21 Aug — THE CONTENT BLOCKER IS CLEARING, THE WORK IS NOT
+
+The single biggest caveat in this quote was *"we cannot author the checklists, Robinder must."*
+**Yale is now supplying them, unprompted.**
+
+| Line | Document | State |
+|---|---|---|
+| **186** | ✅ **RECEIVED 21 Aug** from RJ — `UPDATED 186 VISA CHECKLISTS.pdf` | Opened and read (G8). Yale letterhead, **one document** covering employer docs, applicant docs and both fee tables. No bank details, no client PII. Companion `EMPLOYEE DETAILS.docx` and a blank Form 80 came with it — both blank templates, verified |
+| **600** | 🟢 **OFFERED 21 Aug** — *"I can make a checklists for 600 and citizenship application as well"* | not yet received |
+| **Citizenship** | 🟢 **OFFERED 21 Aug** | not yet received |
+| **ART** | ⬜ not offered | the only one still with no path |
+
+**What this changes in the estimate.** 186 was priced at **1.5 h** on the assumption of *"likely two
+variants — with and without dependants."* The document that arrived is **one variant**, handling
+dependants inline (*"applicant and accompanying dependants, if applicable"*). **186 drops to 1.0 h.**
+600 and Citizenship are unchanged until their documents arrive and can be read.
+
+⛔ **THE CONTENT ARRIVING DOES NOT MAKE THE PLUMBING FREE — and this is the sentence that protects
+the quote.** Every new line still needs: the file uploaded to OneDrive · its CHECKLIST MAP rows ·
+**a router change in the M4 blueprint** · the partition proof extended · an end-to-end test.
+**D-285 is the authority and it was learned the hard way:** when the 190 checklist arrived we told
+the client *"two spreadsheet rows, no scenario edit"* — that is true only for a visa type **already
+in the router**. A brand-new line also needs a scenario change, and 190 sat broken for a week
+because we believed our own simpler description.
+
+⚠️ **Citizenship carries a defect of its own (D-353):** it is **not in MASTER's Visa Type dropdown**,
+which is `setAllowInvalid(false)`. Two Citizenship rows are already in the 38-row import and would be
+**rejected outright**. That fix is ours and is not billable — but it must land before the line can
+exist at all.
+
+🔑 **On the call:** the honest and generous framing is *"your team has done the hard half."* Then the
+number, in writing, for the half that is ours.
 
 ---
 
@@ -40,17 +73,21 @@ Per line, once Robinder supplies the document list:
 
 | Line | h | Note |
 |---|---|---|
-| **186** ENS | 1.5 | Likely two variants — with and without dependants |
-| **600** Tourist | 1.0 | Simplest of the four, single variant |
+| **186** ENS | ~~1.5~~ **1.0** | ✅ **document received 21 Aug — ONE variant, not two.** Re-read before re-pricing |
+| **600** Tourist | 1.0 | 🟢 offered 21 Aug, not yet received |
 | **ART** review | 2.0 | Not a visa. Statutory deadlines, own stage set, own folder shape |
-| **Citizenship** | 1.5 | Not a visa. Different document set and folder structure |
+| **Citizenship** | 1.5 | 🟢 offered 21 Aug. Not a visa — different document set and folder shape, **and not in MASTER's dropdown yet (D-353)** |
 | Shared: router changes, partition proof, regression run | 2.0 | Done once, covers all four |
-| | **8.0** | |
+| | ~~8.0~~ **7.5** | |
 
-**8 hours @ USD 35 = USD 280.**
+**7.5 hours @ USD 35 = USD 262.50.** ⛔ Re-price once 600 and Citizenship actually arrive and have
+been opened — 186 fell by half an hour purely because the real document was simpler than assumed,
+and the same could go either way for the other two. **Never price a document you have not read.**
 
-⛔ **Clock starts when the four document lists arrive**, not on acceptance. If he supplies two of
-four, we do those two and the shared work — the other two stay quoted and unstarted.
+⛔ **Clock starts when each document list arrives**, not on acceptance. **186 has arrived; 600 and
+Citizenship are promised; ART has no path.** We do the lines we hold plus the shared work; the rest
+stay quoted and unstarted. ⚠️ **These go out to clients automatically under an RMA's registration —
+Robinder should sight each one before it is loaded.** Said to RJ on 21 Aug, once, lightly.
 
 ---
 
