@@ -6104,3 +6104,63 @@ overlooked twin: **nothing goes to the client that the client has already answer
 damage is not just the wasted line. Bundling a stale question with live ones puts the live ones at
 risk, because the recipient triages the whole item on its weakest part. **Re-read their last message
 before writing the ask, not after.**
+
+## D-358 | I-14 was ticked on the form's QUESTIONS. Its ANSWERS were never asked for
+
+**22 Aug 2026 — found while starting C-1, not by any review.**
+
+I-14 — *the `Client Enquiry Form`* — was closed on 21 Aug: *"HELD AND READ, 9 questions extracted
+from the form's own payload."* True, and the questions were what D-314 told us to get: **"ask for it,
+do not design it."**
+
+**But C-1 does not need the questions. It needs the responses.** And:
+
+- `project1@` can read three of their spreadsheets — `YALE BRISBANE OFFICE WORK`,
+  `REYWARD JAKE M GAMOL-2026`, `STUDENTS`. The form's response destination is **not one of them**.
+- Nothing in the repo records where the responses land. Never established, never asked.
+
+So the tick was earned on half the input and carried the other half away with it. **Third time this
+exact shape has occurred** — D-310 (a roster we already held, asked for again), D-332 (seven of
+fourteen checklist items never delivered and never chased), and now this.
+
+🔑 **The pattern, stated so it can be checked for:** an input closed against *what we asked for*
+rather than against *what the module consumes*. The question we asked was answered perfectly. It was
+the wrong question, and the ✅ hid that better than a ❌ ever could.
+
+**The counter-practice, and it is cheap:** before closing an input, name the module that consumes it
+and check the input is sufficient to build that module. Here: *"C-1 turns enquiries into ENQUIRIES
+rows — can I write one line into ENQUIRIES from this?"* No. The gap would have been obvious in ten
+seconds, on the day.
+
+**What was built anyway, deliberately:** the transform is the work; the feed is one sharing setting.
+`c1_enquiry_form_intake.gs` maps a response to an ENQUIRIES row and is tested 21/21 with no sheet, no
+form and no network. `onC1FormSubmit` and `c1ImportFromResponseSheet` are written and idempotent, and
+will run unchanged the day access exists. ⛔ **C-1 is NOT complete** and must not be marked so —
+`INPUTS-REGISTER` now carries I-25 for the response feed.
+
+## D-359 | Three design refusals in C-1, each one a defect we have already paid for
+
+`c1_enquiry_form_intake.gs` leaves three columns deliberately blank. Recording them because each looks
+like an omission, and the next person to read the file will want to "finish" it.
+
+**1 · `Channel` stays blank.** The obvious move is `Website` — it arrived via a web form. But the form
+never asks how the person found Yale, and **D-330 is exactly this mistake already made**: we defaulted
+Channel to `Phone`, and Rey corrected it four hours later — *"inquiries come from both whatsapp and
+social media"*. A form submitted from a Facebook ad is a Facebook enquiry. Stamping `Website` would
+silently corrupt the single number the enquiry view exists to report, and it would look authoritative
+while doing it.
+
+**2 · `Visa Interest` stores their words verbatim.** Their form offers *"Graduate Visa"*,
+*"Employer Nomination Scheme Visa"*, *"Regional Sponsored Migration Scheme"*. Mapping those to 485,
+186 and 494 is one small dictionary — and it is **migration advice**, because RSMS (187) is closed to
+new applicants and 494 is its successor, which is a judgement about what a person can actually apply
+for. ⛔ Only the RMA decides that. Checked first: ENQUIRIES column F is free text, not a dropdown, so
+verbatim storage costs nothing. A consultant reads the enquiry and decides.
+
+**3 · An unrecognised `Location` is dropped, and preserved in Notes.** Column G is a locked dropdown
+holding Onshore/Offshore. Passing `Dubai` straight through is the **D-353 failure** — the cell refuses
+it silently and nobody is told which row. So the mapper drops it from the column and writes
+*"Location on the form said: Dubai"* into Notes. **Nothing is invented; nothing is lost.**
+
+🔑 The through-line: all three are places where the helpful-looking behaviour is the one that produces
+a confident wrong answer. **Blank is honest. A guess that renders identically to a fact is not.**

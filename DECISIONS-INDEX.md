@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 516K /     6106 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 520K /     6166 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 17:01
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 20:16
 
 | # | Decision |
 |---|---|
@@ -354,3 +354,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 17:0
 | **D-355** | Gopi joined and left in four days. A hardcoded roster is a design that is permanently stale |
 | **D-356** | Yale's client contact details are not in Yale's systems |
 | **D-357** | We asked for something they had already given us — inside a three-part ask, and the whole ask was ignored |
+| **D-358** | I-14 was ticked on the form's QUESTIONS. Its ANSWERS were never asked for |
+| **D-359** | Three design refusals in C-1, each one a defect we have already paid for |
