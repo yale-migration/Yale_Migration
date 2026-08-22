@@ -65,6 +65,54 @@ STAGE  = {'LODGED':('Lodged','Pending'), 'DRAFTED':('Ready for Lodgement','Pendi
 SKILLS = {'ACECQA','TRA','VETASSESS','Not required (Bachelor/Masters)','Engineers Australia'}
 MAPPED = {'485','500','482','SBS','Nomination','407','820/801','189','190','491','494','802','101','417'}
 DEAD   = re.compile(r'no longer (a )?client', re.I)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# LOCKED-COLUMN VALIDATION  (D-353, added 22 Aug 2026)
+# ══════════════════════════════════════════════════════════════════════════════
+# 🔴 Three times now, a value has been written into a column whose dropdown is
+# `setAllowInvalid(false)` and would have REJECTED it, silently, at paste time:
+#
+#   D-138  SBS + Nomination      — "every sponsorship matter was a dead end"
+#   A-33   GOPI                  — a consultant nobody could assign a client to
+#   D-353  Citizenship           — 2 rows of this very import, plus 1 PARTNER VISA
+#
+# Someone thought about it for consultants (STAFF, above) and for nothing else.
+# This closes the CLASS: every value bound for a locked column is checked against
+# that column's own list before a CSV is written.
+#
+# 🔑 The lists are PARSED OUT OF setup_master_sheet.gs, never copied here. That
+# file builds the sheet, so it is the only thing that knows what the sheet allows.
+# A second copy would drift, and a validator that drifts is worse than none — it
+# reports PASS against a schema nobody is using.
+GS_SETUP = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'setup_master_sheet.gs')
+
+def locked_columns():
+    """{header name: set(allowed values)} straight from the sheet builder."""
+    src = open(GS_SETUP, encoding='utf-8').read()
+    block = re.search(r'var MASTER_DROPDOWNS\s*=\s*\{(.*?)\n\};', src, re.S)
+    if not block:
+        raise SystemExit('❌ cannot find MASTER_DROPDOWNS in %s — refusing to guess' % GS_SETUP)
+    body = re.sub(r'//[^\n]*', '', block.group(1))          # strip trailing comments
+    out = {}
+    for col, arr in re.findall(r'(\d+)\s*:\s*\[(.*?)\]', body, re.S):
+        idx = int(col) - 1                                   # 1-based column -> 0-based header
+        if idx < len(MASTER_HEADERS):
+            out[MASTER_HEADERS[idx]] = set(re.findall(r"'([^']*)'", arr))
+    return out
+
+# Their sheet's wording -> the dropdown's wording. ⛔ Only ever a RENAME of the
+# same thing. Never a guess about what a client's visa actually is.
+VISA_ALIAS = {
+    'PARTNER VISA': '820/801',      # asked them to change the cell; they did not, and
+                                    # it is our job to normalise, not their job to retype
+}
+
+# 🔑 D-352, promised to RJ in writing on 22 Aug: every imported client is stamped
+# as already having had their checklist, because Yale sent them all by hand. M4's
+# trigger is `Y notexist`, so a value here switches the checklist step off for
+# this group and only this group. Client 39 onwards runs normally.
+PRESTAMP_CHECKLIST = 'SENT BY YALE BEFORE IMPORT'
+
 TODAY  = datetime.date.today()
 norm   = lambda s: ' '.join(str(s or '').upper().split())
 
@@ -206,6 +254,10 @@ def main():
         rec = dict.fromkeys(MASTER_HEADERS, '')
         rec['Full Name']           = full
         rec['Email Address']       = em
+        if vt in VISA_ALIAS:
+            note.append('their sheet said %r; normalised to %r' % (vt, VISA_ALIAS[vt]))
+            flags['visa wording normalised to the dropdown'] += 1
+            vt = VISA_ALIAS[vt]
         rec['Visa Type']           = vt
         rec['Visa Variant']        = variant
         rec['Office']              = office.upper() if office else 'BRISBANE'
@@ -222,6 +274,11 @@ def main():
         if st and st not in STAGE:
             note.append('their STATUS was %r' % st); flags['status word unmapped'] += 1
         if variant: note.append('dependent/secondary applicant — checklist differs')
+        # D-352 — Yale already sent every one of these clients their checklist by
+        # hand. Stamping the done-marker now means M4 skips them entirely: no file
+        # copied, no draft raised. Without it the first run would file 28 checklists
+        # and raise 19 drafts nobody asked for.
+        rec['Checklist Filed'] = PRESTAMP_CHECKLIST
         rec['Notes'] = ' | '.join(note)
         out.append(rec)
 
@@ -255,6 +312,35 @@ def main():
 
     print("\n=== FLAGS ===")
     for k, v in flags.most_common(): print("  %-52s %d" % (k, v))
+
+    # ── LOCKED-COLUMN GATE (D-353) ───────────────────────────────────────
+    locked = locked_columns()
+    bad = collections.defaultdict(list)
+    for i, r in enumerate(out, start=1):
+        for header, allowed in locked.items():
+            v = str(r.get(header, '') or '').strip()
+            if v and v not in allowed:
+                bad[header].append((i, v))
+
+    print("\n=== LOCKED-COLUMN CHECK — every value against the sheet's own dropdown ===")
+    print("  schema read live from %s" % os.path.basename(GS_SETUP))
+    for header in sorted(locked):
+        n = len(bad.get(header, []))
+        print("  %-22s %s" % (header, 'ok' if not n else '🔴 %d value(s) the cell will REJECT' % n))
+    if bad:
+        print("\n  🔴 THESE ROWS WOULD BE REFUSED AT PASTE TIME, WITH NO ERROR MESSAGE:")
+        for header, items in bad.items():
+            for i, v in items[:12]:
+                print("     row %-3d  %-22s %r" % (i, header, v))
+            print("     %-3s  allowed: %s" % ('', ' · '.join(sorted(locked[header]))))
+
+    if a.write and bad:
+        # ⛔ Refuse rather than write a CSV that breaks on paste. The whole point of
+        # this gate is that the failure it prevents is SILENT — the cell rejects the
+        # value and nobody is told which row or why.
+        print("\n⛔ REFUSING TO WRITE. Fix the dropdown in setup_master_sheet.gs (then re-run")
+        print("   patchMasterDropdowns), or add a VISA_ALIAS entry if it is a wording difference.")
+        sys.exit(1)
 
     if a.write:
         with open(OUT, 'w', newline='', encoding='utf-8') as fh:

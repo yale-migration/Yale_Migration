@@ -29,6 +29,20 @@
  *   Left in place deliberately. It is a no-op now and its guard is the reason the
  *   error surfaced at all.
  *
+ * H `Visa Type` += 'Citizenship'   🔴 ADDED 22 Aug (D-353) — THIS ONE IS REAL
+ *   Unlike the 186 entry above, this is a genuine gap and it is in the import right now:
+ *   **two of the 38 rows carry `Citizenship` and the cell will refuse both**, silently,
+ *   at paste time. Nobody would be told which rows or why.
+ *
+ *   Third time this exact bug has appeared — SBS/Nomination (D-138), GOPI (A-33), now
+ *   this. So the fix is not just the value: `build_master_import.py` now reads this
+ *   dropdown's list straight out of setup_master_sheet.gs and REFUSES to write a CSV
+ *   containing anything the cell would reject. The class is closed, not the instance.
+ *
+ *   ⛔ Adding it here lets the ROW EXIST. It does not file a checklist — Citizenship has
+ *   no CHECKLIST MAP row and is not in M4's router, so it lands on NEEDS REVIEW, which
+ *   is correct until CR-013 is quoted and the checklist RJ offered actually arrives.
+ *
  * U `Source` += 'SMS'
  *   ROADMAP C-5 says this dropdown needs 'Referral' and 'SMS'. **'Referral' is
  *   already there** — checked in setup_master_sheet.gs before writing this, so only
@@ -49,7 +63,7 @@ var PD_SHEET_ID = '1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k';
 // SMS was real). ENQUIRIES was added after, when the enquiry import showed the same
 // gap: SOP-CI-001 names EIGHT enquiry channels and the dropdown was missing SMS.
 var PD_PATCHES = [
-  { tab: 'MASTER',    col: 8,  letter: 'H', header: 'Visa Type', add: ['186'] },
+  { tab: 'MASTER',    col: 8,  letter: 'H', header: 'Visa Type', add: ['186', 'Citizenship'] },
   { tab: 'MASTER',    col: 21, letter: 'U', header: 'Source',    add: ['SMS'] },
   { tab: 'ENQUIRIES', col: 5,  letter: 'E', header: 'Channel',   add: ['SMS'] }
 ];

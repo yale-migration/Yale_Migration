@@ -3,8 +3,12 @@
 > M3 "IN PROGRESS", the demo unsent, routing hardcoded and the Make paid plan as the go-live gate.
 > **All four are wrong and were fixed weeks ago.**
 > **For current state read `WHERE-WE-STAND.md`. For hours read `HOURS-LEDGER.md`.**
-> Only the contracted module list and hour figures below (M1–M11) are authoritative — those are
-> verified correct against Proposal v3.
+> Only the contracted module list and hour figures below (M1–M11) and the **C-1…C-5 table** are
+> authoritative — those are verified correct against Proposal v3.
+> ⛔ **Do not update the per-module status section below to "fix" it.** It is frozen on purpose.
+> `WHERE-WE-STAND.md` owns status (G6); a second status file drifts and then contradicts the first,
+> which is how this file became the most contradictory in the repo in the first place.
+> **Last touched 22 Aug 2026** — C-1 unblocked, C-5's SMS half correctly re-marked as out of scope.
 
 # ROADMAP — Yale Migration MVP (48h)
 Legend: ⬜ not started · 🟡 in progress · ✅ done · 🔒 blocked · ⏸️ deferred by decision
@@ -243,11 +247,11 @@ tracking file, so none were built and none were counted. They are MVP work, not 
 
 | # | Item | Hrs | State | The thing that decides it |
 |---|---|---|---|---|
-| **C-1** | **Client intake form** | 2 | ⬜ | 🔑 **Do not design one.** They already have `Client Enquiry Form` (D-314) and their SOP-CI-001 is built around it. Build to *their* form, or we ship a second form nobody fills in |
+| **C-1** | **Client intake form** | 2 | 🟢 **UNBLOCKED 21 Aug** | 🔑 **Do not design one.** They already have `Client Enquiry Form` (D-314) and their SOP-CI-001 is built around it. Build to *their* form, or we ship a second form nobody fills in. ✅ **HELD AND READ 21 Aug** — `INQUIRY FORM YALE MIGRATION PINOY`, 9 questions pulled from the form's own payload: Complete Name · Age · Mobile/WhatsApp · Email · Location (Australia\|Philippines) · Current Work Experience · Course completed · Interested in? (10-way checkbox) · free-text situation. **Mapping decided:** 6 map straight to `ENQUIRIES`; Age, Work Experience and Course completed have no column and go to **Notes, not new columns** (A-32). Location translates Australia→Onshore, Philippines→Offshore. ⚠️ A **second form exists for Brisbane/Indian** (A-46) but its link is unreadable — **not a blocker**: both forms target the same 11 `ENQUIRIES` columns |
 | **C-2** | **Secure upload link** | 2 | ⬜ | Column **AD `Upload Link`** now exists in MASTER (`add_master_columns_z_to_ad.gs`). Needs the generator + the wording that goes to the client |
 | **C-3** | **Third-party responsible-party tracking** | 2 | ⬜ | Columns **AB `Third Party`** + **AC `Third Party Status`**. Their SOPs name employer · college · RTO · assessing authority as blockers on the client's own file |
 | **C-4** | **Received / missing status per client** | 2 | ⬜ | Columns **Z `Docs Received`** + **AA `Docs Outstanding`**. 🔑 **AA is what the M5b chase email lists** — without it M5b can only say "something is missing" |
-| **C-5** | **Referral + SMS enquiry channels** | 1 | ⬜ | **Not a column.** `Source` (U) already exists — it needs `Referral` and `SMS` added to its dropdown, plus a capture path for each |
+| **C-5** | **Referral + SMS enquiry channels** | 1 | 🔒 **PART BLOCKED** | **Not a column.** `Source` (U) already exists — it needs `Referral` and `SMS` added to its dropdown, plus a capture path for each. ⛔ **SMS SENDING IS NOT IN SCOPE AND NOT POSSIBLE TODAY** (CR-015, 22 Aug): a `Source` value records where a lead *came from*; it is **not a send path**. Texting needs a paid gateway, sender-ID registration and opt-out handling, none of which is in any plan or quote. **Never let "SMS is already in the dropdown" be read as "SMS nearly works."** |
 
 ⚠️ **C-2 → C-4 depend on the five new MASTER columns.** Those go **STRICTLY RIGHT OF Y** — M4 addresses
 MASTER by numeric index, so a column inserted left of Y makes it file the wrong checklist and report

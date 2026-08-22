@@ -53,7 +53,13 @@ var MASTER_DROPDOWNS = {
   7:  ['Onshore', 'Offshore'],                                                          // G Location
   8:  ['500','485','820/801','300','482','407','186','494','189','190','191','491',
        '600','101','802','417','SBS','Nomination','Skills Assessment','EOI','ART',
-       'Bridging','Other'],                                                             // H Visa Type
+       'Citizenship','Bridging','Other'],                                               // H Visa Type
+       // 'Citizenship' added 22 Aug (D-353). TWO rows of the 38-row import carry it and
+       // the cell would have REJECTED both, silently, at paste time. Found only because
+       // RJ offered to write a Citizenship checklist — never by a test.
+       // ⛔ Being in this list means the ROW CAN EXIST. It does NOT mean a checklist is
+       // filed: Citizenship has no CHECKLIST MAP row and is not in M4's router, so it
+       // correctly lands on NEEDS REVIEW until CR-013 is quoted and done.
        // SBS + Nomination added 2 Aug (D-138): employer-side matters route to folder SET 2, but
        // setAllowInvalid(false) below would have REJECTED them — every sponsorship matter was a dead end.
   9:  ['Main','Dependent','Subsequent Entrant','Sponsor','Employer'],                   // I Visa Variant
