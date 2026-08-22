@@ -812,3 +812,26 @@ open, exactly **one blocks contracted work** (A-48, M10, 2 h). A-46 does not —
 forms map into the same 11 `ENQUIRIES` columns, so a second form changes which extras land in Notes,
 not the build. A-45 blocks clean go-live only. Recorded as a one-glance board at the top of
 `CLIENT-ASKS.md` so it cannot drift again.
+
+2026-08-22 | internal | **Audited the outgoing team reply before sending — two gaps, both found by
+checking a list rather than re-reading the draft.**
+
+🔴 **The assessing-authority options were incomplete.** The draft offered RJ *"TRA, VETASSESS, ACECQA,
+or not required"*. `build_master_import.py:65` accepts **five**: those four plus **Engineers
+Australia**. Offering four of five is worse than offering none — if that is the client's authority he
+has no matching option, so he guesses or skips. **Skipping is exactly the behaviour D-357 was written
+about, and this draft would have invited it a second time in the same thread.**
+
+🔴 **The 600 + Citizenship checklists were not acknowledged.** He wrote *"will send the new checklists
+tomorrow"*; the draft passed over it. Not acknowledging a promise is a small discourtesy and forfeits
+the chance to confirm we are expecting them.
+
+Both fixed before sending. Also softened the *"click Send, then the link icon"* instruction to anchor
+on **what he already did successfully** — the Filipino form link he sent on 21 Aug arrived as
+`…/viewform?usp=dialog`, which is the Send-dialog URL. His own working action is a primary source;
+Google's current button labels are not something we verified this session (G1).
+
+🔑 **Standing method note.** Three drafts in three days have each had a wrong or missing figure that
+only surfaced when checked against the file rather than re-read. Re-reading a draft confirms it says
+what you meant. It cannot confirm what you meant is true. **Check every enumerated list in a client
+message against the code or data that defines it, every time.**
