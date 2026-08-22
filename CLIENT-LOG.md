@@ -835,3 +835,27 @@ Google's current button labels are not something we verified this session (G1).
 only surfaced when checked against the file rather than re-read. Re-reading a draft confirms it says
 what you meant. It cannot confirm what you meant is true. **Check every enumerated list in a client
 message against the code or data that defines it, every time.**
+
+2026-08-22 | internal | **Built the locked-column gate — the third instance of one bug, fixed as a
+class.** `build_master_import.py` now parses `MASTER_DROPDOWNS` straight out of `setup_master_sheet.gs`
+and checks every value bound for a locked column against that column's own list. 🔑 **The lists are
+read, never copied.** A second copy drifts, and a validator that drifts reports PASS against a schema
+nobody is using — which is the same failure family as D-350 and D-348. Proof the design works: adding
+`Citizenship` to the .gs turned the gate green with **no change to the validator**.
+
+**Negative-tested, because a gate that has never failed is not a gate.** Bad value → prints the
+offending rows, **exits 1, writes nothing**. Clean → exits 0, writes 38. ⚠️ I measured the exit code
+through a pipe first and read `tail`'s 0 — **D-334, walked into on the very check meant to prove a
+gate.** Re-measured without the pipe.
+
+Also shipped: `PARTNER VISA → 820/801` normalised in the importer instead of waiting on RJ to retype a
+cell (he was told to ignore it), `Citizenship` added to both the setup script and the live-sheet patch,
+and **all 38 rows pre-stamped `SENT BY YALE BEFORE IMPORT`** — the D-352 promise made to RJ in writing,
+now actually implemented. ⚠️ Verified the consequence rather than assuming it: route A is skipped,
+**route C stays reachable**, so a pre-stamped client can still be chased for missing documents. Correct,
+and very easy to misread as "all email is off for these 38".
+
+79/79 blueprint checks still pass. ROADMAP's authoritative C-table updated — **C-1 unblocked** with the
+nine fields and the mapping decision recorded, C-5's SMS half re-marked out of scope. ⛔ Its frozen
+per-module status section deliberately left alone: `WHERE-WE-STAND.md` owns status, and a second status
+file is precisely how ROADMAP became the most contradictory file in the repo.
