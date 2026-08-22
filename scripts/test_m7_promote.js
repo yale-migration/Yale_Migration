@@ -10,18 +10,24 @@ const Logger = { log: m => LOG.push(String(m)) };
 const Utilities = { formatDate: (d) => new Date(d).toISOString().slice(0, 10) };
 const Session = { getScriptTimeZone: () => 'Australia/Brisbane' };
 
-const CL_H = ['Received','Caller Name','Phone','New or Existing','Reason','Matched Code',
-  'Matched Client','Matched On','Outstanding','ID Verified','Best Callback','Callback Due',
-  'Callback Status','Handled By','Becomes Enquiry','Promoted','Notes'];
+// A..T — mirrors setup_call_log_tab.gs. The intake block (Email/Location/Visa Interest)
+// went in at F/G/H on 22 Aug and shifted everything from Matched Code rightwards by three.
+const CL_H = ['Received','Caller Name','Phone','New or Existing','Reason',
+  'Email','Location','Visa Interest',
+  'Matched Code','Matched Client','Matched On','Outstanding','ID Verified','Best Callback',
+  'Callback Due','Callback Status','Handled By','Becomes Enquiry','Promoted','Notes'];
 const EQ_H = ['Date','Name','Phone','Email','Channel','Visa Interest','Location',
   'Assigned To','Status','Follow-up Due','Notes'];
 
-const C = { RECEIVED:0, NAME:1, PHONE:2, REASON:4, MATCHEDON:7, IDVER:9, CBDUE:11,
-            CBSTATUS:12, HANDLEDBY:13, BECOMES:14, PROMOTED:15 };
-const E = { DATE:0, NAME:1, PHONE:2, EMAIL:3, CHANNEL:4, ASSIGNED:7, STATUS:8, DUE:9, NOTES:10 };
+const C = { RECEIVED:0, NAME:1, PHONE:2, REASON:4,
+            EMAIL:5, LOCATION:6, VISA:7,
+            MATCHEDON:10, IDVER:12, CBDUE:14, CBSTATUS:15, HANDLEDBY:16,
+            BECOMES:17, PROMOTED:18 };
+const E = { DATE:0, NAME:1, PHONE:2, EMAIL:3, CHANNEL:4, VISA:5, LOCATION:6,
+            ASSIGNED:7, STATUS:8, DUE:9, NOTES:10 };
 
 function call(o = {}) {
-  const r = new Array(17).fill('');
+  const r = new Array(20).fill('');
   r[C.RECEIVED]  = o.received || new Date('2026-08-19T10:00:00');
   r[C.NAME]      = o.name === undefined ? 'A CALLER' : o.name;
   r[C.PHONE]     = o.phone === undefined ? '0400111222' : o.phone;
@@ -31,6 +37,9 @@ function call(o = {}) {
   r[C.CBDUE]     = o.cbDue || '';
   r[C.CBSTATUS]  = o.cbStatus || '';
   r[C.HANDLEDBY] = o.handledBy || '';
+  r[C.EMAIL]     = o.email || '';
+  r[C.LOCATION]  = o.location || '';
+  r[C.VISA]      = o.visa || '';
   r[C.BECOMES]   = o.becomes || '';
   r[C.PROMOTED]  = o.promoted || '';
   return r;
@@ -144,7 +153,10 @@ console.log('\n=== 🔴 it refuses rather than write into the wrong columns ==='
         /ABORT/.test(r1.log) && leads(r1.eq).length === 0, r1.log.split('\n')[0]);
   check('...and CALL LOG is not stamped either', String(r1.cl[1][C.PROMOTED]) === '');
 
-  const badCl = CL_H.slice(); badCl[15] = 'Something Else';  // Promoted moved
+  // ⚠️ Was hardcoded as badCl[15]. The intake block moved 'Promoted' to 19 and index 15
+  // became 'Callback Status', which the guard does not check — so this negative test
+  // quietly stopped testing anything and reported PASS. Derived from the name now.
+  const badCl = CL_H.slice(); badCl[CL_H.indexOf('Promoted')] = 'Something Else';
   const r2 = run([call({ name: 'X', becomes: 'Yes' })], { clHeader: badCl });
   check('shifted CALL LOG column -> ABORT', /ABORT/.test(r2.log) && leads(r2.eq).length === 0);
 }
@@ -166,6 +178,28 @@ console.log('\n=== blank and unusable rows ===');
   const p = run([call({ name: '', phone: '0400123456', becomes: 'Yes' })]);
   check('phone but no name IS promotable — M8 can still ring them',
         leads(p.eq).length === 1, leads(p.eq).length + ' created');
+}
+
+console.log('\n=== the intake block — the three fields promote could not fill before ===');
+{
+  const r = run([call({ becomes:'Yes', name:'INTAKE ONE', email:'x@example.com',
+                        location:'Offshore', visa:'Graduate Visa · Skills Assessment' })]);
+  const L = leads(r.eq)[0];
+  check('email crosses over', L[E.EMAIL] === 'x@example.com', L[E.EMAIL]);
+  check('visa interest crosses over VERBATIM, not translated to a subclass',
+        L[E.VISA] === 'Graduate Visa · Skills Assessment', L[E.VISA]);
+  check('location crosses over', L[E.LOCATION] === 'Offshore', L[E.LOCATION]);
+  // 🔴 ENQUIRIES G is setAllowInvalid(false). Anything not exactly Onshore/Offshore must be
+  // dropped, or the cell refuses the whole write silently — D-353.
+  const bad = leads(run([call({ becomes:'Yes', name:'BAD LOC', location:'Dubai' })]).eq)[0];
+  check('🔴 an off-list location is DROPPED, not passed into a locked cell',
+        bad[E.LOCATION] === '', bad[E.LOCATION]);
+  check('...and is preserved in Notes so nothing is lost',
+        String(bad[E.NOTES]).indexOf('Dubai') > -1, bad[E.NOTES]);
+  const empty = leads(run([call({ becomes:'Yes', name:'NO INTAKE' })]).eq)[0];
+  check('a call with no intake answers still promotes', empty[E.NAME] === 'NO INTAKE');
+  check('...leaving the three fields blank rather than inventing them',
+        empty[E.EMAIL] === '' && empty[E.VISA] === '' && empty[E.LOCATION] === '');
 }
 
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed');

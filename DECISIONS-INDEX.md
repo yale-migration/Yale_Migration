@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 524K /     6252 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 528K /     6297 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:00
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:11
 
 | # | Decision |
 |---|---|
@@ -359,3 +359,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:0
 | **D-360** | The 190 checklist WAS uploaded. Only the record of it was missing — again |
 | **D-361** | The fix is in the repo; the project is running the old copy |
 | **D-362** | D-353 closed end to end — and the verifier tested the right thing |
+| **D-363** | M7's second half built — and the change surfaced three hardcoded positions, two of which fail silently |

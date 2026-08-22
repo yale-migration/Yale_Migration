@@ -32,13 +32,24 @@ var M7_ENQ_TAB  = 'ENQUIRIES';
 var M7_FIRST    = 2;
 
 // CALL LOG A..Q — must match CL_HEADERS in setup_call_log_tab.gs. Proven at runtime.
-var M7_CL = { RECEIVED:1, NAME:2, PHONE:3, NEWEXIST:4, REASON:5, CODE:6, MATCHED:7,
-              MATCHEDON:8, OUTSTANDING:9, IDVERIFIED:10, BESTCB:11, CBDUE:12,
-              CBSTATUS:13, HANDLEDBY:14, BECOMES:15, PROMOTED:16, NOTES:17 };
+// ⚠️ SHIFTED 22 Aug — the intake block (Email/Location/Visa Interest) went in at F/G/H,
+// so everything from Matched Code rightwards moved by three. setup_call_log_tab.gs is the
+// contract; if these two disagree, promote writes the wrong cells and reports success.
+var M7_CL = { RECEIVED:1, NAME:2, PHONE:3, NEWEXIST:4, REASON:5,
+              EMAIL:6, LOCATION:7, VISA:8,
+              CODE:9, MATCHED:10, MATCHEDON:11, OUTSTANDING:12, IDVERIFIED:13,
+              BESTCB:14, CBDUE:15, CBSTATUS:16, HANDLEDBY:17, BECOMES:18,
+              PROMOTED:19, NOTES:20 };
 
 // ENQUIRIES A..K (+ L Last Contact, added D-339 — M8 reads it, we never write it).
 var M7_ENQ = { DATE:1, NAME:2, PHONE:3, EMAIL:4, CHANNEL:5, VISA:6, LOCATION:7,
                ASSIGNED:8, STATUS:9, DUE:10, NOTES:11 };
+
+// ⚠️ DERIVED. This was hardcoded as 17 in two getRange calls and silently stopped reading
+// 'Becomes Enquiry' the moment the intake block widened the tab to 20 — promote reported
+// "not marked Yes: 1" and skipped every lead, with no error. A hardcoded width beside a
+// list that grows is the same trap as CL_HELPER_PHONE=18, found the same afternoon.
+var M7_CL_WIDTH = M7_CL.NOTES;
 
 var M7_PROMOTE_WHEN = 'Yes';
 
@@ -59,14 +70,18 @@ function m7PromoteRun_() {
 
   // Prove BOTH tabs before writing to either. A shifted column on the ENQUIRIES side
   // would write a phone number into Visa Interest and look like a data-entry mistake.
-  if (!m7CheckHeaders_(cl, { 3:'Phone', 15:'Becomes Enquiry', 16:'Promoted' }, M7_CALL_TAB)) return;
+  // Positions shifted by the intake block (22 Aug). This guard is what caught the shift
+  // during the change — it refused to write rather than writing into the wrong columns,
+  // which is exactly the failure it was built for.
+  if (!m7CheckHeaders_(cl, { 3:'Phone', 6:'Email', 7:'Location', 8:'Visa Interest',
+                             18:'Becomes Enquiry', 19:'Promoted' }, M7_CALL_TAB)) return;
   if (!m7CheckHeaders_(eq, { 1:'Date', 2:'Name', 3:'Phone', 5:'Channel', 9:'Status' }, M7_ENQ_TAB)) return;
 
   var last = cl.getLastRow();
   if (last < M7_FIRST) { Logger.log('No calls logged — nothing to promote.'); return; }
   var n = last - M7_FIRST + 1;
 
-  var rows = cl.getRange(M7_FIRST, 1, n, 17).getValues();
+  var rows = cl.getRange(M7_FIRST, 1, n, M7_CL_WIDTH).getValues();
   var promotedCol = cl.getRange(M7_FIRST, M7_CL.PROMOTED, n, 1);
   var promoted = promotedCol.getValues();
 
@@ -92,6 +107,15 @@ function m7PromoteRun_() {
     row[M7_ENQ.NAME - 1]     = v(M7_CL.NAME);
     row[M7_ENQ.PHONE - 1]    = v(M7_CL.PHONE);
     row[M7_ENQ.CHANNEL - 1]  = 'Phone';          // already in the ENQUIRIES Channel dropdown
+    // The intake block. Before 22 Aug these three were left blank because CALL LOG had
+    // nowhere to hold them, so every promoted call produced an enquiry the system could
+    // not email, could not place onshore/offshore, and could not report by visa line.
+    row[M7_ENQ.EMAIL - 1]    = v(M7_CL.EMAIL);
+    row[M7_ENQ.VISA - 1]     = v(M7_CL.VISA);     // free text both sides — verbatim
+    // ⛔ ENQUIRIES G is a LOCKED dropdown. Anything that is not exactly Onshore/Offshore is
+    // dropped and kept in Notes instead — passing it through is D-353, silently refused.
+    var loc = v(M7_CL.LOCATION);
+    row[M7_ENQ.LOCATION - 1] = (loc === 'Onshore' || loc === 'Offshore') ? loc : '';
     row[M7_ENQ.ASSIGNED - 1] = v(M7_CL.HANDLEDBY) || 'Unassigned';
     // ⛔ Status is left BLANK on purpose. It is the consultant's judgement in their own
     // vocabulary (SOP-CI-001 10B) and nothing here infers it — the same rule M8 follows.
@@ -99,7 +123,9 @@ function m7PromoteRun_() {
     // date written here would be a second, competing source for the same clock.
     row[M7_ENQ.NOTES - 1]    = 'From CALL LOG ' + Utilities.formatDate(
                                  now, Session.getScriptTimeZone(), 'yyyy-MM-dd')
-                               + (v(M7_CL.REASON) ? ' — ' + v(M7_CL.REASON) : '');
+                               + (v(M7_CL.REASON) ? ' — ' + v(M7_CL.REASON) : '')
+                               + ((loc && loc !== 'Onshore' && loc !== 'Offshore')
+                                  ? ' | Location on the call log said: ' + loc : '');
     toAdd.push(row);
     promoted[i][0] = now;
     marked++;
@@ -134,7 +160,7 @@ function callbackQueueReport() {
   var last = cl.getLastRow();
   if (last < M7_FIRST) { Logger.log('No calls logged.'); return; }
 
-  var rows = cl.getRange(M7_FIRST, 1, last - M7_FIRST + 1, 17).getValues();
+  var rows = cl.getRange(M7_FIRST, 1, last - M7_FIRST + 1, M7_CL_WIDTH).getValues();
   var now = new Date();
   var pending = 0, overdue = 0, weak = 0, unverified = 0, lines = [];
 

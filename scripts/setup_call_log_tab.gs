@@ -56,16 +56,32 @@ var CL_ROWS     = 500;      // formula rows laid down up front
  * They are hidden because they are machinery, not data. They carry underscore names so
  * that if anyone unhides them it is obvious they are not a field to fill in.
  */
-var CL_HELPER_PHONE = 18;   // R
-var CL_HELPER_NAME  = 19;   // S
+// ⚠️ DERIVED, not hardcoded. These were 18 and 19 and would have silently pointed at two
+// real columns the moment the intake block was inserted — the helper MATCH ranges would
+// have searched 'Notes'. Positional constants beside a list that grows are a trap.
+var CL_HELPER_PHONE = CL_HEADERS.length + 1;
+var CL_HELPER_NAME  = CL_HEADERS.length + 2;
 
-// A..P. Order is the contract with m7_callback_queue.gs — change one, change both.
+// A..T. Order is the contract with m7_callback_queue.gs — change one, change both.
 var CL_HEADERS = [
   'Received',        // A  when the call came in
   'Caller Name',     // B  as given on the phone
   'Phone',           // C  🔑 type here and the match fills itself
   'New or Existing', // D  dropdown
   'Reason',          // E  free text
+  // ── M7's intake block, added 22 Aug. These three exist because they are the only
+  // ENQUIRIES fields `promoteCallsToEnquiries` could not fill: a promoted call arrived
+  // with no email, no location and no visa interest, so a phone lead was structurally
+  // poorer than a web lead for no reason anyone had chosen.
+  // They sit AFTER 'New or Existing' and 'Reason' on purpose — you only ask intake
+  // questions once you know the caller is new. That is the call's order, not the sheet's.
+  // ⛔ Only THREE, not the form's nine. Age, work experience and course completed have no
+  // ENQUIRIES column either and go in Notes, exactly as C-1 does. A-32, their words:
+  // "too much column is a lot to handle."
+  'Email',           // F  → ENQUIRIES D
+  'Location',        // G  → ENQUIRIES G. Onshore/Offshore — the SHEET's vocabulary, not
+                     //     the form's Australia/Philippines, so no translation can go wrong
+  'Visa Interest',   // H  → ENQUIRIES F. Free text on both sides: their words, verbatim
   'Matched Code',    // F  formula — MASTER client code
   'Matched Client',  // G  formula — name · stage · consultant
   'Matched On',      // H  formula — 'phone' | 'name (VERIFY)' | ''

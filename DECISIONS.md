@@ -6250,3 +6250,48 @@ nothing *asserts* it: patch the live sheet without touching the .gs and the impo
 write a value the cell then refuses, which is D-353 wearing a new coat. The verifier already prints
 the full live list, so the evidence exists; what is missing is an automatic comparison, and it needs
 API access we spend operations on. **Left open deliberately, and named so it is not rediscovered.**
+
+## D-363 | M7's second half built — and the change surfaced three hardcoded positions, two of which fail silently
+
+**22 Aug 2026.** With their enquiry form finally in hand (I-14), M7's blocked half was buildable.
+The gap was precise, and worth stating because nothing in our tracking had named it:
+
+`promoteCallsToEnquiries()` fills six of ENQUIRIES' eleven columns. Two more — `Status` and
+`Follow-up Due` — are blank by design. **Three had no source at all: `Email`, `Visa Interest`,
+`Location`.** So every promoted call produced an enquiry the system **could not email, could not
+place onshore/offshore, and could not report by visa line.** A phone lead was structurally poorer
+than a web lead, and nobody had chosen that — it was a consequence of CALL LOG having nowhere to put
+the answers.
+
+**Built:** an intake block at F/G/H — `Email`, `Location`, `Visa Interest` — inserted **after**
+`New or Existing` and `Reason`, because you only ask intake questions once you know the caller is
+new. That is the call's order, not the sheet's. Three columns, not the form's nine: age, work
+experience and course completed have no ENQUIRIES column either and go to Notes, exactly as C-1 does
+(A-32, *"too much column is a lot to handle"*).
+
+🔑 **THE FINDING. Widening a tab by three columns exposed three hardcoded positions sitting beside
+lists that grow. Two of them fail silently.**
+
+| Where | Was | Failure mode |
+|---|---|---|
+| `CL_HELPER_PHONE = 18` | the hidden helper columns | At 20 headers, 18 is a **real** column — the MATCH ranges would have searched `Becomes Enquiry`. **Silent wrong answers.** |
+| `getRange(row, 1, n, 17)` ×2 | the promoter's read width | Stopped before `Becomes Enquiry`, so promote saw **no flagged rows** and logged *"not marked Yes: 1"*. **Silent, and it reports success.** |
+| `badCl[15] = 'Something Else'` | a negative test | Index 15 became `Callback Status`, which the guard does not check — so the test **stopped testing anything and reported PASS.** |
+
+All three now derive from the header list. **The third is the worst of them**, and it is the family
+this project keeps meeting: D-348 (views ✅ because tracker and component shared a word), D-350 (a
+confirmation of a count), D-362 (a list-membership check standing in for a write). **A negative test
+that no longer triggers the thing it is negating is indistinguishable from one that does** — it is
+green either way, and only green tells you nothing.
+
+**What caught what, honestly:** the header guard inside `promoteCallsToEnquiries` refused to write
+when the positions shifted — it worked exactly as built. The 17-wide read was caught by the test
+suite. The dead negative test was caught only by reading the file while fixing the other two. **The
+last one had no automated defence, and I do not have a general fix for it beyond re-reading negative
+tests whenever the shape they assert against changes.**
+
+34/34 on M7, 206 across all six suites. ⬜ **Not yet live** — `add_call_log_intake_columns.gs` must
+run against the real tab, then `repairCallLogTab()` to regenerate the formulas at their new letters.
+The formulas resolve every column through `clCol_('Header Name')`, which is why the insert is safe at
+all; but they do **not** regenerate themselves, and skipping step 2 leaves them pointing at the old
+letters.

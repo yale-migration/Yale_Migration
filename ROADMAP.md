@@ -158,7 +158,7 @@ Expected output: client sees working automation for the first time.
 - ⬜ Dedupe by phone · consultant auto-assignment via roster · 7-day pending rule
 - Evidence for the client: 2 of 3 paid ad enquiries were never answered
 
-### M7 — Phone intake & callback queue (4h) — ⬜
+### M7 — Phone intake & callback queue (4h) — 🟡 **BOTH HALVES BUILT 22 Aug, second half not yet live**
 - ⬜ Call-log form per the phone SOP → ENQUIRIES · caller lookup view · callback tasks
 
 ### M8 — Lead follow-up sequences (2h) — ⬜
@@ -249,8 +249,8 @@ tracking file, so none were built and none were counted. They are MVP work, not 
 |---|---|---|---|---|
 | **C-1** | **Client intake form** | 2 | 🟢 **UNBLOCKED 21 Aug** | 🔑 **Do not design one.** They already have `Client Enquiry Form` (D-314) and their SOP-CI-001 is built around it. Build to *their* form, or we ship a second form nobody fills in. ✅ **HELD AND READ 21 Aug** — `INQUIRY FORM YALE MIGRATION PINOY`, 9 questions pulled from the form's own payload: Complete Name · Age · Mobile/WhatsApp · Email · Location (Australia\|Philippines) · Current Work Experience · Course completed · Interested in? (10-way checkbox) · free-text situation. **Mapping decided:** 6 map straight to `ENQUIRIES`; Age, Work Experience and Course completed have no column and go to **Notes, not new columns** (A-32). Location translates Australia→Onshore, Philippines→Offshore. ⚠️ A **second form exists for Brisbane/Indian** (A-46) but its link is unreadable — **not a blocker**: both forms target the same 11 `ENQUIRIES` columns |
 | **C-2** | **Secure upload link** | 2 | ⬜ | Column **AD `Upload Link`** now exists in MASTER (`add_master_columns_z_to_ad.gs`). Needs the generator + the wording that goes to the client |
-| **C-3** | **Third-party responsible-party tracking** | 2 | ⬜ | Columns **AB `Third Party`** + **AC `Third Party Status`**. Their SOPs name employer · college · RTO · assessing authority as blockers on the client's own file |
-| **C-4** | **Received / missing status per client** | 2 | ⬜ | Columns **Z `Docs Received`** + **AA `Docs Outstanding`**. 🔑 **AA is what the M5b chase email lists** — without it M5b can only say "something is missing" |
+| **C-3** | **Third-party responsible-party tracking** | 2 | ✅ **DONE 17 Aug** | Columns **AB `Third Party`** + **AC `Third Party Status`**. Their SOPs name employer · college · RTO · assessing authority as blockers on the client's own file. ✅ Columns live **and** surfaced as dashboard view 8 *Blocked On A Third Party*. ⚠️ **This row read ⬜ here while `WHERE-WE-STAND` read ✅ for five days** — a straight G6 breach in the one table this file is still authoritative for. Corrected 22 Aug |
+| **C-4** | **Received / missing status per client** | 2 | ✅ **DONE 17 Aug** | Columns **Z `Docs Received`** + **AA `Docs Outstanding`**. 🔑 **AA is what the M5b chase email lists** — without it M5b can only say "something is missing". ✅ Columns live **and** surfaced as dashboard view 7 *Documents Outstanding*; route C's chase email reads AA (`1.\`26\``), verified in the blueprint. ⛔ **Populated by staff, not derived** — we do not track documents individually, so nothing can compute it. That is the delivered scope, not a gap |
 | **C-5** | **Referral + SMS enquiry channels** | 1 | 🔒 **PART BLOCKED** | **Not a column.** `Source` (U) already exists — it needs `Referral` and `SMS` added to its dropdown, plus a capture path for each. ⛔ **SMS SENDING IS NOT IN SCOPE AND NOT POSSIBLE TODAY** (CR-015, 22 Aug): a `Source` value records where a lead *came from*; it is **not a send path**. Texting needs a paid gateway, sender-ID registration and opt-out handling, none of which is in any plan or quote. **Never let "SMS is already in the dropdown" be read as "SMS nearly works."** |
 
 ⚠️ **C-2 → C-4 depend on the five new MASTER columns.** Those go **STRICTLY RIGHT OF Y** — M4 addresses
