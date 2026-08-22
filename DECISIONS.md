@@ -6164,3 +6164,50 @@ it silently and nobody is told which row. So the mapper drops it from the column
 
 🔑 The through-line: all three are places where the helpful-looking behaviour is the one that produces
 a confident wrong answer. **Blank is honest. A guess that renders identically to a fact is not.**
+
+## D-360 | The 190 checklist WAS uploaded. Only the record of it was missing — again
+
+**22 Aug 2026.** D-354 said `190_SKILLED-NOMINATED.docx` had *"no record of ever being uploaded"* to
+the OneDrive folder M4 copies from, and flagged it as an import blocker because there is a 190 client
+in the 38 rows.
+
+**Sharjeel opened the folder. It is there, dated 12 August** — sitting between
+`189_SKILLED-INDEPENDENT.docx` and `407_TRAINING.docx`, both dated 8 August. The dates corroborate
+the story exactly: the corrected 190 arrived on 11 Aug (D-280) and was uploaded the next day, three
+days after the original batch. He also pasted the file's contents, which re-verify against D-280's
+fingerprint — heading *"Skilled Nominated Visa (Subclass 190)"*, *"Minimum 65 points … including 5
+points for state/territory nomination"*, state nomination required, and **no mention of 491, 189 or
+regional residence**, which is the decisive check that exposed both earlier wrong versions.
+
+🔑 **This is D-341 repeating, precisely.** There, the daily trigger *"had existed all along; what was
+missing was any RECORD of it"* — and *"no record it was created"* was wrongly read as *"it was never
+created."* Same inference, same wrong direction, five days later. **The absence of a log entry is
+evidence about our logging, not about the world.**
+
+**What survives, and it is the half that mattered:** the coverage check added in D-325 asserts *"every
+mapped file exists **on disk**"* — in our repository, which M4 never reads. M4 reads
+`/drives/A0BABA3C2640082C/items/…78266e65…`. So the verifier still proves the file exists in the one
+place the consumer will never look. **The upload was fine; the check is still pointed at the wrong
+target,** and it would not have caught a genuinely missing file. That stays open.
+
+⚠️ **Not yet confirmed:** the screenshot shows five files and 190 among them. **It does not confirm all
+23 are present.** One folder count closes it.
+
+## D-361 | The fix is in the repo; the project is running the old copy
+
+**22 Aug 2026.** `patch_master_dropdowns.gs` now carries `'Citizenship'` (D-353). But
+`patchMasterDropdowns()` has demonstrably run in their project before — there is a real run log,
+timestamped, at `DECISIONS.md:4430`: *"OK H — already has 186. Nothing to do."*
+
+**So the file is already in the Apps Script project, and it is the version from before today's edit.**
+Running it as-is would report success and change nothing, because the copy in the project still has
+`add: ['186']`.
+
+🔑 **Editing a file in the repo does not deploy it.** This is D-339 in a smaller register — M8 read
+"✅ COMPLETE" in our own tracking for a day while the file was not in the project at all. There, a
+missing file; here, a stale one. A stale file is worse, because it runs and reports OK.
+
+**Therefore the instruction is never "run patchMasterDropdowns()". It is "re-paste the file, THEN
+run it, THEN read the log for the word Citizenship."** An instruction that omits the paste step will
+produce a green log and no change, and the next person to check will find `Citizenship` still absent
+and no idea why.
