@@ -6,6 +6,27 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 
 ---
 
+## 📋 TEAM SIDE AT A GLANCE — as at 22 Aug 2026
+**22 discrete things have ever been needed from RJ's side. 16 in hand · 3 promised · 3 open.**
+
+| | Item | State |
+|---|---|---|
+| 🔴 | **3 test-client emails + 1 assessing authority** (A-48) | **THE ONLY TEAM BLOCKER** — M10, 2 h |
+| 🔴 | **The Brisbane/Indian enquiry form** (A-46) | link is `/edit`, returns **401**. Not a blocker: both forms map to the same 11 ENQUIRIES columns |
+| 🔴 | **The unknown staff-list update** (A-45) | he asked *us*. Blocks clean go-live, not the build |
+| 🟡 | 600 + Citizenship checklists (A-47a) | *"tomorrow"* — 23 Aug. **Billable CR-013, blocks nothing** |
+| 🟡 | Contact numbers (A-47b) | *"monday"* — 24 Aug. M7 degrades without it, does not break |
+| 🟡 | 12 emails + 11 expiry dates (A-47c) | he is checking — may only exist on his own sheet (**D-356**) |
+
+✅ **In hand (16):** client list · checklist currency · Filipino enquiry form · no website form · no
+walk-in sheet · which list is live · both mailboxes · row 13 · rows 22/23 · rows 4 and 7 · column 4
+agreed · client codes · RJ vs Rey · Gopi (closed by departure) · 186 checklist · follow-up templates
+(answered: none exist).
+
+⛔ **Do not send the team another list.** One reply covering the three 🔴 rows, and that is the lot.
+
+---
+
 ## 🔴 BLOCKING GO-LIVE
 
 | # | Ask | Asked | Status |
@@ -31,7 +52,7 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 | **A-45** | 🔴 **NEW — "There is also a new update on the staff list. did sir robin already mentioned it to you?"** RJ raised it himself and is asking US. **We do not know what changed.** Third roster change in two weeks. **Ask Robinder on the call**, and get the roster in full rather than person by person | 22 Aug | 🔴 |
 | **A-46** | 🔴 **NEW — the Brisbane/Indian enquiry form EXISTS**, and RJ sent it: form id `1kHw3yp8…`. ⚠️ **It is an `/edit` link again and returns 401 — we cannot read it.** Same as the first form until he sent the public `/viewform` link. **Ask for the live link (Send → copy link), or share with `project1@`.** Until then M6's Brisbane field set is unknown | 22 Aug | 🔴 |
 | **A-47** | 🟡 **PROMISED, NOT YET RECEIVED** — (a) **600 + Citizenship checklists**, *"will send the new checklists tomorrow"* (23 Aug); (b) **contact numbers**, *"I can send these information on monday"* (24 Aug); (c) **emails + visa expiry**, *"I need to double-check this part"*. Chase (a) and (b) only if they do not arrive | 22 Aug | 🟡 |
-| **A-48** | 🔴 **STILL UNANSWERED — the three test clients' visa type, email address and 485 assessing authority.** Asked 21 Aug and not addressed in either of his 22 Aug replies. **This is the ONLY team-side item that blocks contracted hours** (M10, 2 h) | 21 Aug | 🔴 |
+| **A-48** | 🔴 **STILL UNANSWERED — and our own ask was part of the reason (D-357).** We asked for *"visa type, email address, assessing authority"* — **but he had already given the visa type** in the message we were replying to. A three-part ask with a stale first part reads as careless and invites skipping the whole item. **What is actually still needed: 3 email addresses + 1 assessing authority (485 only).** ✅ G9 checked — no full-name match in their own files, so the ask is legitimate. **The ONLY team-side item blocking contracted hours** (M10, 2 h) | 21 Aug | 🔴 |
 | ~~A-27~~ | ✅ **CLOSED 22 Aug — client codes confirmed.** RJ: *"Thank you."* Codes go live with the import | 18 Aug | ✅ |
 | ~~A-28~~ | ✅ **CLOSED 22 Aug — column 4 agreed.** RJ: *"we can start this to future clients"* — exactly the D-352 plan, in his own words | 18 Aug | ✅ |
 | **A-44** | 🟠 **Row 28 spelling deferred to Robinder** by RJ — *"I am not sure if we can ask Sir Robin about this."* It becomes the client's folder name, so it must be right first time. **Friday call** | 21 Aug | 🟠 |

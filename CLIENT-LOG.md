@@ -789,3 +789,26 @@ like a repeat of D-353 across all 38 rows. It is not: `build_master_import.py:60
 `STAFF` map with the comment *"the dropdown is setAllowInvalid(false), so anything not landing on a
 roster value is REJECTED by the cell"*, and every observed value is covered. **Someone thought about
 this for consultants and not for visa types — which is exactly the asymmetry D-353 names.**
+
+2026-08-22 | internal | **Audit of RJ's two replies found a failure in our own asking, not just in
+his answering.** He nominated three test clients on 21 Aug and wrote the visa type against each one.
+Our reply then asked for *"visa type, email address, assessing authority"* — **re-requesting a third
+of what he had just told us.** He then sent two more emails, answered nine other things, and touched
+that item not at all. Cause is unprovable, but a three-part ask whose first part is already answered
+is a reasonable thing to skip: it signals the sender did not read the reply, so the rest looks
+optional too. **Bundling a stale question with live ones puts the live ones at risk** — the recipient
+triages the whole item on its weakest part (**D-357**). Genuinely outstanding is much smaller:
+**three email addresses and one assessing authority.**
+
+✅ **G9 checked before re-asking:** their own workbooks hold one surname match for the 485 client but
+**no full-name match**, so it is a different person. We do not hold it; the ask is legitimate.
+⚠️ **Method fault, recorded rather than buried:** that search joined whole rows for name-matching,
+which touches the `Username` / `Password` / `OTP` / `Security questions` columns the JRP tabs carry.
+Nothing was output or stored — booleans only — but the credential rule says *excluded from every
+read*. **Match on the name column alone in future, never on the joined row.**
+
+**Team side now stands at 22 discrete asks: 16 in hand, 3 promised with dates, 3 open.** Of the three
+open, exactly **one blocks contracted work** (A-48, M10, 2 h). A-46 does not — verified: both enquiry
+forms map into the same 11 `ENQUIRIES` columns, so a second form changes which extras land in Notes,
+not the build. A-45 blocks clean go-live only. Recorded as a one-glance board at the top of
+`CLIENT-ASKS.md` so it cannot drift again.

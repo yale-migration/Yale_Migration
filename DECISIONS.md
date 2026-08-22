@@ -6065,3 +6065,42 @@ to say.
 
 **Decided:** it goes to Robinder on the call as a **factual observation followed by silence** —
 scripted in the runbook at § ④b — never as a pitch, and with no number attached. Logged as **P2-10**.
+
+## D-357 | We asked for something they had already given us — inside a three-part ask, and the whole ask was ignored
+
+**22 Aug 2026.** On 21 Aug RJ nominated three clients for end-to-end testing and wrote them out as:
+
+```
+Client 500   <name>
+Client 485   <name>
+Client 482   <name>
+```
+
+**He gave us the visa type for all three.** Our reply then asked, for each one:
+
+> *"Visa type · Email address · Assessing authority for the 485"*
+
+**One third of that request was already answered, in the message we were replying to.** He then sent
+two further emails, answered nine other things, and **did not touch this item at all.**
+
+I cannot prove cause. But a three-part ask whose first part you have already answered is a reasonable
+thing to skip: it signals the sender did not read your reply carefully, so the rest of the item looks
+like it may not need answering either. **The cheapest explanation for silence is that the question
+looked careless.**
+
+**What was actually still needed is much smaller:**
+- **three email addresses**
+- **one assessing authority**, for the 485 only
+
+**G9 check before re-asking** — do our own files answer it? A search of their workbooks found one
+surname match in a JRP tab, but **no full-name match**, so it is a different person. We do not hold
+it. The ask is legitimate. ⚠️ Method note: that search joined whole rows, which touches the
+`Username` / `Password` / `OTP` / `Security questions` columns those tabs carry. Nothing was output
+or stored, but the credential rule says *excluded from every read* — **match on the name column
+only, never on the joined row.**
+
+🔑 **The rule.** G9 says *nothing goes to the client that our own files can answer.* This is its
+overlooked twin: **nothing goes to the client that the client has already answered** — and the
+damage is not just the wasted line. Bundling a stale question with live ones puts the live ones at
+risk, because the recipient triages the whole item on its weakest part. **Re-read their last message
+before writing the ask, not after.**
