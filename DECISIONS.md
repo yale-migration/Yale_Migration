@@ -6211,3 +6211,42 @@ missing file; here, a stale one. A stale file is worse, because it runs and repo
 run it, THEN read the log for the word Citizenship."** An instruction that omits the paste step will
 produce a green log and no change, and the next person to check will find `Citizenship` still absent
 and no idea why.
+
+## D-362 | D-353 closed end to end — and the verifier tested the right thing
+
+**22 Aug 2026, 23:57.** Sharjeel re-pasted `patch_master_dropdowns.gs` and ran both functions.
+
+```
+PATCHED MASTER.H Visa Type += Citizenship   (23 -> 24 values)
+OK      MASTER.U — already has SMS. Nothing to do.
+PATCHED ENQUIRIES.E Channel += SMS          (8 -> 9 values)
+...
+11/11 checks passed · DROPDOWNS OK.
+```
+
+**The locked-column class is now closed at all three layers**, each proven separately:
+
+| Layer | Proof |
+|---|---|
+| The importer refuses bad values | negative-tested — exit 1, no CSV, and exit 0 / 38 rows when clean |
+| `setup_master_sheet.gs` knows about Citizenship | the gate went green with no validator change, because it reads that file |
+| **The live sheet actually accepts it** | `PASS MASTER.H actually accepts "Citizenship" being written` |
+
+🔑 **That third line is the one that matters, and it is why this verifier is worth copying.** It does
+not check that the list *contains* the value — it writes the value into a real cell, flushes, and
+clears it. Those are two different claims: `setAllowInvalid(false)` is precisely the thing that makes
+a list-membership check a lie. Column Y silently rejected every write for days while its list looked
+perfectly correct. **A dropdown test that only reads the list would have passed then too.**
+
+**An unrelated gap closed in passing.** `ENQUIRIES.E Channel += SMS` reports `8 -> 9`, meaning it had
+**never run**. The MASTER half of this file ran on 18 Aug; the ENQUIRIES patch was appended afterwards
+and nobody re-ran it. C-5's Channel column was quietly incomplete for four days and no check covered
+it. ⚠️ **An idempotent script that has been run once is not the same as a script whose every branch
+has been run** — and the reason we now know is that this one reports counts rather than just "OK".
+
+**Drift risk, recorded rather than fixed.** The importer validates against `setup_master_sheet.gs`;
+the sheet is what actually enforces. They are in sync today — 24 values, sets identical, checked. But
+nothing *asserts* it: patch the live sheet without touching the .gs and the importer would happily
+write a value the cell then refuses, which is D-353 wearing a new coat. The verifier already prints
+the full live list, so the evidence exists; what is missing is an automatic comparison, and it needs
+API access we spend operations on. **Left open deliberately, and named so it is not rediscovered.**

@@ -859,3 +859,23 @@ and very easy to misread as "all email is off for these 38".
 nine fields and the mapping decision recorded, C-5's SMS half re-marked out of scope. ⛔ Its frozen
 per-module status section deliberately left alone: `WHERE-WE-STAND.md` owns status, and a second status
 file is precisely how ROADMAP became the most contradictory file in the repo.
+
+2026-08-22 | internal | **Citizenship is live in the sheet, and D-353 is closed at all three layers.**
+Sharjeel re-pasted `patch_master_dropdowns.gs` and ran it: `PATCHED MASTER.H Visa Type += Citizenship
+(23 -> 24 values)`, then 11/11 on the verifier. 🔑 The line worth keeping is
+**`PASS MASTER.H actually accepts "Citizenship" being written`** — the verifier writes the value into
+a real cell and flushes, rather than checking the list contains it. Those are different claims, and
+`setAllowInvalid(false)` is exactly what makes the cheaper one a lie: column Y rejected every write
+for days while its list looked perfectly correct.
+
+⚠️ **An unrelated gap closed in passing.** `PATCHED ENQUIRIES.E Channel += SMS (8 -> 9)` means that
+branch had **never run** — the MASTER half went live 18 Aug, the ENQUIRIES patch was appended after,
+and nobody re-ran the file. C-5's Channel column was incomplete for four days with no check covering
+it. **A script that has been run once is not a script whose every branch has been run.** We only know
+because it reports counts instead of "OK".
+
+Drift risk named and left open: the importer validates against `setup_master_sheet.gs` while the sheet
+is what enforces. In sync today — both 24 values, sets compared, identical — but nothing asserts it.
+Also confirmed today: **`190_SKILLED-NOMINATED.docx` IS in the OneDrive checklist folder**, dated 12
+Aug, and its contents re-verify against D-280 (D-360). Green across the board: importer gate clean,
+199 Apps Script checks, 79/79 blueprint checks.

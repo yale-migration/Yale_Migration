@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 460K /     6213 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 524K /     6252 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 20:38
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:00
 
 | # | Decision |
 |---|---|
@@ -358,3 +358,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 20:3
 | **D-359** | Three design refusals in C-1, each one a defect we have already paid for |
 | **D-360** | The 190 checklist WAS uploaded. Only the record of it was missing — again |
 | **D-361** | The fix is in the repo; the project is running the old copy |
+| **D-362** | D-353 closed end to end — and the verifier tested the right thing |
