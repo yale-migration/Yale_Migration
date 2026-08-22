@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 448K /     5991 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 452K /     6067 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-21 11:17
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-22 16:41
 
 | # | Decision |
 |---|---|
@@ -351,3 +351,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-21 11:1
 | **D-352** | Their answer dissolved three of our own open questions, and we nearly missed it |
 | **D-353** | 🔴 `Citizenship` is not in MASTER's dropdown, and the import contains two of them |
 | **D-354** | The coverage check verifies our repo, not the folder M4 actually reads from |
+| **D-355** | Gopi joined and left in four days. A hardcoded roster is a design that is permanently stale |
+| **D-356** | Yale's client contact details are not in Yale's systems |

@@ -5989,3 +5989,79 @@ upload whatever is missing, and make **that** the coverage check. **Verify the a
 consumer reads it, never where the producer left it.**
 
 **The email was corrected before sending** — the count was removed rather than guessed at.
+
+## D-355 | Gopi joined and left in four days. A hardcoded roster is a design that is permanently stale
+
+**22 Aug 2026.** RJ, answering our third request for Gopi's work email: *"She will no longer continue
+with us."*
+
+The timeline is the finding:
+
+| | |
+|---|---|
+| **18 Aug** | `ANSWERED.docx`: *"GOPI has joined"* — no email, no team, no visa line |
+| **19 Aug** | Logged as **A-33 / I-24**, and correctly called *"a go-live defect, not paperwork"* — `MASTER` column L is `setAllowInvalid(false)`, so from day one nobody could assign her a client and the cell would refuse the name with no message |
+| 19 · 21 · 22 Aug | Asked three times — a P.S., then a dedicated item |
+| **22 Aug** | She has left. The ask is void |
+
+Also learned in passing: **Gopi is "she"** — three documents had already described her without anyone
+knowing, which is exactly why the neutral default exists.
+
+🔑 **The instance evaporated. The defect did not.** Mershe left, Gopi joined and left inside four
+days, and RJ then added *"there is also a new update on the staff list"* — **three roster changes in
+two weeks, on a ten-person team.** The consultant dropdown is a hardcoded array in
+`setup_master_sheet.gs`, so **every staff change is a code change made by us**. A visa agency's
+consultant list is not a constant; treating it as one guarantees the sheet is wrong the week after
+anyone joins or leaves, and wrong in the specific way that silently refuses a valid entry.
+
+**This is the same shape as D-285**, where M4's router hardcoded its visa list and a new checklist
+therefore needed a scenario edit — and the fix proposed there was *"the list could read from the
+CHECKLIST MAP tab instead."* Same answer here: **the dropdown should read from a roster tab the
+client maintains**, so a leaver is a row they delete rather than a ticket they raise.
+
+**Immediate action taken:** the Robinder runbook told Sharjeel to ask for Gopi's work email and not
+to leave the call without it. **Removed within minutes of reading the reply.** Asking a director for
+the email address of someone who has just resigned signals we are working from stale notes — on the
+one call where the whole point is to look on top of it.
+
+**Replaced with the right question:** *"RJ mentioned a new update on the staff list — what changed?"*
+Get the roster once, in full, and stop patching it one person at a time.
+
+## D-356 | Yale's client contact details are not in Yale's systems
+
+**22 Aug 2026 — volunteered, unprompted, and it is the most commercially significant sentence any of
+them has written.**
+
+Asked why 40 of 40 contact numbers and 13 of 40 email addresses were blank on the list they returned,
+RJ wrote:
+
+> *"I need to double-check this part because I think I am the only one who has a sheet containing the
+> client's email and contact number."*
+
+Put beside what he told us the day before — that `REYWARD JAKE M GAMOL-2026` is *"live but I am the
+only one using it, my personal sheet before I can transfer them in the main lists"*, holding ~247
+people — the position is:
+
+🔴 **The contact details of a migration practice's clients exist on one consultant's personal
+spreadsheet, and possibly nowhere else.** If he leaves, Yale cannot phone or email its own clients.
+
+**Three things follow, and the order matters.**
+
+**1. It explains the data gap rather than excusing it.** We had logged 0/40 phone numbers as *"asked,
+came back blank, never chased"* — a compliance failure of ours. It was never a filling-in problem.
+The business does not hold the data.
+
+**2. ⛔ It must never be said as criticism.** RJ raised it himself, honestly, against his own
+interest, when he could simply have said *"I'll get them."* He is doing the sensible thing with the
+tools he has; there is no central place to put a phone number because nobody built one. **A person
+who volunteers an inconvenient fact should never have it used against them** — and if it were, the
+next inconvenient fact stays hidden.
+
+**3. It is the strongest evidence in the account for Phase 3.** Robinder has asked for
+multi-branch oversight five times (CR-001 → 007 → 009 → 010 → 012) and we have argued it as a
+management convenience. It is not. It is **business continuity**: today, a resignation takes client
+contact details with it. That is concrete, current, sourced from his own team, and it costs nothing
+to say.
+
+**Decided:** it goes to Robinder on the call as a **factual observation followed by silence** —
+scripted in the runbook at § ④b — never as a pitch, and with no number attached. Logged as **P2-10**.

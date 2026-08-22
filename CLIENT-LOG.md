@@ -741,3 +741,51 @@ one OneDrive folder"* (unverifiable — see D-354) and *"you can see that tab to
 four answered"* when row 28 had been deferred, and *"only ART uncovered"* which is true of CR-013's four
 but not of the system. Corrected. **Four wrong sentences caught across two messages by re-reading our
 own files** — G1 earning its keep three days running.
+
+2026-08-22 | RJ (IN ×2) | **Two more replies. One line closes an ask by deleting it, and one line is
+the best commercial evidence in the account.**
+
+🔴 **GOPI HAS LEFT** — *"She will no longer continue with us."* We had asked three times for her work
+email, team and visa line (19, 21, 22 Aug) and logged it as a go-live defect, correctly: `MASTER`
+column L is `setAllowInvalid(false)`, so nobody could have assigned her a client. She joined 18 Aug
+and left 22 Aug. **The instance is void; the defect is not.** Three roster changes in two weeks —
+Mershe left, Gopi joined, Gopi left — and the consultant dropdown is a hardcoded array, so every
+staff change is a code change made by us. Same shape as D-285's hardcoded router. **D-355.**
+⚡ **The Robinder runbook was telling Sharjeel to ask for her email and "not leave the call without
+it". Removed immediately** — asking a director for the address of someone who just resigned signals
+we are working from stale notes, on the one call where the point is to look current. Replaced with
+the right question: RJ also wrote *"there is also a new update on the staff list, did sir robin
+already mentioned it to you?"* — **we do not know what changed** (A-45). Get the roster in full.
+
+🔑 **The most significant sentence anyone at Yale has written.** Asked why 40 of 40 phone numbers and
+13 of 40 emails were blank: *"I need to double-check this part because I think I am the only one who
+has a sheet containing the client's email and contact number."* Beside yesterday's *"my personal
+sheet before I can transfer them in the main lists"* (~247 people), the position is that **a
+migration practice's client contact details exist on one consultant's personal spreadsheet and
+possibly nowhere else.** It reframes our own logged failure — 0/40 was never a filling-in problem,
+the business does not hold the data. ⛔ **Never as criticism**: he volunteered it against his own
+interest when he could have said "I'll get them", and a person who surfaces an inconvenient fact must
+never have it used against them. Scripted for the call as a factual observation followed by silence,
+no price attached. **D-356**, logged as P2-10.
+
+**Also answered:** client codes ✅ (*"Thank you"*) · column 4 ✅ (*"we can start this to future
+clients"* — the D-352 plan in his own words) · rows 4 and 7 ✅ (*"yes, we don't need to create folder
+for them"*) · RJ = Reyward Jake ✅ explicitly.
+
+**Promised, not yet received:** 600 + Citizenship checklists *"tomorrow"* (23 Aug) · contact numbers
+*"monday"* (24 Aug) · emails + expiry, he is checking. → A-47.
+
+🔴 **The Brisbane/Indian enquiry form EXISTS** and he sent it — but as an `/edit` link again, which
+returns **401**. Verified, not assumed. Same failure as the first form until he sent the public
+`/viewform` version. Need the live link or access for `project1@` → **A-46**.
+
+🔴 **Still unanswered: the three test clients' visa type, email and 485 authority** (asked 21 Aug,
+untouched in both replies). **This is now the ONLY team-side item blocking contracted hours** — M10,
+2 h → **A-48**.
+
+⚠️ **Checked and cleared, not assumed:** the returned sheet's consultant column holds `ROBIN`,
+`INDER`, `STAR` and `INDER / ROBIN` — none of which match the dropdown's exact values. That looked
+like a repeat of D-353 across all 38 rows. It is not: `build_master_import.py:60` already carries a
+`STAFF` map with the comment *"the dropdown is setAllowInvalid(false), so anything not landing on a
+roster value is REJECTED by the cell"*, and every observed value is covered. **Someone thought about
+this for consultants and not for visa types — which is exactly the asymmetry D-353 names.**

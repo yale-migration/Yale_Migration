@@ -77,7 +77,7 @@ our side.
 | 3 | **OneDrive onto a Yale account** | § ③ | **M11 handover, 1.1 h** + unblocks C-2. Right now the folder automation runs on *our* personal login, which has to change before go-live regardless | same day he does it |
 | 4 | **A Make scenario slot** (paid plan) | § ④-2 | **M9, 0.5 h.** Email triage + Section 56 deadlines. Built and proven, but the free plan allows only 2 running scenarios and the folder automation already uses both | immediately |
 
-**Plus three that cost no hours but block go-live:** **Gopi's email/team/visa line** (④-8), the
+**Plus three that cost no hours but block go-live:** **the current staff list** (④-8 — ⚠️ Gopi has LEFT, do not ask for her details), the
 **row 28 spelling** (④-4b), and a **go-live date** (④-2).
 
 ## ⚠️ Two things on OUR side that must be done before import — do not promise a date without them
@@ -85,7 +85,7 @@ our side.
 Say nothing about these unless he asks how soon we can import. They are ours, they are half an hour
 each, and they are already logged:
 1. **`Citizenship` is missing from the sheet's visa-type list**, so two clients in the import would
-   be rejected outright. Same class of bug as Gopi's dropdown.
+   be rejected outright. Same class of bug as the consultant dropdown.
 2. **The 190 checklist may never have been uploaded** to the folder the system copies from — and
    there is a 190 client in the import.
 
@@ -318,13 +318,41 @@ Keep the three above sacred. These are extras, in priority order.
 | 5   | **Dashboard access list** — his team said *"need to ask sir Robin"*                                                             | Who sees what. He is the only manager, so it is two levels not three                                                                                                                                                                                                    |
 | 6   | **Is JRP in or out of scope?** (A-19, open since 14 Aug)                                                                        | 73 candidates, four steps each — a whole pipeline we have never scoped                                                                                                                                                                                                  |
 | 7   | ⚠️ `student@yalemigration.com.au` **is still under Mershe's name** and she has left                                             | A live mailbox attributed to a former employee, at a firm holding ImmiAccount logins                                                                                                                                                                                    |
-| 8   | ⚠️ **ONLY IF REY HAS NOT ANSWERED** — GOPI's work email, team and visa line (A-33). **Asked Rey first, 19 Aug**                 | 🔴 **Not paperwork — a go-live defect.** He is in no dropdown, and the sheet *rejects* a name that is not on the list. Day one, nobody can assign him a client and the cell just refuses. One line from Robinder fixes it                                               |
+| 8 | 🔴 **THE STAFF LIST — and do NOT ask for Gopi.** ⚠️ **RJ told us 22 Aug: *"She will no longer continue with us."* Gopi has left, four days after we were told she had joined.** Asking Robinder for her work email would signal we are not current. **Ask instead:** *"RJ mentioned there is a new update on the staff list — kya change hua hai?"* RJ raised it himself and asked whether you already knew | 🔑 **Three roster changes in two weeks** — Mershe left, Gopi joined 18 Aug, Gopi left 22 Aug. The consultant dropdown is hardcoded, so **every staff change is a code change** (D-355). Get the current list once, properly, and stop patching it person by person |
 | 9   | **"Woh Department ke emails forward kar dein — screenshot nahi, email khud."** 2–3 of them, ideally different visa types (A-34) | Every sample we hold is a **scan of a picture**, so we have never seen a sender address or a subject line — the two things the email triage keys off. ⚠️ **This has been in the M9 spec since 29 Jul and was never actually asked.** Costs him 30 seconds of forwarding |
 
 
 ---
 
 
+
+# ④b 🔑 THE STRONGEST THING YOU WILL SAY ALL CALL — and it landed by accident
+
+RJ wrote, on 22 Aug, about client emails and phone numbers:
+
+> *"I need to double-check this part because I think I am the only one who has a sheet containing
+> the client's email and contact number."*
+
+**Read that twice. Yale's own client contact details are not in Yale's systems.** They are on one
+consultant's personal sheet — the same one he told us on 21 Aug is *"my personal sheet before I can
+transfer them in the main lists"*, holding ~247 more people.
+
+⛔ **This is NOT a complaint about RJ, and it must never sound like one.** He is doing the sensible
+thing with the tools he has. It is a systems gap, and he surfaced it himself, unprompted and
+honestly. Say so.
+
+**How to put it — factual, no blame, then stop talking:**
+> *"Sir, ek cheez jo aaj samne aayi. RJ ne bataya ke clients ke email aur phone numbers shayad sirf
+> unki apni sheet mein hain. Ye unki ghalti nahi hai — unke paas aur koi jagah thi hi nahi. Lekin
+> matlab ye hai ke agar kal ko koi consultant chala jaye, to us ke clients ke contact details bhi
+> saath chale jayenge. Yehi wajah hai ke ek central database chahiye."*
+
+🔑 **This is the single best evidence you will ever have for the dashboard and the central database**
+— it is concrete, it is current, it came from his own team, and it is a business-continuity risk
+rather than a feature request. ⛔ **Still do not quote a price on the call.**
+▶ Logged as **P2-10** and **D-356**.
+
+---
 
 # ⑤ 🔴 A-18 — THE CREDENTIALS. VERBAL ONLY.
 

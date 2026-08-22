@@ -181,6 +181,19 @@ anywhere"* (D-310). **This is the authority. Do not ask the client for it again.
    in one word. The D-94 trap (five days spent treating `workvisa.bne@` as an open ask when the answer
    was in a document we held) was avoided here only because the question was actually sent.
 
+🔴 **THE ROSTER IS VOLATILE — three changes in two weeks. Treat any copy of it as a SNAPSHOT.**
+| Date | Change | Source |
+|---|---|---|
+| ~11 Aug | **Mershe Ventura LEFT** — `student@yalemigration.com.au` is still under her name ⚠️ | D-269 |
+| 18 Aug | **GOPI joined** — no email, team or visa line ever supplied | `ANSWERED.docx` |
+| **22 Aug** | **GOPI LEFT** — RJ: *"She will no longer continue with us."* Four days. ⛔ **Do NOT add her to any dropdown, and do not ask Robinder for her details** | D-355 |
+| **22 Aug** | ❓ **"There is also a new update on the staff list"** — RJ asked whether Robinder had already told us. **We do not know what it is.** Ask on the call | D-355 |
+
+🔑 **The consultant dropdown is a hardcoded array in `setup_master_sheet.gs`, so every staff change is
+a code change made by us.** On a ten-person team changing this often, the sheet is wrong the week
+after anyone joins or leaves — and wrong in the way that silently refuses a valid name
+(`setAllowInvalid(false)`). Same shape as D-285. **It should read from a roster tab they maintain.**
+
 🔴 **RJ AND REY ARE TWO DIFFERENT PEOPLE — confirmed by RJ, 21 Aug.** `RJ` = **Reyward Jake Gamol**,
 `philippines@`, Filipino skilled. `Rey` = **Reynaldo Sombilon**, `reynaldo@`, student/graduate/partner.
 Both are correct in MASTER's `Assigned Consultant` dropdown; nothing to change. ⚠️ **We addressed RJ as

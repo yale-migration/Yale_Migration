@@ -1,5 +1,5 @@
 # CLIENT ASKS — live register of every open question
-**Updated 21 Aug 2026 — RJ answered the guide email and the follow-up; the team's side is now essentially clear.** One row per ask. Nothing is asked twice (G2); nothing is silently forgotten.
+**Updated 22 Aug 2026 — RJ answered the third email too. Team side is nearly closed; three items promised, three still open.** One row per ask. Nothing is asked twice (G2); nothing is silently forgotten.
 `CLIENT-LOG.md` is the chronological record — **this file is the outstanding balance.**
 
 Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answered · ⛔ withdrawn
@@ -27,6 +27,13 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 | ~~A-41~~ | ✅ **CLOSED 21 Aug — RJ ≠ Rey.** *Rey = Reynaldo Sombilon · RJ = Reyward Jake Gamol.* Two people, both already correct in MASTER's dropdown. ⚠️ **We had been addressing RJ as "Rey" since ~14 Aug — see D-351** | 21 Aug | ✅ |
 | **A-42** | 🟢 **NEW — they offered it themselves.** RJ: *"I can make a checklists for 600 and citizenship application as well."* With the **186 already received 21 Aug**, that is 3 of CR-013's 4 lines, leaving only **ART**. ⛔ Still billable plumbing — the content arriving does not make the routing free. **Quote sits with Robinder** | 21 Aug | 🟢 |
 | **A-43** | 🟠 **Follow-up Email + SMS templates DO NOT EXIST.** *"it doesn't exist but that is what we need to do and we need to have."* Email wording offered (consistent with the checklist/chase drafts we already author, RMA approves). ⛔ **SMS needs a paid provider — not in any plan or quote.** → CR-015 | 21 Aug | 🟠 |
+| ~~A-33~~ | ✅ **CLOSED 22 Aug — INVERTED. GOPI HAS LEFT.** RJ: *"She will no longer continue with us."* ⛔ **Do NOT add her to the dropdown and do NOT ask Robinder for her details** — she joined 18 Aug and left 22 Aug. The *instance* is void; the *defect* (hardcoded roster) is real and general → **D-355** | 18 Aug | ✅ |
+| **A-45** | 🔴 **NEW — "There is also a new update on the staff list. did sir robin already mentioned it to you?"** RJ raised it himself and is asking US. **We do not know what changed.** Third roster change in two weeks. **Ask Robinder on the call**, and get the roster in full rather than person by person | 22 Aug | 🔴 |
+| **A-46** | 🔴 **NEW — the Brisbane/Indian enquiry form EXISTS**, and RJ sent it: form id `1kHw3yp8…`. ⚠️ **It is an `/edit` link again and returns 401 — we cannot read it.** Same as the first form until he sent the public `/viewform` link. **Ask for the live link (Send → copy link), or share with `project1@`.** Until then M6's Brisbane field set is unknown | 22 Aug | 🔴 |
+| **A-47** | 🟡 **PROMISED, NOT YET RECEIVED** — (a) **600 + Citizenship checklists**, *"will send the new checklists tomorrow"* (23 Aug); (b) **contact numbers**, *"I can send these information on monday"* (24 Aug); (c) **emails + visa expiry**, *"I need to double-check this part"*. Chase (a) and (b) only if they do not arrive | 22 Aug | 🟡 |
+| **A-48** | 🔴 **STILL UNANSWERED — the three test clients' visa type, email address and 485 assessing authority.** Asked 21 Aug and not addressed in either of his 22 Aug replies. **This is the ONLY team-side item that blocks contracted hours** (M10, 2 h) | 21 Aug | 🔴 |
+| ~~A-27~~ | ✅ **CLOSED 22 Aug — client codes confirmed.** RJ: *"Thank you."* Codes go live with the import | 18 Aug | ✅ |
+| ~~A-28~~ | ✅ **CLOSED 22 Aug — column 4 agreed.** RJ: *"we can start this to future clients"* — exactly the D-352 plan, in his own words | 18 Aug | ✅ |
 | **A-44** | 🟠 **Row 28 spelling deferred to Robinder** by RJ — *"I am not sure if we can ask Sir Robin about this."* It becomes the client's folder name, so it must be right first time. **Friday call** | 21 Aug | 🟠 |
 
 ## 🟢 NO LONGER BLOCKING

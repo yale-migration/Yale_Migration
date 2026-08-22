@@ -1,7 +1,7 @@
 # 📊 WHERE THE PROJECT IS — in plain words
 
 **For Sharjeel to read before the meeting.** No jargon, no module numbers you have to remember.
-Updated **21 Aug 2026**.
+Updated **22 Aug 2026**.
 
 > If you only remember one thing: **the building is almost finished. It is switched off, on purpose,
 > and it is waiting on four things from Robinder.**
@@ -12,8 +12,8 @@ Updated **21 Aug 2026**.
 
 > *"We have built nine parts of the system and tested every one of them. Two are running every day
 > right now. The rest are finished but switched off, because switching them on before your side is
-> ready would do real damage — it would email your clients. Today your team answered everything we
-> were waiting on them for. What's left is four things only you can give us."*
+> ready would do real damage — it would email your clients. Your team has now cleared almost
+> everything we were waiting on them for. What's left is four things only you can give us."*
 
 That is the whole status. Everything below is detail in case he asks.
 
@@ -71,7 +71,7 @@ He will ask *"so why isn't it running?"* This is the answer, and it makes us loo
   and it would report all of it as a success.
 - Two clients are recorded with a visa type the sheet doesn't recognise. They'd be **rejected on
   import** with no explanation.
-- **Gopi isn't on the consultant list yet.** From day one, nobody could assign him a client.
+- **Staff keep changing and the consultant list is fixed in code.** Mershe left, Gopi joined on the 18th and left on the 22nd. Every change needs us to edit something — which means it is always slightly out of date.
 
 None of these are hard to fix. All of them are invisible until you look — which is why we look.
 
@@ -101,15 +101,15 @@ use both. So the email-reading part is built, tested, proven on a real Departmen
 **cannot be switched on at all** until there's a third slot.
 
 **And three quick ones that cost no time but block go-live:**
-- **Gopi's work email, team and visa line** — his team has been asked twice and not answered
+- **The current staff list** — ⚠️ Gopi has now left, so don't ask for her details. RJ says there's another update and asked if Robinder had told us
 - **Row 28** — one client's name is spelled two different ways; it becomes their folder name
 - **A go-live date** — everything is built and waiting for him to name a day
 
 ---
 
-## 6 · What his team did today — say this, it's a genuine compliment
+## 6 · What his team did — say this, it's a genuine compliment
 
-RJ answered everything in one morning:
+RJ cleared almost everything in two days:
 
 - ✅ **Confirmed the document checklists are current.** This was the big one. It had been waiting
   since 21 July, and it was the one thing deciding whether the document-filing engine could run.
@@ -117,8 +117,36 @@ RJ answered everything in one morning:
 - ✅ **Sent the 186 checklist**, and offered to write the 600 and Citizenship ones too
 - ✅ **Named three clients** for end-to-end testing
 - ✅ Confirmed there is no website form and no walk-in sheet — so that's work we now never have to do
+- ✅ Confirmed the two clients who have left, and agreed the plan for new clients
+- 🟡 Promised the **600 and Citizenship checklists** and the **client phone numbers** in the next few days
+
+**One thing he raised himself that matters** — see section 5b.
 
 > *"Sir, aap ki team ne aaj bohot achha kaam kiya. Sab jawab de diye."*
+
+---
+
+## 5b · The one thing to raise with Robinder that isn't an ask
+
+RJ told us, unprompted, when we asked why the client phone numbers were blank:
+
+> *"I think I am the only one who has a sheet containing the client's email and contact number."*
+
+**In plain terms: Yale's own client contact details may exist only on one consultant's personal
+spreadsheet.** If he left tomorrow, the business could not phone or email those clients.
+
+⛔ **This is not a complaint about RJ and must never sound like one.** He raised it himself, honestly,
+when he could easily have just said "I'll get them". There is no central place to put a phone number
+because nobody has built one yet.
+
+**How to say it, then stop talking:**
+> *"Sir, ek cheez aaj samne aayi. RJ ne bataya ke clients ke email aur phone numbers shayad sirf unki
+> apni sheet mein hain. Ye unki ghalti nahi — unke paas aur koi jagah thi hi nahi. Lekin matlab ye
+> hai ke agar koi consultant chala jaye, to us ke clients ke contact details bhi saath chale jayenge."*
+
+🔑 This is the best argument you will ever have for the central database and the dashboard — because
+it isn't a feature request, it's a business risk, and it came from his own team.
+⛔ **Still no price on the call.**
 
 ---
 
