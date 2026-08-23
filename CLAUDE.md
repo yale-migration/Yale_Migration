@@ -28,13 +28,14 @@ WhatsApp · OneDrive · a Make slot) **and 2.2 on RJ** (3 test-client emails + 1
 ⛔ **BUT "0.0 hours are ours" WAS WRONG AS A STATEMENT ABOUT THE PROJECT, and it read as
 "stop looking" (D-383).** Three pieces of work are ours, unblocked, and none is a contracted module
 hour — which is exactly why the hours table hid them:
-1. **`CALL-RUNBOOK-robinder-friday.md` is stale** — says *68%*, its "what changed today" is 21 Aug,
-   and it omits `QUOTE-P3-DASHBOARD` (~21 h, the largest unbilled item in the account), A-44 row 28,
-   A-35 DOB, A-05 CRM. **It is the instrument that releases 8.8 of the 11 hours.**
-2. **A-43 — the two lead follow-up email templates.** Offered 21 Aug, never written. M8 writes a
-   `Follow-up Due` date and nothing else, so a consultant gets a due date and no wording. Needs
-   nothing from the client. (SMS stays CR-015 — it needs a paid provider.)
-3. **Two written quotes have never been sent** — `QUOTE-P3-DASHBOARD.md` and `QUOTE-CR-013-visa-lines.md`.
+1. ✅ **DONE 23 Aug — `CALL-RUNBOOK-robinder-friday.md` brought current.** Was 68% and 21 Aug's news;
+   now 78%, 8.8 h, the closed pre-import defects, the dashboard quote, and four asks it silently
+   dropped (row 28 · DOB · CRM · the templates 👍). 🔴 **It also records that the 21 Aug call never
+   happened and Robinder has not been contacted since 13 Aug.**
+2. ✅ **DONE 23 Aug — `docs/M8-FOLLOWUP-TEMPLATES.md`.** A-43's two emails, day 7 / day 30, bound to
+   `M8_DAY1`/`M8_DAY2` so wording and code cannot drift. Awaiting the RMA's 👍, not our work.
+3. ⬜ **STILL OPEN — two written quotes have never been sent:** `QUOTE-P3-DASHBOARD.md` (~21 h) and
+   `QUOTE-CR-013-visa-lines.md` (USD 280). **Sharjeel's to send.**
 
 🔑 **The lesson, and it is LESSONS.md pattern 5 wearing a new coat:** *the remaining-hours table only
 counts contracted module hours, so work that is real and ours becomes invisible the moment it is not

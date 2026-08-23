@@ -1,10 +1,14 @@
 # 📞 CALL RUNBOOK — Robinder
-**Prepared for Friday 21 Aug 2026 · content refreshed 21 Aug after RJ answered everything.**
-⚠️ If the call has moved to Saturday 22nd, nothing here changes except the word "today".
+**Content refreshed 23 Aug 2026. Written for Friday 21 Aug — 🔴 THAT CALL DID NOT HAPPEN.**
+There is no record of it in `CLIENT-LOG.md`, and **the last contact of any kind with Robinder was
+13 August — ten days ago**, while 8.8 of the 11 remaining hours wait on him and on nobody else.
+⚠️ Everything below is current as at 23 Aug. Use it for whenever the call lands; only the word
+"today" changes.
 
 **Purpose:** a 30-second progress opener, then **three setup items done live** while Robinder
 screen-shares, then the dashboard demo if there is time. **You read, he clicks.**
-Budget **40 minutes** (5 progress · 25 setup · 10 demo). Verified 19–20 Aug — sources at the bottom.
+Budget **40 minutes** (5 progress · 25 setup · 10 demo). External steps verified 19–20 Aug (sources at
+the bottom); **project position re-verified 23 Aug** against the live systems and the test suite.
 
 **Running order — do not reshuffle it.** ⓪ progress first, so the three asks read as *the last steps*
 rather than as *the project is stuck*. Then ①②③, which are the ones with real lead time. The
@@ -14,10 +18,12 @@ without costing the build a single day. ▶ Its own script: `DASHBOARD-DEMO-WALK
 > ⚠️ **He drives, always.** Robinder shares HIS screen and types on HIS machine. You never ask him
 > to type a password into your browser, and you never take control (established working method).
 
-🎉 **BEFORE YOU DIAL — the story got better this morning.** RJ confirmed the checklists are current,
-so **M4 is unblocked**, and he closed six inputs in one reply. **The team's side is essentially clear.
-Everything still outstanding on this project is on this call.** That is worth saying to Robinder in
-one sentence, because it makes the three asks below urgent without making them sound like complaints:
+🎉 **BEFORE YOU DIAL — the team side is now CLOSED, and that is the whole leverage of this call.**
+RJ answered everything across three rounds: the checklists are confirmed current (**M4 unblocked**),
+their enquiry form arrived, and **22 discrete items have ever been needed from his side — 20 are in
+hand, 2 are promised for Monday.** Since then M6's decision layer, M7's second half and C-1 have all
+been built and tested. **Every remaining decision on this project is Robinder's.** Say that in one
+sentence — it makes the asks below urgent without making them sound like complaints:
 > *"Sir, aap ki team ne aaj sab jawab de diye. Ab jo bhi ruka hua hai, woh sirf aap ke paas hai."*
 
 **Order matters.** Item 1 is quick and gives an early win. Item 2 is a *question* before it is a
@@ -40,9 +46,10 @@ Same words, completely different call.
 > mil gaya, aur jo data chahiye tha woh aa gaya. **Ab jo bhi ruka hua hai, woh sirf aap ke paas hai.**
 > Chaar cheezein — Meta, WhatsApp, OneDrive, aur Make ka plan. Ye chaar mil jayein to kaam khatam."*
 
-⛔ **Never say a percentage.** "68% built" invites *"so what is the other 32%?"* — and the honest
-answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say **four
-things**. Hours are a promise; percentages are an argument.
+⛔ **Never VOLUNTEER a percentage.** "78% built" invites *"so what is the other 22%?"* — and the
+honest answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say
+**four things**. Hours are a promise; percentages are an argument.
+*(If he asks outright, answer with a rough fraction and move on — see the money question below.)*
 
 ## 🎉 What changed today, and it is the best news of the project
 
@@ -58,36 +65,50 @@ too. Say this to Robinder — it is a compliment to his team and it is true.
 
 | | |
 |---|---|
-| Built and test-proven | **9 modules** — M1 M2 M3 M4a M4b M5a M5b M8 M9, plus half of M7 |
-| Running against live data today | **2** — the dormancy check and the lead follow-up, both daily |
-| Contracted work remaining | **~10.6 hours** (was 12.6 — two of M6's four channels turned out not to exist) |
-| Waiting on **Robinder** | **~5.6 hours** |
-| Waiting on **his team** | **2 hours**, already asked this morning |
-| Waiting on **us** | **zero** |
+| Built and test-proven | **10 modules** — M1 M2 M3 M4a M4b M5a M5b M7 M8 M9, plus M6's decision layer |
+| Proven by | **298 automated checks + 79 blueprint checks**, all passing 23 Aug |
+| Contracted work remaining | **11 hours of 49** — 78% built |
+| Waiting on **Robinder** | **8.8 hours** |
+| Waiting on **his team** | **2.2 hours** — asked, 2 items promised for Monday |
+| Waiting on **us** | **zero contracted module hours** |
 
-🔑 **That last row is the whole point of the call.** There is nothing left that we can unblock from
-our side.
+🔑 **That last row is the point of the call — but say it precisely.** No *module* is blocked on us.
+⛔ **Do not say "there is nothing left on our side"** — it is not true (D-383): the dashboard quote is
+still unsent and two follow-up email templates we offered his team are still unwritten. Neither costs
+him anything and neither belongs in this call, but do not claim a clean sheet we do not have.
+
+🔴 **Running against real client work today: NOTHING.** The dormancy check and the lead follow-up run
+daily against **14 invented demo rows and an empty tab**. They execute, they succeed, they do nothing.
+▶ `HONEST-ASSESSMENT.md`. This is the fact § "The one thing you must NOT let him believe" exists for.
 
 ## The four things, and exactly what each one releases
 
 | # | What you need from him | Where | Releases | Live after |
 |---|---|---|---|---|
-| 1 | **Meta — Facebook + Instagram access** | § ① | **M6, 3 h.** An enquiry from a Facebook or Instagram ad lands in the sheet by itself | ~2 days after access |
+| 1 | **Meta — Facebook + Instagram access** | § ① | **M6's transport.** ✅ Its decision layer is now BUILT and tested 46/46 — what may be auto-answered, what must go to the RMA, who it routes to. Meta is the last wire: an enquiry from a Facebook or Instagram ad lands in the sheet by itself | ~2 days after access |
 | 2 | **WhatsApp Business verification status** | § ② | **M6's WhatsApp channel, 1 h.** ⚠️ **The longest lead time of anything left on this project** — the Engagement Letter said start it *"right away"* and 28+ days have passed | days to weeks |
-| 3 | **OneDrive onto a Yale account** | § ③ | **M11 handover, 1.1 h** + unblocks C-2. Right now the folder automation runs on *our* personal login, which has to change before go-live regardless | same day he does it |
+| 3 | **OneDrive onto a Yale account** | § ③ | **M11 handover 1.1 h + C-2 2 h.** Right now the folder automation runs on *our* personal login, which has to change before go-live regardless. 🔑 **The single biggest item on this list** | same day he does it |
 | 4 | **A Make scenario slot** (paid plan) | § ④-2 | **M9, 0.5 h.** Email triage + Section 56 deadlines. Built and proven, but the free plan allows only 2 running scenarios and the folder automation already uses both | immediately |
 
-**Plus three that cost no hours but block go-live:** **the current staff list** (④-8 — ⚠️ Gopi has LEFT, do not ask for her details), the
-**row 28 spelling** (④-4b), and a **go-live date** (④-2).
+**Together these four gate 8.8 of the 11 remaining hours.**
 
-## ⚠️ Two things on OUR side that must be done before import — do not promise a date without them
+**Plus three that cost no hours but block go-live:** **the current staff list** (④-8 — ⚠️ Gopi has
+LEFT, do not ask for her details), the **row 28 spelling** (④-10), and a **go-live date** (④-2).
 
-Say nothing about these unless he asks how soon we can import. They are ours, they are half an hour
-each, and they are already logged:
-1. **`Citizenship` is missing from the sheet's visa-type list**, so two clients in the import would
-   be rejected outright. Same class of bug as the consultant dropdown.
-2. **The 190 checklist may never have been uploaded** to the folder the system copies from — and
-   there is a 190 client in the import.
+## ✅ The two pre-import defects are CLOSED — updated 23 Aug
+
+Both of the blockers this section used to list are fixed, and neither needs mentioning on the call:
+1. ~~`Citizenship` missing from the visa-type list~~ → **live in the sheet, and closed at all three
+   layers** (D-353): the importer now parses the dropdowns out of the sheet builder and refuses to
+   write a row any cell would reject.
+2. ~~The 190 checklist may never have been uploaded~~ → **it was, on 12 Aug.** All 23 checklists
+   confirmed present in the OneDrive folder M4 actually reads — 28 files for 28, name for name (D-382).
+
+**What genuinely remains ours before import** — half an hour, on the day, not before:
+clear the demo rows → `resetCodeSequence()` → `preflightGoLive()` → set **both** baselines
+(`IMPORT_BASELINE` and `M8_BASELINE`) → import the 38 rows. ▶ `CUTOVER-PLAN.md`.
+🔴 **If the baselines are forgotten, all 38 imported clients flag dormant on day three** — a wall of
+red on his sheet on the first morning he looks at it.
 
 ### If he asks *"to phir go-live kab?"*
 
@@ -99,10 +120,12 @@ becomes a promise we did not agree to.
 
 ### If he asks *"kitna kaam ho chuka hai, paise ke hisaab se?"*
 
-Answer the work, not the money, and move on: *"Contracted kaam ka teen-chauthai ban chuka hai."*
-⛔ **Do not open the hours conversation on this call.** We are ~25 of 40 contracted build-hours —
-**under**-delivered on contract, not over — and the extra time went into unbilled extras we chose to
-give. Raising it here turns a good call into a billing argument. (`HOURS-LEDGER.md`)
+Answer the work, not the money, and move on: *"Contracted kaam ka taqreeban char-panjum ban chuka hai —
+gyara ghante baqi hain, aur woh chaar cheezon ka intezaar kar rahe hain."*
+⛔ **Do not open the hours conversation on this call.** We are **38 of 49 contracted hours, 78%** —
+**under**-delivered on contract, not over — and roughly 21 further hours went into the Phase-3
+dashboard that has never been quoted. Raising any of that here turns a good call into a billing
+argument. (`HOURS-LEDGER.md` · `QUOTE-P3-DASHBOARD.md`)
 
 ### 🔴 The one thing you must NOT let him believe
 
@@ -320,6 +343,27 @@ Keep the three above sacred. These are extras, in priority order.
 | 7   | ⚠️ `student@yalemigration.com.au` **is still under Mershe's name** and she has left                                             | A live mailbox attributed to a former employee, at a firm holding ImmiAccount logins                                                                                                                                                                                    |
 | 8 | 🔴 **THE STAFF LIST — and do NOT ask for Gopi.** ⚠️ **RJ told us 22 Aug: *"She will no longer continue with us."* Gopi has left, four days after we were told she had joined.** Asking Robinder for her work email would signal we are not current. **Ask instead:** *"RJ mentioned there is a new update on the staff list — kya change hua hai?"* RJ raised it himself and asked whether you already knew | 🔑 **Three roster changes in two weeks** — Mershe left, Gopi joined 18 Aug, Gopi left 22 Aug. The consultant dropdown is hardcoded, so **every staff change is a code change** (D-355). Get the current list once, properly, and stop patching it person by person |
 | 9   | **"Woh Department ke emails forward kar dein — screenshot nahi, email khud."** 2–3 of them, ideally different visa types (A-34) | Every sample we hold is a **scan of a picture**, so we have never seen a sender address or a subject line — the two things the email triage keys off. ⚠️ **This has been in the M9 spec since 29 Jul and was never actually asked.** Costs him 30 seconds of forwarding |
+| 10  | 🔴 **ROW 28 — the client's name spelling** (A-44). RJ deferred it: *"I am not sure if we can ask Sir Robin about this."* Read the two spellings out and let him pick | **It becomes the folder name.** Get it wrong and the folder is wrong from day one, on a system whose whole promise is that the filing is right. It must be correct the first time — renaming later means renaming in OneDrive, MASTER and every link |
+| 11  | **The identity check on the phone** (A-35). Their own SOP says confirm **name + date of birth** before discussing a matter — and MASTER holds no DOB and no passport number. **There is no second identity factor in the system at all.** Two options: add a DOB column, or accept name + phone + email as the practical check | 🔴 **His decision, not ours.** ⛔ Do not quietly substitute name-only matching and present it as verified — confirming who is on the phone before discussing a visa is a compliance question. Note that a DOB column adds new personal data to a workbook that already has the credentials problem in § ⑤ |
+| 12  | **The CRM question** (A-05, open since ~8 Aug). Which of **CRM4Agencies · Migration Manager · Agentcis** is closest to what he pictures | One word halves Phase-3 discovery. Pure information, costs him nothing, and it tells us whether the portal we have built is the shape he wants |
+| 13  | **The two follow-up emails — his 👍 as the RMA** (A-43). His team said these do not exist and that they need them, so **we wrote them**: ▶ `docs/M8-FOLLOWUP-TEMPLATES.md`, day 7 and day 30, straight from their own SOP. Send the file before the call; ask on the call | Nothing goes to a client until the RMA approves the words. **It is a 30-second yes** and it turns the lead follow-up from a date in a column into an email a consultant can actually send. ⛔ SMS is NOT included — it needs a paid provider (CR-015) |
+
+---
+
+## 💷 THE DASHBOARD QUOTE — the largest unbilled item in the account
+
+⚠️ **~21 hours of Phase-3 dashboard work has been built and never quoted.** `QUOTE-P3-DASHBOARD.md`
+is written and sitting in the repo unsent. It is the biggest commercial loose end on this project.
+
+⛔ **Do NOT quote it during the four asks.** Raising money while asking for access turns a good call
+into a negotiation. **Raise it only after the demo, and only if the demo lands well** — same pattern
+as CR-013: say the number is coming, do not say the number.
+
+> *"Sir, ye dashboard MVP ka hissa nahi tha — ye alag kaam hai jo main ne bana diya hai. Iska plan
+> aur cost main aap ko likh kar bhej deta hun, aap dekh lena."*
+
+🔑 **Then actually send it.** The reason it is unsent is not that the moment never came — it is that
+nobody sent it (D-383).
 
 
 ---
@@ -380,13 +424,28 @@ I can verify all three over MCP at **zero operations cost**:
 - **WhatsApp** — tell me the exact status word he read out, and the date if pending
 - **OneDrive** — the moment the new connection exists, I test the drive path before anything switches
 
-Then I update `INPUTS-REGISTER.md`, close what closes, and start M6.
+Then I update `INPUTS-REGISTER.md`, close what closes, and start M6's transport — the decision layer
+behind it is already built and tested.
+
+**Also tell me:** row 28's spelling, his answer on the DOB question, the current staff list, and
+whether he gave a go-live date. Those four close asks that have been open for between 2 and 15 days.
 
 ---
 
 
 
-# Sources — checked 19 Aug 2026
+# Sources
+
+⚠️ **The Meta / WhatsApp / OneDrive links below were checked 19 Aug 2026 and have NOT been re-checked
+since.** Third-party UIs move. Under **G1** nothing here reaches Robinder as an instruction until it
+is confirmed against a primary source *on the day* — if a screen does not look like § ①②③ describe
+it, stop reading the script and look, rather than talking him through a menu that no longer exists.
+
+**The project facts in § ⓪ are separate and were re-verified 23 Aug:** 298 Apps Script checks + 79
+blueprint checks passing, all Make scenarios OFF, 4 daily triggers confirmed, 28-for-28 on the
+OneDrive checklists.
+
+## Checked 19 Aug 2026
 
 - [Add People to a Business Portfolio and Assign a Business Asset — Meta Business Help Center](https://www.facebook.com/business/help/2169003770027706)
 - [How to Give & Request Access to a Meta Business Portfolio — Leadsie](https://www.leadsie.com/blog/give-request-access-to-meta-business-portfolio)

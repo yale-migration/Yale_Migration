@@ -965,3 +965,20 @@ becomes invisible the moment it is not one of those. The question asked was *"is
 side?"*; the instrument I answered with reports *"are any contracted module hours unblocked?"* — a
 different question, a plausible answer, and nothing anywhere that looks like an error. `CLAUDE.md`
 corrected in place, because its old wording said **"do not go looking for something to build."**
+
+2026-08-23 | internal | **Both unblocked jobs done — and each one contained a defect that would have
+reached a client.** The Robinder runbook is current (78%, 8.8/2.2 h, the two pre-import defects marked
+closed, the dashboard quote placed after the demo, plus row 28 · DOB · CRM · the templates 👍). Writing
+it surfaced two things nothing had recorded: 🔴 **the 21 Aug call never happened and Robinder has not
+been contacted since 13 August**, and § ⓪ promised the row 28 spelling at *"④-4b"* — **a section that
+did not exist**, so the ask that decides a real client's folder name was a pointer to nothing.
+
+**A-43 closed on our side:** `docs/M8-FOLLOWUP-TEMPLATES.md`, day 7 and day 30, tied to the code's own
+constants. Two of my own errors caught before it ships — I described stop-on-reply as automatic when it
+needs a human until M6/M9 land, and I had written *"no cost for the first conversation"* into an email
+to their leads when **there is no evidence Yale offers a free first consultation.** Removed; the reason
+is kept in the file so Robinder can restore it if it is true.
+
+🔑 **D-384. Housekeeping is not a lower-risk category of work** — it is where nobody is looking, which
+is exactly where a defect survives. **Still open and Sharjeel's: two written quotes have never been
+sent** — `QUOTE-P3-DASHBOARD.md` (~21 h) and `QUOTE-CR-013-visa-lines.md` (USD 280).

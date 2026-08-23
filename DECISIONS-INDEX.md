@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 512K /     7044 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 576K /     7081 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:32
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:40
 
 | # | Decision |
 |---|---|
@@ -380,3 +380,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:3
 | **D-381** | The two response tabs are ONE form's data, copied and continued — not two forms |
 | **D-382** | D-354 fully closed — all 23 checklists are in OneDrive, and the sets match exactly |
 | **D-383** | "0.0 hours are ours" was true of the hours table and false of the project |
+| **D-384** | The runbook was rebuilt and A-43's templates written — and both jobs found a defect the register did not know about |

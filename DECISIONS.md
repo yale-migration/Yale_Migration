@@ -7042,3 +7042,40 @@ consumes — turned on ourselves.** The question was *"is anything left on our s
 consulted answers *"are any contracted module hours unblocked?"* Different question, plausible
 answer, no error visible anywhere. ⛔ **Never answer a question about the project from the hours
 table alone.** `CLAUDE.md` corrected in place so a fresh session cannot inherit the claim.
+
+## D-384 | The runbook was rebuilt and A-43's templates written — and both jobs found a defect the register did not know about
+**23 Aug 2026.** Acting on D-383, the two unblocked pieces of work were done. Each turned up something
+the registers had no row for.
+
+**1 · `CALL-RUNBOOK-robinder-friday.md`.** Brought from 21 Aug to 23 Aug: 68% → 78%, hours 10.6 → 11
+with 8.8/2.2, M6 described as decision-layer-built, the money answer corrected from *"~25 of 40"*.
+Three findings the update surfaced:
+- 🔴 **The 21 Aug call never happened.** No entry in `CLIENT-LOG.md`, and **the last contact of any
+  kind with Robinder was 13 August — ten days.** Nothing anywhere said so; the runbook simply sat
+  there addressed to a Friday that passed. Now the first line of the document.
+- 🔴 **A dangling cross-reference would have dropped an ask.** § ⓪ promised the row 28 spelling at
+  *"④-4b"* and **section ④ had no 4b.** The ask that decides a real client's folder name existed only
+  as a pointer to nothing. Now item 10. *Pattern 1 again — a document that reads complete because the
+  reader follows the promise, not the link.*
+- ✅ **The section headed "two things on OUR side before import" listed two blockers that are both
+  CLOSED** (D-353, D-382). Left alone it would have had Sharjeel refuse to discuss a date over
+  defects that no longer exist.
+- Added: the dashboard quote (~21 h, deliberately placed AFTER the demo, never during the asks),
+  A-35 DOB, A-05 CRM, and the templates 👍.
+
+**2 · `docs/M8-FOLLOWUP-TEMPLATES.md`** — A-43 closed on our side. Day 7 and day 30, bound to
+`M8_DAY1`/`M8_DAY2` so wording and code cannot drift, `{{Visa Interest}}` inserted verbatim because
+*"Graduate Visa"* → *"485"* is migration advice. Two corrections during the writing, both mine:
+- ⛔ **I wrote that stop-on-reply was automatic. It is not** (D-339): the system cannot see replies
+  until M6/M9 exist, so a human must log column L or the day-30 email goes to someone who already
+  answered. Caught by reading the source instead of the line I had quoted, which was truncated
+  mid-sentence at *"The cadence shipped"*. **A quote cut off at the line break is not a quote.**
+- ⛔ **I invented a commercial term for the client's business.** Email 1 ended *"no obligation and no
+  cost for the first conversation."* There is **no evidence Yale offers a free first consultation** —
+  and it broke rule 2 of the four rules stated in the same document, four paragraphs above it. Removed,
+  with the reason kept in the file so it can be restored if Robinder says it is true.
+
+🔑 **Both jobs were "just update the document" and both contained a defect that would have reached a
+client.** The runbook would have dropped a folder name; the templates would have promised free advice
+Yale may not give. ⛔ **Housekeeping is not a lower-risk category of work** — it is where nobody is
+looking for a defect, which is precisely where one survives.
