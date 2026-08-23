@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 564K /     6896 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 568K /     6953 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 21:12
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 21:32
 
 | # | Decision |
 |---|---|
@@ -376,3 +376,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 21:1
 | **D-377** | C-1 built against the real sheet, and M9's Apps Script half scheduled |
 | **D-378** | The 911 duplicates are the dedupe working — and they overturn my A-46 conclusion |
 | **D-379** | The blueprint import created a SECOND scenario, not an update — and it arrived unscheduled |
+| **D-380** | M6's decision layer built — the channel was never the module |

@@ -72,6 +72,17 @@ taken off them.*
 
 ---
 
+## 3b · ✅ Updated 23 Aug — the build gap closed further
+
+M6's **decision layer** is now written and tested, 46/46 (D-380). Its two Meta-dependent steps stay
+blocked, but the compliance-critical half — what may be auto-answered at all — is done and proven.
+
+**37 of 40 contracted build-hours are now written and tested, up from 29.** Unwritten: C-2 (2h,
+needs OneDrive) and C-5's capture path (1h, needs the channels). ⛔ **This does not change section 2.
+Still zero real clients.** Built is not running.
+
+---
+
 ## 4 · Why — and how much of it is ours
 
 **Calendar: 48 days since kick-off. Proposal v3 promised "MVP 3–4 weeks." We are ~3 weeks past the

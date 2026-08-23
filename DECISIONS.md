@@ -6894,3 +6894,60 @@ without removing the object**, and `ZZ-` sorts it to the bottom of the list.
 ⚠️ **The UI toggle still reads "Every 15 minutes".** That is the *interval*, and it is correct — the
 restrict windows narrow when that interval is allowed to fire. **The label alone is not evidence the
 fix is missing**, which is worth knowing before someone "fixes" it again by hand.
+
+## D-380 | M6's decision layer built — the channel was never the module
+
+**23 Aug 2026.** M6 stood at 8 contracted hours of "spec only", the largest unwritten piece of the
+contract, blocked on Meta access that has not moved in seven weeks. Re-reading the spec rather than
+the status line: **only two of its four steps need Meta.**
+
+| Step | Needs Meta? |
+|---|---|
+| 1 · instant acknowledgement in-channel | yes |
+| 2 · qualifying questions in-channel | yes |
+| **3 · decide what to do with the message, and log it** | **no — built today** |
+| 4 · follow-up cadence | no — already M8 |
+
+🔑 **The channel is transport. The decision is the module.** Whether a message may be auto-answered
+at all, what subclass it concerns, who should own it — none of that changes with whether it arrived
+by WhatsApp, Messenger, or a paste into a cell.
+
+### 🔴 The part that must not be wrong
+
+Only an RMA may give migration advice (D-06). An auto-reply engaging with a refusal or a tribunal
+matter is **an unregistered person advising on a visa under Robinder's MARN.**
+
+**The block list is not our policy — it is their staff behaviour made explicit.** In the four real
+WhatsApp conversations, every substantive question about a refusal or ART went **deliberately
+unanswered**. Staff already refuse these. ⛔ The automation enforces what they do; it must not invent
+something they do not.
+
+**The failure is asymmetric, so the design is:**
+- block a harmless message → a human replies later. Cost: minutes.
+- answer a blocked one → unregistered migration advice under an RMA's registration.
+
+So **every uncertainty resolves to BLOCK**, and a blocked message gets the holding reply and
+**nothing else** — no qualifying questions, because asking them reads as engaging with the substance.
+
+⚠️ A visa expiring inside 30 days blocks **even with no trigger word.** It is urgent and legally
+delicate, and the wrong holding reply can cost someone their status. The date parser also handles
+their day/month transposition (D-327) rather than discarding what it cannot parse.
+
+### Why auto-assign is deliberately timid
+
+The spec says "auto-assign per the roster matrix". It does — and returns **`Unassigned`** unless the
+match is unambiguous, because `Assigned To` is a locked dropdown that refuses an off-list name
+silently (D-353), the roster changed three times in a fortnight (D-355), and **nothing in an inbound
+message reveals the enquirer's team.** Inferring "Filipino" from Taglish is a guess about a person —
+and one of their four real enquirers had a Swedish phone number.
+
+**A lead on `Unassigned` is visible on the board. A lead on the wrong consultant looks handled.**
+⛔ Gopi appears in no routing path, and a test asserts it.
+
+**46/46 checks, including all ten block categories and the three real conversations from their own
+screenshots.** The 417 question — a plain "what is the process" — correctly does **not** block, which
+is the check that proves the list discriminates rather than just matching everything.
+
+**Contract position: 37 of 40 build-hours now written and tested, up from 29.** What remains unwritten
+is C-2 (2h, needs OneDrive) and C-5's capture path (1h, needs the channels). ⬜ M6's transport half
+stays blocked on I-3/I-4, but it is now **wiring to a tested decision**, not a module to design.
