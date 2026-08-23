@@ -6615,3 +6615,44 @@ found the thing if it were there.** Both queries here were incapable of returnin
 checks each entry in `TRIGGER_PLAN` for handler, type and hour, verifies the timezone is
 `Australia/Brisbane`, and prints the owning account. **It answers the question the UI kept
 half-answering, and it was written for this on 20 August.**
+
+## D-373 | The daily triggers are real, correct and owned by the right account
+
+**23 Aug 2026.** `verifyDailyTriggers()`, run in the project as `project1@`:
+
+```
+Timezone: Australia/Brisbane  OK
+Owner:    project1@yalemigration.com.au
+  ✅ updateFollowUps — CLOCK, daily
+  ✅ updateEnquiryFollowUps — CLOCK, daily
+  ·  known  assignMissingCodes — client-code assigner, 5-minute timer
+✅ PASS — the guide's "every morning" is now true.
+```
+
+**Every axis the UI could not settle, settled in one run:** both handlers exist, both are clock-based
+and daily, the timezone is theirs and not ours, and the owning account is the client's — which is
+what D-153 says decides whether the triggers survive us.
+
+⚠️ **`installDailyTriggers()` was run first by accident and did nothing** — *"skip … a trigger
+already exists · created 0, already present 2."* Worth naming as a design result rather than luck:
+that function was built idempotent precisely so a misfire is a no-op. **The cost of getting it wrong
+was zero because the guard was written before it was needed.**
+
+**Where this leaves D-368, stated exactly.** Three separate things were conflated under "running
+daily", and they are now in different states:
+
+| | |
+|---|---|
+| The triggers exist and are correctly configured | ✅ **proven, this run** |
+| They have never appeared in a failure summary | ✅ all three emails name only `assignMissingCodes` |
+| They have been directly observed completing on schedule | ⬜ **still not looked at** |
+
+The first two make *"two jobs are scheduled daily and no failure has ever been reported against
+them"* fully supportable — and that is now the sentence in `MVP-STATUS-simple.md`. The third is one
+Executions filter **by Function** away (⚠️ not by Trigger ID — D-372), and worth doing once, but it
+no longer blocks anything or gates what we can say to the client.
+
+🔑 **The honest summary of this whole thread:** the panic came from a real bug of mine (D-364/D-371),
+and everything after it — the 0-trigger page, the empty filters — was instrument error. **Two of the
+three alarms were the measuring, not the thing measured.** The one that was real was found by a stack
+trace, and the rest by using a tool we had already written for the purpose.

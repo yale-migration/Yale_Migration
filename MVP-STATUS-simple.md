@@ -44,7 +44,7 @@ Two are running. That gap is deliberate — see section 4.
 | | |
 |---|---|
 | Parts built and tested | **9** |
-| Parts running today | **2** ⚠️ *see below before saying this out loud* |
+| Parts running today | **2** — verified 23 Aug |
 | Work left on the contract | **about 10 and a half hours** |
 | Of that, waiting on Robinder | **about 5 and a half hours** |
 | Of that, waiting on his team | **2 hours** — asked this morning |
@@ -56,15 +56,17 @@ you're blaming him. **Say hours, and say four things.**
 
 ---
 
-## 3b · ⚠️ HOLD ON "TWO ARE RUNNING DAILY" UNTIL ONE EMAIL IS OPENED
+## 3b · What you can safely say about the two that run
 
-Google has been sending **"Summary of failures for Google Apps Script"** to `project1@` on **12 Aug,
-14 Aug and again today**. Nobody has opened one. The two daily jobs are exactly the two things we
-call "running", so until we know what failed, **do not tell Robinder they are running every day.**
+Verified 23 Aug in the client's own account: both daily jobs exist, are clock-based, fire daily, run
+on **Australia/Brisbane** time, and are owned by **`project1@yalemigration.com.au`** — their account,
+not ours, so they keep working if we disappear.
 
-Say instead: *"Two jobs are scheduled daily and I'm checking their run history before I call them
-live."* That is true, it is careful, and it costs nothing. Claiming it and being wrong is the kind of
-thing a client disproves by asking one staff member whether anything has happened.
+**Safe to say:** *"Two jobs run automatically every morning on your own account — the dormancy check
+and the lead follow-up. Nothing has ever been reported as failing on either."*
+
+⛔ **Still don't say "everything is running."** Nine things are built; two run. That gap is section 4,
+and it is deliberate.
 
 ---
 

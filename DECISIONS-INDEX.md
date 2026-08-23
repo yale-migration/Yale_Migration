@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 548K /     6617 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 488K /     6658 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:35
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:43
 
 | # | Decision |
 |---|---|
@@ -369,3 +369,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:3
 | **D-370** | The enquiry data is ~7× larger than the source we built the import from |
 | **D-371** | Confirmed by stack trace, and closed. Two failures, ten minutes, four clean runs since |
 | **D-372** | Two screenshots that look like alarming evidence and are evidence of nothing |
+| **D-373** | The daily triggers are real, correct and owned by the right account |
