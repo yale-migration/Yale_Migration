@@ -6857,3 +6857,40 @@ columns, took one query and gave the opposite answer.**
 
 **Fix applied to the dedupe:** a row with neither email nor timestamp now falls back to
 name + row index rather than collapsing on `'|'`. Four enquiries recovered, and the class closed.
+
+## D-379 | The blueprint import created a SECOND scenario, not an update — and it arrived unscheduled
+
+**23 Aug 2026, 16:10.** Sharjeel imported `M9-email-triage.blueprint.json`. Make's *Import Blueprint*
+**created a new scenario rather than replacing the open one.** The account then held two, both named
+`YM-M9-email-triage`:
+
+| id | modules | created | scheduling |
+|---|---|---|---|
+| **6781676** | 1 — Gmail trigger only | 1 Aug | had the restrict windows |
+| **7064554** | 3 — Gmail → Claude → Sheets | **23 Aug 16:10** | 🔴 **interval 900, NO restrict** |
+
+**The new one is the correct, complete M9.** The old one is the stub from 1 August that never got its
+Claude and Sheets modules. So the import did the right thing to the wrong object — and **carried the
+15-minute default in with it**, undoing D-375 for this scenario forty minutes after it was applied.
+
+🔑 **Two lessons, and the second is the sharper one.**
+1. *Import Blueprint* is **create**, not update. It does not warn, and the canvas afterwards looks
+   exactly like a successful edit — same name, correct modules, "The scenario was saved."
+2. 🔴 **A configuration fix applied to a scenario ID does not survive an import**, because the import
+   produces a different ID. **Scheduling is not part of the blueprint** (our own note from the M9
+   build says so), so it does not travel with it — it is reset to default on the new object.
+   **Any blueprint import silently un-does every out-of-blueprint setting.**
+
+**Both fixed:**
+- `7064554` → the three weekday windows, confirmed in the API response.
+- `6781676` → **renamed** `ZZ-OLD-M9-stub-SUPERSEDED-by-7064554`, with a description saying which
+  replaced it and when.
+
+⛔ **The old one was renamed, not deleted** — same reasoning as D-375. Two scenarios sharing a name is
+a real hazard: at go-live someone activates "YM-M9-email-triage" and gets the one-module stub, which
+would poll Gmail and write nothing, forever, looking like it worked. **Renaming removes the ambiguity
+without removing the object**, and `ZZ-` sorts it to the bottom of the list.
+
+⚠️ **The UI toggle still reads "Every 15 minutes".** That is the *interval*, and it is correct — the
+restrict windows narrow when that interval is allowed to fire. **The label alone is not evidence the
+fix is missing**, which is worth knowing before someone "fixes" it again by hand.
