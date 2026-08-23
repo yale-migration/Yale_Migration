@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 528K /     6297 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 532K /     6359 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:11
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:06
 
 | # | Decision |
 |---|---|
@@ -360,3 +360,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 00:1
 | **D-361** | The fix is in the repo; the project is running the old copy |
 | **D-362** | D-353 closed end to end — and the verifier tested the right thing |
 | **D-363** | M7's second half built — and the change surfaced three hardcoded positions, two of which fail silently |
+| **D-364** | The derived constant I wrote to prevent a silent bug would have broken the entire project |
+| **D-365** | 600 and Citizenship received. CR-013 is down to ART, which has no path |

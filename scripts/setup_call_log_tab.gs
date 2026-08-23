@@ -56,12 +56,6 @@ var CL_ROWS     = 500;      // formula rows laid down up front
  * They are hidden because they are machinery, not data. They carry underscore names so
  * that if anyone unhides them it is obvious they are not a field to fill in.
  */
-// ⚠️ DERIVED, not hardcoded. These were 18 and 19 and would have silently pointed at two
-// real columns the moment the intake block was inserted — the helper MATCH ranges would
-// have searched 'Notes'. Positional constants beside a list that grows are a trap.
-var CL_HELPER_PHONE = CL_HEADERS.length + 1;
-var CL_HELPER_NAME  = CL_HEADERS.length + 2;
-
 // A..T. Order is the contract with m7_callback_queue.gs — change one, change both.
 var CL_HEADERS = [
   'Received',        // A  when the call came in
@@ -95,6 +89,20 @@ var CL_HEADERS = [
   'Promoted',        // P  🔑 timestamp written by promoteCallsToEnquiries(). THE idempotency guard.
   'Notes'            // Q
 ];
+
+// ⚠️ DERIVED, not hardcoded. These were 18 and 19 and would have silently pointed at two
+// REAL columns the moment the intake block was inserted — the helper MATCH ranges would
+// then have searched 'Becomes Enquiry'. Positional constants beside a list that grows
+// are a trap.
+//
+// 🔴 THEY MUST STAY BELOW CL_HEADERS. `var` hoists the declaration, never the value, so
+// placing these above the array makes CL_HEADERS `undefined` at this line and the file
+// THROWS AT LOAD. In Apps Script every .gs shares one global scope and all top-level
+// statements run before any function does — so a throw here does not break this file, it
+// breaks THE WHOLE PROJECT, including the M5 and M8 daily triggers. Written above the
+// array first, on 22 Aug, and caught before it ever ran.
+var CL_HELPER_PHONE = CL_HEADERS.length + 1;
+var CL_HELPER_NAME  = CL_HEADERS.length + 2;
 
 var CL_NEW_EXISTING = ['New', 'Existing', 'Unknown'];
 var CL_ID_VERIFIED  = ['Yes', 'No — could not confirm', 'N/A — general enquiry'];

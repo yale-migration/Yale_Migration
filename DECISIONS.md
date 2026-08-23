@@ -6295,3 +6295,65 @@ run against the real tab, then `repairCallLogTab()` to regenerate the formulas a
 The formulas resolve every column through `clCol_('Header Name')`, which is why the insert is safe at
 all; but they do **not** regenerate themselves, and skipping step 2 leaves them pointing at the old
 letters.
+
+## D-364 | The derived constant I wrote to prevent a silent bug would have broken the entire project
+
+**22 Aug 2026.** D-363 replaced `CL_HELPER_PHONE = 18` with `CL_HELPER_PHONE = CL_HEADERS.length + 1`,
+because a hardcoded position beside a growing list is a trap. Correct reasoning. **I put the derived
+line ABOVE the array.**
+
+`var` hoists the declaration and never the value, so `CL_HEADERS` is `undefined` at that line and the
+file **throws at load**. And in Apps Script every `.gs` shares one global scope with all top-level
+statements evaluated before any function runs — so this does not break one file. **It breaks every
+function in the project, including the M5 and M8 daily triggers that are live right now.**
+
+**How close it came.** Sharjeel ran three functions and all three worked, which looks like proof it
+was fine. It is not: `addCallLogIntakeColumns` and `verifyCallLogIntake` live in a different file,
+and `repairCallLogTab` aborted on its header guard *before* reaching the helper — and the project
+still held the pre-paste copy at that moment anyway. **The fix was pasted after the last successful
+run.** The next scheduled trigger would have been the first thing to hit it.
+
+🔑 **The shape:** a change made specifically to remove a silent failure, which introduced a louder and
+larger one. The reasoning was right, the placement was not, and nothing in the change looked risky —
+it is one line of arithmetic. **The blast radius of an edit is not proportional to its size.**
+
+**Fixed twice over.** The declaration moved below the array, with a comment stating why it can never
+go back. And `scripts/test_gs_loads.js` now evaluates every `.gs` — individually, then **all of them
+together in one shared scope, the way Apps Script actually loads them** — and asserts the derived
+positions resolve to real numbers. Negative-tested by restoring the fault: it fails both checks and
+exits 1. 26/26 clean.
+
+⚠️ **Why no existing suite caught it:** every other test calls one function in one file. A file that
+loads is a precondition they all assume and none of them state. `node --check` passes too — the code
+is syntactically perfect. **Load order is a category of correctness we had no test for at all.**
+
+## D-365 | 600 and Citizenship received. CR-013 is down to ART, which has no path
+
+**22 Aug 2026.** RJ sent `YM-CITIZENSHIP.docx` and `YM-SUBCLASS 600 (TOURIST VISA).docx`, unprompted,
+two days after offering. With the 186 that is **three of CR-013's four lines** supplied by Yale.
+
+**Both opened and checked (G8), and against D-249's precedent specifically** — one checklist in the
+existing set turned out to be a fee quote carrying Yale's own banking details, so every new document
+is scanned before it goes near their live drive:
+
+| | 186 | 600 | Citizenship |
+|---|---|---|---|
+| Bank details / SWIFT / account | no | **no** | **no** |
+| Fee table | **yes** | no | no |
+| Client PII | no | no | no |
+| Dependants variant | single | **single** | **single** |
+
+All three are single-variant, so each needs **one** CHECKLIST MAP row pair rather than two.
+
+**Re-priced, and it comes down.** 186 fell 1.5 → 1.0 when the real document proved simpler than
+assumed. Citizenship falls 1.5 → 1.0 for a reason that is already banked: the *"not a visa, different
+folder structure"* caveat was mostly the MASTER dropdown, and `Citizenship` went live in that dropdown
+this afternoon (D-362). **Three lines: 3.0 h of per-line work + 2.0 h shared = 5.0 h / USD 175.**
+
+⛔ **ART is not in that number and must not be implied into it.** It has no document, was not offered,
+and is a tribunal review with statutory deadlines of its own — 2.0 h, quoted, unstarted, and it stays
+that way until someone supplies a document.
+
+⚠️ **One cosmetic fault to mention, gently:** the 600 document opens `3AUSTRALIAN VISITOR VISA` — a
+stray leading `3`. It is client-facing and goes out under their name, so they should know; it is also
+theirs to change, not ours (the D-249 rule: their document, their RMA's call).

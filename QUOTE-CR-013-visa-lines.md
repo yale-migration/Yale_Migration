@@ -9,8 +9,8 @@ The single biggest caveat in this quote was *"we cannot author the checklists, R
 | Line | Document | State |
 |---|---|---|
 | **186** | ✅ **RECEIVED 21 Aug** from RJ — `UPDATED 186 VISA CHECKLISTS.pdf` | Opened and read (G8). Yale letterhead, **one document** covering employer docs, applicant docs and both fee tables. No bank details, no client PII. Companion `EMPLOYEE DETAILS.docx` and a blank Form 80 came with it — both blank templates, verified |
-| **600** | 🟢 **OFFERED 21 Aug** — *"I can make a checklists for 600 and citizenship application as well"* | not yet received |
-| **Citizenship** | 🟢 **OFFERED 21 Aug** | not yet received |
+| **600** | ✅ **RECEIVED 22 Aug** — `YM-SUBCLASS 600 (TOURIST VISA).docx` | Opened and scanned. **Single variant.** No bank details, no fee table, no PII. ⚠️ opens `3AUSTRALIAN VISITOR VISA` — a stray leading `3`, client-facing, theirs to fix |
+| **Citizenship** | ✅ **RECEIVED 22 Aug** — `YM-CITIZENSHIP.docx` | Opened and scanned. **Single variant**, 6 sections. Clean on all D-249 markers |
 | **ART** | ⬜ not offered | the only one still with no path |
 
 **What this changes in the estimate.** 186 was priced at **1.5 h** on the assumption of *"likely two
@@ -74,13 +74,28 @@ Per line, once Robinder supplies the document list:
 | Line | h | Note |
 |---|---|---|
 | **186** ENS | ~~1.5~~ **1.0** | ✅ **document received 21 Aug — ONE variant, not two.** Re-read before re-pricing |
-| **600** Tourist | 1.0 | 🟢 offered 21 Aug, not yet received |
+| **600** Tourist | 1.0 | ✅ received 22 Aug, single variant — estimate holds |
 | **ART** review | 2.0 | Not a visa. Statutory deadlines, own stage set, own folder shape |
-| **Citizenship** | 1.5 | 🟢 offered 21 Aug. Not a visa — different document set and folder shape, **and not in MASTER's dropdown yet (D-353)** |
+| **Citizenship** | ~~1.5~~ **1.0** | ✅ received 22 Aug, single variant. **Drops because the dropdown work is already done** — `Citizenship` went live in MASTER column H on 22 Aug (D-362), which was most of the *"not a visa"* caveat |
 | Shared: router changes, partition proof, regression run | 2.0 | Done once, covers all four |
 | | ~~8.0~~ **7.5** | |
 
-**7.5 hours @ USD 35 = USD 262.50.** ⛔ Re-price once 600 and Citizenship actually arrive and have
+### 🔄 22 Aug — THREE OF FOUR ARE IN HAND. Deliverable scope is now:
+
+| Line | h | State |
+|---|---|---|
+| 186 | 1.0 | ✅ document held |
+| 600 | 1.0 | ✅ document held |
+| Citizenship | 1.0 | ✅ document held |
+| Shared: router, partition proof, regression | 2.0 | |
+| | **5.0** | **USD 175** |
+
+⛔ **ART is NOT in that figure.** No document, never offered, and it is a tribunal review with its own
+statutory deadlines — **2.0 h / USD 70, quoted and unstarted**, and it stays unstarted until a
+document exists. Do not let "the visa lines" be heard as including it.
+
+*(superseded figure below, kept so the movement is visible)*
+~~**7.5 hours @ USD 35 = USD 262.50.**~~ ⛔ Re-price once 600 and Citizenship actually arrive and have
 been opened — 186 fell by half an hour purely because the real document was simpler than assumed,
 and the same could go either way for the other two. **Never price a document you have not read.**
 
