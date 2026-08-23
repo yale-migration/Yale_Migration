@@ -322,7 +322,12 @@ function c1ImportFromResponseSheet(commit) {
     for (var i = 1; i < vals.length; i++) {
       var row = c1RowToEnquiry_(vals[i], res, '');
       if (!String(row[1]).trim() && !String(row[3]).trim()) { blank++; continue; }
-      var key = String(row[3]).toLowerCase().trim() + '|' + String(row[0]).trim();
+      // 🔴 email|date collapses when BOTH are blank — 91 rows shared the key '|' in the
+      // 23 Aug dry run and 4 of them were real enquiries with a name (D-378). Fall back to
+      // name + position so a row without contact details is still distinct from another.
+      var em = String(row[3]).toLowerCase().trim(), dt = String(row[0]).trim();
+      var key = (em || dt) ? em + '|' + dt
+                           : 'noid|' + tab + '|' + i + '|' + String(row[1]).toLowerCase().trim();
       if (seen[key]) { skipped++; continue; }
       seen[key] = true;
       add.push(row);

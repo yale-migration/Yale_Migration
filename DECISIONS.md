@@ -6822,3 +6822,38 @@ apart, in order, is what makes the second one mean anything.
 the 2-active cap (D-342); this half is not, and runs the day the tracker holds a row.
 
 **251 Apps Script checks · 79/79 blueprint checks.**
+
+## D-378 | The 911 duplicates are the dedupe working — and they overturn my A-46 conclusion
+
+**23 Aug 2026.** The C-1 dry run reported **1,504 new · 911 duplicates · 7 blank** from 2,422 rows.
+911 looked wrong, so it was investigated rather than accepted.
+
+**It is not a bug.** Two causes, in proportion:
+
+- **91 rows** share the dedupe key `'|'` — no email and no timestamp, so they collapse. Of those,
+  **only 4 have a name**, i.e. four real enquiries lost. Small, but real, and now known.
+- **~820 rows are genuine cross-tab duplicates.** `Form Responses 1` holds 775 distinct email
+  addresses; `Form Responses 2 2025` holds 1,130. **767 appear in both — 99% of tab 1's people are
+  also in tab 2.** Only 8 are unique to tab 1.
+
+🔴 **THIS OVERTURNS D-367.** I concluded that the two response tabs were two different forms, and
+therefore that the Brisbane/Indian form's questions were already in our hands and **A-46 could be
+closed without asking the client.** That conclusion was drawn from the tabs having *different column
+sets* — tab 2 has `Full Name`, `Best Type of Contact`, `Current Address` and tab 1 does not.
+
+**Different columns, same people.** A form whose questions grew over time produces exactly that
+pattern, and so does a form re-linked to its sheet — Google names the new tab `Form Responses 2`.
+**A 99% audience overlap is not what two forms serving a Filipino team and a Brisbane team look like.**
+
+⛔ **A-46 is reopened as UNCERTAIN.** I cannot show that the Brisbane form's responses are in this
+workbook, and the second form link RJ sent still returns 401. The email telling him *"you can forget
+about the Brisbane form"* has already gone — it is not wrong to have sent it, because nothing is
+blocked on it, but **the claim behind it was thinner than I presented.**
+
+🔑 **The error I made:** different column sets are evidence a form CHANGED, not evidence there are
+TWO forms. I had one observation consistent with two explanations and reported the convenient one —
+the one that let me close an ask without going back to the client. **Checking the people, not the
+columns, took one query and gave the opposite answer.**
+
+**Fix applied to the dedupe:** a row with neither email nor timestamp now falls back to
+name + row index rather than collapsing on `'|'`. Four enquiries recovered, and the class closed.
