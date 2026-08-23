@@ -6396,3 +6396,33 @@ the gap is silent in both directions.
 **Before import, one of these must happen:** a fresh export of the returned list, or — better — the
 list moves to a shared Google Sheet so there is no export to go stale. The second also removes the
 round trip permanently, and they are already comfortable sharing sheets.
+
+## D-367 | The response sheet was shared, and reading it may close the Brisbane form question too
+
+**22 Aug 2026.** RJ wrote *"Additionally, i already shared the sheet with you."* **Verified rather
+than believed** — `rpcSpreadsheet` on connection 9501125 lists a fifth spreadsheet that was not there
+before: **`Inquiry form (Responses)`**, `1vNnefC2nS4dKDDWPnCSJDvt09tkwdjpUQSK7KbuHwAo`.
+
+🔑 **Verified at ZERO operations cost.** Make RPCs are UI helpers, not scenario runs — the same route
+that confirmed the three sheet IDs on 18 Aug (D-337). With 496 of 1,000 operations left this month
+and the reset on 25 Aug, "can I check this for free" is a question worth asking before every check.
+
+**Its five tabs are more than a form dump:**
+`Filipino Students/Admissions` · **`Form Responses 1`** · **`Form Responses 2 2025`** ·
+`Calls/messages/Record` · `Query`
+
+**Two consequences, and the second is the useful one.**
+
+1. **I-25 is closed and C-1 has its source.** The transform is built and tested 21/21; the feed now
+   exists. What remains is wiring, not design.
+
+2. 🔑 **A-46 may close without the client at all.** We have been asking RJ to share the Brisbane form
+   because its `/viewform` returns 401. But **a form's response sheet carries every question as its
+   header row.** Two response tabs are sitting in a workbook we can now read. If `Form Responses 2
+   2025` is the Brisbane form, its questions are already in our hands and the ask evaporates.
+   ⛔ **Do not ask the client for something their own data may already answer** — G9, and this is the
+   third time it has applied this week.
+
+**Not yet read.** Listing tabs is free; reading a header row needs either a scenario run (operations)
+or thirty seconds of Sharjeel opening the sheet. **The free path is the human one**, so that is the
+ask — and it is an ask of us, not of them.

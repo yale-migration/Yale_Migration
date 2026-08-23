@@ -8,6 +8,7 @@
 | REYWARD JAKE M GAMOL-2026 | `1_YDeb7iwHQr0c3MGKp0jp8MMyqBzqlr7sz36u8Qn4pc` | ✅ visible |
 | STUDENTS | `1XlnqEi42ZJNu3_vwNN8WgKcCk4zlzWyCyRQ9We_V9_A` | ✅ visible — **shared without being asked** |
 | Yale Migration — MASTER DATABASE | `1ZE1OoTjgO5UyZI4dDxfGoGLy5ojHQibqHpMb3RTQc6k` | ✅ ours |
+| **Inquiry form (Responses)** | `1vNnefC2nS4dKDDWPnCSJDvt09tkwdjpUQSK7KbuHwAo` | ✅ **NEW 22 Aug — shared by RJ, verified live** via `rpcSpreadsheet` on conn 9501125, **zero operations**. 5 tabs: `Filipino Students/Admissions` · **`Form Responses 1`** · **`Form Responses 2 2025`** · `Calls/messages/Record` · `Query`. 🔑 **This closes I-25 and unblocks C-1** |
 
 🔴 **THE LIVE TAB IS `LODGEMENT: JULY TO PRESENT` — WITH A COLON.** Every script and document we
 wrote says `LODGEMENT JULY TO PRESENT`, because Excel forbids `:` in a sheet name and the `.xlsx`
