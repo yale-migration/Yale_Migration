@@ -6742,3 +6742,34 @@ rather than a tidy-up done on impulse.
 
 🔑 **The rule:** before deleting anything in a client's account, read who created it. "It looks like
 our test scaffolding" is a description of the name, not of the ownership.
+
+## D-376 | The Aug 12 and Aug 14 failures were Google's, not ours. D-368 fully closed
+
+**23 Aug 2026.** Both emails opened. Identical, and different in kind from today's:
+
+```
+8/12/26 11:42:34 PM AEST   assignMissingCodes   "We're sorry, a server error occurred.
+                                                 Please wait a bit and try again."   ended 11:43:34
+8/14/26  6:32:34 PM AEST   assignMissingCodes   same message                          ended  6:33:45
+```
+
+**Google's generic transient backend error.** The runtimes give it away: both hung for **60 and 71
+seconds** before giving up, against a normal 1.6–4s. **Our own faults fail in under a second** —
+today's TypeError died in 0.878s and 0.955s. A minute of hanging is the platform, not the script.
+
+**Rate: 2 failures in ~3,168 runs over 11 days = 0.063%.** For a job firing every five minutes on
+free-tier Apps Script, that is unremarkable.
+
+⛔ **No action, and adding retry logic would be a mistake.** `assignMissingCodes` assigns codes to
+rows that lack them, so it is idempotent by construction: a failed run means the run five minutes
+later does the same work. **The timer IS the retry.** Building another one on top would duplicate a
+mechanism that already exists and add a failure mode that does not.
+
+🔑 **What this closes, and what it cost.** D-368 recorded that these emails had arrived since 12
+August and nobody had opened one — and it was right to call that a failure of ours regardless of what
+they said. **The content turned out to be nothing. The not-looking was still the problem**, because
+until they were opened we could not distinguish "Google had a bad minute" from "the two jobs we tell
+the client are running daily have been dead for ten days." Two of the three were noise; **we had no
+way to know which until we looked, and the cost of looking was thirty seconds.**
+
+**All three failure events on this project are now explained.** Nothing is unaccounted for.

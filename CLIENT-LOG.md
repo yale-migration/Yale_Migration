@@ -916,3 +916,19 @@ still have been short. **A promise is only progress against the things it names.
 
 **Team-side position on sending: 15 in hand · 2 promised Monday · 2 asked here · 0 unaccounted for.**
 Everything else outstanding on this project belongs to Robinder.
+
+2026-08-23 | internal | **All three failure events explained; nothing unaccounted for.** Aug 12 and
+Aug 14 opened: both `assignMissingCodes`, both *"We're sorry, a server error occurred"* — **Google's
+transient backend error, not our code**. The runtimes prove it: 60s and 71s before giving up, against
+a normal 1.6–4s, while our own TypeError today died in under a second. **2 failures in ~3,168 runs =
+0.063%.** ⛔ No action: the function is idempotent, so the 5-minute timer already IS the retry.
+
+🔑 D-368 called the not-opening a failure regardless of what the emails said, and that holds. **The
+content was nothing; the not-looking was still the problem** — until they were opened we could not
+tell "Google had a bad minute" from "the two jobs we describe to the client as running daily have
+been dead for ten days."
+
+Also closed today: **go-live gate item 2** — all three scenarios re-scheduled to Mon–Fri
+09:00/13:00/17:00 (~5,760 polls/month → ~195), confirmed by the API's own response. And a deletion
+**stopped** by checking `createdByUser`: one of the seven junk scenarios was created by
+`info@yalemigration.com.au` two days before we began. Nothing deleted.
