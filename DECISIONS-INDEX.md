@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 584K /     7183 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 524K /     7210 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:55
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 00:06
 
 | # | Decision |
 |---|---|
@@ -384,3 +384,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:5
 | **D-385** | The documents got a gate, and writing it proved the point four more times |
 | **D-386** | The import-day checklist did not set the baselines, and the plan is the only place that matters |
 | **D-387** | The quote contradicted itself by $105, in the half a reader says out loud |
+| **D-388** | The unbilled position had five owners and no reader, so it never got said |

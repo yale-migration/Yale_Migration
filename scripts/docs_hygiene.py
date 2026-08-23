@@ -39,6 +39,7 @@ LIVE_DOCS = [
     # its own scope table said $175 — the document disagreed with itself by $105, in the
     # half a reader says out loud. These reach the client with numbers on them (D-387).
     'HOURS-LEDGER.md', 'QUOTE-CR-013-visa-lines.md', 'QUOTE-P3-DASHBOARD.md',
+    'BEYOND-MVP.md',
 ]
 # Append-only or point-in-time. An old number here is HISTORY, not drift.
 ARCHIVES = ('DECISIONS.md', 'DECISIONS-INDEX.md', 'CLIENT-LOG.md', 'STATUS.md')

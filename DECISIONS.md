@@ -7181,3 +7181,30 @@ it as append-only history is what let the spoken figure rot while the table besi
 
 🔑 **Third real catch for the gate in two days, and it caught this one too** — the D-387 reference in
 the quote failed the run before this entry existed.
+
+## D-388 | The unbilled position had five owners and no reader, so it never got said
+**24 Aug 2026.** `HOURS-LEDGER` held the hours, `CHANGE-REQUESTS` held the asks, `PHASE-2-3-BACKLOG`
+held the rationale, and two `QUOTE-*` files held the prices. **Every fact was recorded. The position
+was in no single place**, so the conversation it exists to enable has been deferred for eleven days
+while ~37 unquoted hours sat on the books.
+
+`BEYOND-MVP.md` is that page — **an index with a position, restating nothing.** Each row points at
+the file that owns the detail, and the file says outright that if it disagrees with what it points
+at, the pointed-at file wins. That is the only shape that does not become a sixth thing to drift.
+
+🔑 **The distinction it makes, which none of the five made, is BUILT-and-unquoted versus
+QUOTED-and-unbuilt.** They feel like one problem and they are opposites:
+- **B-1**, the ~21 h dashboard, was **built before it was priced** — the rule broken.
+- **Q-1**, CR-013, was **priced and then stopped** — three documents parked, not one hour spent.
+Q-1 is not filler in that table; **it is the evidence that B-1 was an exception rather than how we
+work.** Presented alone, B-1 looks like a habit.
+
+⚠️ **And it corrects a framing error that was about to reach the client.** The weekly PDF called both
+items *"work your team has asked for"*. CR-013 was the team; **the dashboard is CR-009, raised by
+Robinder himself on 6 Aug** — *"he wants to run multiple branches."* Getting that backwards turns his
+own request into something we decided to build for him, which is a far worse conversation and an
+avoidable one. Verified in `CHANGE-REQUESTS.md:95`.
+
+⛔ **This is D-383's shape again at the commercial layer:** the number was recorded in a place built
+for READING and in no place built for DOING. It looked documented from every angle except the one
+that acts on it.
