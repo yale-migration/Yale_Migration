@@ -6698,3 +6698,47 @@ risk, but changing their configuration unannounced is not ours to do on impulse 
 and 17 errors between them. July scaffolding. Harmless, but they are in the client's own account and
 are the first thing Robinder sees when he opens Make. ⛔ **Deletion is destructive and theirs, so it
 is a question, not a task.**
+
+## D-375 | Go-live gate item 2 CLOSED — and the deletion is not being done, for a reason found by checking
+
+**23 Aug 2026, 15:15–15:16 UTC.** All three scenarios re-scheduled from the 15-minute default to
+**Mon–Fri, 09:00 / 13:00 / 17:00**, and each write returned the new `scheduling` block, so this is
+confirmed by the API's own response rather than by a hopeful assumption:
+
+| Scenario | id | before | after |
+|---|---|---|---|
+| YM-M3-folder-create | 6806237 | interval 900, no restrict | ✅ 3 weekday windows |
+| YM-M4-checklist-file | 6867537 | interval 900, no restrict | ✅ 3 weekday windows |
+| YM-M9-email-triage | 6781676 | interval 900, no restrict | ✅ 3 weekday windows |
+
+**~5,760 polls/month → ~195.** All three remain `isActive: false`; scheduling says *when* a scenario
+would run, not *that* it runs. **Go-live gate item 2 is closed** — it had been open since the gate was
+written, and it was the difference between go-live surviving and dying silently on day five.
+
+⚠️ **M9's cadence is provisional.** Three checks a day is right for a 28-day s56 clock and right for
+the free plan, but M9 cannot run at all without a third scenario slot (D-342), and if they buy a
+paid plan the sensible cadence changes. **Revisit when the plan is decided — do not treat this as
+settled design.**
+
+## 🔴 The deletion: NOT done, and the reason only appeared on inspection
+
+Seven `Integration OneDrive` scenarios were about to be deleted as our July scaffolding.
+**`createdByUser` says one of them is not ours:**
+
+```
+6694766   Yale Migration <info@yalemigration.com.au>   25 July   ← THEIRS
+6734041 · 6742092 · 6742154 · 6742787 · 6742822 · 6744278        ← ours
+```
+
+Scenario **6694766 was created by the client, on their own account, two days before we started
+building.** Deleting it would have destroyed something of theirs that we did not make, could not
+restore, and had no business touching — and it would have gone unnoticed among six that genuinely
+were ours.
+
+⛔ **Nothing deleted.** Not even the six. The clutter is cosmetic, the deletion is irreversible, and
+the six cost 43 operations across four days in July and nothing since. **An irreversible action to
+fix a cosmetic problem is the wrong trade**, and it stays a question for the handover conversation
+rather than a tidy-up done on impulse.
+
+🔑 **The rule:** before deleting anything in a client's account, read who created it. "It looks like
+our test scaffolding" is a description of the name, not of the ownership.

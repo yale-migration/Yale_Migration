@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 552K /     6700 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 492K /     6744 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:08
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:16
 
 | # | Decision |
 |---|---|
@@ -371,3 +371,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:0
 | **D-372** | Two screenshots that look like alarming evidence and are evidence of nothing |
 | **D-373** | The daily triggers are real, correct and owned by the right account |
 | **D-374** | Go-live gate item 2 verified still open, and the correct schedule shape found by validation |
+| **D-375** | Go-live gate item 2 CLOSED — and the deletion is not being done, for a reason found by checking |

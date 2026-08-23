@@ -271,7 +271,7 @@ unresolved**, and it has to be settled before one row of real client data reache
 | | Check | How |
 |---|---|---|
 | 1 | 🔴 **The 14 demo rows are OUT of MASTER** | on import day only: `previewDemoRows()` → `removeDemoRows()` → **`resetCodeSequence()`** → `preflightGoLive()` = **GO**. Order matters (D-324) |
-| 2 | Scheduling is **Weekdays 09:00/13:00/17:00** | both scenarios are still on the 15-minute default |
+| 2 | ~~Scheduling is **Weekdays 09:00/13:00/17:00**~~ | ✅ **DONE 23 Aug (D-375)** — all THREE scenarios (M3 · M4 · M9) re-scheduled, confirmed by the API response. ~5,760 polls/month → ~195 |
 | 3 | OneDrive is on a **Yale** account | connection 9279810 is still `sharry00010@gmail.com` — §5 risk 1 |
 | 4 | **Robinder has given a date** | not implied by him saying yes to something else |
 | 5 | 🔴 **BOTH baselines are set to the import date** | `IMPORT_BASELINE` in `m5_dormant_detector.gs` **and** `M8_BASELINE` in `m8_lead_followup.gs`, same date, `yyyy-MM-dd`. **Added 19 Aug — it was in neither this gate nor `CUTOVER-PLAN.md`.** Both are `''` today, which is correct until import day. Leave them and the 38 MASTER rows all flag dormant on day 3 (route C drafts a chase for each) and the 621 enquiries all read as lapsed on day 1. ⚠️ **The daily triggers went live 19 Aug, so the first run after import is UNATTENDED.** M8 now refuses a mass write if its baseline is unset; **M5a has no such guard — it will simply do it.** |
