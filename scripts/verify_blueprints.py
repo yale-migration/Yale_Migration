@@ -433,7 +433,25 @@ else:
 # A visa in (1) but not (2) is stamped "NO CHECKLIST MAPPED — review" forever. A file in
 # (3) that no row in (2) points at is a document we chased the client for and never used.
 # Both failures are silent: M4 reports success either way.
+# 🔴 D-354 / D-360 — THE LIMIT OF THIS CHECK, STATED SO IT IS NOT MISTAKEN FOR MORE.
+# "on disk" means IN THIS REPOSITORY. M4 does not read this repository. It copies from
+# OneDrive: /drives/A0BABA3C2640082C/items/…78266e65…:/<filename>:/copy — the folder
+# INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS (D-248).
+#
+# So a file can pass every check below and still be absent from the only place the
+# consumer looks, and M4 would then 404, write "checklist copy FAILED" into Notes, Ignore
+# the bundle, never stamp column Y, and retry that row on every run forever.
+#
+# This nearly happened: D-354 claimed 190_SKILLED-NOMINATED.docx had never been uploaded,
+# because no record of the upload existed. It HAD been — 12 Aug, confirmed by eye (D-360).
+# The check was pointed at the wrong target either way.
+#
+# ⛔ Reconciling against OneDrive needs a Graph call, which costs operations and cannot run
+# from here. Until that exists, this section proves the MAP and the ROUTER agree with each
+# other and with our own copies — it does NOT prove M4 can fetch anything.
 print("\n=== checklist coverage — router vs CHECKLIST MAP vs the files on disk ===")
+print("⚠️  'on disk' = THIS REPO. M4 reads OneDrive (D-354). Passing here is not proof M4")
+print("    can fetch the file — reconcile the folder by hand before switching M4 on.")
 
 CHECKLIST_DIR = os.path.join(os.path.dirname(SCEN), "docs", "05-canonical-checklists")
 MAP_GS = os.path.join(os.path.dirname(SCEN), "scripts", "setup_m4_checklist_map.gs")
