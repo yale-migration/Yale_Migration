@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 580K /     7120 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 520K /     7153 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:49
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:52
 
 | # | Decision |
 |---|---|
@@ -382,3 +382,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:4
 | **D-383** | "0.0 hours are ours" was true of the hours table and false of the project |
 | **D-384** | The runbook was rebuilt and A-43's templates written — and both jobs found a defect the register did not know about |
 | **D-385** | The documents got a gate, and writing it proved the point four more times |
+| **D-386** | The import-day checklist did not set the baselines, and the plan is the only place that matters |

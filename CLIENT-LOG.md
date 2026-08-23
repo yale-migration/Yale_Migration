@@ -1003,3 +1003,17 @@ nothing. Pattern 1, inside the fix for pattern 1.
 ⚠️ **Correction to yesterday's description:** `④-4b` was not a pointer to nothing — a real `# ④b`
 heading exists. It pointed to the **wrong place**, which is worse, because nothing looks broken.
 D-385, and `LESSONS.md` § 7 lists the four things the gate still cannot catch.
+
+2026-08-23 | internal | **Clearing two cosmetic warnings found a production defect in the cutover
+plan.** `CUTOVER-PLAN.md`'s import-day sequence was four steps and **never set `IMPORT_BASELINE` or
+`M8_BASELINE`** — verified in source at `m5_dormant_detector.gs:52` and `m8_lead_followup.gs:47`.
+Forget them and **all 38 imported clients flag dormant on day three**, on the first morning Yale ever
+looks at the system. Added as step (e) with the file, the line and the consequence.
+
+🔑 **D-386. The baselines were written down twice, correctly, in `WHERE-WE-STAND.md` — and the document
+that lists what to do ON IMPORT DAY never picked them up. A warning in a module's row is not a step in
+the runbook**, and the person doing the cutover reads the runbook. Same shape as D-323.
+
+Also: `PHASE-2-3-BACKLOG.md` still priced the operations dashboard at 6–10 h when ~21 h of it has been
+built and the quote has never been sent. Corrected. And the new docs gate **failed the run because of
+a forward reference I had just written myself** — second real catch on its first day.

@@ -43,7 +43,7 @@ quoted properly, not leaked out in free increments.
 
 | # | Item | Est. | Depends on | Notes |
 |---|---|---|---|---|
-| P2-01 | **Operations dashboard** (CR-009) | **6–10h** | ~48-row tracker import | See detail below — the live ask |
+| P2-01 | **Operations dashboard** (CR-009) | ~~6–10h~~ → 🔴 **~21h ALREADY BUILT AND UNQUOTED** | ~48-row tracker import | ⚠️ **This estimate is history.** The Phase-3 web app was built 13–20 Aug, RLS proven 22/22 live. `QUOTE-P3-DASHBOARD.md` is written and **has never been sent** — the largest unbilled item in the account. See detail below |
 | P2-02 | Deadline engine (s56 7/14/21/26) | 8h | M9 | Blueprint already exists: their "YALE BRISBANE OFFICE WORK" S56 tabs |
 | P2-03 | Quotes + Xero | 8h | fee master ready | `FEES AND INVOICE REFERENCE.xlsx` + `BREAKDOWN OF FEES` supplied |
 | P2-04 | QC gate — content-vs-label check | 4h | M4 | **Directly justified by the 6 Aug audit**: 5 files whose names did not match their contents |

@@ -7118,3 +7118,36 @@ broken.** The gate deliberately does NOT accept a `④b` heading as the target o
 resolves to the wrong place · an invented fact about the client's business outside money language ·
 an item described as open that is already closed · and 🔴 **a wrong number in `POSITION.json`, which
 it would then enforce consistently across every document. One source is not one CORRECT source.**
+
+## D-386 | The import-day checklist did not set the baselines, and the plan is the only place that matters
+**23 Aug 2026.** Chasing two stale-date warnings from the new docs gate — housekeeping about
+housekeeping — turned up a **production defect in `CUTOVER-PLAN.md`**, the document we follow on the
+single highest-risk morning of this project.
+
+Its import-day sequence was four steps: `previewDemoRows` → `removeDemoRows` → `resetCodeSequence` →
+`preflightGoLive`. **It never sets `IMPORT_BASELINE` or `M8_BASELINE`.** Both are `''` — the correct,
+safe state *before* import — and both must be stamped with the import date on the day. Verified in
+source: `m5_dormant_detector.gs:52` and `m8_lead_followup.gs:47`.
+
+**What forgetting costs, on the first morning Yale ever looks at the system:** the 38 imported clients
+carry no contact history, so with no baseline the dormancy check reads **every one of them as
+neglected and flags all 38 dormant on day three.** M8 does the same to the enquiry import — every row
+is already past its 30-day window, so the first run stamps *"no outcome recorded"* across the lot.
+Added as step (e), with the file, the line number and the failure spelled out.
+
+🔑 **Why it was missing is the transferable part.** The baselines WERE written down — twice, correctly,
+in `WHERE-WE-STAND.md` under M5a and M8, each marked *"⬜ set it on import day"*. The document that
+lists **what to do on import day** never picked them up. **A warning in a module's own row is not a
+step in the runbook**, and the person executing the cutover reads the runbook. This is D-323 exactly:
+`preflightGoLive()` was a sentence in four documents and a step in no checklist until it was made one.
+
+⛔ **The pattern to distrust: a fact recorded in the right place for READING, in no place for DOING.**
+It looks documented from every angle except the one that runs it.
+
+Also corrected: `PHASE-2-3-BACKLOG.md` still estimated the operations dashboard at **6–10 h** when
+~21 h of it has been built since 13 Aug and `QUOTE-P3-DASHBOARD.md` has never been sent — a live
+commercial register quoting a price for work already delivered.
+
+🔑 **And the gate caught its own author.** The D-386 reference above was written into `CUTOVER-PLAN.md`
+before this entry existed; `docs_hygiene.py` failed the run and named it. Second real defect it has
+caught, one of them mine, on its first day.

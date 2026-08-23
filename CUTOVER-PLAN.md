@@ -73,6 +73,26 @@ every dashboard view reads empty — at which point a broken view and a correct 
 | b | `removeDemoRows()` | `14 demo row(s) removed in 1 block(s)` |
 | c | `resetCodeSequence()` | `The first real client will be YM-2026-00001` |
 | d | `preflightGoLive()` | must print **GO** |
+| **e** | 🔴 **SET THE TWO BASELINES — edit the code, then save** | see below |
+
+### 🔴 (e) THE BASELINES — the step that was missing from this plan until 23 Aug
+
+Both are `''` today, which is the correct and safe state **before** import. On import day they must
+be set to the import date in `yyyy-MM-dd`, or the first two mornings go badly:
+
+| Edit | File | If you forget |
+|---|---|---|
+| `var IMPORT_BASELINE = '2026-MM-DD';` | `scripts/m5_dormant_detector.gs` line 52 | **All 38 imported clients flag dormant on day 3.** They have no contact history, so the dormancy check reads every one of them as neglected — a wall of red on Yale's sheet on the first morning they look at it |
+| `var M8_BASELINE = '2026-MM-DD';` | `scripts/m8_lead_followup.gs` line 47 | Every imported enquiry is already past its 30-day window, so the first run stamps *"no outcome recorded"* across the lot |
+
+⚠️ **Same date as the import, not today's date when you happen to remember.** The dormancy grace is
+`CHASE_IMPORTED = 14` days measured from this value, so a wrong date moves 38 clients' first chase.
+
+🔑 **Why this was missing matters more than the fix.** The two baselines were written up in
+`WHERE-WE-STAND.md` under M5a and M8 as *"⬜ set it on import day"* — twice, correctly — and the plan
+that lists what to do **on import day** never picked them up. **A warning in the module's own row is
+not a step in the runbook.** Exactly what D-323 said about `preflightGoLive()`, which was a sentence
+in four documents and in no checklist. (D-386)
 
 🔑 **(c) is not optional and the order matters.** The demo rows burned `YM-2026-00001…00014`, and
 those numbers are now permanently retired by the high-water mark added in D-324 — so without a reset

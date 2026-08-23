@@ -144,8 +144,10 @@ def check_sections(rel, txt):
                   f'in this file — THIS IS THE ④-4b BUG')
 
 # ------------------------------------------------------------ CHECK 4: numbers
+# Lines that are ABOUT a wrong number rather than asserting it. LESSONS.md quotes "68%
+# built" as the defect it is documenting; flagging that teaches the reader to ignore WARNs.
 STALE_MARKERS = ('superseded', 'historical', 'was ', '~~', 'stale', 'no longer',
-                 'invites', 'do not say', 'never volunteer', 'old ')
+                 'invites', 'do not say', 'never volunteer', 'old ', 'said ', 'd-384')
 def check_numbers(rel, txt, pos):
     for i, line in enumerate(txt.splitlines(), 1):
         low = line.lower()
@@ -171,7 +173,10 @@ def check_freshness(rel, txt):
     # 40 lines, not 12: CLAUDE.md's first line cites the PROPOSAL date (19 Jul) and its
     # real position stamp sits further down. Reading only the top said "35 days stale"
     # about the most current file in the repo.
-    head = '\n'.join(txt.splitlines()[:40])
+    # ⛔ "Created 13 Aug 2026" is a birth certificate, not a staleness claim — a plan can
+    # be written once and still be current. Only self-declared CURRENCY counts.
+    head = '\n'.join(l for l in txt.splitlines()[:40]
+                     if not re.search(r'\bcreated\b', l, re.I))
     dates = [datetime.date(int(y), MONTHS[mo.capitalize()], int(d))
              for d, mo, y in DATE_RE.findall(head)]
     if not dates:
