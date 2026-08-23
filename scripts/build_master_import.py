@@ -19,9 +19,13 @@ row in the original exactly. Two originals are absent from the returned list —
 `../client-data/`, outside the repo, and must never be committed.
 
 ============================ WHAT THIS SCRIPT REFUSES TO DO =========================
-* It does not repair the `gmil.com` email. One character from `gmail.com`, and almost
-  certainly a typo — but "almost certainly" is not a basis for sending a real client's
-  checklist to an address we invented. Flagged, imported verbatim, human decides.
+* ~~It does not repair the `gmil.com` email.~~ 🔓 **REFUSAL LIFTED 22 Aug.** The rule was
+  right when written — "almost certainly a typo" is not a basis for inventing a real
+  client's address. But the human has now decided: RJ, in writing, *"gmail.com always is
+  the correct one."* The premise of the refusal was that WE would be guessing. We are not
+  guessing any more, so it is repaired, noted on the row, and counted. See CONFIRMED_FIX.
+  🔑 A guard exists to stop us acting without authority. When the authority arrives, the
+  guard comes down — it does not become a tradition.
 * It does not guess the 4 missing 485 skills authorities. The team left those blank.
   Without one, M4 route B stamps NEEDS REVIEW — which is the correct outcome, not a
   bug to paper over.
@@ -64,6 +68,15 @@ STAGE  = {'LODGED':('Lodged','Pending'), 'DRAFTED':('Ready for Lodgement','Pendi
           'PENDING':('Documents Pending','Pending'), 'WITHDRAWN':('Closed','Withdrawn')}
 SKILLS = {'ACECQA','TRA','VETASSESS','Not required (Bachelor/Masters)','Engineers Australia'}
 MAPPED = {'485','500','482','SBS','Nomination','407','820/801','189','190','491','494','802','101','417'}
+# 🔓 Corrections the CLIENT has confirmed in writing. Each one carries its source, because
+# the difference between a repair and an invention is entirely who authorised it.
+CONFIRMED_FIX = {
+    'domain': {
+        # RJ, 22 Aug 2026: "gmail.com always is the correct one." One row, `gmil.com`.
+        'gmil.com': ('gmail.com', 'RJ 22 Aug: "gmail.com always is the correct one"'),
+    },
+}
+
 DEAD   = re.compile(r'no longer (a )?client', re.I)
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -220,9 +233,15 @@ def main():
         em = email.strip()
         if em:
             dom = em.split('@')[-1].lower()
-            if re.match(r'^gm[ai]{0,2}l\.com$', dom) and dom != 'gmail.com':
+            fix = CONFIRMED_FIX['domain'].get(dom)
+            if fix:
+                em = em[:em.rindex('@') + 1] + fix[0]
+                note.append('domain %s -> %s (%s)' % (dom, fix[0], fix[1]))
+                flags['email domain corrected — client-confirmed'] += 1
+            elif re.match(r'^gm[ai]{0,2}l\.com$', dom) and dom != 'gmail.com':
+                # Still refused: looks wrong, but nobody has confirmed THIS one.
                 note.append('EMAIL DOMAIN LOOKS WRONG (%s) — confirm before sending' % dom)
-                flags['🔴 email domain typo'] += 1
+                flags['🔴 email domain typo — UNCONFIRMED, not repaired'] += 1
             k = em.lower()
             if k in seen_email:
                 note.append('this email is also on another row — confirm which client owns it')

@@ -301,7 +301,10 @@ function clWriteFormulas_(sh) {
   sh.getRange(2, CL_HELPER_NAME).setFormula(
     '=ARRAYFORMULA(IF(MASTER!$C$2:$C="","",UPPER(TRIM(MASTER!$C$2:$C))))');
   sh.hideColumns(CL_HELPER_PHONE, 2);
-  Logger.log('  2 hidden helper columns (R,S) — MASTER normalised ONCE, not per row');
+  // ⚠️ DERIVED. This said "(R,S)" as literal text and stayed saying it after the intake
+  // block moved the helpers to U,V — a log line that quietly lies about where it wrote.
+  Logger.log('  2 hidden helper columns (' + clLetter_(CL_HELPER_PHONE) + ',' +
+             clLetter_(CL_HELPER_NAME) + ') — MASTER normalised ONCE, not per row');
 
   var cols = ['Matched Code', 'Matched Client', 'Matched On', 'Outstanding'];
   var byCol = {};

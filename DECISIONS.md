@@ -6357,3 +6357,42 @@ that way until someone supplies a document.
 ⚠️ **One cosmetic fault to mention, gently:** the 600 document opens `3AUSTRALIAN VISITOR VISA` — a
 stray leading `3`. It is client-facing and goes out under their name, so they should know; it is also
 theirs to change, not ours (the D-249 rule: their document, their RMA's call).
+
+## D-366 | Our import source is frozen at 18 August. Every correction the client has made since is invisible to it
+
+**22 Aug 2026 — found by checking their answers against the file rather than against the thread.**
+
+RJ has corrected two things in the client list. Both are real, and **neither is in the data we would
+import**, because `client-data/2026-08-18_CLIENT-LIST-TO-UPDATE_returned.xlsx` is a returned email
+attachment, last modified **18 Aug 16:02**, and nothing has re-read it since.
+
+| He said | Our import source today |
+|---|---|
+| *"gmail.com always is the correct one"* (row 13) | 🔴 still `gmil.com` |
+| *"Corrected"* (rows 22/23, one email on two clients) | 🔴 still duplicated |
+
+🔑 **The structural point, which is bigger than the two rows.** `CLIENT LIST TO UPDATE` is not a
+shared document — it is a file we emailed out and they emailed back. **So every correction requires a
+new round trip, and nothing tells us when one is needed.** We marked both items ✅ in `CLIENT-ASKS`
+the moment he answered, because answering is what we were tracking. **A client's fix is not applied
+when they say it; it is applied when it reaches the file we read.** Those are days apart here, and
+the gap is silent in both directions.
+
+**What was fixable, and what was not — the line matters.**
+
+- **Row 13 IS fixable, and is now fixed.** `build_master_import.py` carried an explicit refusal:
+  *"'almost certainly a typo' is not a basis for sending a real client's checklist to an address we
+  invented. Flagged, imported verbatim, human decides."* That was right when written. **The human has
+  now decided, in writing.** So the refusal is lifted and the repair is applied through a
+  `CONFIRMED_FIX` table where **every entry carries its source quote** — because the whole difference
+  between a repair and an invention is who authorised it. An unconfirmed `gmial.com` tomorrow is
+  still refused; the rule did not widen, one instance was authorised.
+  🔑 **A guard exists to stop us acting without authority. When the authority arrives the guard comes
+  down — it does not become a tradition.**
+- **Rows 22/23 are NOT fixable by us.** He said *"Corrected"* and did not say corrected **to what**.
+  We know one of two clients has the wrong address; we do not know which, or what the right one is.
+  Inventing either is the exact thing the row-13 refusal existed to prevent. **Must be asked.**
+
+**Before import, one of these must happen:** a fresh export of the returned list, or — better — the
+list moves to a shared Google Sheet so there is no export to go stale. The second also removes the
+round trip permanently, and they are already comfortable sharing sheets.
