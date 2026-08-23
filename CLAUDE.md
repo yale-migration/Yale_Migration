@@ -97,6 +97,7 @@ broken formula and a correct one identically (D-292…D-296).
 | File | Owns |
 |---|---|
 | **`WHERE-WE-STAND.md`** | 🔑 position · gaps · resume point |
+| **`HONEST-ASSESSMENT.md`** | 🔍 **has any of it helped Yale yet?** — the uncomfortable one. Read before summarising the project to anyone |
 | `CLIENT-ASKS.md` | outstanding balance with the client |
 | **`INPUTS-REGISTER.md`** | 🔑 every input the build needs · **verified** state only · what each one blocks |
 | `CLIENT-DATA-INVENTORY.md` | every client file, what is in it, what is forbidden |
