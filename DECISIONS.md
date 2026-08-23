@@ -6985,3 +6985,28 @@ not: it is history, minus the 8 people who never made it into the copy.
 date ranges discriminated**, and they were one query away the whole time. When two explanations fit,
 find the observation that only one of them survives — do not pick the convenient one, which is
 exactly what D-367 did.
+
+## D-382 | D-354 fully closed — all 23 checklists are in OneDrive, and the sets match exactly
+
+**23 Aug 2026.** Sharjeel selected all in `INFORMATION HUB → CLIENT DOCUMENT CHECKLISTS`:
+**"28 selected"**, with every filename visible and legible.
+
+**Our canonical set is 23 checklists + 5 `REF_` documents = 28.** Name for name, the two match:
+every checklist M4's CHECKLIST MAP can resolve is present, nothing is in OneDrive that we do not
+hold, and **`190_SKILLED-NOMINATED.docx` carries 12 August** while the rest read 8 August — exactly
+the three-day gap D-360 predicted from the corrected 190 arriving on the 11th.
+
+**So the whole D-354 concern is resolved, and it was wrong in both directions:**
+- *"the file was never uploaded"* — it was, on 12 Aug (D-360)
+- *"the folder might be short"* — it is complete, 28 for 28
+
+⚠️ **The defect it exposed was real and is unchanged.** `verify_blueprints.py` still checks *"every
+mapped file exists on disk"* — in **our repository**, which M4 never reads. It happens to be right
+today because the two sets agree. **It would not have told us if they did not**, and it now says so
+out loud every run (23 Aug). Closing the instance does not close the gap: reconciling against
+OneDrive still needs a Graph call, and until then this is a human check.
+
+🔑 **Both halves of this were settled by looking rather than reasoning** — the upload by opening the
+folder, the count by pressing Ctrl+A. Two minutes, twice, against several rounds of inference that
+got it wrong each time. That is pattern 2 in `LESSONS.md`, and it has now cost enough to be worth
+the reflex: **go and look first.**
