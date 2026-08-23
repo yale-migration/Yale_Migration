@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 568K /     6953 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 508K /     6987 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 21:32
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:15
 
 | # | Decision |
 |---|---|
@@ -377,3 +377,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 21:3
 | **D-378** | The 911 duplicates are the dedupe working — and they overturn my A-46 conclusion |
 | **D-379** | The blueprint import created a SECOND scenario, not an update — and it arrived unscheduled |
 | **D-380** | M6's decision layer built — the channel was never the module |
+| **D-381** | The two response tabs are ONE form's data, copied and continued — not two forms |

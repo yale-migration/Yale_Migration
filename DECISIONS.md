@@ -6951,3 +6951,37 @@ is the check that proves the list discriminates rather than just matching everyt
 **Contract position: 37 of 40 build-hours now written and tested, up from 29.** What remains unwritten
 is C-2 (2h, needs OneDrive) and C-5's capture path (1h, needs the channels). ⬜ M6's transport half
 stays blocked on I-3/I-4, but it is now **wiring to a tested decision**, not a module to design.
+
+## D-381 | The two response tabs are ONE form's data, copied and continued — not two forms
+
+**23 Aug 2026.** D-378 reopened A-46 as *uncertain* after finding 99% of the people in
+`Form Responses 1` also appear in `Form Responses 2 2025`. The date ranges settle it, and the answer
+is neither hypothesis I had offered:
+
+| tab | dated rows | first | last |
+|---|---|---|---|
+| `Form Responses 1` | 911 | **2023-12-15** | 2025-02-03 |
+| `Form Responses 2 2025` | 1,485 | **2023-12-15** | 2026-08-17 |
+
+**Identical first day. 416 days of overlap. Tab 2 continues 18 months past where tab 1 stops.**
+
+Two independently created forms do not begin on the same calendar day and then share 767 of 775
+email addresses. **Tab 2 is a COPY of tab 1, taken in 2025 — hence the name — and carried on in.**
+Tab 1 is frozen history that stopped receiving on 3 Feb 2025.
+
+🔑 **So the workbook holds ONE form's responses, and the Brisbane/Indian form's data is not in it.**
+D-367's *"A-46 closes for free"* was wrong; D-378 was right to reopen it; and this is the evidence
+that closes the question properly — in the other direction. **A-46 stays OPEN and the ask already
+sent to RJ stands.**
+
+⚠️ **What it changes for C-1:** the 911 "duplicates" the dry run reported are not a data-quality
+problem in their records and not a bug in ours. **They are the same enquiries counted twice**, because
+tab 2 already contains tab 1. The dedupe handled it correctly and netted 1,504 — but the log line
+`Form Responses 1: 931 rows` invites the reading that it is a second channel worth importing. It is
+not: it is history, minus the 8 people who never made it into the copy.
+
+🔑 **The method worth keeping.** Three observations, each ambiguous alone: different column sets
+(suggests two forms), 99% shared people (suggests one), same start date (suggests a copy). **Only the
+date ranges discriminated**, and they were one query away the whole time. When two explanations fit,
+find the observation that only one of them survives — do not pick the convenient one, which is
+exactly what D-367 did.

@@ -272,6 +272,12 @@ var C1_RESPONSES_ID = '1vNnefC2nS4dKDDWPnCSJDvt09tkwdjpUQSK7KbuHwAo';
 // StudentsAdmissions` are theirs — a query log, a call log and an admissions list. They
 // are not form responses and importing them would put 1,870 rows of the wrong thing into
 // ENQUIRIES, where M8 would then start a follow-up clock on every one.
+// ⚠️ These are ONE form's data, not two (D-381). `Form Responses 2 2025` is a COPY of
+// `Form Responses 1` taken in 2025 and continued: identical first day (2023-12-15), 767 of
+// 775 emails shared, and tab 1 stopped receiving on 2025-02-03 while tab 2 runs to 2026.
+// So tab 1 is frozen history and adds only the 8 people who never made it into the copy.
+// Both are read because those 8 are real; the dedupe removes the rest. ⛔ Do NOT read the
+// per-tab row counts as two channels worth importing — that is the same enquiry twice.
 var C1_RESPONSE_TABS = ['Form Responses 1', 'Form Responses 2 2025'];
 
 /**
