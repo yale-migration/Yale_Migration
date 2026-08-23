@@ -29,11 +29,13 @@ of my 48 hours are left?"* this file is the answer. Update it at the end of ever
 | | Client communication (messages, briefs, scripts, the 19-question document + follow-ups) | **~9** |
 | | **TOTAL** | **~100** |
 
-## 🔴 WHERE THIS ACTUALLY STANDS — updated 20 Aug 2026
+## 🔴 WHERE THIS ACTUALLY STANDS — updated 23 Aug 2026
 
 **~100 hours spent against a firm 48-hour cap.** But the headline number is the wrong one to read:
 **~37 of those hours are out of scope and unquoted** (~16h absorbed Phase 2/3 + **~21h Phase-3 web
-dashboard, built 20 Aug**). Contracted delivery sits at **~25 of 40 build-hours — under, not over.**
+dashboard, built 20 Aug**). Contracted delivery sits at **31.7 of 40 build-hours (38.0 of 49 contracted, 78%) — under, not
+over.** *(Was "~25 of 40" until 23 Aug; M6's decision layer, M7's second half and C-1 have landed
+since. `POSITION.json` is the source — update it first.)*
 
 🔴 **The dashboard is the single largest unbilled item in the account, and it happened in one day.**
 Our own rule — *"never absorb Phase 2/3 into the MVP"* — was written 6 Aug and has now been broken

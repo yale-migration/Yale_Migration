@@ -7151,3 +7151,33 @@ commercial register quoting a price for work already delivered.
 🔑 **And the gate caught its own author.** The D-386 reference above was written into `CUTOVER-PLAN.md`
 before this entry existed; `docs_hygiene.py` failed the run and named it. Second real defect it has
 caught, one of them mine, on its first day.
+
+## D-387 | The quote contradicted itself by $105, in the half a reader says out loud
+**23 Aug 2026.** Asked what CR-013 actually is, I opened the quote to explain it and found the
+document disagreeing with itself.
+
+`QUOTE-CR-013-visa-lines.md` carries two figures. Its **scope table** was correctly updated on 22 Aug
+as documents arrived — 186 and Citizenship each fell by half an hour once the real files turned out to
+be single-variant — landing at **5.0 h / USD 175**, with ART held out separately at 2.0 h / USD 70.
+Its **"what to say on the call"** script still read *"Aath ghante ka kaam hai — **280 dollars**."*
+
+**$280 is 8.0 h × $35: the original estimate, superseded twice.** The table was maintained; the script
+was not. 🔑 **And the script is the half that reaches the client** — nobody reads a scope table aloud
+to Robinder. We would have quoted a **family referral $105 over** our own current number, in a document
+whose entire purpose is to be trusted on price.
+
+⛔ **The rule: never leave a superseded number in the sentence someone speaks.** Strike it or restate
+it. A table and a script inside one file are two documents that drift, and the quiet one is right.
+
+Two more stale figures found in the same pass, both commercial:
+- The same quote said *"~26 hours over a firm 48-hour cap."* `HOURS-LEDGER.md` says **~100 spent
+  against 48 — ~52 over.** The 26 predates the ~21 h dashboard being counted.
+- `HOURS-LEDGER.md` itself still read *"~25 of 40 build-hours"* — now **31.7 of 40 / 38.0 of 49**.
+
+**All three corrected, and the money documents are now INSIDE the docs gate** — `HOURS-LEDGER.md` and
+both `QUOTE-*.md` files added to `LIVE_DOCS`, and the `QUOTE-` prefix removed from the archive
+exemption. ⛔ **A quote is a live commercial document, not a record of what we once thought.** Treating
+it as append-only history is what let the spoken figure rot while the table beside it stayed right.
+
+🔑 **Third real catch for the gate in two days, and it caught this one too** — the D-387 reference in
+the quote failed the run before this entry existed.

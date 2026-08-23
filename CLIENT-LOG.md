@@ -1017,3 +1017,18 @@ the runbook**, and the person doing the cutover reads the runbook. Same shape as
 Also: `PHASE-2-3-BACKLOG.md` still priced the operations dashboard at 6–10 h when ~21 h of it has been
 built and the quote has never been sent. Corrected. And the new docs gate **failed the run because of
 a forward reference I had just written myself** — second real catch on its first day.
+
+2026-08-23 | internal | **Opening CR-013 to explain it found the quote contradicting itself by $105.**
+Its scope table was correctly updated to **5.0 h / USD 175** as three of the four documents arrived;
+its *"what to say on the call"* script still read **"280 dollars"** — the original 8.0 h estimate,
+superseded twice. **The script is the half that reaches Robinder.** We would have quoted a family
+referral $105 over our own current number, in the one document whose purpose is to be trusted on price.
+
+Two more stale money figures in the same pass: the quote said *"~26 hours over"* when the ledger says
+**~100 spent against 48 — ~52 over**, and the ledger itself still read *"~25 of 40 build-hours"* when
+it is now **31.7 of 40**. All three corrected.
+
+🔑 **D-387. `HOURS-LEDGER.md` and both `QUOTE-*.md` files are now inside the docs gate**, and the
+`QUOTE-` archive exemption is gone — **a quote is a live commercial document, not a record of what we
+once thought.** Treating it as history is exactly what let the spoken figure rot beside a correct table.
+Third real catch for the gate in two days; it flagged this one's forward reference too.

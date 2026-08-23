@@ -116,14 +116,23 @@ Robinder should sight each one before it is loaded.** Said to RJ on 21 Aug, once
 > migration advice hai aur woh sirf aap de sakte hain, aapke registration ke under. Main sirf
 > system mein daalunga, route karunga aur test karunga.
 >
-> Aath ghante ka kaam hai — **280 dollars**. Jab aap chaaron document lists bhej dein, tab shuru."
+> Teen lines ke documents aap ki team ne bhej diye hain — 186, 600, Citizenship. Un teeno ka kaam
+> **paanch ghante — 175 dollars**. ART abhi shamil nahi hai: uska document nahi aaya, aur woh tribunal
+> ka kaam hai — alag se **do ghante, 70 dollars**, jab document aa jaye."
+
+🔴 **THE FIGURE ABOVE WAS `280` UNTIL 23 AUG AND IT WAS WRONG BY $105.** `280` is 8.0 h × $35 — the
+**original** estimate, from before three of the four documents arrived and 186 and Citizenship each
+dropped by half an hour. The scope table in this same file already said **5.0 h / USD 175**, so the
+document contradicted itself, and **the half a reader speaks from is the script.** Corrected (D-387).
+⛔ **Never leave a superseded number in the sentence someone reads aloud** — strike it or restate it."
 
 ---
 
 ## ⚠️ Do not send this alone
 
-This is new billable work, and **we are already ~26 hours over a firm 48-hour cap with no change
-order raised** (`HOURS-LEDGER.md`). The contract says overruns are quoted **before** the hours are
+This is new billable work, and **we are already ~52 hours over a firm 48-hour cap with no change
+order raised** — ~100 spent against 48 (`HOURS-LEDGER.md`, and this said *"~26"* until 23 Aug, from
+before the ~21 h dashboard was counted). The contract says overruns are quoted **before** the hours are
 used. Quoting CR-013 while saying nothing about the overrun invites the obvious question later:
 *"you charged me for this but not for that?"* — and the honest answer, that we absorbed ~16 hours of
 Phase 2/3 for free, sounds like a bargaining position if it arrives second.

@@ -35,10 +35,15 @@ LIVE_DOCS = [
     'MVP-STATUS-simple.md', 'CUTOVER-PLAN.md', 'DASHBOARD-TRACKER.md',
     'DASHBOARD-DEMO-WALKTHROUGH.md', 'CHANGE-REQUESTS.md', 'PHASE-2-3-BACKLOG.md',
     'ACCESS.md', 'docs/M8-FOLLOWUP-TEMPLATES.md',
+    # 🔴 The money documents. Added 23 Aug after CR-013's spoken script quoted $280 while
+    # its own scope table said $175 — the document disagreed with itself by $105, in the
+    # half a reader says out loud. These reach the client with numbers on them (D-387).
+    'HOURS-LEDGER.md', 'QUOTE-CR-013-visa-lines.md', 'QUOTE-P3-DASHBOARD.md',
 ]
 # Append-only or point-in-time. An old number here is HISTORY, not drift.
 ARCHIVES = ('DECISIONS.md', 'DECISIONS-INDEX.md', 'CLIENT-LOG.md', 'STATUS.md')
-ARCHIVE_PREFIXES = ('SENT-', 'DRAFT-', 'VOICE-', 'BRIEF-', 'CALL-BRIEF', 'QUOTE-')
+# ⛔ 'QUOTE-' is deliberately NOT here: a quote is a LIVE commercial document, not a record.
+ARCHIVE_PREFIXES = ('SENT-', 'DRAFT-', 'VOICE-', 'BRIEF-', 'CALL-BRIEF')
 
 REGISTERS = {
     # 🔴 Only 96 of 384 decisions carry a "##" heading; the older ones are bare
