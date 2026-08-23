@@ -8,6 +8,54 @@ referral inside a family network — mistakes travel beyond this engagement.
 
 ---
 
+## 📍 POSITION AS AT 23 AUG 2026 — read this before anything else
+
+**MVP BUILD: 78% — 38.0 of 49 contracted hours written and tested.**
+Modules 31.7/40 (79%) · C-items 6.3/9 (70%). Recomputed from evidence 23 Aug, not carried forward.
+
+| ✅ 100% | M1 M2 M3 M4 M5 M7 M8 · C-3 C-4 |
+|---|---|
+| 🟡 partial | M9 90% (needs a Make slot) · C-1 90% (dry-run only) · M6 **45%** · C-5 50% · M11 30% |
+| ⬜ 0% | M10 (blocked) · C-2 (blocked) |
+
+**Green as at 23 Aug:** 298 Apps Script checks · 79/79 blueprint · hygiene PASS · working tree clean.
+M6 and C-1 verified **live in Apps Script**, not just the node harness.
+
+🔑 **THE ONE THING TO UNDERSTAND: 0.0 hours of the remaining 11 are ours.**
+8.8 h wait on **Robinder** (Meta · WhatsApp · OneDrive · a Make slot) and 2.2 h on **RJ**
+(3 test-client emails + 1 assessing authority · which enquiry list is the system of record).
+**Nothing is blocked on engineering. Do not go looking for something to build.**
+
+⛔ **AND THE THING THAT MATTERS MORE:** the system has **NEVER PROCESSED A REAL CLIENT.** MASTER holds
+14 invented people; ENQUIRIES is empty. The two jobs described as "running daily" are running against
+demo rows and an empty tab — they execute, they succeed, they do nothing. **Built is not running.**
+▶ **`HONEST-ASSESSMENT.md`** before summarising this project to anyone.
+
+### Live state, verified 23 Aug
+- **Make:** 12 scenarios, **all OFF**. M3 · M4 · M9 rescheduled to Mon–Fri 09:00/13:00/17:00
+  (5,760 → ~195 polls/month, D-375). ⚠️ `ZZ-OLD-M9-stub-SUPERSEDED-by-7064554` is parked, not deleted.
+- **Apps Script:** 4 daily triggers verified — `updateFollowUps` 07:00 · `updateEnquiryFollowUps` 08:00 ·
+  `parseS56Classifications` 09:00 · `verifyS56Deadlines` 10:00 · plus `assignMissingCodes` 5-min.
+  All CLOCK, Brisbane, owned by `project1@`.
+- **Sheets readable by `project1@`:** YALE BRISBANE OFFICE WORK · REYWARD JAKE M GAMOL-2026 ·
+  STUDENTS · **Inquiry form (Responses)** · MASTER DATABASE.
+- **Import ready:** 38 rows, locked-column gate clean, all pre-stamped `Checklist Filed` (D-352).
+
+### ⛔ Do not repeat these — each cost real time
+- **Make RPCs are FREE.** `rpcSpreadsheet` verified the shared sheet at zero operations. Ask "can I
+  check this for nothing?" before every check.
+- **`Import Blueprint` CREATES a scenario, it does not update one** — and resets its scheduling (D-379).
+- **A blueprint import un-does every out-of-blueprint setting.**
+- **`var` hoists the declaration, not the value.** A derived constant above its array threw at load and
+  broke **every trigger in the project** for 10 minutes (D-364/D-371). `test_gs_loads.js` guards it now.
+- **A pipeline's exit status is the last command's** (D-334) — walked into twice, once on the very
+  check meant to prove a gate.
+- **Before deleting anything in the client's account, read `createdByUser`** — one of seven "junk"
+  scenarios was theirs (D-375).
+- **The failure inbox is part of shipping.** A green manual run says nothing about the triggers.
+
+---
+
 ## 🔴 START HERE — read in this order, nothing else until you know where you are
 
 1. **`WHERE-WE-STAND.md`** — position, gaps, resume point. **This file owns "where are we".**
@@ -97,7 +145,7 @@ broken formula and a correct one identically (D-292…D-296).
 | File | Owns |
 |---|---|
 | **`WHERE-WE-STAND.md`** | 🔑 position · gaps · resume point |
-| **`HONEST-ASSESSMENT.md`** | 🔍 **has any of it helped Yale yet?** — the uncomfortable one. Read before summarising the project to anyone |
+| **`HONEST-ASSESSMENT.md`** | 🔍 **has any of it helped Yale yet?** — the answer is *not yet* — the uncomfortable one. Read before summarising the project to anyone |
 | `CLIENT-ASKS.md` | outstanding balance with the client |
 | **`INPUTS-REGISTER.md`** | 🔑 every input the build needs · **verified** state only · what each one blocks |
 | `CLIENT-DATA-INVENTORY.md` | every client file, what is in it, what is forbidden |
