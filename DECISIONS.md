@@ -6463,3 +6463,79 @@ is older than anything in this session. Opening one email settles it; nothing el
 
 **Recorded before the answer is known, deliberately.** The failure here was not the bug — it was ten
 days of a notification arriving in an inbox we hold access to and never reading it.
+
+## D-369 | My load-order bug reached production and broke a live 5-minute trigger
+
+**22 Aug 2026 — confirmed from the failure email, not inferred.**
+
+```
+Start     8/24/26 12:02:34 AM AEST   ·   Function  assignMissingCodes
+Error     TypeError: Cannot read properties of undefined (reading 'length')
+Trigger   time-based                 ·   again at 12:07:34 AM AEST
+```
+
+**That error string is byte-identical to what `CL_HELPER_PHONE = CL_HEADERS.length + 1` produces
+above the array.** D-364 predicted this in the abstract — *"it does not break this file, it breaks
+THE WHOLE PROJECT"* — and by then it had **already happened twice**. `assignMissingCodes` lives in
+`master_codes.gs`, a file I never touched. It failed because Apps Script evaluates every top-level
+statement in every `.gs` before running anything.
+
+**Blast radius, measured:** two failures, five minutes apart, matching the client-code timer.
+Sharjeel re-pasted the fix at ~12:08 AM AEST and the failures stop there. The 07:00 and 08:00 daily
+triggers never fired inside the window, and MASTER holds only demo rows today, so **no real client
+row went uncoded**. The damage was near zero. **The margin was not.** Had this landed after the
+import, every new client for those minutes would have had no code — and the only signal was an email
+to an inbox nobody reads.
+
+🔑 **What I got wrong, precisely.** I wrote D-364 saying the bug was *"caught before it ever ran."*
+It was not. It ran twice and I said otherwise **in the same session, in a decision record, without
+checking the one place that would have told me** — the inbox we have had access to since July. I
+reasoned from "the fix is in" to "nothing happened", which is the same move as D-341 and D-368: a
+claim about the world derived from the state of our own notes.
+
+**Two things follow, and only one is a code change.**
+1. `test_gs_loads.js` already guards the recurrence. It was written after the fault, so it would not
+   have prevented this one, but it ends the class.
+2. ⛔ **The failure inbox is now part of shipping.** Any change pasted into the Apps Script project
+   is not "done" until `project1@`'s inbox has been checked for a failure summary. A green manual run
+   proves the function you ran; it says nothing about the four triggers that fire on their own.
+
+⚠️ **Aug 12 and Aug 14 are still unexplained and are NOT this.** They predate every change this week.
+Separate cause, still unopened, still owed.
+
+## D-370 | The enquiry data is ~7× larger than the source we built the import from
+
+**22 Aug 2026.** RJ shared `Inquiry form (Responses)`. It is not a form dump — it is **five tabs and
+4,292 rows**:
+
+| Tab | Rows |
+|---|---|
+| `Query` | 1,559 |
+| `Form Responses 2 2025` | 1,487 |
+| `Form Responses 1` | 930 |
+| `CallsmessagesRecord` | 222 |
+| `Filipino StudentsAdmissions` | 89 |
+
+**We built the ENQUIRIES import from `DATA SHEET.xlsx` — 677 rows** (D-327, "621 importable"). This is
+**more than six times that**, and it is the live thing their forms actually write into.
+⛔ **Do not import it and do not re-plan M6 around it yet.** Which of these is the enquiry system of
+record is a question for them, not an inference for us — `DATA SHEET.xlsx` was itself described as a
+cold-call log, and `Query` and `CallsmessagesRecord` are clearly neither forms nor leads.
+
+🔴 **Both form tabs have CONTAMINATED HEADER ROWS.** Row 1 of `Form Responses 1` carries
+`Phone number 0422649333`, `Referred by Friend`, `Work Experience CHEF 2 yr` — a header label with a
+real answer typed onto the end of it. `Form Responses 2 2025` is worse: one header cell **is** a
+phone number, another reads `Column 3`. Someone has typed a response into the header row and it has
+stayed there.
+
+**This matters to C-1 specifically.** `c1MapResponse_` matches on question title. Against these tabs
+it would match almost nothing and drop everything into Notes — silently, and looking like the form
+simply had no answers. **The transform is correct; the source is not what it declares itself to be.**
+So C-1 stays at "transform built, 21/21" and does NOT advance to wired.
+
+✅ **It does answer A-46 for free, which is what G9 predicted.** The two response tabs carry different
+question sets — `Form Responses 2 2025` has `Full Name`, `Best Type of Contact` and `Current Address`,
+which `Form Responses 1` does not. **We no longer need RJ to share the Brisbane form.**
+
+⛔ **PII.** The file arrived in `SOP'S/` root. Moved to `client-data/2026-08-22_Inquiry-form-Responses.xlsx`,
+outside the repo, per the standing rule. Hygiene gate re-run: clean.

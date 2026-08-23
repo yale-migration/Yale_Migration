@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 476K /     6465 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 540K /     6541 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:20
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:23
 
 | # | Decision |
 |---|---|
@@ -365,3 +365,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:2
 | **D-366** | Our import source is frozen at 18 August. Every correction the client has made since is invisible to it |
 | **D-367** | The response sheet was shared, and reading it may close the Brisbane form question too |
 | **D-368** | Apps Script has been emailing failure summaries since 12 August and nobody opened one |
+| **D-369** | My load-order bug reached production and broke a live 5-minute trigger |
+| **D-370** | The enquiry data is ~7× larger than the source we built the import from |
