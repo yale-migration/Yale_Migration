@@ -148,7 +148,7 @@ Expected output: client sees working automation for the first time.
 - ⬜ Responsible-party field (client / school / insurer / embassy) — third parties owe items too
 - ⬜ Test · 👍
 
-### M6 — Enquiry capture hub (8h) — 🟡 spec complete
+### M6 — Enquiry capture hub (8h) — 🟡 **DECISION LAYER BUILT 23 Aug (46/46). Transport blocked on Meta**
 - ✅ Spec: `docs/M6-AUTOREPLY-SPEC.md` — 4 qualifying questions (staff currently ask none), their real
   holding-reply reused, hard-block list (refusal/ART/AAT/cancellation/s501/expiry), language policy (D-36)
 - ⬜ FB/IG → Make → ENQUIRIES + instant auto-reply (**wording 👍 required before live**)

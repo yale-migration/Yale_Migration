@@ -50,7 +50,7 @@ Two are running. That gap is deliberate — see section 4.
 | Of that, waiting on his team | **2 hours** — asked this morning |
 | Waiting on us | **nothing** |
 
-⛔ **Do not say a percentage in the meeting.** If you say "68% built" the next question is *"so
+⛔ **Do not say a percentage in the meeting.** If you say "78% built" the next question is *"so
 what's the other 32%?"* — and the true answer is *"nothing, it's waiting on you"*, which sounds like
 you're blaming him. **Say hours, and say four things.**
 

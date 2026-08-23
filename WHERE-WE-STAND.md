@@ -114,12 +114,13 @@ in a feature.
 | `SUMMARY OF CLIENTS` is the import source | **`LODGEMENT JULY TO PRESENT`** | We recommended it without opening it (D-315) |
 | Dashboard "Going quiet" = last contact −14 | **= Next Follow-up Due, same as its KPI** | Tile said 10, list shaded 5, same screen (D-326) |
 
-**Honest, restated 20 Aug: ~68% BUILT · ~20% RUNNING.** The two numbers are far apart and the gap
+**Honest, RECOMPUTED 23 Aug from evidence: 78% BUILT (38.0 of 49 contracted hours) · 0% PROCESSING REAL CLIENTS.**
+⚠️ The ~68% figure below was 20 Aug and is superseded — M6's decision layer, M7's second half and C-1 have all landed since. The two numbers are far apart and the gap
 is the whole story — nine modules are built and tested, and almost none of them are switched on.
 
 | | | |
 |---|---|---|
-| **Built and test-proven** | M1 M2 M3 M4a M4b M5a M5b M8 M9, and half of M7 | ~68% |
+| **Built and test-proven** | M1 M2 M3 M4 M5 M7 M8 · C-3 C-4 at 100%; M9 90% · C-1 90% · M6 45% · C-5 50% · M11 30% | **78%** |
 | **Actually executing against live data** | M5a + M8 daily triggers, nothing else | ~20% |
 | **Remaining contracted work** | **~10.6 h** | ⬇ from 12.6 — **M6 SHRANK**, see below |
 | **Of that, still blocked on the client** | **~7.6 h** | 🔴 72% |
@@ -147,7 +148,7 @@ month.
 🔑 **Five of the six are Robinder's, and every one of them is on today's call.** ⛔ **Do not send the
 team another list — they have now answered everything they can.** ▶ **`INPUTS-REGISTER.md`** is the authority.
 
-⛔ **Do not read "68% built" to the client as progress.** Built-and-off is worth nothing to them.
+⛔ **Do not read "78% built" to the client as progress.** Built-and-off is worth nothing to them.
 The honest sentence is: *the build is nearly done and it is waiting on five things from your side.*
 
 **Hours:** ~74 spent against a firm 48-hour cap, but **contracted delivery is ~25 of 40 build-hours**

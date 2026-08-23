@@ -66,7 +66,10 @@ demo rows and an empty tab — they execute, they succeed, they do nothing. **Bu
 4. **`CLIENT-DATA-INVENTORY.md`** — before touching or asking for any client data
 5. `DASHBOARD-TRACKER.md` — if the work touches the dashboard
 
-⛔ **NEVER read `DECISIONS.md` whole — 350KB, it will eat the session.**
+🧠 **`LESSONS.md` FIRST — six recurring failure shapes distilled from 380 decisions. Two minutes,
+and it is most of what `DECISIONS.md` would teach you.**
+
+⛔ **NEVER read `DECISIONS.md` whole — 504KB, it will eat the session.**
 Use `DECISIONS-INDEX.md` to find the number, then `grep -A 25 "^D-297" DECISIONS.md`.
 Regenerate with `bash scripts/gen_decisions_index.sh` after appending.
 
@@ -145,6 +148,7 @@ broken formula and a correct one identically (D-292…D-296).
 | File | Owns |
 |---|---|
 | **`WHERE-WE-STAND.md`** | 🔑 position · gaps · resume point |
+| **`LESSONS.md`** | 🧠 **the six failure patterns** — read before coding, before writing to the client, before believing a green check |
 | **`HONEST-ASSESSMENT.md`** | 🔍 **has any of it helped Yale yet?** — the answer is *not yet* — the uncomfortable one. Read before summarising the project to anyone |
 | `CLIENT-ASKS.md` | outstanding balance with the client |
 | **`INPUTS-REGISTER.md`** | 🔑 every input the build needs · **verified** state only · what each one blocks |
