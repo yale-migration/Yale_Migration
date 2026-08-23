@@ -6584,3 +6584,34 @@ in the reasoning; it is going to the system and looking. **The Executions list e
 ⚠️ **The "My Triggers — Showing 0 triggers" screenshots are not evidence of anything** — both are
 filtered by `Trigger ID: "Ju4OlTf6RDeXZ0I2Kl6pUw"`, which matches nothing. **CLEAR FILTERS** is
 needed before that page says anything about what is installed.
+
+## D-372 | Two screenshots that look like alarming evidence and are evidence of nothing
+
+**23 Aug 2026.** Chasing D-371's open question — *have the daily triggers ever actually run?* — two
+checks came back empty and both are artefacts of how the check was made.
+
+**1 · `script.google.com/home/triggers` → "Showing 0 triggers".**
+That page lists triggers owned by **the signed-in account**. Its avatar reads **M**; the Apps Script
+project pages in the same batch read **P**. Two different Google accounts. The triggers belong to
+`project1@` and were being looked for from the other login.
+
+🔑 **We wrote this down on 3 August.** D-153: *triggers belong to their creator* — and
+`verifyDailyTriggers()` prints `Session.getEffectiveUser()` with the comment *"triggers run as THIS
+account and die with its access"* precisely because of it. **The knowledge was in the codebase and
+the mistake was made anyway**, because a page headed "My Triggers" showing zero reads as a fact about
+the project rather than a fact about the viewer.
+
+**2 · Executions filtered by `Trigger ID: "updateFollowUps"` → 0 results.**
+A trigger ID is an opaque string — `Ju4OlTf6RDeXZ0I2Kl6pUw`, as the earlier filter shows. A function
+name is never one. **The filter matched nothing because nothing could match it**, and "No results /
+Try adjusting your filter criteria" reads identically to "this function has never run."
+
+⛔ **Neither screenshot moves D-368 an inch.** The daily triggers are still unproven — not
+disproven, unproven. **An empty result is only evidence when you have shown the query would have
+found the thing if it were there.** Both queries here were incapable of returning a row.
+
+**The right instrument already exists and is ours.** `verifyDailyTriggers()` calls
+`ScriptApp.getProjectTriggers()`, which is scoped to the project rather than the browsing account,
+checks each entry in `TRIGGER_PLAN` for handler, type and hour, verifies the timezone is
+`Australia/Brisbane`, and prints the owning account. **It answers the question the UI kept
+half-answering, and it was written for this on 20 August.**
