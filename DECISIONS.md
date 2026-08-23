@@ -6426,3 +6426,40 @@ and the reset on 25 Aug, "can I check this for free" is a question worth asking 
 **Not yet read.** Listing tabs is free; reading a header row needs either a scenario run (operations)
 or thirty seconds of Sharjeel opening the sheet. **The free path is the human one**, so that is the
 ask — and it is an ask of us, not of them.
+
+## D-368 | Apps Script has been emailing failure summaries since 12 August and nobody opened one
+
+**22 Aug 2026 — found in a screenshot of the `project1@` inbox, sent for an unrelated reason.**
+
+```
+noreply-apps-script   Summary of failures for Google Apps Script: YM MASTER automation   7:07 PM (×2)
+noreply-apps-script   Summary of failures for Google Apps Script: YM MASTER automation   Aug 14
+noreply-apps-script   Summary of failures for Google Apps Script: YM MASTER automation   Aug 12
+```
+
+**Nothing in this repository mentions them.** Not `CLIENT-LOG`, not `DECISIONS`, not
+`WHERE-WE-STAND`. Grepped for *"summary of failures"*, *"apps script fail"*, *"trigger fail"* — no
+hits. Three notifications over ten days, never opened, never logged, never investigated.
+
+🔴 **Meanwhile `WHERE-WE-STAND` says** M5a *"TRIGGER CONFIRMED LIVE 19 Aug"* and M8 *"DEPLOYED +
+TRIGGERED 19 Aug — verified by run, not by assertion"*, and `MVP-STATUS-simple.md` — the document
+written for talking to the client — lists both as **"Running daily"**. Two of the nine modules, and
+they are the only two we claim are actually live.
+
+🔑 **This is D-341 exactly inverted.** There, a trigger existed and we wrongly concluded it did not,
+because no record of it existed. Here, a trigger exists and we concluded it **works**, because it
+exists. Both times the reasoning ran from the presence or absence of a record to a claim about the
+world. **"Verified by run" was true — a manual run, once, on 19 August. It says nothing about the
+scheduled runs since**, and Google has been emailing us about those the whole time.
+
+⛔ **The claim in the client-facing status document is not currently supported.** Until an email is
+opened, *"two modules are running every day"* is an assertion, not a fact — and it is the one thing
+in that document a client could disprove by asking their own staff whether anything has happened.
+
+**What is NOT yet known, and must not be guessed:** which function failed, why, how often, and
+whether the two notifications at 7:07 PM today relate to the CALL LOG work or are the same
+pre-existing fault. **Aug 12 and Aug 14 predate every change made this week**, so at least one cause
+is older than anything in this session. Opening one email settles it; nothing else will.
+
+**Recorded before the answer is known, deliberately.** The failure here was not the bug — it was ten
+days of a notification arriving in an inbox we hold access to and never reading it.

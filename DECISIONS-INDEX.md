@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 536K /     6428 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 476K /     6465 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:15
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:20
 
 | # | Decision |
 |---|---|
@@ -364,3 +364,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 19:1
 | **D-365** | 600 and Citizenship received. CR-013 is down to ART, which has no path |
 | **D-366** | Our import source is frozen at 18 August. Every correction the client has made since is invisible to it |
 | **D-367** | The response sheet was shared, and reading it may close the Brisbane form question too |
+| **D-368** | Apps Script has been emailing failure summaries since 12 August and nobody opened one |

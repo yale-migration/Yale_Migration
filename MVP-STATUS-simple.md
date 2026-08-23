@@ -44,7 +44,7 @@ Two are running. That gap is deliberate — see section 4.
 | | |
 |---|---|
 | Parts built and tested | **9** |
-| Parts running today | **2** |
+| Parts running today | **2** ⚠️ *see below before saying this out loud* |
 | Work left on the contract | **about 10 and a half hours** |
 | Of that, waiting on Robinder | **about 5 and a half hours** |
 | Of that, waiting on his team | **2 hours** — asked this morning |
@@ -53,6 +53,18 @@ Two are running. That gap is deliberate — see section 4.
 ⛔ **Do not say a percentage in the meeting.** If you say "68% built" the next question is *"so
 what's the other 32%?"* — and the true answer is *"nothing, it's waiting on you"*, which sounds like
 you're blaming him. **Say hours, and say four things.**
+
+---
+
+## 3b · ⚠️ HOLD ON "TWO ARE RUNNING DAILY" UNTIL ONE EMAIL IS OPENED
+
+Google has been sending **"Summary of failures for Google Apps Script"** to `project1@` on **12 Aug,
+14 Aug and again today**. Nobody has opened one. The two daily jobs are exactly the two things we
+call "running", so until we know what failed, **do not tell Robinder they are running every day.**
+
+Say instead: *"Two jobs are scheduled daily and I'm checking their run history before I call them
+live."* That is true, it is careful, and it costs nothing. Claiming it and being wrong is the kind of
+thing a client disproves by asking one staff member whether anything has happened.
 
 ---
 
