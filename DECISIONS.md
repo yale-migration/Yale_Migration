@@ -6656,3 +6656,45 @@ no longer blocks anything or gates what we can say to the client.
 and everything after it — the 0-trigger page, the empty filters — was instrument error. **Two of the
 three alarms were the measuring, not the thing measured.** The one that was real was found by a stack
 trace, and the rest by using a tool we had already written for the purpose.
+
+## D-374 | Go-live gate item 2 verified still open, and the correct schedule shape found by validation
+
+**23 Aug 2026 — checked against Make's API, not our notes.** All three scenarios confirmed
+`isActive: false`, which is the claim we have been making and it holds. **But all three are still on
+`{"type":"indefinitely","interval":900}` — the 15-minute default.**
+
+```
+96 runs/day/scenario · two live = 5,760 polls/month · free plan allows 1,000
+→ switching on as-is exhausts the month in 5.2 days
+```
+
+Make does not warn, it simply stops. **Folder creation would die mid-week, silently, in the first
+week of go-live** — and the client's first experience of the system would be it working for four days
+and then not.
+
+**The schedule shape, arrived at by validation rather than assumption.** Two wrong guesses first:
+`time` as an object `{from,to}` → *"must be array"*; then a nested array of ranges → *"must be
+string,null"*. The accepted form is **one restrict entry per window, `time` a flat two-element array**:
+
+```json
+{"type":"indefinitely","interval":900,
+ "restrict":[{"days":[1,2,3,4,5],"time":["09:00","09:15"]},
+             {"days":[1,2,3,4,5],"time":["13:00","13:15"]},
+             {"days":[1,2,3,4,5],"time":["17:00","17:15"]}]}
+```
+
+Mon–Fri, three windows, one poll each. **~65 runs/month/scenario against 1,000** — D-291's figure,
+now with a config that validates.
+
+🔑 `validate_scheduling_schema` costs nothing and rejects a wrong shape in one call. **Three cheap
+rejections beat one silent misconfiguration**, and this is the same lesson as the Make filter
+operators (D-255): the API accepts plausible-looking input and behaves unexpectedly, so validate
+rather than reason about what ought to work.
+
+⛔ **Not applied.** The scenarios sit in the client's Make account. They are OFF so there is no live
+risk, but changing their configuration unannounced is not ours to do on impulse — asked first.
+
+⚠️ **Also found: seven `Integration OneDrive` scenarios** from 25–29 July, all inactive, 43 operations
+and 17 errors between them. July scaffolding. Harmless, but they are in the client's own account and
+are the first thing Robinder sees when he opens Make. ⛔ **Deletion is destructive and theirs, so it
+is a question, not a task.**
