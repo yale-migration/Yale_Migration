@@ -37,6 +37,13 @@ hour — which is exactly why the hours table hid them:
 3. ⬜ **STILL OPEN — two written quotes have never been sent:** `QUOTE-P3-DASHBOARD.md` (~21 h) and
    `QUOTE-CR-013-visa-lines.md` (USD 280). **Sharjeel's to send.**
 
+✅ **And the class is now closed with a gate, not a note (D-385).** `scripts/docs_hygiene.py` checks
+every live document's ids against their registers, paths against the disk, position numbers against
+**`POSITION.json` — the single source, update it FIRST** — and money language inside the fenced blocks
+a client actually reads. It runs inside `run_all_tests.sh`, and it **self-tests**: re-injecting each
+real defect and proving it fails. ⛔ Read `LESSONS.md` § 7 for the four things it still cannot catch —
+including a wrong number in `POSITION.json`, which it would then enforce *consistently everywhere*.
+
 🔑 **The lesson, and it is LESSONS.md pattern 5 wearing a new coat:** *the remaining-hours table only
 counts contracted module hours, so work that is real and ours becomes invisible the moment it is not
 one.* Never answer "is anything left on our side?" from the hours table alone.

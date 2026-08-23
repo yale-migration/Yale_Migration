@@ -117,8 +117,46 @@ identically to a fact is not.
 
 ---
 
+## 7 · Housekeeping is where defects survive
+
+**Both documents updated on 23 Aug shipped a defect toward a client**, and both were "just updating a
+document" — the category nobody reviews, nobody tests, and nobody expects to be dangerous.
+
+| | |
+|---|---|
+| D-384 | § ⓪ promised the row-28 spelling at **④-4b** — a section that did not exist. That ask decides a real client's **folder name** |
+| D-384 | The same runbook said *68% built*, *"~25 of 40 hours"*, and listed **two pre-import blockers that were already closed** |
+| D-384 | The follow-up template promised *"no cost for the first conversation"* — **we have no evidence Yale offers a free first consultation.** An invented commercial term, in writing, to their leads |
+| D-384 | I described stop-on-reply as automatic. **It is manual until M6/M9 land** — I had quoted a source line that was cut off at `The cadence shipped` |
+
+🔑 **The counter-practice is not "be careful" — it is a gate.** `scripts/docs_hygiene.py` now checks
+ids against their registers, paths against the disk, numbers against **one** source (`POSITION.json`),
+and money language inside the fenced blocks a client actually reads. It runs in `run_all_tests.sh`.
+
+⚠️ **Writing that gate proved the point three more times.** Its first run reported **111 failures, all
+of which were its own bugs** — it matched only `## D-` headings when 288 of 384 decisions are bare
+`D-255 |` lines, it resolved `repo_hygiene.py` from the repo root instead of by basename, and it read
+another file's `④-8` as a same-file reference. **A noisy gate gets switched off, so a false positive
+is not a lesser failure than a miss.** Then the self-test found a fourth: `SECT_RE` ended in `\b`
+after `\d{1,2}`, and **there is no word boundary between `4` and `b`** — the pattern could not match
+`④-4b`, *the single string the gate was written to catch.*
+
+### ⛔ What this gate does NOT catch — do not read a PASS as more than it is
+
+- **A reference that resolves to the WRONG place.** `④-4b` was not a link to nothing; it landed the
+  reader on *"the strongest thing you will say all call"*. Only the missing-target case is mechanical.
+- **An invented fact about the client's business.** Only money language, only inside fenced blocks.
+  *"Yale has three offices"* or *"we reply within 24 hours"* would sail through.
+- **An item described as open that is already closed.** The two dead pre-import blockers would still
+  pass today.
+- 🔴 **A wrong number in `POSITION.json` itself.** The gate then enforces that wrong number
+  *consistently, across every document.* **One source is not the same as one correct source.**
+
+---
+
 ## 🔟 The ten-second checklist
 
+0. Am I treating a document edit as low-risk because it is small?
 1. If this were broken, would my check notice?
 2. Am I reading the system, or our notes about the system?
 3. Does this value have to survive a locked dropdown?

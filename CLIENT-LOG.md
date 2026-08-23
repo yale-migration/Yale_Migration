@@ -982,3 +982,24 @@ is kept in the file so Robinder can restore it if it is true.
 🔑 **D-384. Housekeeping is not a lower-risk category of work** — it is where nobody is looking, which
 is exactly where a defect survives. **Still open and Sharjeel's: two written quotes have never been
 sent** — `QUOTE-P3-DASHBOARD.md` (~21 h) and `QUOTE-CR-013-visa-lines.md` (USD 280).
+
+2026-08-23 | internal | **The documents now have a gate, and building it proved the point four more
+times.** D-384's two defects were both found by accident; nothing would have caught a third. So the
+class is closed mechanically — `scripts/docs_hygiene.py`, 15 live documents, ids checked against their
+registers, paths against the disk, position numbers against a new single source `POSITION.json`, money
+language inside the fenced blocks a client actually reads. Wired into `run_all_tests.sh`, which **fails
+if the gate's own self-test fails**.
+
+🔴 **Its first run reported 111 failures and all 111 were its own bugs** — it knew only `## D-` headings
+when 288 of 384 decisions are bare `D-255 |` lines, it looked for `repo_hygiene.py` in the wrong
+directory, and it read another file's `④-8` as a local link. **A noisy gate is the same failure as a
+blind one with better PR:** 111 phantoms and this is switched off within a day.
+
+🔑 **Then the self-test caught a fourth, and it is the whole argument for self-tests.** The section
+regex ended in `\b` after `\d{1,2}` — **there is no word boundary between `4` and `b`** — so it could
+not match `④-4b`, *the one string the gate exists to catch.* It passed the clean tree and verified
+nothing. Pattern 1, inside the fix for pattern 1.
+
+⚠️ **Correction to yesterday's description:** `④-4b` was not a pointer to nothing — a real `# ④b`
+heading exists. It pointed to the **wrong place**, which is worse, because nothing looks broken.
+D-385, and `LESSONS.md` § 7 lists the four things the gate still cannot catch.

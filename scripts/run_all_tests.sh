@@ -20,3 +20,17 @@ done
 echo "  ───────────────────────────────────────────────"
 if [ $fail -ne 0 ]; then echo "  ❌ SOME SUITES FAILED"; exit 1; fi
 echo "  ✅ ALL APPS SCRIPT TESTS PASSED — $total checks"
+
+# ---- the DOCUMENTS, not just the code (D-385) -------------------------------
+# Two documents were updated on 23 Aug and both shipped a defect toward a client.
+# The code had eight suites; the prose had nothing. ⛔ No pipes — see the note above.
+echo
+docs_out=$(python3 scripts/docs_hygiene.py 2>&1); docs_rc=$?
+printf '%s\n' "$docs_out"
+selft_out=$(python3 scripts/docs_hygiene.py --self-test 2>&1); selft_rc=$?
+if [ $selft_rc -ne 0 ]; then
+  printf '%s\n' "$selft_out"
+  echo "  ❌ THE DOCS GATE DOES NOT GATE — fix it before trusting its PASS"; exit 1
+fi
+echo "  ✅ docs gate self-test passed — it fails on every defect it claims to catch"
+if [ $docs_rc -ne 0 ]; then echo "  ❌ DOCS HYGIENE FAILED"; exit 1; fi

@@ -7079,3 +7079,42 @@ Three findings the update surfaced:
 client.** The runbook would have dropped a folder name; the templates would have promised free advice
 Yale may not give. ⛔ **Housekeeping is not a lower-risk category of work** — it is where nobody is
 looking for a defect, which is precisely where one survives.
+
+## D-385 | The documents got a gate, and writing it proved the point four more times
+**23 Aug 2026.** D-384 found two client-bound defects in work that was "just updating a document".
+Both were found by accident. Nothing would have caught the third, so the class was closed the way
+D-353 closed the locked-dropdown class: **a mechanical check, at the layer the bug lives on.**
+
+**`scripts/docs_hygiene.py`** over 15 live documents:
+- **ids** (`D-` `A-` `I-` `CR-`) resolved against their **registers**, parsed live, never copied
+- **backticked paths** resolved against the **disk**
+- **numbered cross-references** resolved inside the file that defines the section
+- **position numbers** against **`POSITION.json`**, new, the single source (G6) — archives exempt,
+  because an old number in a dated `CLIENT-LOG` entry is history, not drift
+- **money language** inside the **fenced blocks** of client-facing text
+It runs in `run_all_tests.sh`, and the runner **fails if the gate's own self-test fails** — a PASS
+from an un-self-tested gate is worth nothing.
+
+🔴 **Its first run reported 111 failures and every single one was its own bug.**
+- it matched only `## D-` headings — **288 of the 384 decisions are bare `D-255 |` lines**
+- it resolved `` `repo_hygiene.py` `` from the repo root; the docs cite files by **basename**
+- it read WHERE-WE-STAND's `④-8` — a reference to the *runbook's* section — as a same-file link
+
+⛔ **A noisy gate is not a lesser failure than a blind one; it is the same failure with better PR.**
+111 phantoms would have had this switched off within a day, and then the real one sails through.
+
+🔑 **Then the self-test found a fourth, and it is the best argument for self-tests on this project:**
+`SECT_RE` ended `\b` after `\d{1,2}` — and **there is no word boundary between `4` and `b`** — so the
+pattern could not match `④-4b`, *the exact string the gate was written to catch.* It passed the clean
+tree, it would have passed forever, and it verified nothing. **Pattern 1, inside the fix for pattern 1.**
+
+⚠️ **And a correction to how D-384 described the original defect.** `④-4b` was not a pointer to
+nothing: the runbook has a real `# ④b` heading. It was a pointer to the **wrong place** — the reader
+following it lands on *"the strongest thing you will say all call"* instead of row 28's spelling.
+**A link that resolves incorrectly is worse than one that resolves nowhere, because nothing looks
+broken.** The gate deliberately does NOT accept a `④b` heading as the target of `④-4b`.
+
+**What it cannot do — written into `LESSONS.md` § 7 so a PASS is never over-read:** a reference that
+resolves to the wrong place · an invented fact about the client's business outside money language ·
+an item described as open that is already closed · and 🔴 **a wrong number in `POSITION.json`, which
+it would then enforce consistently across every document. One source is not one CORRECT source.**
