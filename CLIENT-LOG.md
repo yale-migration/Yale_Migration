@@ -879,3 +879,24 @@ is what enforces. In sync today — both 24 values, sets compared, identical —
 Also confirmed today: **`190_SKILLED-NOMINATED.docx` IS in the OneDrive checklist folder**, dated 12
 Aug, and its contents re-verify against D-280 (D-360). Green across the board: importer gate clean,
 199 Apps Script checks, 79/79 blueprint checks.
+
+2026-08-23 | internal | **Register cleaned, and the audit found a gap that would have cost us Monday.**
+Four asks were still marked open that had been answered days earlier — A-27 (client codes, *"Thank
+you"*), A-42 (all three checklists received), A-32 (answered by ACTING on it: no new columns in C-1
+or M7), and A-11 (duplicate of A-48). Closed. 🔑 **A register that lists closed items as open is not
+merely untidy — it hides the real ones**, and here it hid the count that mattered.
+
+🔴 **The gap: rows 22/23 was recorded in D-366 and in NO ask row.** It has been tracked in a decision
+document nobody reads for outstanding items. Added as **A-49**.
+
+⛔ **The finding that shaped the email.** RJ promised two things for Monday — the contact numbers and
+the 12 emails + 11 expiry dates. **Neither A-48 (the three test clients) nor A-49 (rows 22/23) is in
+that promise.** So Monday would have arrived, he would have delivered exactly what he said, and we
+would still have been short by the only two items that block anything. **The email therefore has to
+carry both the reminder and the two open asks in one place**, or the delivery is partial by design.
+
+Files: the three supplied checklists stored in `docs/06-received-pending-CR013/` with a README
+explaining why they are NOT in `05-canonical-checklists/` — that folder is M4's selection set, and
+D-325 is the precedent for what a file the router cannot reach does to it. The loose copy of the
+responses workbook was byte-identical to the `client-data/` copy and was deleted from the project
+root; 4,292 rows of names, emails and phone numbers must never sit outside `client-data/`.
