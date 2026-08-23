@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 572K /     7012 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 512K /     7044 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:22
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:32
 
 | # | Decision |
 |---|---|
@@ -379,3 +379,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 23:2
 | **D-380** | M6's decision layer built — the channel was never the module |
 | **D-381** | The two response tabs are ONE form's data, copied and continued — not two forms |
 | **D-382** | D-354 fully closed — all 23 checklists are in OneDrive, and the sets match exactly |
+| **D-383** | "0.0 hours are ours" was true of the hours table and false of the project |

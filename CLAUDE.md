@@ -21,10 +21,24 @@ Modules 31.7/40 (79%) · C-items 6.3/9 (70%). Recomputed from evidence 23 Aug, n
 **Green as at 23 Aug:** 298 Apps Script checks · 79/79 blueprint · hygiene PASS · working tree clean.
 M6 and C-1 verified **live in Apps Script**, not just the node harness.
 
-🔑 **THE ONE THING TO UNDERSTAND: 0.0 hours of the remaining 11 are ours.**
-8.8 h wait on **Robinder** (Meta · WhatsApp · OneDrive · a Make slot) and 2.2 h on **RJ**
-(3 test-client emails + 1 assessing authority · which enquiry list is the system of record).
-**Nothing is blocked on engineering. Do not go looking for something to build.**
+🔑 **11 contracted hours remain and 0.0 of them are unblocked: 8.8 wait on Robinder** (Meta ·
+WhatsApp · OneDrive · a Make slot) **and 2.2 on RJ** (3 test-client emails + 1 assessing authority).
+**No MODULE is blocked on engineering.**
+
+⛔ **BUT "0.0 hours are ours" WAS WRONG AS A STATEMENT ABOUT THE PROJECT, and it read as
+"stop looking" (D-383).** Three pieces of work are ours, unblocked, and none is a contracted module
+hour — which is exactly why the hours table hid them:
+1. **`CALL-RUNBOOK-robinder-friday.md` is stale** — says *68%*, its "what changed today" is 21 Aug,
+   and it omits `QUOTE-P3-DASHBOARD` (~21 h, the largest unbilled item in the account), A-44 row 28,
+   A-35 DOB, A-05 CRM. **It is the instrument that releases 8.8 of the 11 hours.**
+2. **A-43 — the two lead follow-up email templates.** Offered 21 Aug, never written. M8 writes a
+   `Follow-up Due` date and nothing else, so a consultant gets a due date and no wording. Needs
+   nothing from the client. (SMS stays CR-015 — it needs a paid provider.)
+3. **Two written quotes have never been sent** — `QUOTE-P3-DASHBOARD.md` and `QUOTE-CR-013-visa-lines.md`.
+
+🔑 **The lesson, and it is LESSONS.md pattern 5 wearing a new coat:** *the remaining-hours table only
+counts contracted module hours, so work that is real and ours becomes invisible the moment it is not
+one.* Never answer "is anything left on our side?" from the hours table alone.
 
 ⛔ **AND THE THING THAT MATTERS MORE:** the system has **NEVER PROCESSED A REAL CLIENT.** MASTER holds
 14 invented people; ENQUIRIES is empty. The two jobs described as "running daily" are running against

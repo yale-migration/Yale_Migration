@@ -951,3 +951,17 @@ from every routing path.
 **Build position: 37 of 40 contracted hours written and tested.** Unwritten: C-2 (2 h, needs OneDrive)
 and C-5's capture path (1 h, needs the channels). ⛔ Unchanged: **zero real clients have been
 processed.** Built is not running, and `HONEST-ASSESSMENT.md` still stands as written.
+
+2026-08-23 | internal | **Audited the "nothing left on our side" claim and it did not survive.** Every
+green check re-run first and all of them held — 298 Apps Script, 79/79 blueprint, hygiene PASS, clean
+tree. Then I put the hours table down and read the registers, and found **three unblocked pieces of
+work that are ours**: the Robinder runbook is stale (still says 68%, dated to 21 Aug's news, and never
+mentions the ~21 h dashboard quote); **A-43's two lead follow-up email templates were offered on 21 Aug
+and never written** — verified in the source, M8 writes a due date and one Notes line and no wording at
+all; and **two written quotes have never been sent**.
+
+🔑 **D-383.** The remaining-hours figure counts contracted MODULE hours, so work that is ours and real
+becomes invisible the moment it is not one of those. The question asked was *"is anything left on our
+side?"*; the instrument I answered with reports *"are any contracted module hours unblocked?"* — a
+different question, a plausible answer, and nothing anywhere that looks like an error. `CLAUDE.md`
+corrected in place, because its old wording said **"do not go looking for something to build."**

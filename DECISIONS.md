@@ -7010,3 +7010,35 @@ OneDrive still needs a Graph call, and until then this is a human check.
 folder, the count by pressing Ctrl+A. Two minutes, twice, against several rounds of inference that
 got it wrong each time. That is pattern 2 in `LESSONS.md`, and it has now cost enough to be worth
 the reflex: **go and look first.**
+
+## D-383 | "0.0 hours are ours" was true of the hours table and false of the project
+**23 Aug 2026.**
+
+Asked to verify, practically, that nothing was left on our side, I re-ran everything: 298 Apps Script
+checks, 79/79 blueprint, hygiene PASS, clean tree. All green. Then I stopped reading the hours table
+and read the registers, and found **three pieces of unblocked work that are ours**:
+
+1. **`CALL-RUNBOOK-robinder-friday.md` is stale and incomplete.** It still says *68%* (now 78%), its
+   "what changed today" section is 21 Aug's news, its sources line reads *checked 19 Aug*, and it
+   never mentions `QUOTE-P3-DASHBOARD` — **~21 h, the largest unbilled item in the account.** Also
+   absent: A-44 (row 28 spelling, which becomes a client's folder name), A-35 (the DOB identity
+   check — explicitly *his* decision), A-05 (CRM). It DOES cover the staff list as item 8, correctly,
+   Gopi warning included. 🔑 **This one document releases 8.8 of the 11 remaining hours.**
+2. **A-43 — the two lead follow-up email templates.** Offered to RJ on 21 Aug after he said *"it
+   doesn't exist but that is what we need to do."* Never written. Verified against the source: M8
+   writes `Follow-up Due` (J) and one `M8:` line in Notes (K) and nothing else — **so a consultant is
+   handed a due date with no wording**, which is the manual work the module was supposed to remove.
+   Needs nothing from the client; we already author the checklist and chase drafts in the same voice.
+   SMS stays out — it needs a paid provider (CR-015).
+3. **Two quotes written and never sent** — `QUOTE-P3-DASHBOARD.md` and `QUOTE-CR-013-visa-lines.md`.
+
+**Why the error happened, and it is not carelessness.** The remaining-hours figure counts *contracted
+module hours*. Every one of these three is real work that is not a contracted module hour, so each
+was invisible to the instrument I answered with — and the sentence I wrote off the back of it,
+*"Do not go looking for something to build"*, would have suppressed the next session's search too.
+
+🔑 **This is LESSONS.md pattern 5 — closing something against what we asked rather than what it
+consumes — turned on ourselves.** The question was *"is anything left on our side?"*; the table I
+consulted answers *"are any contracted module hours unblocked?"* Different question, plausible
+answer, no error visible anywhere. ⛔ **Never answer a question about the project from the hours
+table alone.** `CLAUDE.md` corrected in place so a fresh session cannot inherit the claim.
