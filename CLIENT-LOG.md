@@ -932,3 +932,22 @@ Also closed today: **go-live gate item 2** — all three scenarios re-scheduled 
 09:00/13:00/17:00 (~5,760 polls/month → ~195), confirmed by the API's own response. And a deletion
 **stopped** by checking `createdByUser`: one of the seven junk scenarios was created by
 `info@yalemigration.com.au` two days before we began. Nothing deleted.
+
+2026-08-23 | internal | **M6's decision layer and C-1's resolver both verified LIVE in Apps Script —
+46/46 and 40/40.** Not the node harness: the real V8 runtime, in the client's own project.
+
+🔑 **That result carries more than the two numbers.** Apps Script evaluates every `.gs` in one shared
+scope before running anything, so **both suites completing at all is proof the whole project loads
+clean** — including `setup_call_log_tab.gs`, the file whose hoisting bug broke every trigger for ten
+minutes this morning (D-364/D-371). A local pass could not have shown that; only running inside the
+project can.
+
+The M6 checks that matter passed on the real engine: all ten hard-block categories, the three genuine
+unanswered WhatsApp enquiries blocked, **and the 417 question correctly NOT blocked** — the check that
+proves the list discriminates rather than matching everything. Plus a visa expiring in 18 days blocked
+on urgency with no trigger word, `Unassigned` returned wherever the team is unknown, and Gopi absent
+from every routing path.
+
+**Build position: 37 of 40 contracted hours written and tested.** Unwritten: C-2 (2 h, needs OneDrive)
+and C-5's capture path (1 h, needs the channels). ⛔ Unchanged: **zero real clients have been
+processed.** Built is not running, and `HONEST-ASSESSMENT.md` still stands as written.
