@@ -900,3 +900,19 @@ explaining why they are NOT in `05-canonical-checklists/` — that folder is M4'
 D-325 is the precedent for what a file the router cannot reach does to it. The loose copy of the
 responses workbook was byte-identical to the `client-data/` copy and was deleted from the project
 root; 4,292 rows of names, emails and phone numbers must never sit outside `client-data/`.
+
+2026-08-23 | RJ (OUT) | **Final team-side email sent.** Thanks for the three checklists · Brisbane
+form closed as not needed (its questions are in the response sheet he already shared) · the stray `3`
+in the 600 document flagged as theirs to fix · the corrupted header cells and the unlabelled Name
+column in `Form Responses 1` mentioned as a courtesy with no action asked · **four items**: two he had
+already promised for Monday (contact numbers; the 12 emails + 11 expiry dates), and two that were
+**not** in that promise and would otherwise have been missed — rows 22/23 (A-49) and the three test
+clients (A-48). Plus the suggestion to move the client list into a shared Sheet, which closes A-49's
+whole class rather than one instance.
+
+🔑 **The audit that shaped it:** RJ's Monday promise covered neither of the two items that actually
+block work. Monday would have arrived, he would have delivered exactly what he said, and we would
+still have been short. **A promise is only progress against the things it names.**
+
+**Team-side position on sending: 15 in hand · 2 promised Monday · 2 asked here · 0 unaccounted for.**
+Everything else outstanding on this project belongs to Robinder.
