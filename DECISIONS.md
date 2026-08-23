@@ -6773,3 +6773,52 @@ the client are running daily have been dead for ten days." Two of the three were
 way to know which until we looked, and the cost of looking was thirty seconds.**
 
 **All three failure events on this project are now explained.** Nothing is unaccounted for.
+
+## D-377 | C-1 built against the real sheet, and M9's Apps Script half scheduled
+
+**23 Aug 2026.** Both remaining items that needed nobody are done.
+
+### C-1 — the header resolver
+
+The transform was tested against the form's *declared* nine questions. The live sheet does not have
+them: client answers have been typed into the header row and stayed. So a resolver was built and
+tested **against the verbatim contaminated headers**, because a test on tidied-up headers proves
+nothing about the sheet we actually read.
+
+🔑 **`Filipino StudentsAdmissions` is the same form uncontaminated** — `Phone Number`,
+`Work Experience`, `Referred by`. That tab is what the pattern list was derived from, rather than
+guessed. The contamination is always an answer **appended** to a real label, so prefix matching
+recovers it: `"Phone number 0422649333"` → PHONE, `"Work Experience CHEF 2 yr"` → WORK.
+
+**Four refusals, each one a defect we have already paid for:**
+1. **A heading that IS a phone number never captures the phone column.** In `Form Responses 2 2025`
+   one header cell is a bare number; PHONE correctly resolves to `Phone Number` at index 13.
+2. **`Form Responses 1` keeps the client's name in an unheaded column A.** Position fallback is
+   fragile, so it is guarded — column 0 only, only when nothing else resolved, only when that heading
+   is genuinely empty — **and it is reported.** A positional guess must never be silent.
+3. **An address is not a Location.** Their form asks for `Current Address`; ENQUIRIES G is a locked
+   Onshore/Offshore dropdown. Inferring one from the other is a guess about where a person is, so the
+   column stays blank and the address goes to Notes (D-353, D-359).
+4. **Nothing unrecognised is dropped** — every unmapped column lands in Notes with its own heading,
+   so a header we failed to parse shows up as data rather than as silence.
+
+⛔ **`c1ImportFromResponseSheet()` is DRY RUN by default and must stay that way.** ~2,400 form rows
+against the 621 M8's cadence was planned around (D-370). **M8 starts a 7/30 clock on every row it
+finds**, so importing the wrong list is not a tidy-up — it is contacting thousands of people. Which
+workbook is the system of record is Yale's to answer. The two non-form tabs (`Query`,
+`CallsmessagesRecord`) are excluded outright: 1,870 rows of a query log and a call log.
+
+### M9 — the half that needs no Make slot
+
+- **Trigger `limit` restored 1 → 10.** It was dropped to make diagnostic runs cheap and never put back.
+- **`parseS56Classifications` 09:00 and `verifyS56Deadlines` 10:00 added to `TRIGGER_PLAN`.**
+
+🔑 **The hour gap is the point.** The parser writes deadline fields; the verifier recomputes them
+independently from the letter date. **Run the verifier first and it validates yesterday's rows and
+reports a clean pass** — the D-292 shape, a check that passes because it checked nothing new. An hour
+apart, in order, is what makes the second one mean anything.
+
+✅ These two consume **no Make operations and no scenario slot**. M9's Make half is still blocked on
+the 2-active cap (D-342); this half is not, and runs the day the tracker holds a row.
+
+**251 Apps Script checks · 79/79 blueprint checks.**

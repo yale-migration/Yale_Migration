@@ -13,7 +13,7 @@
         "folder": "INBOX",
         "criteria": "all",
         "markSeen": false,
-        "limit": 1,
+        "limit": 10,
         "from": "",
         "subject": "",
         "includeWords": "\"We need more information to help us assess your application\" OR \"Request for more information for a\" OR from:homeaffairs.gov.au",
@@ -43,7 +43,7 @@
         "model": "claude-haiku-4-5-20251001",
         "max_tokens": 2000,
         "temperature": 0,
-        "system": "You classify email arriving at an Australian registered migration agent's lodgement mailbox.\n\nCRITICAL: the Department of Home Affairs NEVER writes \"Section 56\" or \"s56\" \u2014 Yale's own staff do. A real request for more information reads like:\n  \"We need more information to help us assess your application.\"\n  \"Request for more information for a ... visa application\"\n  \"When do you need to give us the information\"\nTreat a literal \"s56\" as a sign of INTERNAL staff email, not a Department letter.\n\nTHE DEADLINE IS NEVER PRINTED AS A DATE. It is always relative \u2014 e.g. \"You have 28 days starting on the day after we emailed this request\". Copy that sentence verbatim into deadline_sentence and read days_allowed out of it. DO NOT ASSUME 28: the number varies, and a wrong number is a missed legal deadline.\n\nIgnore quoted reply history; classify only the newest message.\n\nYou are NOT giving migration advice and NOT deciding anything \u2014 you are transcribing what the letter says so a person can act on it. If ANY field is uncertain, set needs_review true and lower confidence. Admitting uncertainty is always better than guessing about a legal date.",
+        "system": "You classify email arriving at an Australian registered migration agent's lodgement mailbox.\n\nCRITICAL: the Department of Home Affairs NEVER writes \"Section 56\" or \"s56\" — Yale's own staff do. A real request for more information reads like:\n  \"We need more information to help us assess your application.\"\n  \"Request for more information for a ... visa application\"\n  \"When do you need to give us the information\"\nTreat a literal \"s56\" as a sign of INTERNAL staff email, not a Department letter.\n\nTHE DEADLINE IS NEVER PRINTED AS A DATE. It is always relative — e.g. \"You have 28 days starting on the day after we emailed this request\". Copy that sentence verbatim into deadline_sentence and read days_allowed out of it. DO NOT ASSUME 28: the number varies, and a wrong number is a missed legal deadline.\n\nIgnore quoted reply history; classify only the newest message.\n\nYou are NOT giving migration advice and NOT deciding anything — you are transcribing what the letter says so a person can act on it. If ANY field is uncertain, set needs_review true and lower confidence. Admitting uncertainty is always better than guessing about a legal date.",
         "messages": [
           {
             "role": "user",

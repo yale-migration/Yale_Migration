@@ -12,12 +12,16 @@
  *   4 Email Address            9 free-text: "tell us about your situation"
  *   5 Location  (Australia | Philippines)
  *
- * ⛔ WHAT IS NOT DONE, AND WHY IT IS NOT A BUG
- * We hold the form's QUESTIONS. We do not hold its RESPONSES. `project1@` can read three
- * of their spreadsheets and the form's response destination is not one of them — it was
- * never established and never asked for (I-14 was closed on the field set alone, D-358).
- * So `onC1FormSubmit` and `c1ImportFromResponseSheet` are written and tested, and neither
- * can run until that access exists. **The transform is the work; the pipe is one setting.**
+ * ✅ THE RESPONSES ARRIVED — 22 Aug. `Inquiry form (Responses)`, shared with `project1@`
+ * and confirmed readable at zero operations cost (D-367). `c1ImportFromResponseSheet()`
+ * now reads it directly.
+ *
+ * ⛔ IT IS DRY-RUN BY DEFAULT AND MUST STAY THAT WAY UNTIL YALE ANSWERS ONE QUESTION.
+ * The workbook holds ~2,400 form rows across two tabs, against the 621 in `DATA SHEET.xlsx`
+ * that M8's cadence was planned around (D-370). **Which of these is the enquiry system of
+ * record is theirs to say, not ours to infer** — and M8 starts a 7/30 follow-up clock on
+ * every row it finds, so importing the wrong list is not a tidy-up, it is contacting
+ * thousands of people.
  *
  * ============================ THREE DELIBERATE BLANKS ============================
  * These are decisions, not omissions. Do not "fix" them.
@@ -78,6 +82,119 @@ var C1_TO_NOTES = [
   { q: 'WORK',   label: 'Work experience' },
   { q: 'COURSE', label: 'Course completed' }
 ];
+
+// ══════════════════════════════════════════════════════════════════════════════
+// HEADER RESOLUTION — added 23 Aug, once the real response sheet arrived
+// ══════════════════════════════════════════════════════════════════════════════
+// 🔴 The live sheet does NOT have the tidy nine headings the form declares. Someone has
+// typed client answers INTO the header row and they have stayed there:
+//
+//   Form Responses 1        [5] "Phone number 0422649333"   [8] "Work Experience CHEF 2 yr"
+//                           [0] (BLANK) — and this is the column holding the client's NAME
+//   Form Responses 2 2025   [2] a bare phone number          [3] "Column 3"
+//
+// 🔑 `Filipino StudentsAdmissions` is the same form UNCONTAMINATED — "Phone Number",
+// "Work Experience", "Referred by". It is the reference for what these headings should
+// say, which is how the pattern list below was derived rather than guessed.
+//
+// The contamination is always an answer APPENDED to a real label, so prefix matching
+// recovers it. Anything that does not resolve is NOT dropped — it goes to Notes with its
+// own heading, so a column we failed to recognise is visible rather than lost.
+var C1_FIELD_PATTERNS = {
+  NAME:      ['full name'],
+  EMAIL:     ['email address'],
+  PHONE:     ['phone number', 'phone'],
+  LOCATION:  ['current address'],
+  INTEREST:  ['inquiring for', 'interested in'],
+  TIMESTAMP: ['timestamp'],
+  // these have no ENQUIRIES column and go to Notes, labelled (A-32)
+  CLIENTTYPE:['client type'],
+  REFERRED:  ['referred by'],
+  EDUCATION: ['educational background'],
+  WORK:      ['work experience'],
+  VISAHELD:  ['please specify below if you currently hold a visa',
+              'please indicate below if you currently hold a visa'],
+  INQUIRY:   ['please specify your inquiry'],
+  CONTACTPREF:['best type of contact']
+};
+
+/**
+ * Resolve a real header row to column indexes. Prefix match, case-insensitive.
+ * @return {Object} { fields:{FIELD:index}, unmapped:[{i,label}], notes:[string] }
+ */
+function c1ResolveHeaders_(hdr) {
+  var norm = function (h) { return String(h == null ? '' : h).replace(/\s+/g, ' ').trim().toLowerCase(); };
+  var fields = {}, taken = {}, notes = [];
+
+  Object.keys(C1_FIELD_PATTERNS).forEach(function (f) {
+    for (var p = 0; p < C1_FIELD_PATTERNS[f].length; p++) {
+      var pat = C1_FIELD_PATTERNS[f][p];
+      for (var i = 0; i < hdr.length; i++) {
+        if (taken[i]) continue;
+        if (norm(hdr[i]).indexOf(pat) === 0) { fields[f] = i; taken[i] = true; return; }
+      }
+    }
+  });
+
+  // 🔴 Form Responses 1 holds the client's NAME in column 0 with NO heading at all.
+  // Falling back to position is fragile, so it is guarded: only column 0, only when no
+  // Name column resolved, and only when that heading is genuinely empty. It is also
+  // reported, because a positional guess should never be silent.
+  if (fields.NAME === undefined && hdr.length && norm(hdr[0]) === '') {
+    fields.NAME = 0; taken[0] = true;
+    notes.push('name taken from column A, which has no heading');
+  }
+
+  var unmapped = [];
+  for (var j = 0; j < hdr.length; j++) {
+    if (taken[j]) continue;
+    var label = String(hdr[j] == null ? '' : hdr[j]).trim();
+    if (label) unmapped.push({ i: j, label: label });
+  }
+  return { fields: fields, unmapped: unmapped, notes: notes };
+}
+
+/** One sheet row -> one ENQUIRIES row, using a resolved header map. */
+function c1RowToEnquiry_(row, res, fallbackWhen) {
+  var F = res.fields;
+  var at = function (f) {
+    var i = F[f];
+    if (i === undefined || i >= row.length) return '';
+    var v = row[i];
+    return v === null || v === undefined ? '' : String(v).trim();
+  };
+
+  var notes = [];
+  [['CLIENTTYPE','Client type'],['REFERRED','Referred by'],['EDUCATION','Education'],
+   ['WORK','Work experience'],['VISAHELD','Visa held'],['INQUIRY','Enquiry'],
+   ['CONTACTPREF','Best contact']].forEach(function (pair) {
+    var v = at(pair[0]); if (v) notes.push(pair[1] + ': ' + v);
+  });
+  // ⛔ An unrecognised column is NEVER dropped — it lands in Notes with its heading, so a
+  // header we failed to parse shows up as data rather than as silence.
+  res.unmapped.forEach(function (u) {
+    var v = u.i < row.length && row[u.i] != null ? String(row[u.i]).trim() : '';
+    if (v) notes.push(u.label + ': ' + v);
+  });
+
+  // ⛔ ENQUIRIES G is a locked dropdown (Onshore/Offshore). Their form asks for an
+  // ADDRESS, which is neither — so Location stays BLANK and the address goes to Notes.
+  // Inferring onshore/offshore from an address string is a guess about where a person
+  // is, and that is not ours to make (D-353, D-359).
+  var addr = at('LOCATION');
+  if (addr) notes.push('Address: ' + addr);
+
+  var when = at('TIMESTAMP') || fallbackWhen || '';
+  var row_ = {
+    'Date': when, 'Name': at('NAME'), 'Phone': at('PHONE'), 'Email': at('EMAIL'),
+    'Channel': '',            // D-330 — the form never asks how they found Yale
+    'Visa Interest': at('INTEREST'),
+    'Location': '',           // see above
+    'Assigned To': '', 'Status': '', 'Follow-up Due': '',
+    'Notes': notes.join(' | ')
+  };
+  return C1_HEADERS.map(function (h) { return row_[h]; });
+}
 
 /**
  * THE TRANSFORM. Pure: an object of {question title: answer} in, one ENQUIRIES row out.
@@ -148,36 +265,86 @@ function onC1FormSubmit(e) {
   Logger.log('C-1: 1 enquiry appended.');
 }
 
-/**
- * Bulk backfill from the form's response sheet, once we can read it.
- * ⛔ Idempotent by EMAIL + DATE. Re-running must never double a lead — M8 would then
- * run two follow-up clocks against one person, which is the failure D-343 describes.
- */
-function c1ImportFromResponseSheet(spreadsheetId, tabName) {
-  var src = SpreadsheetApp.openById(spreadsheetId).getSheetByName(tabName || 'Form Responses 1');
-  if (!src) { Logger.log('C-1: response tab not found.'); return; }
-  var vals = src.getDataRange().getValues();
-  if (vals.length < 2) { Logger.log('C-1: no responses.'); return; }
-  var head = vals[0];
+// 🔑 The live response workbook, shared by RJ on 22 Aug and confirmed readable by
+// project1@ via rpcSpreadsheet at zero operations cost (D-367).
+var C1_RESPONSES_ID = '1vNnefC2nS4dKDDWPnCSJDvt09tkwdjpUQSK7KbuHwAo';
+// ⛔ Only the two FORM tabs. `Query`, `CallsmessagesRecord` and `Filipino
+// StudentsAdmissions` are theirs — a query log, a call log and an admissions list. They
+// are not form responses and importing them would put 1,870 rows of the wrong thing into
+// ENQUIRIES, where M8 would then start a follow-up clock on every one.
+var C1_RESPONSE_TABS = ['Form Responses 1', 'Form Responses 2 2025'];
 
+/**
+ * Backfill ENQUIRIES from the shared response workbook.
+ *
+ *     c1ImportFromResponseSheet()            ← DRY RUN. Reports, writes nothing.
+ *     c1ImportFromResponseSheet(true)        ← writes
+ *
+ * ⛔ DRY RUN BY DEFAULT, and that is deliberate. There are ~2,400 rows across the two
+ * tabs against 621 in the source we originally planned for (D-370). A silent import of
+ * the wrong scale is exactly the failure M8's flood guard exists to prevent, and this
+ * runs before anyone has decided which list is the system of record.
+ *
+ * ⛔ Idempotent by EMAIL + DATE. Re-running must never double a lead — M8 would then run
+ * two follow-up clocks against one person (D-343).
+ */
+function c1ImportFromResponseSheet(commit) {
+  var src = SpreadsheetApp.openById(C1_RESPONSES_ID);
   var dest = SpreadsheetApp.getActive().getSheetByName(C1_TAB);
+  if (!dest) { Logger.log('ABORT — no ' + C1_TAB + ' tab in this spreadsheet.'); return; }
+
   var seen = {};
   dest.getDataRange().getValues().slice(1).forEach(function (r) {
-    seen[String(r[3]).toLowerCase() + '|' + String(r[0])] = true;   // Email | Date
+    seen[String(r[3]).toLowerCase().trim() + '|' + String(r[0]).trim()] = true;
+  });
+  var already = Object.keys(seen).length;
+
+  var add = [], skipped = 0, blank = 0;
+  Logger.log('=== C-1 backfill  (' + (commit ? 'WRITING' : 'DRY RUN — nothing will be written') + ') ===');
+
+  C1_RESPONSE_TABS.forEach(function (tab) {
+    var sh = src.getSheetByName(tab);
+    if (!sh) { Logger.log('  SKIP ' + tab + ' — no such tab'); return; }
+    var vals = sh.getDataRange().getValues();
+    if (vals.length < 2) { Logger.log('  ' + tab + ': no rows'); return; }
+
+    var res = c1ResolveHeaders_(vals[0]);
+    Logger.log('  ' + tab + ': ' + (vals.length - 1) + ' rows · resolved ' +
+               Object.keys(res.fields).length + ' fields · ' + res.unmapped.length + ' unmapped -> Notes');
+    res.notes.forEach(function (n) { Logger.log('     ⚠️  ' + n); });
+    // 🔴 Without a name AND without an email there is nothing to contact and nothing to
+    // dedupe on. Better to report those than to create rows nobody can act on.
+    if (res.fields.NAME === undefined && res.fields.EMAIL === undefined) {
+      Logger.log('     🔴 SKIPPING TAB — neither a name nor an email column could be resolved.');
+      return;
+    }
+
+    for (var i = 1; i < vals.length; i++) {
+      var row = c1RowToEnquiry_(vals[i], res, '');
+      if (!String(row[1]).trim() && !String(row[3]).trim()) { blank++; continue; }
+      var key = String(row[3]).toLowerCase().trim() + '|' + String(row[0]).trim();
+      if (seen[key]) { skipped++; continue; }
+      seen[key] = true;
+      add.push(row);
+    }
   });
 
-  var add = [], skipped = 0;
-  for (var i = 1; i < vals.length; i++) {
-    var resp = {}, when = vals[i][0];
-    for (var c = 0; c < head.length; c++) resp[head[c]] = vals[i][c];
-    var row = c1MapResponse_(resp, when);
-    var key = String(row[3]).toLowerCase() + '|' + String(row[0]);
-    if (seen[key]) { skipped++; continue; }
-    seen[key] = true;
-    add.push(row);
+  Logger.log('');
+  Logger.log('  already in ENQUIRIES ......... ' + already);
+  Logger.log('  new rows this run ............ ' + add.length);
+  Logger.log('  duplicates skipped ........... ' + skipped);
+  Logger.log('  no name and no email ......... ' + blank);
+
+  if (!commit) {
+    Logger.log('');
+    Logger.log('DRY RUN — nothing written. Re-run as c1ImportFromResponseSheet(true) to commit.');
+    Logger.log('⛔ Before committing: confirm with Yale WHICH list is the enquiry system of');
+    Logger.log('   record. This workbook holds ~7x the rows of the source M8 was planned');
+    Logger.log('   against, and M8 starts a follow-up clock on every row it finds (D-370).');
+    return;
   }
   if (add.length) c1Append_(add);
-  Logger.log('C-1: appended ' + add.length + ', skipped ' + skipped + ' already present.');
+  Logger.log('WROTE ' + add.length + ' row(s) to ' + C1_TAB + '.');
 }
 
 function c1Append_(rows) {
@@ -253,6 +420,65 @@ function runC1SelfTest() {
   check('row width always matches the tab', r.length === C1_HEADERS.length);
   check('a blank optional field does not print a stray label',
         H(c1MapResponse_({ 'Complete Name': 'B' }, null), 'Notes') === '');
+
+  Logger.log('\n=== header resolution against the REAL response sheet (23 Aug) ===');
+  {
+    // Verbatim header rows read from the live workbook. Contamination included on purpose —
+    // a test against tidied-up headers would prove nothing about the sheet we actually read.
+    var FR1 = ['', 'Client Type', 'If you have a resume, please upload it below so we can assess your qualification',
+      'Timestamp', 'Email Address', 'Phone number 0422649333', 'Referred by Friend',
+      'Educational Background', 'Work Experience CHEF 2 yr',
+      "Please specify below if you currently hold a visa and it's expiry Subclass 407 Bridging",
+      'Inquiring for', 'Please specify your inquiry', 'NOTES', 'ASSIGNED TO CONSULTANT', 'STATUS', 'Remarks'];
+    var FR2 = ['Timestamp', 'Email Address', '0451082350', 'Column 3', 'Client Type',
+      'Referred by Friend', 'Educational Background', '6 years support worker',
+      'Please indicate below if you currently hold a visa and its expiration date.',
+      'Inquiring for', 'I am enquiring about course shifting',
+      'If you have a resume, please upload it below so we can assess your qualification',
+      'Full Name', 'Phone Number', 'Best Type of Contact:', 'Current Address', 'Column 12'];
+
+    var r1 = c1ResolveHeaders_(FR1), r2 = c1ResolveHeaders_(FR2);
+
+    // 🔴 The contamination is an ANSWER appended to a real label. Prefix matching recovers it.
+    check('"Phone number 0422649333" still resolves to PHONE', r1.fields.PHONE === 5, String(r1.fields.PHONE));
+    check('"Work Experience CHEF 2 yr" still resolves to WORK', r1.fields.WORK === 8, String(r1.fields.WORK));
+    check('"Referred by Friend" still resolves to REFERRED', r1.fields.REFERRED === 6, String(r1.fields.REFERRED));
+
+    // 🔴 Form Responses 1 has the client's NAME in an UNHEADED column A.
+    check('name falls back to column A when there is no heading', r1.fields.NAME === 0, String(r1.fields.NAME));
+    check('...and the fallback is REPORTED, never silent', r1.notes.length === 1, r1.notes.join(''));
+    check('a real "Full Name" heading wins over the fallback', r2.fields.NAME === 12, String(r2.fields.NAME));
+
+    // 🔴 A bare phone number as a heading must not be mistaken for the phone COLUMN.
+    check('a heading that IS a phone number does not capture PHONE', r2.fields.PHONE === 13, String(r2.fields.PHONE));
+    check('"Column 3" resolves to nothing', Object.keys(r2.fields).every(function (k) { return r2.fields[k] !== 3; }));
+
+    // ⛔ Nothing is dropped. An unrecognised column is data, not silence.
+    check('unrecognised columns are reported, not discarded', r2.unmapped.length > 0, String(r2.unmapped.length));
+
+    var row1 = new Array(FR1.length).fill('');
+    row1[0] = 'A. DELA CRUZ'; row1[3] = '2026-08-01'; row1[4] = 'a@example.com';
+    row1[5] = '0400111222'; row1[8] = 'Chef 4 yrs'; row1[10] = 'Graduate Visa'; row1[15] = 'call after 5';
+    var e1 = c1RowToEnquiry_(row1, r1, null);
+    check('a real FR1 row produces a name', H(e1, 'Name') === 'A. DELA CRUZ', H(e1, 'Name'));
+    check('...a phone', H(e1, 'Phone') === '0400111222');
+    check('...and their visa wording verbatim', H(e1, 'Visa Interest') === 'Graduate Visa');
+    check('work experience goes to Notes, not a new column', H(e1, 'Notes').indexOf('Chef 4 yrs') > -1);
+    check('an UNMAPPED column still reaches Notes with its heading',
+          H(e1, 'Notes').indexOf('Remarks: call after 5') > -1, H(e1, 'Notes'));
+
+    var row2 = new Array(FR2.length).fill('');
+    row2[12] = 'B. SANTOS'; row2[13] = '0422000111'; row2[15] = '12 George St, Brisbane';
+    var e2 = c1RowToEnquiry_(row2, r2, null);
+    check('FR2 name comes from the real heading', H(e2, 'Name') === 'B. SANTOS');
+    // 🔴 Their form asks for an ADDRESS. ENQUIRIES Location is a LOCKED Onshore/Offshore
+    // dropdown. Inferring one from the other is a guess about where a person is.
+    check('🔴 an address does NOT get written into the locked Location column',
+          H(e2, 'Location') === '', H(e2, 'Location'));
+    check('...it is preserved in Notes instead', H(e2, 'Notes').indexOf('12 George St') > -1);
+    check('Channel stays blank on the sheet path too (D-330)', H(e2, 'Channel') === '');
+    check('every produced row is the right width', e1.length === C1_HEADERS.length && e2.length === C1_HEADERS.length);
+  }
 
   Logger.log('\n' + pass + '/' + (pass + fail) + ' checks passed');
   if (fail) throw new Error('C-1 self-test FAILED: ' + fail);

@@ -26,7 +26,20 @@
 // overlapping them would make one abort — correctly, but pointlessly, every single day.
 var TRIGGER_PLAN = [
   { fn: 'updateFollowUps',        hour: 7, what: 'M5a dormancy — the "every morning" the guide promises' },
-  { fn: 'updateEnquiryFollowUps', hour: 8, what: 'M8 enquiry follow-up cadence (7/30, stop-on-reply)' }
+  { fn: 'updateEnquiryFollowUps', hour: 8, what: 'M8 enquiry follow-up cadence (7/30, stop-on-reply)' },
+  // ── M9's Apps Script half, added 23 Aug ────────────────────────────────────
+  // 🔑 These are NOT part of the Make scenario and do not consume a scenario slot or a
+  // single operation. M9's Make half is blocked on the 2-active-scenario cap (D-342);
+  // these two are pure Apps Script and can run the day the tracker holds a row.
+  //
+  // Order and hour matter. The parser turns Claude's classification into structured
+  // deadline fields; the verifier then checks those deadlines INDEPENDENTLY, recomputing
+  // them from the letter date rather than trusting what the parser wrote.
+  // ⛔ 09:00 not 08:30 — the verifier must never run before the parser on the same
+  // morning, or it verifies yesterday's data and reports a clean pass on stale rows.
+  // That is the D-292 failure shape: a check that passes because it checked nothing new.
+  { fn: 'parseS56Classifications', hour: 9,  what: 'M9 — Claude tool_use output -> s56 deadline fields' },
+  { fn: 'verifyS56Deadlines',      hour: 10, what: 'M9 — INDEPENDENT recheck of every s56 deadline' }
 ];
 
 // ⛔ Deliberately NOT installed: parseS56Classifications, verifyS56Deadlines.

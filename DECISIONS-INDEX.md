@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 556K /     6775 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 560K /     6824 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:23
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:29
 
 | # | Decision |
 |---|---|
@@ -373,3 +373,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-23 20:2
 | **D-374** | Go-live gate item 2 verified still open, and the correct schedule shape found by validation |
 | **D-375** | Go-live gate item 2 CLOSED — and the deletion is not being done, for a reason found by checking |
 | **D-376** | The Aug 12 and Aug 14 failures were Google's, not ours. D-368 fully closed |
+| **D-377** | C-1 built against the real sheet, and M9's Apps Script half scheduled |
