@@ -6539,3 +6539,48 @@ which `Form Responses 1` does not. **We no longer need RJ to share the Brisbane 
 
 ⛔ **PII.** The file arrived in `SOP'S/` root. Moved to `client-data/2026-08-22_Inquiry-form-Responses.xlsx`,
 outside the repo, per the standing rule. Hygiene gate re-run: clean.
+
+## D-371 | Confirmed by stack trace, and closed. Two failures, ten minutes, four clean runs since
+
+**23 Aug 2026.** The Cloud log settles D-369 beyond inference:
+
+```
+Aug 23, 2026, 7:02:35 PM   Error   TypeError: Cannot read properties of undefined (reading 'length')
+                                   at [unknown function](setup_call_log_tab:62:34)
+```
+
+**Line 62, column 34.** Line 62 of the version pasted was
+`var CL_HELPER_PHONE = CL_HEADERS.length + 1;` and column 34 is where `.length` sits. Not a
+plausible match — the exact character.
+
+**The execution history closes it:**
+
+| Time | Function | |
+|---|---|---|
+| 6:57:34 PM | assignMissingCodes | Completed |
+| **7:02:34 PM** | assignMissingCodes | 🔴 **Failed** |
+| **7:07:34 PM** | assignMissingCodes | 🔴 **Failed** |
+| 7:08:23 PM | repairCallLogTab | Completed — the fix went in |
+| 7:12:34 → 7:27:34 | assignMissingCodes ×4 | ✅ **all Completed** |
+
+**Exactly two failures across ten minutes, and four consecutive clean runs since.** Resolved.
+
+🔑 **Three claims I made about this, in order, and how each was actually settled.**
+1. *"caught before it ever ran"* (D-364) — **wrong**, asserted from the fact that the fix was in.
+2. *"consistent with the load-order bug"* (D-369) — right, but still inference from a timestamp.
+3. **The stack trace.** Only the third is evidence, and it was one click away the whole time.
+
+This is the third time this week the same move has appeared — D-341, D-368, and here — reasoning
+from the state of our own notes to a claim about the world. What breaks the pattern is not more care
+in the reasoning; it is going to the system and looking. **The Executions list existed on 12 August.**
+
+⚠️ **Two things this does NOT settle, and neither should be assumed closed:**
+- **The daily triggers are unproven.** The Executions view covers 6:12–7:27 PM, so `updateFollowUps`
+  (07:00) and `updateEnquiryFollowUps` (08:00) simply do not appear in it. **Nothing here shows they
+  have ever run on schedule.** D-368's downgrade of the "running daily" claim stands.
+- **Aug 12 and Aug 14 remain unexplained.** Executions only retains 7 days, so those runs are gone
+  from the UI. The failure emails are the only surviving record.
+
+⚠️ **The "My Triggers — Showing 0 triggers" screenshots are not evidence of anything** — both are
+filtered by `Trigger ID: "Ju4OlTf6RDeXZ0I2Kl6pUw"`, which matches nothing. **CLEAR FILTERS** is
+needed before that page says anything about what is installed.
