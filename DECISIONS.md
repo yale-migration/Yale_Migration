@@ -7511,3 +7511,62 @@ because the print block reset the body background and not the palette, and witho
 | ~12 LOW findings | Truncation without a tooltip, comparator tie order, an unused import, `?as=constructor` degrading to an empty board. All cosmetic or unreachable; listed in the audit and worth a later pass |
 
 **Dashboard totals: unit 142 → 226 · e2e 153 → 156 · build · typecheck, all green.**
+
+## D-401 | The Sheets reader — and proving, structurally, that nothing can destroy their data
+**24 Aug 2026.** The last buildable gap closed. `syncMatters`/`syncS56`/`syncEnquiries` all took
+`(rows, headers)` and nothing produced them, so the hourly refresh had no source.
+
+**`sync/sheets.ts` — a service-account reader, no new dependency.** `googleapis` is ~50MB and pulls a
+large transitive tree into a project handling immigration data; the whole job is one signed JWT and
+one GET, so it is done with node's own crypto. **Fewer packages is a security property, not a
+preference.** A service account rather than OAuth because OAuth binds the sync to one person's Google
+login — it breaks when they change their password, and the automation then runs *as* a human. A
+service account is an identity Yale owns and can revoke from their own Drive.
+
+🔴 **`UNFORMATTED_VALUE` + `FORMATTED_STRING` are load-bearing, not defaults.** FORMATTED_VALUE returns
+what the cell LOOKS like in whatever locale the sheet is set to — and this project has already been
+bitten by exactly that: **47% of their enquiry dates were day/month transposed** by Excel's US locale,
+and dates elsewhere rendered as serials like `46216`. Both halves of that bug are excluded at the read.
+
+**An empty tab throws rather than returning zero rows** — otherwise a failed read arrives at the sync's
+own empty-guard wearing the shape of a legitimate empty sheet. And rows are padded to the header width,
+because Sheets omits trailing empty cells and every mapping past the last filled cell would read
+`undefined`.
+
+**The route now syncs all three tabs independently.** One tab failing does not abort the others — a
+renamed s56 tab should not stop the client register refreshing — and the response names exactly what
+succeeded, what failed and why, with the status reflecting it. ⛔ **A cron that returns 200 after doing
+nothing is the failure shape this project has hit most often** (D-292…D-296).
+
+### 🔴 `sync/readonly.test.mjs` — the guarantee the client actually cares about
+
+Their Google Sheet **is** their client register: ~460 records, and for some clients the only place
+their contact details exist at all (D-356). "The app is read-only" was a sentence in a comment. It is
+now sixteen assertions over the source:
+
+1. **No `.insert` / `.update` / `.upsert` / `.delete` anywhere** under `app/`, `components/`, `lib/`,
+   and the service-role key is never referenced outside `sync/`.
+2. **The OAuth scope is `spreadsheets.readonly`**, no write scope and no Drive scope exists, `readTab`
+   issues no mutating method, and no write endpoint (`:append`, `batchUpdate`, `:clear`) is named.
+   Exactly one POST exists in the file and it is Google's token exchange.
+3. **There is exactly ONE delete in the codebase**, it targets a Postgres table, it is reachable only
+   on the no-stable-key replace path, and 🔑 **the empty-read abort is asserted to come BEFORE it** —
+   so a failed read can never empty a live table.
+4. **The auth check precedes every read and write** in the sync handler.
+
+Negative-tested with three mutations, all caught: a `.delete()` added to `lib/data/matters.ts`; the
+scope widened to `auth/spreadsheets`; `readTab` switched to POST.
+
+⚠️ **Two of those assertions were wrong on first run and had to be scoped** — one flagged the token
+exchange as a Sheets mutation, one flagged the file's own comment quoting the old vulnerable line.
+**A noisy assertion inside a security test is the fastest way to get the whole file ignored.**
+
+`sync/sheets.test.mjs` verifies the JWT **cryptographically** against a throwaway key pair generated in
+the test — three parts and a plausible header would otherwise pass while the signature was garbage —
+and asserts the readonly scope from the decoded claims, not from the constant.
+
+▶ **`dashboard/GO-LIVE-STEPS.md`** — everything that cannot be done in code, by owner, with the exact
+clicks: the service account, the Viewer share, the env vars, the SQL order, the curl that proves the
+sync, and what each response code means. **Sharjeel 1–2 hours, Robinder 20 minutes on a call.**
+
+**Dashboard totals: unit 142 → 260 · e2e 156 · build · typecheck. Six suites, all negative-tested.**
