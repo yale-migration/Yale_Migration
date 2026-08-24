@@ -159,13 +159,41 @@ export function ladderFor(d: Pick<S56Deadline, 'letter_date' | 'days_allowed'>, 
   if (elapsed === null || allowed == null) {
     return { placeable: false as const, elapsed, allowed, rungs: [], dropped: 0, pct: 0 }
   }
-  const rungs = LADDER.filter((r) => r < allowed)
+  /* 🔴 A NON-POSITIVE `days_allowed` IS MALFORMED, NOT A CRISIS. (D-400)
+   * The column is a plain int with no CHECK and the sync passes it straight
+   * through. `0` used to yield pct 100 and no rungs, and `-5` rendered the
+   * emergency panel reading **"−5 days only."** Neither is a deadline; both are
+   * a parse that went wrong, and they must read as unknown. */
+  if (allowed <= 0) {
+    return { placeable: false as const, elapsed, allowed, rungs: [], dropped: 0,
+             pct: 0, internal: null }
+  }
+
+  /* 🔴 THE INTERNAL DEADLINE IS `allowed - 2`, NOT ALWAYS DAY 26. (D-400)
+   *
+   * The ladder is 7/14/21/26 because the standard letter is 28 days and their
+   * SOP works to two days early (D-58). The component hardcoded `r === 26` as
+   * "the internal deadline" — so on a 60-day letter it painted that label at
+   * 43% of the track and then showed **34 days with no rung at all** before the
+   * real deadline, with `dropped === 0` so the explanatory note never fired.
+   * A consultant saw a confident, complete-looking ladder that was wrong.
+   *
+   * ⛔ And the filter was `r < allowed`, which on a 26-day letter kept day 21
+   * and dropped day 26 while the copy said the dropped rung *"would fall after
+   * the deadline"* — it falls ON the internal one. Bound to `internal`. */
+  const internal = allowed - 2
+  const rungs = [...new Set([...LADDER.filter((r) => r < internal), internal])]
+    .sort((a, b) => a - b)
   return {
     placeable: true as const,
     elapsed,
     allowed,
+    internal,
     rungs,
-    dropped: LADDER.length - rungs.length,
+    // ⛔ STRICTLY greater. A standard 28-day letter has internal = 26, and 26 IS
+    // a rung — counting it as dropped told the reader a step was missing when
+    // the ladder was complete.
+    dropped: LADDER.filter((r) => r > internal).length,
     pct: Math.min(100, Math.max(0, (elapsed / allowed) * 100)),
   }
 }

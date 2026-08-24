@@ -150,10 +150,17 @@ export function ClientSearch({ matters, as, initial = 'all', today }: {
             <div className="flex items-center gap-2">
               {m.docs_outstanding && (
                 <Chip tone="warn">
-                  {m.docs_outstanding.split(',').filter(Boolean).length} docs
+                  {/* ⛔ `.trim()` matches the matter page, which always trimmed. Without
+                      it "Bank statements, , Police check" counted 3 here and 2 there —
+                      the list and the file disagreeing about the same client. And the
+                      count is pluralised: it read "1 docs". (D-400) */}
+                  {(() => {
+                    const n = m.docs_outstanding.split(',').map((x) => x.trim()).filter(Boolean).length
+                    return `${n} ${n === 1 ? 'doc' : 'docs'}`
+                  })()}
                 </Chip>
               )}
-              <span className="text-[12px] text-ink-3 hidden sm:inline">{m.processing_stage}</span>
+              <span className="text-[12px] text-ink-3 hidden sm:inline">{m.processing_stage ?? '—'}</span>
             </div>
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"
                  className="text-ink-3">

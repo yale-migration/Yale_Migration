@@ -83,6 +83,23 @@
   /* Staff print client files — a paper copy still goes in the matter folder.
      Without this a print is navy blocks and dead nav. */
   @media print {
+  /* 🔴 RESET THE PALETTE, not just the body background. Under
+     prefers-color-scheme: dark, --ink is #eef2f0 — near-white text — while card
+     backgrounds do not print. A consultant printing a matter page from a dark
+     machine got a near-blank sheet. And `print-color-adjust: exact` is required
+     or every solid Chip ("3d overdue", "Expired 12d ago") prints white-on-white,
+     because its fill is dropped and its text is not. (D-400) */
+  :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+    --paper:#fff; --card:#fff; --card-sunk:#fff;
+    --ink:#111; --ink-2:#333; --ink-3:#555;
+    --rule:#ccc; --rule-strong:#999;
+    --good:#146c4b; --warn:#8a5a00; --crit:#a3241b;
+    --good-soft:#eaf5f0; --warn-soft:#fdf4e3; --crit-soft:#fbeceb;
+    --accent:#10243f; --accent-soft:#eef2f7;
+    --shadow:none;
+    color-scheme: light;
+  }
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     nav, button, select, input[type="search"] { display: none !important; }
     body { background: #fff; }
     .print-hide { display: none !important; }

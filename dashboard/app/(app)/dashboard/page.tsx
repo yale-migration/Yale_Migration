@@ -9,7 +9,9 @@ import { Nav } from '@/components/nav'
 import { resolveViewer } from '@/lib/viewer'
 import { YaleMark } from '@/components/brand'
 
-export const metadata = { title: 'Practice Board · Yale Migration' }
+/* Static, so it cannot vary by role — "Yale Migration" alone is correct for
+   both audiences, where "Practice Board" was correct for only one. */
+export const metadata = { title: 'Yale Migration' }
 export const dynamic = 'force-dynamic'   // per-user data; never statically cached
 
 export default async function DashboardPage(
@@ -79,7 +81,12 @@ export default async function DashboardPage(
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="flex flex-wrap gap-4 items-end justify-between pb-4 border-b border-rule">
         <div>
-          <h1 className="text-[24px]">Practice Board</h1>
+          {/* ⛔ A client sees this page too. "Practice Board" is an internal
+              term for the firm's own overview — to the person whose visa it is,
+              their page is about their application, not about the practice. */}
+          <h1 className="text-[24px]">
+            {viewer.role === 'client' ? 'Your application' : 'Practice Board'}
+          </h1>
           <p className="text-[12.5px] text-ink-3 mt-1 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--good)]
                              shadow-[0_0_0_3px_var(--good-soft)]" aria-hidden="true" />
@@ -119,7 +126,12 @@ export default async function DashboardPage(
 
       <footer className="mt-7 pt-4 border-t border-rule text-[11.5px] text-ink-3
                          flex flex-wrap gap-x-5 gap-y-1.5">
-        <span>Open matters exclude Granted, Refused and Withdrawn.</span>
+        {/* 🔴 NOT shown to clients. This explains a STAFF filter, and it puts the
+            word "Refused" in the footer of a page belonging to someone who is
+            anxiously waiting on a decision. It tells them nothing and it costs
+            them something. (D-400) */}
+        {viewer.role !== 'client' &&
+          <span>Open matters exclude Granted, Refused and Withdrawn.</span>}
         <span>Yale Migration and Education Consultants · MARN 1573959</span>
       </footer>
     </main>

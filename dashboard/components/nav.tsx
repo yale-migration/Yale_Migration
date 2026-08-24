@@ -3,8 +3,13 @@ import { YaleMark } from './brand'
 import { SignOut } from './sign-out'
 
 /** Top navigation. Staff only — a client has one page and needs no wayfinding. */
-export function Nav({ current, as, live = false }: {
-  current: 'board' | 'clients' | 'enquiries'; as?: string; live?: boolean
+/* ⛔ `exact` exists because `aria-current="page"` means THIS IS the current
+   page. The branch and consultant pages pass current="clients" to highlight the
+   section, so a screen-reader user was told they were on Clients when they were
+   not. `aria-current={true}` is the correct value for a section; the visual
+   highlight is unchanged. (D-400) */
+export function Nav({ current, as, live = false, exact = true }: {
+  current: 'board' | 'clients' | 'enquiries'; as?: string; live?: boolean; exact?: boolean
 }) {
   const q = as ? `?as=${as}` : ''
   const items = [
@@ -31,7 +36,8 @@ export function Nav({ current, as, live = false }: {
       <YaleMark />
       <div className="flex gap-1 items-center">
         {items.map(([key, label, href]) => (
-          <Link key={key} href={href} aria-current={current === key ? 'page' : undefined}
+          <Link key={key} href={href}
+            aria-current={current === key ? (exact ? 'page' : true) : undefined}
             className={`text-[13.5px] px-3.5 min-h-[44px] flex items-center rounded-lg transition-colors
               ${current === key
                 ? 'bg-[var(--accent-soft)] text-accent font-semibold'

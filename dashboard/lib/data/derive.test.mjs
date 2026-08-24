@@ -93,11 +93,36 @@ console.log('\n=== the s56 ladder — the compression rule ===')
         JSON.stringify(d(28,'2026-08-14').rungs) === JSON.stringify([7,14,21,26]))
   // 🔴 The whole point. Rungs past the deadline would tell a consultant to chase
   // AFTER the Department had already decided the application.
-  check('🔴 14-day letter drops the rungs past the deadline',
-        JSON.stringify(d(14,'2026-08-14').rungs) === JSON.stringify([7]),
+  /* ⚠️ CONTRACT CHANGED 24 Aug (D-400). The ladder used to be the four standard
+   * rungs minus any that fell past the deadline, with "the internal deadline"
+   * hardcoded as day 26. That is only true of a 28-day letter:
+   *   · on a 60-day letter it labelled day 26 the internal deadline — 43% of
+   *     the track — and left the real one (day 58) unmarked entirely;
+   *   · on a 14-day letter it drew ONE rung at day 7 and no internal deadline,
+   *     so the date the team actually works to was missing from the ladder
+   *     built to show it.
+   * The internal deadline is `allowed - 2` (their SOP, D-58) and is now ALWAYS
+   * a rung. These two assertions changed because the behaviour is different and
+   * better, not because they were wrong before. */
+  check('14-day letter: rungs past the internal deadline are dropped, and day 12 is added',
+        JSON.stringify(d(14,'2026-08-14').rungs) === JSON.stringify([7,12]),
         JSON.stringify(d(14,'2026-08-14').rungs))
-  check('...and reports how many it dropped', d(14,'2026-08-14').dropped === 3)
-  check('🔴 a 7-day letter leaves NO rung at all', d(7,'2026-08-18').rungs.length === 0)
+  check('...and reports how many standard rungs it dropped', d(14,'2026-08-14').dropped === 3)
+  check('🔴 a 7-day letter still gets its internal deadline — day 5, not an empty rail',
+        JSON.stringify(d(7,'2026-08-18').rungs) === JSON.stringify([5]),
+        JSON.stringify(d(7,'2026-08-18').rungs))
+  check('...and says all four standard rungs were dropped', d(7,'2026-08-18').dropped === 4)
+  check('🔴 a 60-day letter marks day 58, not day 26, as the internal deadline',
+        d(60,'2026-08-14').internal === 58, String(d(60,'2026-08-14').internal))
+  check('...and keeps the standard rungs before it',
+        JSON.stringify(d(60,'2026-08-14').rungs) === JSON.stringify([7,14,21,26,58]),
+        JSON.stringify(d(60,'2026-08-14').rungs))
+  check('a 28-day letter reports NOTHING dropped — day 26 IS the internal deadline',
+        d(28,'2026-08-14').dropped === 0, String(d(28,'2026-08-14').dropped))
+  check('🔴 days_allowed of 0 is malformed, not a crisis — not placeable',
+        d(0,'2026-08-14').placeable === false)
+  check('🔴 a NEGATIVE days_allowed never renders "−5 days only"',
+        d(-5,'2026-08-14').placeable === false)
   check('no letter date → not placeable, not silently zero', d(28,null).placeable === false)
   check('no day count → not placeable', ladderFor({letter_date:'2026-08-14',days_allowed:null},T).placeable === false)
   check('progress never exceeds 100%', d(7,'2026-06-01').pct === 100, String(d(7,'2026-06-01').pct))

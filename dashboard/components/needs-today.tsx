@@ -26,7 +26,12 @@ export function NeedsToday({ actions }: { actions: Action[] }) {
     <section className="border border-rule rounded-card bg-card overflow-hidden mt-4">
       <header className="flex items-baseline justify-between gap-3 px-4 pt-3.5 pb-3 border-b border-rule">
         <h2 className="text-[15px]">Needs you today</h2>
-        <span className="text-xs text-ink-3">{actions.length ? `${total} items` : 'all clear'}</span>
+        {/* ⛔ Pluralised — it read "1 items". And `total` sums the bands, so one
+            matter that is both expiring and quiet was counted twice; the header
+            now counts DISTINCT bands, which is what a reader assumes. (D-400) */}
+        <span className="text-xs text-ink-3">
+          {actions.length ? `${actions.length} ${actions.length === 1 ? 'thing' : 'things'} to look at` : 'all clear'}
+        </span>
       </header>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
         {actions.length === 0 ? (

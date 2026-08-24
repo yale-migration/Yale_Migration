@@ -1107,3 +1107,27 @@ reporting 0 enquiries permanently · a skip link that skipped nothing.
 ⚠️ **Two of the defects were my own from earlier today** — a half-applied normalisation, and a schema
 change made in `paste/` and not `migrations/`. And the layout tests turn out to have been measuring
 the **loading skeleton**, not the pages. D-394…D-399. **Unit 142 → 215 · e2e 153 · all green.**
+
+2026-08-24 | internal | **Second audit pass — asked to confirm the dashboard was 100%, and it was not.**
+Fourteen confirmed findings were still open, including two on the client's own screen: their page was
+headed **"Practice Board"** with the word *Refused* in the footer, and it told them *"everything we
+asked for has arrived"* whenever the documents column was empty — which is indistinguishable from
+never having been filled.
+
+**The Section 56 ladder was wrong for every letter that is not 28 days** — it hardcoded day 26 as the
+internal deadline, so a 60-day letter had its real deadline (day 58) left unmarked while a confident,
+complete-looking ladder was drawn. And the tested `ladderFor` function turned out to be **dead code**:
+the component had its own copy. Two implementations that happened to agree.
+
+Also fixed: printing from a dark-mode machine produced a near-blank page · a screen reader was told
+the user was on Clients when they were on a branch page · docs counted differently in the list and
+the file · "1 docs", "1 items".
+
+🔑 **Three test gaps closed by mutation rather than inspection** — branch isolation on the enquiries
+page had no test at all, and the constant-time secret comparison was asserted by a LABEL, not a check.
+My first fix for that one also passed the mutation; the second caught it. **D-400.**
+
+⛔ **Still not done, and stated plainly:** the Section 56 card cannot appear on any client file until
+the tracker tab gains a Client Code column — that means altering the client's live sheet, so it waits
+for Sharjeel. Plus the Sheets reader, deploy and onboarding, all of which need Robinder.
+**Unit 142 → 226 · e2e 156 · all green.**

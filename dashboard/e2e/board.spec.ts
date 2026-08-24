@@ -172,3 +172,33 @@ test.describe('sign-in', () => {
     await expect(page.getByRole('button', { name: /Email me a sign-in link/ })).toBeVisible()
   })
 })
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 🔴 BRANCH ISOLATION ON THE ENQUIRIES SURFACE. (D-400)
+ *
+ * `/dashboard/enquiries` appeared in the e2e suite only as a URL in the layout,
+ * crawl and contrast specs — not one assertion about its CONTENTS. Proven by
+ * mutation: replacing the office filter in `getEnquiries` with `return
+ * DEMO_ENQUIRIES` (so a Brisbane manager sees Townsville's leads) left the full
+ * run at **153 passed**. Branch isolation was tested for /dashboard/clients and
+ * nowhere else, on an app whose entire premise is that a branch manager sees
+ * their branch.
+ * ══════════════════════════════════════════════════════════════════════════ */
+test('a branch manager sees their own leads and not another branch\'s', async ({ page }) => {
+  // ⚠️ `?as=brisbane`, not `?as=manager`. The demo viewers are keyed by BRANCH,
+  // and an unknown key falls back to the director — so `?as=manager` would have
+  // silently tested the director and passed for the wrong reason.
+  await page.goto('/dashboard/enquiries?as=brisbane', { waitUntil: 'networkidle' })
+  await page.locator('main').first().waitFor({ state: 'visible' })
+
+  // ⛔ A POSITIVE baseline FIRST. Without it a page that rendered nothing would
+  // satisfy the negative assertion and report PASS — the exact shape this
+  // project keeps getting caught by.
+  await expect(page.getByText('Priya R.'), 'the Brisbane manager should see their OWN leads')
+    .toBeVisible()
+
+  for (const townsvilleLead of ['Amara O.', 'Ken T.']) {
+    await expect(page.getByText(townsvilleLead),
+      `a Brisbane manager must not see the Townsville lead ${townsvilleLead}`).toHaveCount(0)
+  }
+})

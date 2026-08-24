@@ -78,9 +78,16 @@ export function ClientView({ matter, today, live = false }: {
         </section>
       ) : (
         <section className="mt-4 rounded-card border border-rule bg-card p-4">
-          <h2 className="text-[15px]">Nothing needed from you</h2>
+          {/* 🔴 A NULL column, an EMPTY column and "genuinely nothing owed" are
+              indistinguishable here, and this copy committed to the third
+              reading — telling a client their documents are all in when the
+              field may simply never have been filled. That is the assertion
+              rule (LESSONS §1) on the client-facing surface. It now states
+              only what is on the record. (D-400) */}
+          <h2 className="text-[15px]">Nothing outstanding on your file</h2>
           <p className="text-[13px] text-ink-2 mt-1">
-            Everything we asked for has arrived. Your file is with your agent.
+            There is nothing recorded as still needed from you. Your consultant will be in
+            touch if anything else is required.
           </p>
         </section>
       )}

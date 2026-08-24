@@ -6,6 +6,7 @@
  * tested against the ways past it — including the one that was actually there.
  */
 import { execFileSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import { writeFileSync, mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -41,7 +42,7 @@ const denied = [
   ['no authorization header',   { secret: S, authorization: null }],
   ['an empty authorization',    { secret: S, authorization: '' }],
   ['just the word Bearer',      { secret: S, authorization: 'Bearer ' }],
-  ['a PREFIX of the real secret — a length-leaking compare would differ here',
+  ['a PREFIX of the real secret is refused (the TIMING property is asserted separately below)',
    { secret: S, authorization: `Bearer ${S.slice(0, -1)}` }],
   ['the secret plus one character',
    { secret: S, authorization: `Bearer ${S}x` }],
@@ -64,6 +65,32 @@ for (const input of [{ secret: S, authorization: 'Bearer wrong' }, { secret: S, 
   check('reason text contains no part of the secret',
         !checkSyncAuth(input).reason.includes(S.slice(0, 8)), checkSyncAuth(input).reason)
 }
+
+console.log('\n=== the comparison is constant-time (structural assertion) ===')
+/* ⛔ The "a PREFIX of the real secret" case above asserts only `.ok === false`,
+ * and a plain `a === b` passes it too — proven by mutation. A timing property
+ * cannot be asserted reliably from JS, so assert the MECHANISM instead: that
+ * the module imports and uses node's constant-time compare, and does not fall
+ * back to `===` on the secret. A `===` here leaks the secret's length and
+ * prefix, byte by byte, on a public route holding the service-role key. (D-400) */
+// ⚠️ Comments stripped first. The file DOCUMENTS the old vulnerable line
+// (`given !== secret`) so the bug is not silently forgotten — and the naive
+// check flagged that comment as if it were live code. A test that reads prose
+// as code is a false positive, and a false positive gets a gate switched off.
+const guardSrc = readFileSync(new URL('./guard.ts', import.meta.url), 'utf8')
+  .replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
+check("imports timingSafeEqual from node:crypto",
+      /import\s*\{[^}]*timingSafeEqual[^}]*\}\s*from\s*'node:crypto'/.test(guardSrc))
+check("actually CALLS timingSafeEqual", /timingSafeEqual\s*\(/.test(guardSrc))
+// ⛔ "calls it somewhere" is not enough — it is also called in the length-
+// mismatch branch. Mutating `return timingSafeEqual(x, y)` to `return a === b`
+// left the previous version of this assertion GREEN. The RESULT must come from
+// the constant-time compare, so assert on the return itself.
+check("RETURNS the constant-time comparison, not a === b",
+      /return\s+timingSafeEqual\s*\(/.test(guardSrc))
+check("⛔ never compares the secret with === or !==",
+      !/\b(given|secret)\s*[!=]==\s*(given|secret)\b/.test(guardSrc))
+check("compares as Buffers, not strings", /Buffer\.from\(/.test(guardSrc))
 
 console.log(`\n${pass}/${pass + fail} checks passed`)
 process.exit(fail === 0 ? 0 : 1)

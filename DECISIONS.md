@@ -7457,3 +7457,57 @@ Also: a test titled *"every tap target is at least 44px"* enforced 36. The name 
 **Dashboard totals after this session: unit 142 → 215 · e2e 153 · build · typecheck, all green.**
 ⬜ Still absent and honestly so: the Google Sheets reader, and the s56→matter linkage, which needs a
 Client Code column the tracker tab does not have.
+
+## D-400 | The second pass: fourteen more defects, and the ones I chose not to fix
+**24 Aug 2026.** Asked to confirm the dashboard was 100% done, the honest answer was no — fourteen
+CONFIRMED findings from the four audits were still open. Closed in this pass:
+
+**Client-facing, and the two that mattered most:**
+- A client's page was headed **"Practice Board"** and its footer read *"Open matters exclude Granted,
+  Refused and Withdrawn."* — the word **Refused** in the footer of a page belonging to someone
+  anxiously waiting on a decision, explaining a staff filter that has nothing to do with them.
+- *"Everything we asked for has arrived"* was printed whenever `docs_outstanding` was falsy — and a
+  NULL column, an EMPTY column and genuinely-nothing-owed are indistinguishable. The copy committed
+  to the third reading. **The assertion rule, on the client surface.**
+
+**The Section 56 ladder was wrong for every letter that is not 28 days.** The component hardcoded
+`isFinal = r === 26`, so on a 60-day letter it labelled day 26 "the internal deadline" at 43% of the
+track and left the real one — day 58 — unmarked, with `dropped === 0` so the explanatory note never
+fired. A consultant saw a confident, complete-looking ladder that was wrong. The internal deadline is
+`allowed - 2` (their SOP, D-58) and is now always a rung. `days_allowed` of `0` or a negative number
+is malformed, not a crisis: it used to render an emergency panel reading **"−5 days only."**
+
+🔑 **And `ladderFor` was dead code.** `derive.ts` exported a tested implementation that NOTHING
+imported; the component had its own copy. The tested one and the rendered one were different
+functions that happened to agree — which is precisely why the drift would not have been noticed.
+The component now calls `ladderFor`.
+
+**Also closed:** the docs count differed between the list and the file (one trimmed, one did not) ·
+"1 docs" and "1 items" · `processing_stage` rendering as a silent gap where every sibling shows "—" ·
+*"Every matter has a consultant. Nothing is unowned."* claimed practice-wide from one branch's data ·
+`aria-current="page"` announced on branch and consultant pages, telling a screen-reader user they
+were on Clients when they were not · **printing from a dark-mode machine produced a near-blank page**,
+because the print block reset the body background and not the palette, and without
+`print-color-adjust: exact` every solid chip printed white-on-white.
+
+**Three test gaps closed by mutation, not by inspection:**
+- **Branch isolation on the enquiries surface had no test at all.** Replacing the office filter with
+  `return DEMO_ENQUIRIES` — a Brisbane manager seeing Townsville's leads — left the full suite at
+  153 passed. Now covered, with a POSITIVE baseline first so an empty render cannot satisfy it.
+- **The constant-time comparison was asserted by a label, not by a check.** Replacing
+  `timingSafeEqual` with `a === b` passed. ⚠️ My first attempt at the fix ALSO passed, because the
+  file still calls `timingSafeEqual` in its length-mismatch branch — "calls it somewhere" is not the
+  property. Asserting on the RETURN catches it.
+- ⚠️ That structural check then flagged the file's own comment, which quotes the old vulnerable line
+  on purpose. Comments are stripped first. **A test that reads prose as code is a false positive, and
+  a false positive gets a gate switched off.**
+
+⛔ **What I did NOT fix, and why — this list is the honest part of a "100%" claim:**
+| | |
+|---|---|
+| s56 → matter linkage | The tracker tab has **no Client Code column**. Fixing it means altering the client's live sheet, which is not mine to do unattended. **The Section 56 card cannot appear on any client file until it exists.** |
+| Google Sheets reader | Needs credentials we do not hold |
+| Deploy, onboarding, real-data testing | Hosting decision + the staff list |
+| ~12 LOW findings | Truncation without a tooltip, comparator tie order, an unused import, `?as=constructor` degrading to an empty board. All cosmetic or unreachable; listed in the audit and worth a later pass |
+
+**Dashboard totals: unit 142 → 226 · e2e 153 → 156 · build · typecheck, all green.**

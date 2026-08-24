@@ -63,7 +63,7 @@ export default async function BranchPage(
 
   return (
     <>
-      <Nav current="clients" as={sp.as} live={isLive()} />
+      <Nav current="clients" as={sp.as} live={isLive()} exact={false} />
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}

@@ -1,5 +1,5 @@
 import type { S56Deadline } from '@/lib/data/types'
-import { daysBetween } from '@/lib/data/matters'
+import { ladderFor } from '@/lib/data/matters'
 
 /**
  * The Section 56 escalation ladder — P2-02, and their own rule.
@@ -9,6 +9,11 @@ import { daysBetween } from '@/lib/data/matters'
  * and the two-day gap is there so the upload can be finished rather than
  * started. The ladder halts the moment the client confirms receipt.
  *
+ * ⛔ THE MATHS LIVES IN `ladderFor` (derive.ts), NOT HERE. This component had
+ * its own `RUNGS = [7,14,21,26]`, its own filter and its own dropped-count —
+ * so the tested function was dead code and the RENDERED one was untested. They
+ * agreed, which is exactly why the drift would not have been noticed. (D-400)
+ *
  * 🔴 THE LADDER ASSUMES A 28-DAY LETTER, AND NOT EVERY LETTER IS 28 DAYS.
  * A 14-day request exists in their own history. On one of those, rungs at day
  * 21 and day 26 fall AFTER the legal deadline — rendering them would tell a
@@ -16,15 +21,12 @@ import { daysBetween } from '@/lib/data/matters'
  * decided the application. So rungs past the legal date are dropped and the
  * compression is stated, rather than drawn and quietly wrong.
  */
-const RUNGS = [7, 14, 21, 26] as const
-
 export function S56Ladder({ d, today }: { d: S56Deadline; today: Date }) {
-  const elapsed = daysBetween(d.letter_date, today)
-  const allowed = d.days_allowed
+  const L = ladderFor(d, today)
 
-  // No letter date means no ladder can be placed at all. Say that — an empty
-  // rail would read as "no follow-ups needed".
-  if (elapsed === null || allowed == null) {
+  // No letter date, no day count, or a day count that is not a positive number
+  // — no ladder can be placed. Say that: an empty rail reads as "nothing to do".
+  if (!L.placeable) {
     return (
       <p className="text-[12.5px] text-[var(--crit)] mt-2.5">
         No letter date or day count recorded, so the follow-up ladder cannot be placed.
@@ -33,8 +35,10 @@ export function S56Ladder({ d, today }: { d: S56Deadline; today: Date }) {
     )
   }
 
-  const usable = RUNGS.filter((r) => r < allowed)
-  const dropped = RUNGS.length - usable.length
+  // 🔑 Destructured AFTER the placeable guard, so the discriminated union
+  // narrows both to numbers. Taking them before it kept them `number | null`
+  // and TypeScript caught it immediately.
+  const { elapsed, allowed, rungs: usable, dropped } = L
 
   // 🔴 A very short letter leaves NO rung at all — every step of the standard
   // ladder falls past the deadline. An empty rail would read as "nothing to
@@ -73,7 +77,10 @@ export function S56Ladder({ d, today }: { d: S56Deadline; today: Date }) {
                       background: pct >= 93 ? 'var(--crit)' : pct >= 75 ? 'var(--warn)' : 'var(--accent)' }} />
         {usable.map((r) => {
           const done = elapsed >= r
-          const isFinal = r === 26
+          // ⛔ Derived, never hardcoded to 26. On a 60-day letter the internal
+          // deadline is day 58; labelling day 26 as "the internal deadline"
+          // painted it at 43% of the track and left 34 days unmarked.
+          const isFinal = r === L.internal
           return (
             <div key={r} className="absolute -translate-x-1/2 flex flex-col items-center"
                  style={{ left: `${(r / allowed) * 100}%` }}>

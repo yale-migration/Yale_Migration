@@ -48,7 +48,7 @@ export default async function ConsultantPage(
 
   return (
     <>
-      <Nav current="clients" as={sp.as} live={isLive()} />
+      <Nav current="clients" as={sp.as} live={isLive()} exact={false} />
     <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}
@@ -65,7 +65,7 @@ export default async function ConsultantPage(
 
       {matters.length === 0 ? (
         <Card><Empty>
-          {unassigned ? 'Every matter has a consultant. Nothing is unowned.'
+          {unassigned ? 'Every matter you can see has a consultant.'
                       : `No matters are assigned to ${name} in the records you can see.`}
         </Empty></Card>
       ) : (

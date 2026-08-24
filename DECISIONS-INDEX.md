@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 596K /     7459 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 608K /     7513 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 13:07
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 13:22
 
 | # | Decision |
 |---|---|
@@ -395,3 +395,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 13:0
 | **D-397** | Every day-count on the board was a day wrong for the whole Brisbane working day |
 | **D-398** | Empty states that assert safety, and a skip link that skipped nothing |
 | **D-399** | The tests that could not fail — including the one guarding 1,200 credentials |
+| **D-400** | The second pass: fourteen more defects, and the ones I chose not to fix |
