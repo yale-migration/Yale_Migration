@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import {
-  SYNCED_COLUMNS, assertNoCredentialColumns,
+  MASTER_ALLOWLIST, assertNoCredentialColumns,
   S56_ALLOWLIST, ENQUIRY_ALLOWLIST, syncedColumns,
 } from './columns'
 
@@ -35,70 +35,34 @@ const clean = (v: unknown): string | null => {
 const letterToIndex = (letter: string): number =>
   [...letter].reduce((n, c) => n * 26 + (c.charCodeAt(0) - 64), 0) - 1
 
-export async function syncMatters(rows: string[][], headers: string[]): Promise<SyncResult> {
-  // 🔴 Before anything else, and before any data is read.
-  assertNoCredentialColumns(headers)
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) throw new Error('ABORT — sync requires the service-role key. Nothing was read.')
-
-  const supabase = createClient(url, key, { auth: { persistSession: false } })
-
-  const warnings: string[] = []
-  const records: Row[] = []
-  let skipped = 0
-
-  for (const row of rows) {
-    const rec: Row = {}
-    for (const { letter, col } of SYNCED_COLUMNS) rec[col] = clean(row[letterToIndex(letter)])
-
-    // A row with no client code cannot be upserted or looked up. Count it and
-    // say so — silently dropping rows is how an import quietly loses people.
-    if (!rec.client_code) { skipped++; continue }
-
-    // ⚠️ The office drives the manager RLS policy. A row with no office would
-    // be invisible to every manager and visible only to the director — which
-    // looks like a missing client, not a data problem. Flag it loudly.
-    if (!rec.office) warnings.push(`${rec.client_code}: no office — no branch manager will see this row`)
-
-    records.push(rec)
-  }
-
-  if (records.length === 0) {
-    // ⛔ Never let an empty read overwrite a populated table. A transient Sheets
-    // failure returning zero rows would otherwise empty the dashboard, and an
-    // empty dashboard reads as "this practice has no clients".
-    throw new Error(`ABORT — 0 usable rows from ${rows.length} read. Refusing to sync an empty set.`)
-  }
-
-  const { error } = await supabase
-    .from('matters')
-    .upsert(records.map((r) => ({ ...r, synced_at: new Date().toISOString() })),
-            { onConflict: 'client_code' })
-
-  if (error) throw new Error(`sync failed: ${error.message}`)
-
-  return { read: rows.length, written: records.length, skipped, warnings }
-}
-
+/**
+ * MASTER → `matters`. The only table with a stable key, so the only upsert.
+ *
+ * ⛔ Goes through the SAME `syncTable` as the other two. It had its own copy of
+ * the row loop until 24 Aug and the copies had already diverged — the office
+ * check existed in this one and nowhere else, and the empty-read guard was
+ * about to exist in three versions, two of which nobody re-reads. (D-393)
+ */
+export const syncMatters = (rows: string[][], headers: string[]) =>
+  syncTable(rows, headers, {
+    table: 'matters',
+    map: MASTER_ALLOWLIST,
+    onConflict: 'client_code',
+    required: 'client_code',
+    // 🔴 Both are `not null` in Postgres. `office` additionally drives the
+    // manager RLS policy, so a row without one is unusable twice over.
+    notNull: ['full_name', 'office'],
+  })
 
 /* ═══════════════════════════════════════════════════════════════════════════
- * 🔴 THE OTHER TWO TABLES. Added 24 Aug 2026 (D-392).
+ * 🔴 ONE sync implementation, parameterised — never three copies.
  *
- * `S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST` were written on 20 Aug and
- * `STATE.md` recorded the s56/enquiries sync path as ✅ DONE. **Nothing ever
- * imported them.** The only consumer either constant had was the test file.
- * So the Section 56 board and the enquiries board were exactly what that same
- * audit note warned about one line earlier: real UI over data nobody feeds.
- *
- * 🔑 The lists were the visible half of the job and they were mistaken for the
- * job. Defining a config and wiring a config look identical in a diff.
- *
- * ⛔ ONE implementation, parameterised — not three copies. Three copies of an
- * upsert drift, and the guard that matters (refusing to overwrite a populated
- * table with an empty read) would then exist in three versions, two of which
- * nobody re-reads.
+ * `S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST` were written on 20 Aug and STATE.md
+ * recorded the s56/enquiries sync path as done. **Nothing ever imported them**
+ * (D-392). `syncMatters` then kept its own copy of the row loop, and the copies
+ * had already diverged — the office check lived in one and nowhere else, and
+ * the empty-read guard was about to exist in three versions, two of which
+ * nobody re-reads (D-393). All three tables now go through `syncTable`.
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 interface TableSpec {
@@ -110,6 +74,13 @@ interface TableSpec {
   onConflict: string | null
   /** A row missing this column cannot be used at all. */
   required: string
+  /**
+   * 🔴 Columns the DATABASE declares NOT NULL. A row missing any of these does
+   * not just render badly — Postgres rejects the statement, and because the
+   * write is one batch upsert, **one bad row aborts the entire refresh**.
+   * Every good row is lost with it. (D-393)
+   */
+  notNull?: string[]
 }
 
 /**
@@ -123,7 +94,9 @@ interface TableSpec {
  * welded to a network call: the only way to see it was to run a real sync
  * against a real sheet, which nobody was going to do before go-live.
  */
-export function buildRecords(rows: string[][], spec: Pick<TableSpec, 'map' | 'required'>) {
+export function buildRecords(
+  rows: string[][], spec: Pick<TableSpec, 'map' | 'required' | 'notNull'>,
+) {
   const cols = syncedColumns(spec.map)
   const warnings: string[] = []
   const records: Row[] = []
@@ -135,6 +108,22 @@ export function buildRecords(rows: string[][], spec: Pick<TableSpec, 'map' | 're
     // A row without the required field cannot be upserted or looked up. Count
     // it — silently dropping rows is how an import quietly loses people.
     if (!rec[spec.required]) { skipped++; continue }
+
+    // ⛔ Drop rows that would violate a NOT NULL column, and NAME them.
+    // Previously `matters` warned *"no office — no branch manager will see this
+    // row"* and then pushed it anyway. That description was wrong in a way that
+    // mattered: `office` is `not null` in Postgres, so the row did not become
+    // invisible — it killed the whole batch, taking all 37 good rows with it,
+    // inside a cron nobody watches. **Skip the one, keep the rest, say so.**
+    const missing = (spec.notNull ?? []).filter((c) => !rec[c])
+    if (missing.length) {
+      warnings.push(
+        `${rec[spec.required]}: SKIPPED — no ${missing.join(', ')}. ` +
+        `The database requires ${missing.length > 1 ? 'these' : 'this'}, so the row cannot be ` +
+        `stored. Fix it in the sheet; every other row synced normally.`)
+      skipped++
+      continue
+    }
     records.push(rec)
   }
   return { records, skipped, warnings }
@@ -147,11 +136,20 @@ async function syncTable(
   // log live in the same workbook as the credential-heavy tabs.
   assertNoCredentialColumns(headers)
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!url || !key) throw new Error('ABORT — sync requires the service-role key. Nothing was read.')
-  const supabase = createClient(url, key, { auth: { persistSession: false } })
-
+  /* ⛔ ORDER MATTERS, AND IT IS DELIBERATE. Every check that can be made
+   * WITHOUT credentials happens first.
+   *
+   * The credential guard and the empty-read abort used to sit either side of
+   * `createClient`, which meant neither could be tested without a live
+   * service-role key — so neither was. Proven by mutation: deleting the
+   * `assertNoCredentialColumns` call, and changing the empty-read guard to
+   * `if (false)`, both left the entire suite green. The two controls that
+   * protect ~1,200 plaintext credentials and a populated live table were
+   * dead code as far as any test could tell. (D-399)
+   *
+   * Validating before authenticating is also just correct: refuse bad data
+   * without ever reaching for the key that bypasses RLS.
+   */
   const { records, skipped, warnings } = buildRecords(rows, spec)
 
   if (records.length === 0) {
@@ -161,6 +159,11 @@ async function syncTable(
     throw new Error(
       `ABORT — 0 usable rows for ${spec.table} from ${rows.length} read. Refusing to sync an empty set.`)
   }
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) throw new Error('ABORT — sync requires the service-role key. Nothing was read.')
+  const supabase = createClient(url, key, { auth: { persistSession: false } })
 
   const stamped = records.map((r) => ({ ...r, synced_at: new Date().toISOString() }))
 
@@ -191,10 +194,14 @@ async function syncTable(
 export const syncS56 = (rows: string[][], headers: string[]) =>
   syncTable(rows, headers, {
     table: 's56_deadlines', map: S56_ALLOWLIST, onConflict: null, required: 'client_name',
+    // ⚠️ `office` is NOT here: the tracker tab has no office column, so the
+    // Postgres column was made nullable rather than pretending (08 · D-396).
+    notNull: ['client_name'],
   })
 
 /** Enquiries — leads. `location` is Onshore/Offshore; `office` has no source (D-389). */
 export const syncEnquiries = (rows: string[][], headers: string[]) =>
   syncTable(rows, headers, {
     table: 'enquiries', map: ENQUIRY_ALLOWLIST, onConflict: null, required: 'enquiry_date',
+    notNull: ['enquiry_date'],
   })

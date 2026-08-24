@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
 import { isLive } from '@/lib/supabase/config'
-import { getEnquiries, daysBetween, isLiveLead, fmtDate } from '@/lib/data/matters'
+import { getEnquiries, daysBetween, isLiveLead, fmtDate, brisbaneToday } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { Card, CardHead, Chip, Row, Empty, StatTile, type Tone } from '@/components/primitives'
 
@@ -18,7 +18,7 @@ export default async function EnquiriesPage(
   // the table either — this redirect is convenience, the database is the rule.
   if (viewer.role === 'client') redirect(`/dashboard${sp.as ? `?as=${sp.as}` : ''}`)
 
-  const today = new Date()
+  const today = brisbaneToday()   // ⛔ the practice's clock, not the server's (D-397)
   const rows = await getEnquiries(viewer)
   const live = rows.filter(isLiveLead)
   const week = rows.filter((e) => {
@@ -30,8 +30,9 @@ export default async function EnquiriesPage(
   })
 
   return (
-    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <>
       <Nav current="enquiries" as={sp.as} live={isLive()} />
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <h1 className="text-[24px]">Enquiries</h1>
         <p className="text-[12.5px] text-ink-3 mt-1">
@@ -73,5 +74,6 @@ export default async function EnquiriesPage(
         })}
       </Card>
     </main>
+  </>
   )
 }

@@ -18,7 +18,12 @@ create table if not exists public.enquiries (
   email           text,
   channel         text,          -- Facebook · Instagram · WhatsApp · Phone · Walk-in · Email · Website · Referral
   visa_interest   text,
+  -- 🔴 `office` HAS NO SOURCE. The ENQUIRIES tab has no office column; sheet
+  -- column G is LOCATION (Onshore/Offshore) and was wrongly mapped here until
+  -- 24 Aug 2026 (D-389). Left null: the manager policy below then denies, which
+  -- is the correct answer until a real source exists.
   office          text,          -- 🔑 denormalised so RLS never needs a join
+  location        text,          -- Onshore / Offshore — where the PERSON is
   assigned_to     text,
   status          text,          -- THEIR vocabulary (SOP-CI-001 10B)
   follow_up_due   date,

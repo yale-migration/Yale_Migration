@@ -1,6 +1,6 @@
 import { Card, CardHead, Chip, Row, Empty, type Tone } from './primitives'
 import type { S56Deadline } from '@/lib/data/types'
-import { daysBetween, fmtDate } from '@/lib/data/matters'
+import { daysBetween, daysUntil, fmtDate } from '@/lib/data/matters'
 
 /**
  * Section 56 deadlines — the highest-consequence card on the board.
@@ -39,8 +39,8 @@ export function S56Card({ rows, today, as }: {
       ) : (
         <div className="flex flex-col">
           {rows.map((d) => {
-            const internal = d.due_date_internal ? -(daysBetween(d.due_date_internal, today) ?? 0) : null
-            const legal = d.due_date_legal ? -(daysBetween(d.due_date_legal, today) ?? 0) : null
+            const internal = daysUntil(d.due_date_internal, today)
+            const legal = daysUntil(d.due_date_legal, today)
             const tone: Tone =
               internal === null ? 'neutral' : internal < 0 ? 'crit' : internal <= 7 ? 'crit'
               : internal <= 14 ? 'warn' : 'good'
@@ -51,6 +51,11 @@ export function S56Card({ rows, today, as }: {
             const label =
               internal === null ? 'NO DATE — not tracked'
               : internal < 0 ? `${Math.abs(internal)}d PAST internal`
+              // ⛔ `legal` is nullable INDEPENDENTLY of `internal`, and a template
+              // literal renders null as the four characters "null". This printed
+              // **"5d internal · nulld legal"** on the highest-consequence card
+              // on the board. (D-398)
+              : legal === null ? `${internal}d internal · legal date not extracted`
               : `${internal}d internal · ${legal}d legal`
 
             return (

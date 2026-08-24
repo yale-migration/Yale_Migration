@@ -1,7 +1,7 @@
 import { Card, CardHead, Row, StatTile } from './primitives'
 import { SignOut } from './sign-out'
 import type { Matter } from '@/lib/data/types'
-import { daysBetween } from '@/lib/data/matters'
+import { daysBetween, daysUntil } from '@/lib/data/matters'
 
 /**
  * The client portal.
@@ -42,7 +42,7 @@ export function ClientView({ matter, today, live = false }: {
 
   const owed = (matter.docs_outstanding ?? '')
     .split(',').map((s) => s.trim()).filter(Boolean)
-  const expiryLeft = matter.visa_expiry ? -(daysBetween(matter.visa_expiry, today) ?? 0) : null
+  const expiryLeft = daysUntil(matter.visa_expiry, today)
 
   return (
     <>

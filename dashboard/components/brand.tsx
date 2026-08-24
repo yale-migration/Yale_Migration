@@ -45,7 +45,10 @@ export function YaleMark({ className = '' }: { className?: string }) {
  */
 export function AuthShell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-dvh grid lg:grid-cols-[1.05fr_1fr]">
+    /* ⛔ `id="main"` — the layout's "Skip to content" link targets #main, and
+       AuthShell had no id at all, so on /login the skip link pointed at nothing.
+       That is the first screen a client ever sees. (D-398) */
+    <main id="main" className="min-h-dvh grid lg:grid-cols-[1.05fr_1fr]">
       <aside className="hidden lg:flex flex-col justify-between p-12 text-white
                         bg-[var(--navy)] relative overflow-hidden">
         {/* soft depth, no gradient wash */}

@@ -5,27 +5,45 @@
  * ImmiAccount logins. It gets tested against the names it exists to stop —
  * including the underscore spellings that defeated the first version of it.
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
+import { join } from 'node:path'
 
-const SEP = '[\\s_.\\-]*'
-const FORBIDDEN = new RegExp([
-  `pass${SEP}word`, 'passwd', 'pwd',
-  `user${SEP}name`, `login${SEP}id`,
-  'otp', `one${SEP}time`,
-  '\\bpin\\b', `${SEP}pin${SEP}`,
-  `security${SEP}question`, `secret${SEP}answer`,
-  'secret', 'token', 'credential', `immi${SEP}account`,
-].join('|'), 'i')
+/* ⛔ THE REAL FUNCTION, NEVER A COPY OF ITS REGEX. (D-399)
+ *
+ * This file used to redefine `SEP` and `FORBIDDEN` locally and run all 55
+ * blocks/allows assertions against **its own copy**. Proven by mutation:
+ * deleting `otp`, `one_time`, `security_question`, `secret_answer`, `secret`
+ * and `login_id` from the regex in `columns.ts` left the whole suite GREEN —
+ * and a sheet column named `OTP` or `security_question` would then flow
+ * straight into a web-facing Postgres. Two of those are names CLAUDE.md lists
+ * as never-read, guarding ~1,200 plaintext credentials.
+ *
+ * The old "keep the test's copy honest" guard checked only that a few
+ * SUBSTRINGS appeared anywhere in columns.ts — including inside prose comments,
+ * where `credential` and `pwd` both appear. It could not have failed.
+ *
+ * 🔑 A test that reimplements the thing it tests will always agree with itself.
+ */
+const outDir = join(process.cwd(), 'node_modules', '.cache', 'sync-columns-test')
+rmSync(outDir, { recursive: true, force: true })
+mkdirSync(outDir, { recursive: true })
+execFileSync('npx', ['tsc', 'sync/columns.ts', '--outDir', outDir, '--module', 'es2022',
+                     '--target', 'es2022', '--moduleResolution', 'bundler'], { stdio: 'pipe' })
+writeFileSync(join(outDir, 'package.json'), '{"type":"module"}')
+const REAL = await import(join(outDir, 'columns.js'))
 
-// Keep the test's copy honest — if the module's regex is edited and this is
-// not, the assertions below would be testing a regex nothing uses.
+/** Drives the REAL `assertNoCredentialColumns`. Blocked === it threw. */
+const FORBIDDEN = {
+  test(header) {
+    try { REAL.assertNoCredentialColumns([header]); return false } catch { return true }
+  },
+}
+
 const src = readFileSync(new URL('./columns.ts', import.meta.url), 'utf8')
-const inSync = ['passwd', 'pwd', 'immi${SEP}account', 'credential', 'token'].every((t) => src.includes(t))
 
 let pass = 0, fail = 0
 const check = (label, ok) => { console.log((ok ? '  PASS  ' : '  FAIL  ') + label); ok ? pass++ : fail++ }
-
-check('the module still contains the same terms this test asserts on', inSync)
 
 console.log('\n=== must BLOCK — every spelling a real sheet might use ===')
 for (const c of ['ImmiAccount Password', 'password', 'Password ', 'PASSWORD',

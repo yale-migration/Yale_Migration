@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { isLive } from '@/lib/supabase/config'
-import { getMatters, getS56Deadlines, getEnquiries } from '@/lib/data/matters'
+import { getMatters, getS56Deadlines, getEnquiries, brisbaneToday, brisbaneStamp } from '@/lib/data/matters'
 import { DEMO_VIEWERS } from '@/lib/data/fixtures'
 import { StaffView } from '@/components/staff-view'
 import { ClientView } from '@/components/client-view'
@@ -17,7 +17,7 @@ export default async function DashboardPage(
 ) {
   const sp = await searchParams
   const viewer = await resolveViewer(sp)
-  const today = new Date()
+  const today = brisbaneToday()   // ⛔ the practice's clock, not the server's (D-397)
 
   // ⚠️ A REAL CLIENT CAN LAND HERE — invited, signed in, not yet linked. The
   // first version was one line of grey text on an empty page, which reads as a
@@ -63,12 +63,20 @@ export default async function DashboardPage(
   const [matters, s56, enquiries] = await Promise.all([
     getMatters(viewer), getS56Deadlines(viewer), getEnquiries(viewer),
   ])
-  const stamp = today.toLocaleString('en-AU',
-    { day:'numeric', month:'short', hour:'numeric', minute:'2-digit' })
+  /* ⛔ NOT `today` — that is now Brisbane MIDNIGHT (brisbaneToday), so formatting
+     it would stamp every board "12:00 am". And not a bare toLocaleString either:
+     on Vercel that prints UTC, so a consultant at 3pm read "updated 5:05 am" and
+     reasonably concluded the board was ten hours stale. (D-397) */
+  const stamp = brisbaneStamp()
 
   return (
-    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <>
+      {/* ⛔ Nav sits OUTSIDE <main>. It used to be the first child of it, so the
+          layout's "Skip to content" link — which targets #main — landed the
+          keyboard user immediately before the nav they were trying to skip, and
+          nested a <nav> landmark inside <main>. (D-398) */}
       {viewer.role !== 'client' && <Nav current="board" as={sp.as} live={isLive()} />}
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="flex flex-wrap gap-4 items-end justify-between pb-4 border-b border-rule">
         <div>
           <h1 className="text-[24px]">Practice Board</h1>
@@ -115,5 +123,6 @@ export default async function DashboardPage(
         <span>Yale Migration and Education Consultants · MARN 1573959</span>
       </footer>
     </main>
+    </>
   )
 }

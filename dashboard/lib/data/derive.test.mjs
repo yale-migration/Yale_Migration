@@ -7,7 +7,7 @@
  * rungs of the follow-up ladder still apply. Until derive.ts was split out
  * they could not be tested without mocking a database, so none of them were.
  */
-import { daysBetween, isOpen, goingQuiet, expiringSoon, isLiveLead,
+import { daysBetween, daysUntil, isOpen, goingQuiet, expiringSoon, isLiveLead,
          recentEnquiries, outcomes, ladderFor, LADDER,
          dueWithin, isActive, isAwaiting } from './derive.ts'
 
@@ -135,6 +135,69 @@ console.log('\n=== active vs awaiting — views 1 and 2 were one number ===')
   check('🔴 every open matter is in exactly one of the two',
         rows.filter(isOpen).every((r) => isActive(r) !== isAwaiting(r)))
   check('a null stage counts as active, not lost', isActive(m({ processing_stage:null })))
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+ * 🔴 THE TWO DEFECTS THIS SUITE MISSED. Added 24 Aug 2026 (D-395).
+ *
+ * Both were found by audit, not by these tests — and both are the kind that
+ * produce a confident wrong number rather than an error. Every assertion below
+ * FAILS against the code as it stood before the fix.
+ * ══════════════════════════════════════════════════════════════════════════ */
+{
+  const T = new Date('2026-08-24T00:00:00')
+  const M = (o) => ({ client_code:'X', full_name:'X', office:'BRISBANE', team:null,
+    consultant:null, visa_type:null, processing_stage:null, visa_outcome:null,
+    visa_expiry:null, last_contact:null, next_due:null, docs_outstanding:null, ...o })
+
+  console.log('\n=== an unparseable date must stay UNKNOWN, never "0 days" ===')
+  check('daysUntil(garbage) is null', daysUntil('31/12/2026', T) === null,
+        String(daysUntil('31/12/2026', T)))
+  check('daysUntil(null) is null', daysUntil(null, T) === null)
+  check('daysUntil still works on a real date', daysUntil('2026-08-30', T) === 6,
+        String(daysUntil('2026-08-30', T)))
+  // ⛔ The old code was `-(daysBetween(x,T) ?? 0)`, which is -0 — and -0 passes
+  // every guard: `-0 <= 60` true, `-0 < 0` false, `${-0}` prints "0".
+  check('-0 would have slipped through the old guard (why this matters)',
+        (-0 <= 60) && !(-0 < 0) && `${-0}` === '0')
+  const bad = expiringSoon([M({ visa_expiry:'31/12/2026' })], T)
+  check('🔴 a malformed expiry is EXCLUDED, not shown as "0 days"', bad.length === 0,
+        JSON.stringify(bad.map((x) => x.left)))
+  const good = expiringSoon([M({ visa_expiry:'2026-09-10' })], T)
+  check('a real expiry is still included', good.length === 1 && good[0].left === 17,
+        JSON.stringify(good.map((x) => x.left)))
+  const dueBad = dueWithin([M({ next_due:'31/12/2026' })], T)
+  check('🔴 a malformed follow-up date is EXCLUDED, not shown as "Today"',
+        dueBad.length === 0, JSON.stringify(dueBad.map((x) => x.inDays)))
+
+  console.log('\n=== outcomes are compared case- and whitespace-insensitively ===')
+  const lower = outcomes([M({ visa_outcome:'granted' }), M({ visa_outcome:'granted' }),
+                          M({ visa_outcome:'Refused' })])
+  check('🔴 lowercase "granted" counts as granted — rate is 67, not 0',
+        lower.rate === 67, `rate=${lower.rate} granted=${lower.granted}`)
+  check('and it does NOT become a separate outcome row', lower.rows.length === 2,
+        JSON.stringify(lower.rows))
+  const spaced = outcomes([M({ visa_outcome:'Granted ' }), M({ visa_outcome:' Refused' })])
+  check('trailing/leading space does not split a row', spaced.rows.length === 2 && spaced.rate === 50,
+        `${JSON.stringify(spaced.rows)} rate=${spaced.rate}`)
+  check('rows are displayed with a tidy capital', lower.rows.every(([k]) => /^[A-Z]/.test(k)),
+        JSON.stringify(lower.rows))
+  check('⛔ still null, never 0, when nothing is decided', outcomes([M({})]).rate === null)
+  check('"pending" in any casing is still not a result',
+        outcomes([M({ visa_outcome:'pending' })]).decided === 0)
+
+  console.log('\n=== a granted matter is CLOSED whatever the casing ===')
+  check('🔴 isOpen("granted") is false — it was true, so it was chased forever',
+        isOpen(M({ visa_outcome:'granted' })) === false)
+  check('isOpen("WITHDRAWN") is false', isOpen(M({ visa_outcome:'WITHDRAWN' })) === false)
+  check('isOpen("Lodged") is true — a stage is not an outcome',
+        isOpen(M({ visa_outcome:null, processing_stage:'Lodged' })) === true)
+  check('a lowercase-granted file is not chased by goingQuiet',
+        goingQuiet([M({ visa_outcome:'granted', last_contact:'2026-01-01' })], T).length === 0)
+  check('🔴 isLiveLead("converted") is false',
+        isLiveLead({ status:'converted' }) === false)
+  check('isLiveLead(null) is true — no status means still live',
+        isLiveLead({ status:null }) === true)
 }
 
 console.log('\n' + pass + '/' + (pass + fail) + ' checks passed')

@@ -1081,3 +1081,29 @@ S56's TRN and file numbers never survive, and that "Onshore" can never reach a f
 **Dashboard: 185 unit checks (was 142) · 153 e2e · build · typecheck, all green.** ⬜ Still absent and
 honestly so: the Google Sheets reader. Every sync function takes rows as an argument and nothing
 fetches them — that needs credentials we do not hold.
+
+2026-08-24 | internal | **Full dashboard audit — four parallel reviewers, eleven confirmed defects, all
+fixed and regression-tested.** Security · data logic · UI/accessibility · test quality, each read-only;
+every finding re-verified before a line was changed.
+
+**The two that would have hurt a real person:** a malformed date rendered as *"Visa expires · 0 days"*
+on the CLIENT portal (`-(x ?? 0)` is `-0`, which passes every guard) — **found independently by two
+reviewers**; and a lowercase `granted` from the sheet printed *"0% granted"* on Robinder's own board
+while a granted file was chased for follow-up forever.
+
+**The two that would have broken go-live:** the s56 sync would have **deleted the deadline table and
+failed to refill it** (its office column is NOT NULL and the tracker tab has no office), leaving the
+board saying *"no Section 56 requests recorded"* over the statutory deadlines; and every day-count was
+**a day wrong for the whole Brisbane working day** because Vercel runs UTC.
+
+🔴 **And the test guarding ~1,200 plaintext credentials could not fail** — it ran against a copy of its
+own regex. Deleting `OTP` and `security_question` from the real one left the suite green.
+
+Also fixed: auth failed OPEN on a missing env var · any URL ending `.png` skipped auth entirely ·
+`/api/sync` was blocked by middleware so the hourly refresh was silently dead · default write grants
+never revoked · two empty states asserting safety over columns nobody checked · the branch page
+reporting 0 enquiries permanently · a skip link that skipped nothing.
+
+⚠️ **Two of the defects were my own from earlier today** — a half-applied normalisation, and a schema
+change made in `paste/` and not `migrations/`. And the layout tests turn out to have been measuring
+the **loading skeleton**, not the pages. D-394…D-399. **Unit 142 → 215 · e2e 153 · all green.**

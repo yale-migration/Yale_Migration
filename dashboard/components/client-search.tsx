@@ -3,7 +3,7 @@ import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Chip, type Tone } from './primitives'
 import type { Matter } from '@/lib/data/types'
-import { daysBetween } from '@/lib/data/derive'
+import { daysBetween, daysUntil } from '@/lib/data/derive'
 
 /**
  * The full client list, with search.
@@ -20,8 +20,13 @@ import { daysBetween } from '@/lib/data/derive'
  */
 export type ClientFilter = 'all' | 'open' | 'owing' | 'quiet' | 'expiring'
 
-export function ClientSearch({ matters, as, initial = 'all', today = new Date() }: {
-  matters: Matter[]; as?: string; initial?: ClientFilter; today?: Date
+/* ⛔ `today` is REQUIRED. It used to default to `new Date()`, which — because
+   this is a client component — was evaluated in the VISITOR'S browser, while
+   the stat tiles directly above it were computed on the server. Two clocks,
+   ten hours apart, on one screen: the "Going quiet" tile said 8 and the list it
+   opened shaded 9. Making it required means a page cannot forget it. (D-397) */
+export function ClientSearch({ matters, as, initial = 'all', today }: {
+  matters: Matter[]; as?: string; initial?: ClientFilter; today: Date
 }) {
   const [q, setQ] = useState('')
   const [office, setOffice] = useState<string>('all')
@@ -49,7 +54,7 @@ export function ClientSearch({ matters, as, initial = 'all', today = new Date() 
         if (!open || d === null || d <= 14) return false
       }
       if (only === 'expiring') {
-        const left = m.visa_expiry ? -(daysBetween(m.visa_expiry, today) ?? 0) : null
+        const left = daysUntil(m.visa_expiry, today)
         if (!open || left === null || left > 60) return false
       }
       if (!needle) return true

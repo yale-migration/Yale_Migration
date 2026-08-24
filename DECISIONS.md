@@ -7332,3 +7332,128 @@ S56's TRN / Application ID / File Number never survive, that Notes is not carrie
 **Dashboard totals: unit 142 → 185, e2e 153.** ⬜ **Still genuinely absent: the Google Sheets READER.**
 All three sync functions take `rows` and `headers` as arguments and nothing fetches them. That needs
 credentials we do not hold, and it is the honest remaining item — not the sync itself.
+
+## D-394 | The auth gate failed open, and any URL ending in .png skipped it entirely
+**24 Aug 2026.** Four parallel read-only audit agents ran over the dashboard. Security found two
+defects in `middleware.ts`, both verified by running the code rather than reading it.
+
+**1 · It failed OPEN.** `if (!url || !anonKey) return response` sat *above* the redirect-to-login
+block. One missing or misspelled environment variable on a deployed host produced **no authentication
+on any route** — and the same absence flips `isLive()` false, so `?as=director` starts working. A
+public dashboard with a role switcher. Bounded, because that state also serves fixtures rather than
+real rows, but a gate whose failure mode is "open" is not a gate, and the comment beneath it claimed
+"deny by default". Now: demo mode only when `NODE_ENV !== 'production'`; anywhere else it 500s.
+
+**2 · The matcher excluded any path ending in an image extension.** `.*\.(?:svg|png|…)$` — and `.*`
+crosses `/`. Verified by running the regex: `/dashboard/matter/YM-2026-00001.png` **SKIPPED**,
+`/dashboard/branch/BRISBANE.svg` **SKIPPED**. Those are live dynamic routes. Nothing leaked — all
+three re-check `resolveViewer` — but it made `lib/viewer.ts` the only thing holding the door, under a
+comment reading *"auth that skips a route is not auth"*. Anchored to `[^/]+\.` so only top-level
+assets skip.
+
+**3 · And `/api/sync` was INSIDE the matcher**, so every Vercel cron call was 307'd to `/login`. The
+hourly refresh was silently dead and the hardened guard from D-391 had never executed once. Added to
+the middleware allowlist: the control on that route is its secret, not a session.
+
+## D-395 | `-(daysBetween(x) ?? 0)` is `-0`, and -0 passes every guard
+**24 Aug 2026.** **Two independent audit agents found this separately**, which is the strongest signal
+in the set. Eight call sites wrote `x ? -(daysBetween(x, today) ?? 0) : null`, turning "this date could
+not be parsed" into **zero days from now** — and `-0` is not null, so every downstream guard waved it
+through: `-0 <= 14` true, `-0 < 0` false, `` `${-0}d` `` prints `"0d"`.
+
+One malformed spreadsheet cell therefore rendered a red **"Visa expiry · 0d"** — top of the board, top
+of *Needs you today*, and on the CLIENT portal as *"Current visa expires · 0 days"*. **An anxious person
+told their visa expires today because of a typo.** Replaced with a `daysUntil` helper that returns
+`number | null`; all nine occurrences now go through it.
+
+**Same pass, same file: outcomes were compared case-sensitively.** `visa_outcome` is plain `text` with
+no CHECK and the sync only trims. So `'granted'` fell out of the numerator while staying in the
+denominator and the board printed **"0% granted · 3 decided"** — the exact sentence `derive.ts` swears
+can never appear. It also made a granted matter read as OPEN, so it was chased forever. Normalised.
+
+⚠️ **And I applied that fix to three predicates and not to the other two.** `isActive`/`isAwaiting`
+stayed case-sensitive, so `'lodged'` counted as *being worked on* rather than *sitting with the
+Department* — caught later by the test-quality agent. **A half-applied fix is worse than none: the
+file now looks consistent.** 19 regression tests added; derive 45 → 64 checks.
+
+## D-396 | The s56 sync would have deleted the deadline table and failed to refill it
+**24 Aug 2026.** `s56_deadlines.office` is `not null`. The S56 TRACKER tab has **no office column** —
+19 headers, verified against `setup_s56_tracker_tab.gs`. `syncS56` has no stable key so it replaces
+the table: DELETE commits, INSERT violates NOT NULL and throws. **The Section 56 table would be left
+empty** — and the board renders that as *"No Section 56 requests have been recorded here yet"*: the
+reassuring sentence, over the statutory deadlines that carry the highest consequence on the system.
+Column made nullable (`08-s56-nullable-office.sql`); null fails closed exactly as D-389.
+
+**Same file revokes the default write grants.** `01-schema-and-rls.sql` calls the app "read-only as a
+structural fact". It was not — Supabase grants INSERT/UPDATE/DELETE on every public table to `anon`
+and `authenticated` by default and nothing had revoked them. Read-only rested entirely on RLS
+default-deny. Now two layers.
+
+## D-397 | Every day-count on the board was a day wrong for the whole Brisbane working day
+**24 Aug 2026.** Every page built `today` with a bare `new Date()`. Vercel runs **UTC**; Brisbane is
+UTC+10. So from 08:00 to 18:00 local — the entire working day — the server's calendar date was still
+yesterday: a follow-up due today read *"in 1d"*, one a day overdue read *"Today"*, a file 15 days quiet
+read 14 and **dropped out of Going quiet**, a Section 56 internal deadline falling today read
+*"1d internal"*, and this morning's enquiry was excluded from "last 7 days". The "updated" stamp
+printed UTC, so a consultant at 3pm read *"updated 5:05 am"* and reasonably concluded the board was
+stale. `brisbaneToday()` / `brisbaneStamp()` now pin the practice's clock.
+
+🔑 **`ClientSearch`'s `today` prop was made REQUIRED, and the compiler immediately found the two pages
+that were not passing it** — branch and consultant, where the default fired in the VISITOR'S browser
+while the tiles above were computed on the server. Two clocks ten hours apart on one screen: the tile
+said 8, the list beneath it shaded 9. **The type system found that, not a test.**
+
+## D-398 | Empty states that assert safety, and a skip link that skipped nothing
+**24 Aug 2026.** The UI agent's confirmed findings, fixed:
+- **Two empty states asserted safety over a column nobody had checked** — *"Nothing falls due in the
+  next fortnight"* and *"No visa expires in the next 60 days"*. Both derive functions silently drop
+  rows with a null date, so an unpopulated column produced total reassurance. The Going-quiet card
+  one line above already handled this correctly and the other two never got the counterpart.
+- **`${legal}d legal` printed "nulld legal"** on the s56 card when only the legal date was missing —
+  the two dates are independently nullable.
+- **The branch page filtered enquiries by `office`**, which is null on every live row, so every branch
+  read **0 enquiries permanently** and printed *"No enquiries recorded for this branch"* — a fact
+  about a column nobody collects, stated as a fact about the practice. The enquiries page was fixed
+  for this in D-389; the branch page and the board's enquiry card were both missed.
+- **`<main id="main">` wrapped `<Nav>`**, so "Skip to content" landed the keyboard user immediately
+  before the nav they were skipping, and nested a `<nav>` landmark inside `<main>`. `AuthShell` had no
+  id at all, so on `/login` — the first screen a client sees — the skip link pointed at nothing.
+
+⚠️ **Moving Nav out of `<main>` broke every page's horizontal overflow**: its `-mx-5` had been
+cancelling the parent's padding, and as a sibling it pushed the bar 20px past both viewport edges.
+**Caught by the overflow spec in 9 places across 3 browser projects** — the one part of this session
+where an existing test earned its keep immediately.
+
+## D-399 | The tests that could not fail — including the one guarding 1,200 credentials
+**24 Aug 2026.** The test-quality agent mutated the source and re-ran the suite. Four checks were
+passing without verifying anything.
+
+🔴 **The credential allowlist was tested against a COPY of its own regex.** All 55 assertions ran
+against a local redefinition in the test file. **Proven: deleting `otp`, `one_time`,
+`security_question`, `secret_answer`, `secret` and `login_id` from the real regex left the suite
+entirely green** — and a sheet column named `OTP` or `security_question` would then flow straight into
+a web-facing Postgres. Two of those are names CLAUDE.md lists as never-read, guarding ~1,200 plaintext
+credentials. The "keep the test's copy honest" guard only checked that a few substrings appeared
+*anywhere* in the module — including inside its prose comments, where they do. It could not have
+failed. Now the test drives `assertNoCredentialColumns` itself; re-mutated, it fails 4 checks.
+
+🔴 **Nothing tested that the guard was CALLED.** Deleting the call site left the suite green — the
+control was dead code as far as any test could see. Same for the empty-read abort (`if (false)` →
+green). Both were unreachable in a test because they sat either side of `createClient`. **`syncTable`
+was reordered so every check that needs no credentials runs first** — which is better design anyway:
+refuse bad data before reaching for the key that bypasses RLS. Both now tested.
+
+🔴 **The layout and contrast specs passed on a page that renders nothing.** Every one ends in
+`toEqual([])` over a `querySelectorAll` loop; zero elements ⇒ empty ⇒ pass. Proven by pointing them at
+a blank page: 7/7 green, *including* the invisible-button tripwire built for exactly that class.
+They now assert how many elements they examined — **and that assertion immediately exposed something
+worse: they had been measuring the LOADING SKELETON all along.** `page.goto` resolves on `load`, and
+every dashboard route is `force-dynamic` with a `loading.tsx`, so the DOM under test was a placeholder
+with no controls and no real text. `/dashboard/clients` reported **0 controls on a page that has 17**.
+Both specs now wait for the real page.
+
+Also: a test titled *"every tap target is at least 44px"* enforced 36. The name now matches the number.
+
+**Dashboard totals after this session: unit 142 → 215 · e2e 153 · build · typecheck, all green.**
+⬜ Still absent and honestly so: the Google Sheets reader, and the s56→matter linkage, which needs a
+Client Code column the tracker tab does not have.

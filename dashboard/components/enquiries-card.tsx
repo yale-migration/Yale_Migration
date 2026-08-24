@@ -34,7 +34,11 @@ export function EnquiriesCard({ rows, today }: { rows: Enquiry[]; today: Date })
                // in their own log are exactly that, and dropping them would
                // under-report the pipeline to the person judging it.
                title={e.name ?? e.phone ?? 'No name or number recorded'}
-               meta={<>{e.channel ?? '—'}{e.visa_interest ? ` · ${e.visa_interest}` : ''} · {e.office ?? '—'} · <Owner value={e.assigned_to} /></>}
+               /* ⛔ `location`, not `office` — same fix as the enquiries page (D-389).
+                  This card was missed, so after a live sync every row on the board
+                  showed a bare "—" where the page two clicks away showed real data. */
+               meta={<>{e.channel ?? '—'}{e.visa_interest ? ` · ${e.visa_interest}` : ''}
+                       {e.location ? ` · ${e.location}` : ''} · <Owner value={e.assigned_to} /></>}
                // Matches the enquiries page: a live lead reads green there and
                // read grey here, two clicks apart, for the same status.
                chip={dueIn !== null && dueIn > 0

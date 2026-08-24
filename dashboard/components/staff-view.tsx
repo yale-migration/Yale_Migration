@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Card, CardHead, Chip, Row, Empty, StatTile, Owner, type Tone } from './primitives'
 import { NeedsToday, type Action } from './needs-today'
 import { S56Card } from './s56-card'
-import { goingQuiet, expiringSoon, isOpen, daysBetween, dueWithin,
+import { goingQuiet, expiringSoon, isOpen, daysBetween, daysUntil, dueWithin,
          isActive, isAwaiting, fmtDate } from '@/lib/data/matters'
 import type { Matter, S56Deadline, Viewer, Enquiry } from '@/lib/data/types'
 import { OutcomesCard } from './outcomes-card'
@@ -29,12 +29,18 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
   // 🔴 Counted, not hidden. A file with no contact date is not a quiet file —
   // it is a file nobody can tell about, which is worse.
   const noContactDate = open.filter((m) => !m.last_contact).length
+  // ⛔ The same counterpart for the other two cards. Their empty states used to
+  // assert safety over a column that had never been checked — `dueWithin` and
+  // `expiringSoon` both silently drop rows with a null date, so an unpopulated
+  // column produced total reassurance. (D-398)
+  const noDueDate    = open.filter((m) => !m.next_due).length
+  const noExpiryDate = open.filter((m) => !m.visa_expiry).length
   const dueSoon = dueWithin(matters, today)
   const active = matters.filter(isActive)
   const awaiting = matters.filter(isAwaiting)
   const expiring = expiringSoon(matters, today)
   const s56Near = s56.filter((d) => {
-    const left = d.due_date_internal ? -(daysBetween(d.due_date_internal, today) ?? 0) : null
+    const left = daysUntil(d.due_date_internal, today)
     return left !== null && left <= 7
   })
 
@@ -140,7 +146,15 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
                     hint="Follow-ups falling due, soonest first. Overdue ones come first — a
                           follow-up that has already slipped belongs at the top of a chase list." />
           {dueSoon.length === 0 ? (
-            <Empty>Nothing falls due for a follow-up in the next fortnight.</Empty>
+            /* ⛔ Say what was CHECKED, not that everything is fine. `dueWithin`
+               drops every row with a null `next_due`, so with an unpopulated
+               column this printed total reassurance over a practice where
+               nothing was known. The Going-quiet card below already did this
+               correctly; these two did not. (D-398) */
+            <Empty>{noDueDate > 0
+              ? `No follow-up falls due in the next fortnight. ${noDueDate} open ${
+                  noDueDate === 1 ? 'file has' : 'files have'} no follow-up date recorded at all and cannot be checked.`
+              : 'Nothing falls due for a follow-up in the next fortnight.'}</Empty>
           ) : dueSoon.map(({ m, inDays }) => {
             const tone: Tone = inDays < 0 ? 'crit' : inDays <= 3 ? 'warn' : 'good'
             return <Row key={m.client_code} tone={tone} href={matterHref(m.client_code)}
@@ -183,7 +197,10 @@ export function StaffView({ matters, s56, enquiries, viewer, today, as }: {
           <CardHead title="Visa expiring soon" tag="next 60 days"
                     hint="Counted from the expiry date on each file." />
           {expiring.length === 0 ? (
-            <Empty>No visa on an open file expires in the next 60 days.</Empty>
+            <Empty>{noExpiryDate > 0
+              ? `No visa on an open file expires in the next 60 days. ${noExpiryDate} open ${
+                  noExpiryDate === 1 ? 'file has' : 'files have'} no expiry date recorded and cannot be checked.`
+              : 'No visa on an open file expires in the next 60 days.'}</Empty>
           ) : expiring.map(({ m, left }) => {
             // Already expired is its own state, not just "very soon".
             const tone: Tone = left < 0 ? 'crit' : left <= 14 ? 'crit' : left <= 30 ? 'warn' : 'good'

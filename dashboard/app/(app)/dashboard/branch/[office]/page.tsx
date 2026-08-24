@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
 import { isLive } from '@/lib/supabase/config'
 import { getMatters, getS56Deadlines, getEnquiries,
-         goingQuiet, expiringSoon, isOpen, outcomes } from '@/lib/data/matters'
+         goingQuiet, expiringSoon, isOpen, outcomes, brisbaneToday } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { ClientSearch } from '@/components/client-search'
 import { StatTile, Card, CardHead, Empty } from '@/components/primitives'
@@ -41,22 +41,30 @@ export default async function BranchPage(
   if (viewer.role === 'client') redirect(`/dashboard${sp.as ? `?as=${sp.as}` : ''}`)
 
   const office = decodeURIComponent(raw).toUpperCase()
-  const today = new Date()
+  const today = brisbaneToday()   // ⛔ the practice's clock, not the server's (D-397)
   const [all, s56All, enqAll] = await Promise.all([
     getMatters(viewer), getS56Deadlines(viewer), getEnquiries(viewer),
   ])
 
   const matters = all.filter((m) => m.office === office)
   const s56 = s56All.filter((d) => d.office === office)
-  const enq = enqAll.filter((e) => e.office === office)
+  /* 🔴 NOT filtered by office. The ENQUIRIES tab has no office column, so
+     `e.office` is null on every live row and this filter returned ZERO for
+     every branch, permanently — then printed "No enquiries recorded for this
+     branch", stating a fact about the practice that was really a fact about a
+     column nobody collects. The enquiries PAGE was fixed for this (D-389) and
+     this filter was missed. Leads are not branch-attributed yet, so the honest
+     move is to show the practice-wide figure and say so. (D-398) */
+  const enq = enqAll
   const open = matters.filter(isOpen)
   const quiet = goingQuiet(matters, today)
   const expiring = expiringSoon(matters, today)
   const o = outcomes(matters)
 
   return (
-    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <>
       <Nav current="clients" as={sp.as} live={isLive()} />
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}
               className="text-[13px] font-medium text-accent hover:underline underline-offset-4">← Board</Link>
@@ -90,8 +98,8 @@ export default async function BranchPage(
 
           <Card className="mb-4">
             <CardHead title="Live enquiries" tag={`${enq.length}`}
-                      hint="Leads attributed to this branch." />
-            {enq.length === 0 ? <Empty>No enquiries recorded for this branch.</Empty> : (
+                      hint="Practice-wide. Leads are not attributed to a branch — the enquiry log has no branch column." />
+            {enq.length === 0 ? <Empty>No enquiries in the log yet.</Empty> : (
               <p className="text-[13px] text-ink-2 py-1">
                 {enq.length} in the log ·{' '}
                 <Link href={`/dashboard/enquiries${sp.as ? `?as=${sp.as}` : ''}`}
@@ -100,9 +108,10 @@ export default async function BranchPage(
             )}
           </Card>
 
-          <ClientSearch matters={matters} as={sp.as} />
+          <ClientSearch matters={matters} as={sp.as} today={today} />
         </>
       )}
     </main>
+  </>
   )
 }

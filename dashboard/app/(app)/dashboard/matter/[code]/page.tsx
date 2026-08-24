@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getMatter, getMatterS56, daysBetween, isOpen, fmtDate as fmt } from '@/lib/data/matters'
+import { getMatter, getMatterS56, daysBetween, daysUntil, isOpen, fmtDate as fmt, brisbaneToday } from '@/lib/data/matters'
 import { Card, CardHead, Chip, Row, StatTile, type Tone } from '@/components/primitives'
 import { S56Ladder } from '@/components/s56-ladder'
 import { resolveViewer } from '@/lib/viewer'
@@ -28,7 +28,7 @@ export default async function MatterPage(
   const { code } = await params
   const sp = await searchParams
   const viewer = await resolveViewer(sp)
-  const today = new Date()
+  const today = brisbaneToday()   // ⛔ the practice's clock, not the server's (D-397)
   const back = `/dashboard${sp.as ? `?as=${sp.as}` : ''}`
 
   const matter = viewer ? await getMatter(decodeURIComponent(code), viewer) : null
@@ -51,7 +51,7 @@ export default async function MatterPage(
   const s56 = await getMatterS56(matter.client_code, viewer)
   const owed = (matter.docs_outstanding ?? '').split(',').map((s) => s.trim()).filter(Boolean)
   const quietDays = daysBetween(matter.last_contact, today)
-  const expiryLeft = matter.visa_expiry ? -(daysBetween(matter.visa_expiry, today) ?? 0) : null
+  const expiryLeft = daysUntil(matter.visa_expiry, today)
   const open = isOpen(matter)
 
   const expTone: Tone =
@@ -109,7 +109,7 @@ export default async function MatterPage(
             <CardHead title="Section 56 — Department deadlines" tag="legal"
                       hint="Miss one and the Department decides on what it already has, without asking again." />
             {s56.map((d) => {
-              const left = d.due_date_internal ? -(daysBetween(d.due_date_internal, today) ?? 0) : null
+              const left = daysUntil(d.due_date_internal, today)
               const tone: Tone = left === null ? 'crit' : left < 0 || left <= 7 ? 'crit'
                                 : left <= 14 ? 'warn' : 'good'
               return (

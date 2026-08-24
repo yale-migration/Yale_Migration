@@ -13,6 +13,24 @@ import { test, expect } from '@playwright/test'
  * They run in EVERY project, so light mode is held to the same bar.
  */
 
+/**
+ * 🔴 GO TO THE PAGE, NOT ITS SKELETON. (D-399)
+ *
+ * `page.goto(path)` resolves on `load`, and every dashboard route is
+ * `force-dynamic` with a `loading.tsx`. So at that moment the DOM is the
+ * SKELETON — no links, no buttons, no real text. Every layout and contrast
+ * check here has been measuring a placeholder, and passing, because a skeleton
+ * has no small tap targets and no unreadable copy.
+ *
+ * It only surfaced once the specs were made to assert they had examined
+ * something: `/dashboard/clients` reported **0 controls** on a page that has 17.
+ */
+async function open(page: import('@playwright/test').Page, path: string) {
+  await page.goto(path, { waitUntil: 'networkidle' })
+  // The skeletons carry role="status"; the real page does not.
+  await page.locator('main').first().waitFor({ state: 'visible' })
+}
+
 const PAGES = ['/login', '/dashboard', '/dashboard/clients',
                '/dashboard/enquiries', '/dashboard?as=client']
 
@@ -49,13 +67,15 @@ const RATIO = `(() => {
 
 for (const path of PAGES) {
   test(`${path} — no text is invisible against its background`, async ({ page }) => {
-    await page.goto(path)
-    const bad = await page.evaluate(`(() => {
+    await open(page, path)
+    const res = await page.evaluate(`(() => {
       const { parse, bgOf, ratio } = ${RATIO}
       const out = []
+      let examined = 0
       for (const el of document.querySelectorAll('body *')) {
         const text = el.textContent?.trim()
         if (!text || el.children.length) continue
+        examined++
         const cs = getComputedStyle(el)
         if (cs.visibility === 'hidden' || cs.display === 'none' || cs.opacity === '0') continue
         const r = el.getBoundingClientRect()
@@ -69,21 +89,27 @@ for (const path of PAGES) {
         // which is how a noisy gate becomes no gate.
         if (c < 1.6) out.push(Math.round(c * 100) / 100 + ':1 "' + text.slice(0, 30) + '"')
       }
-      return [...new Set(out)]
-    })()`)
-    expect(bad, `${path}: ${(bad as string[]).join(' | ')}`).toEqual([])
+      return { bad: [...new Set(out)], examined }
+    })()`) as { bad: string[]; examined: number }
+    // ⛔ A zero-element loop yields [] and passes. Proven: pointing this spec at
+    // a page returning <></> gave 7/7 green, including the invisible-button
+    // tripwire built for exactly that class. Assert we LOOKED. (D-399)
+    expect(res.examined, `${path}: examined no text at all`).toBeGreaterThan(5)
+    expect(res.bad, `${path}: ${res.bad.join(' | ')}`).toEqual([])
   })
 
   test(`${path} — every control is either readable or visibly a control`, async ({ page }) => {
-    await page.goto(path)
-    const bad = await page.evaluate(`(() => {
+    await open(page, path)
+    const res = await page.evaluate(`(() => {
       const { parse, bgOf, ratio } = ${RATIO}
       const out = []
+      let examined = 0
       for (const el of document.querySelectorAll('button, a[href], input[type=submit]')) {
         const r = el.getBoundingClientRect()
         if (r.width === 0 || r.height === 0) continue
         const cs = getComputedStyle(el)
         if (cs.visibility === 'hidden' || cs.opacity === '0') continue
+        examined++
         const label = (el.textContent || el.value || '').trim()
         const fg = parse(cs.color)
         if (label) {
@@ -103,9 +129,10 @@ for (const path of PAGES) {
           }
         }
       }
-      return [...new Set(out)]
-    })()`)
-    expect(bad, `${path}: ${(bad as string[]).join(' | ')}`).toEqual([])
+      return { bad: [...new Set(out)], examined }
+    })()`) as { bad: string[]; examined: number }
+    expect(res.examined, `${path}: examined no controls at all`).toBeGreaterThan(0)
+    expect(res.bad, `${path}: ${res.bad.join(' | ')}`).toEqual([])
   })
 }
 

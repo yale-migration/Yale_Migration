@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
 import { isLive } from '@/lib/supabase/config'
-import { getMatters } from '@/lib/data/matters'
+import { getMatters, brisbaneToday } from '@/lib/data/matters'
 import { ClientSearch, type ClientFilter } from '@/components/client-search'
 import { Nav } from '@/components/nav'
 
@@ -27,8 +27,9 @@ export default async function ClientsPage(
     ? (sp.filter as ClientFilter) : 'all'
 
   return (
-    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <>
       <Nav current="clients" as={sp.as} live={isLive()} />
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <h1 className="text-[24px]">Clients</h1>
         <p className="text-[12.5px] text-ink-3 mt-1">
@@ -38,7 +39,8 @@ export default async function ClientsPage(
           {' '}Search by name, code, visa type or consultant.
         </p>
       </header>
-      <ClientSearch matters={matters} as={sp.as} initial={filter} today={new Date()} />
+      <ClientSearch matters={matters} as={sp.as} initial={filter} today={brisbaneToday()} />
     </main>
+  </>
   )
 }

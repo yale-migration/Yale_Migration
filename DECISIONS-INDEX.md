@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 592K /     7334 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 596K /     7459 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 11:21
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 13:07
 
 | # | Decision |
 |---|---|
@@ -389,3 +389,9 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 11:2
 | **D-390** | Dark mode had no test, and the brand wordmark was invisible in it |
 | **D-391** | /api/sync could be called by anyone with a spoofed header, and it holds the service-role key |
 | **D-392** | The s56 and enquiry sync paths were recorded as done. Only the allowlists existed |
+| **D-394** | The auth gate failed open, and any URL ending in .png skipped it entirely |
+| **D-395** | `-(daysBetween(x) ?? 0)` is `-0`, and -0 passes every guard |
+| **D-396** | The s56 sync would have deleted the deadline table and failed to refill it |
+| **D-397** | Every day-count on the board was a day wrong for the whole Brisbane working day |
+| **D-398** | Empty states that assert safety, and a skip link that skipped nothing |
+| **D-399** | The tests that could not fail — including the one guarding 1,200 credentials |

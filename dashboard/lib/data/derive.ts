@@ -10,6 +10,43 @@ import type { Matter, Enquiry, S56Deadline } from './types'
  * not be tested without mocking a database, so they never were.
  */
 
+/**
+ * 🔴 THE PRACTICE'S CLOCK, NOT THE SERVER'S. Brisbane, UTC+10, no DST. (D-397)
+ *
+ * Every page built `today` with a bare `new Date()`. Vercel functions run in
+ * **UTC**, so for the first ten hours of every Brisbane working day — 08:00 to
+ * 18:00 local, i.e. the entire working day — the server's calendar date was
+ * still *yesterday*, and every day-count on the board was off by one:
+ *
+ *   · a follow-up due TODAY rendered as "in 1d"
+ *   · one that was a day OVERDUE rendered as "Today"
+ *   · a file 15 days quiet read as 14 and dropped OUT of Going quiet
+ *   · a Section 56 internal deadline falling today rendered "1d internal"
+ *   · an enquiry logged this morning was excluded from "last 7 days"
+ *
+ * The last two are the ones that matter: a statutory deadline shown as a day
+ * further away than it is, and today's lead invisible on the lead board.
+ *
+ * ⛔ Returns LOCAL midnight of the Brisbane civil date, because `daysBetween`
+ * parses its input as local midnight too — both sides must be in the same
+ * frame or the subtraction is meaningless.
+ */
+export function brisbaneToday(now: Date = new Date()): Date {
+  // en-CA gives YYYY-MM-DD, which is the format daysBetween already parses.
+  const ymd = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Australia/Brisbane', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(now)
+  return new Date(ymd + 'T00:00:00')
+}
+
+/** The "updated at" stamp, in the reader's own timezone rather than the server's. */
+export function brisbaneStamp(now: Date = new Date()): string {
+  return now.toLocaleString('en-AU', {
+    timeZone: 'Australia/Brisbane',
+    day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit',
+  })
+}
+
 export function daysBetween(from: string | null, to: Date): number | null {
   if (!from) return null
   const d = new Date(from + 'T00:00:00')
@@ -17,8 +54,40 @@ export function daysBetween(from: string | null, to: Date): number | null {
   return Math.floor((to.getTime() - d.getTime()) / 86_400_000)
 }
 
-const OPEN_EXCLUDED = ['Granted', 'Refused', 'Withdrawn']
-export const isOpen = (m: Matter) => !OPEN_EXCLUDED.includes(m.visa_outcome ?? '')
+/**
+ * 🔴 Days from `to` UNTIL `from`. Null stays null — that is the whole point.
+ *
+ * Eight call sites used to write `daysUntil(x, today)`, which turns
+ * "this date could not be parsed" into "**zero days from now**". And because
+ * `-(null ?? 0)` is `-0`, not null, every downstream guard waved it through:
+ * `-0 <= 14` is true, `-0 < 0` is false, and `` `${-0}d` `` prints "0d".
+ *
+ * So one malformed cell in a spreadsheet rendered a red **"Visa expiry · 0d"**
+ * tile — top of the board, top of "Needs you today", and on the CLIENT portal
+ * as *"Current visa expires · 0 days"*. An anxious person was told their visa
+ * expires today because of a typo. (D-395)
+ *
+ * ⛔ Every caller must handle null. That is not friction; it is the requirement.
+ */
+export function daysUntil(from: string | null, to: Date): number | null {
+  const behind = daysBetween(from, to)
+  return behind === null ? null : -behind
+}
+
+/**
+ * 🔴 Outcomes are compared CASE- AND WHITESPACE-INSENSITIVELY (D-395).
+ *
+ * `visa_outcome` is plain `text` with no CHECK constraint, and the sync's
+ * `clean()` only trims — it never normalises case. So `'granted'` from the
+ * sheet was not `'Granted'`: it fell out of the numerator while staying in the
+ * denominator, and the board printed **"0% granted · 3 decided"** — the exact
+ * sentence this file swears can never appear. It also made a granted matter
+ * read as OPEN, so it was chased for follow-up forever.
+ */
+const norm = (v: string | null | undefined) => (v ?? '').trim().toLowerCase()
+
+const OPEN_EXCLUDED = ['granted', 'refused', 'withdrawn']
+export const isOpen = (m: Matter) => !OPEN_EXCLUDED.includes(norm(m.visa_outcome))
 
 /** Open files with no contact for over `threshold` days. */
 export function goingQuiet(matters: Matter[], today: Date, threshold = 14) {
@@ -33,13 +102,13 @@ export function goingQuiet(matters: Matter[], today: Date, threshold = 14) {
 export function expiringSoon(matters: Matter[], today: Date, within = 60) {
   return matters
     .filter(isOpen)
-    .map((m) => ({ m, left: m.visa_expiry ? -(daysBetween(m.visa_expiry, today) ?? 0) : null }))
+    .map((m) => ({ m, left: daysUntil(m.visa_expiry, today) }))
     .filter((x): x is { m: Matter; left: number } => x.left !== null && x.left <= within)
     .sort((a, b) => a.left - b.left)
 }
 
-const CLOSED_LEAD = ['Not Proceeding', 'Lost Lead', 'Converted']
-export const isLiveLead = (e: Enquiry) => !CLOSED_LEAD.includes(e.status ?? '')
+const CLOSED_LEAD = ['not proceeding', 'lost lead', 'converted']
+export const isLiveLead = (e: Enquiry) => !CLOSED_LEAD.includes(norm(e.status))
 
 export function recentEnquiries(rows: Enquiry[], today: Date, days = 7) {
   return rows.filter((e) => {
@@ -53,13 +122,18 @@ export function outcomes(matters: Matter[]) {
   const counts = new Map<string, number>()
   for (const m of matters) {
     const o = m.visa_outcome
-    if (!o || o === 'Pending') continue      // undecided is not a result
-    counts.set(o, (counts.get(o) ?? 0) + 1)
+    if (!o || norm(o) === 'pending') continue      // undecided is not a result
+    // Key on the normalised value so 'Granted' and 'granted ' are ONE row, and
+    // display the tidy form rather than whichever spelling arrived first.
+    const key = norm(o)
+    counts.set(key, (counts.get(key) ?? 0) + 1)
   }
   const decided = [...counts.values()].reduce((a, b) => a + b, 0)
-  const granted = counts.get('Granted') ?? 0
+  const granted = counts.get('granted') ?? 0
   return {
-    rows: [...counts.entries()].sort((a, b) => b[1] - a[1]),
+    rows: [...counts.entries()]
+      .map(([k, n]) => [k.charAt(0).toUpperCase() + k.slice(1), n] as [string, number])
+      .sort((a, b) => b[1] - a[1]),
     decided,
     granted,
     // ⚠️ null, NEVER 0. A practice that has decided nothing has no grant rate,
@@ -121,7 +195,7 @@ export function fmtDate(d: string | null | undefined): string {
 export function dueWithin(matters: Matter[], today: Date, days = 14) {
   return matters
     .filter(isOpen)
-    .map((m) => ({ m, inDays: m.next_due ? -(daysBetween(m.next_due, today) ?? 0) : null }))
+    .map((m) => ({ m, inDays: daysUntil(m.next_due, today) }))
     // Overdue included — a follow-up that has already slipped belongs at the top
     // of a chase list, not filtered out of it.
     .filter((x): x is { m: Matter; inDays: number } => x.inDays !== null && x.inDays <= days)
@@ -136,6 +210,13 @@ export function dueWithin(matters: Matter[], today: Date, days = 14) {
  * WORKED, versus one lodged and waiting on the Department. Nothing to do at all
  * on the second kind — which is exactly why they should not sit in one number.
  */
-const AWAITING = ['Lodged', 'Awaiting Outcome']
-export const isActive   = (m: Matter) => isOpen(m) && !AWAITING.includes(m.processing_stage ?? '')
-export const isAwaiting = (m: Matter) => isOpen(m) &&  AWAITING.includes(m.processing_stage ?? '')
+// ⛔ NORMALISED, like isOpen and isLiveLead. D-395 fixed those three and left
+// these two case-SENSITIVE — a half-applied fix, which is worse than none,
+// because the file now looks consistent. `'lodged'` from the sheet counted as
+// ACTIVE ("being worked on now") instead of AWAITING ("sitting with the
+// Department, nothing to do"), so a lodged file appeared on the team's own
+// workload. And the test invariant "exactly one of the two" still passed,
+// because it is satisfied by the wrong bucket just as well as the right one.
+const AWAITING = ['lodged', 'awaiting outcome']
+export const isActive   = (m: Matter) => isOpen(m) && !AWAITING.includes(norm(m.processing_stage))
+export const isAwaiting = (m: Matter) => isOpen(m) &&  AWAITING.includes(norm(m.processing_stage))

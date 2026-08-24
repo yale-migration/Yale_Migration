@@ -10,16 +10,31 @@
  * ⛔ INVENTED PEOPLE ONLY. No real client data touches this file.
  */
 import { execFileSync } from 'node:child_process'
-import { writeFileSync, mkdtempSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { writeFileSync, readFileSync, mkdirSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 
-const dir = mkdtempSync(join(tmpdir(), 'sync-'))
-execFileSync('npx', ['tsc', 'sync/columns.ts', '--outDir', dir,
-                     '--module', 'es2022', '--target', 'es2022',
+// 🔑 Compile and import the REAL modules — `buildRecords` from sync.ts, not a
+// reimplementation of it here. A copy of the logic in the test drifts from the
+// code and then the two agree with each other while both are wrong, which is
+// this project's most expensive recurring bug (LESSONS § 1).
+// ⚠️ Emit INSIDE the project, not into /tmp: sync.ts imports @supabase/supabase-js,
+// and Node resolves node_modules by walking UP from the importing file. From /tmp
+// there is nothing to walk up to.
+const dir = join(process.cwd(), 'node_modules', '.cache', 'sync-build-test')
+rmSync(dir, { recursive: true, force: true })
+mkdirSync(dir, { recursive: true })
+execFileSync('npx', ['tsc', 'sync/columns.ts', 'sync/sync.ts', '--outDir', dir,
+                     '--module', 'es2022', '--target', 'es2022', '--skipLibCheck',
                      '--moduleResolution', 'bundler'], { stdio: 'pipe' })
 writeFileSync(join(dir, 'package.json'), '{"type":"module"}')
+// tsc's bundler resolution emits extensionless relative imports; Node's ESM
+// loader requires the extension. One rewrite, rather than a second tsconfig.
+{
+  const f = join(dir, 'sync.js')
+  writeFileSync(f, readFileSync(f, 'utf8').replace(/from '\.\/columns'/g, "from './columns.js'"))
+}
 const C = await import(join(dir, 'columns.js'))
+const { buildRecords, syncS56, syncEnquiries } = await import(join(dir, 'sync.js'))
 
 let pass = 0, fail = 0
 const check = (label, ok, detail) => {
@@ -27,21 +42,9 @@ const check = (label, ok, detail) => {
   ok ? pass++ : fail++
 }
 
-// Reproduce buildRecords' contract over the REAL allowlists. Keeping this in
-// step with sync.ts is enforced by the shape assertions at the end.
-const idx = (l) => [...l].reduce((n, c) => n * 26 + (c.charCodeAt(0) - 64), 0) - 1
-const clean = (v) => { const s = String(v ?? '').trim(); return s === '' ? null : s }
-function build(rows, map, required) {
-  const cols = C.syncedColumns(map)
-  const records = []; let skipped = 0
-  for (const row of rows) {
-    const rec = {}
-    for (const { letter, col } of cols) rec[col] = clean(row[idx(letter)])
-    if (!rec[required]) { skipped++; continue }
-    records.push(rec)
-  }
-  return { records, skipped }
-}
+/** Thin adapter over the REAL buildRecords so the calls below read cleanly. */
+const build = (rows, map, required, notNull) =>
+  buildRecords(rows, { map, required, notNull })
 
 /* ── ENQUIRIES ──────────────────────────────────────────────────────────── */
 // A · Date | B Name | C Phone | D Email | E Channel | F Visa Interest
@@ -114,6 +117,57 @@ for (const bad of ['Password', 'portal_pwd', 'user_name', 'ImmiAccount', 'Phone 
 check('a clean header set does not abort', (() => {
   try { C.assertNoCredentialColumns(['Date', 'Name', 'Location']); return true } catch { return false }
 })())
+
+/* ── one bad row must not take the batch with it ────────────────────────── */
+console.log('\n=== a row that would violate NOT NULL is skipped, not shipped (D-393) ===')
+// MASTER: A code, ..., J Office. This row has a code and NO office.
+const noOffice = ['YM-2026-00002', '', 'No Office Person', '', '', 'x@example.com', '',
+                  '500', '', '', 'Filipino', 'Star', 'Lodged']
+const batch = build([masterRow, noOffice], C.MASTER_ALLOWLIST, 'client_code', ['full_name', 'office'])
+check('the good row still syncs — one bad row does not abort the batch',
+      batch.records.length === 1 && batch.records[0].client_code === 'YM-2026-00001',
+      `${batch.records.length} kept`)
+check('the bad row is skipped and COUNTED', batch.skipped === 1, `skipped=${batch.skipped}`)
+check('a warning NAMES the row so it can be fixed in the sheet',
+      batch.warnings.some((w) => w.includes('YM-2026-00002')), JSON.stringify(batch.warnings))
+check('the warning says the row was SKIPPED, not that it is merely invisible',
+      batch.warnings.some((w) => /SKIPPED/.test(w)), JSON.stringify(batch.warnings))
+check('nothing with a null office reaches the records',
+      batch.records.every((r) => r.office), JSON.stringify(batch.records.map((r) => r.office)))
+
+console.log('\n=== enquiries and s56 enforce their own NOT NULL column ===')
+const enqNoDate = build([enqRow, ['', 'Nameless']], C.ENQUIRY_ALLOWLIST, 'enquiry_date', ['enquiry_date'])
+check('an enquiry with no date is skipped', enqNoDate.records.length === 1)
+const s56NoName = build([s56Row, ['2026-08-01T09:00', '']], C.S56_ALLOWLIST, 'client_name', ['client_name'])
+check('an s56 row with no client name is skipped', s56NoName.records.length === 1)
+
+/* ── the two guards that were dead code as far as any test could tell ────── */
+console.log('\n=== the credential guard is actually CALLED by the sync (D-399) ===')
+// ⛔ These run with NO service-role key on purpose. The guards were reordered
+// ahead of `createClient` precisely so this is reachable: deleting the
+// `assertNoCredentialColumns` call, or neutering the empty-read abort, used to
+// leave the whole suite green because neither could be reached without a live key.
+async function throwsWith(fn, needle) {
+  try { await fn(); return { threw: false, msg: '(did not throw)' } }
+  catch (e) { return { threw: String(e.message).includes(needle), msg: e.message.slice(0, 90) } }
+}
+for (const [name, fn] of [['syncS56', syncS56], ['syncEnquiries', syncEnquiries]]) {
+  const r = await throwsWith(() => fn([['x']], ['Date', 'ImmiAccount Password']), 'credentials')
+  check(`${name} aborts on a credential column BEFORE it asks for the key`, r.threw, r.msg)
+}
+
+console.log('\n=== an empty read must never overwrite a populated table ===')
+for (const [name, fn] of [['syncS56', syncS56], ['syncEnquiries', syncEnquiries]]) {
+  const r = await throwsWith(() => fn([], ['Date', 'Name']), 'Refusing to sync an empty set')
+  check(`${name} refuses 0 usable rows`, r.threw, r.msg)
+  // 🔴 The tables with no stable key are REPLACED (delete then insert). Without
+  // this abort, one transient Sheets failure returning zero rows empties the
+  // s56 table — which the board then renders as "no deadlines recorded yet".
+}
+const allSkipped = await throwsWith(
+  () => syncEnquiries([['', 'no date'], ['', 'also no date']], ['Date', 'Name']),
+  'Refusing to sync an empty set')
+check('rows that all get skipped also count as an empty read', allSkipped.threw, allSkipped.msg)
 
 console.log(`\n${pass}/${pass + fail} checks passed`)
 process.exit(fail === 0 ? 0 : 1)

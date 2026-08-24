@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { resolveViewer } from '@/lib/viewer'
 import { isLive } from '@/lib/supabase/config'
-import { getMatters, goingQuiet, expiringSoon, isOpen } from '@/lib/data/matters'
+import { getMatters, goingQuiet, expiringSoon, isOpen, brisbaneToday } from '@/lib/data/matters'
 import { Nav } from '@/components/nav'
 import { ClientSearch } from '@/components/client-search'
 import { StatTile, Card, Empty } from '@/components/primitives'
@@ -39,7 +39,7 @@ export default async function ConsultantPage(
 
   const name = decodeURIComponent(raw)
   const unassigned = name.toLowerCase() === 'unassigned'
-  const today = new Date()
+  const today = brisbaneToday()   // ⛔ the practice's clock, not the server's (D-397)
   const all = await getMatters(viewer)
   const matters = all.filter((m) => unassigned ? !m.consultant : m.consultant === name)
   const open = matters.filter(isOpen)
@@ -47,8 +47,9 @@ export default async function ConsultantPage(
   const expiring = expiringSoon(matters, today)
 
   return (
-    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
+    <>
       <Nav current="clients" as={sp.as} live={isLive()} />
+    <main id="main" className="max-w-[1240px] mx-auto px-5 pt-5 pb-16">
       <header className="my-4">
         <Link href={`/dashboard${sp.as ? `?as=${sp.as}` : ''}`}
               className="text-[13px] font-medium text-accent hover:underline underline-offset-4">← Board</Link>
@@ -79,9 +80,10 @@ export default async function ConsultantPage(
                       value={open.filter((m) => m.docs_outstanding).length}
                       sub="waiting on the client" tone="warn" />
           </div>
-          <ClientSearch matters={matters} as={sp.as} />
+          <ClientSearch matters={matters} as={sp.as} today={today} />
         </>
       )}
     </main>
+  </>
   )
 }

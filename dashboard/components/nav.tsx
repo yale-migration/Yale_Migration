@@ -15,8 +15,13 @@ export function Nav({ current, as, live = false }: {
   // Sticky: the board scrolls well past this, and losing the way back to
   // Clients halfway down a list is how people start using the back button as
   // navigation. print-hide because a printed page needs no nav.
+  // ⛔ NO `-mx-5` here. It cancelled the padding of the <main> this used to sit
+  // inside; now that Nav is a SIBLING of <main> (D-398) that negative margin
+  // pushed the bar 20px past both viewport edges and every page scrolled
+  // sideways — caught by the overflow spec in 9 places across 3 projects.
+  // The bar is full-bleed by nature; the inner <nav> already centres itself.
   return (
-    <div className="sticky top-0 z-30 -mx-5 mb-1 border-b border-rule
+    <div className="sticky top-0 z-30 mb-1 border-b border-rule
                     bg-[var(--paper)]/95 backdrop-blur print-hide
                     supports-[backdrop-filter]:bg-[var(--paper)]/80">
       {/* Full-bleed backdrop, capped inner row. The bar itself was 1240px wide,
