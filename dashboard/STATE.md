@@ -71,7 +71,38 @@ pill — distinguished by bold accent text, not by fill). The fill assertion was
 gate is the same failure as a blind one**: nine phantoms would have deleted the file inside a week
 and taken the real defect with it. Same reason the bar is 1.6:1 and not WCAG's 4.5:1.
 
-**Green at 24 Aug: typecheck · 142 unit (45 derive + 97 sync) · production build · 153 e2e.**
+## 24 Aug, second pass — full end-to-end audit (D-391, D-392)
+
+🔴 **`/api/sync` was callable by anyone.** Its guard accepted ANY request carrying an
+`x-vercel-cron` header, secret or not — and that route runs with the service-role key, which
+bypasses RLS entirely. Proven by probe: two ways in. Nothing was exposed because the route returns
+503 until the Sheets reader exists — ⛔ **it would have gone live at exactly the moment nobody was
+re-reading the guard.** Now `app/api/sync/guard.ts`: secret always required, `timingSafeEqual`,
+and **503 (not 401) when `SYNC_SECRET` is unset** so a misconfigured deploy is visible rather than
+quietly open. 17 tests.
+
+🔴 **`S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST` were used by nothing but the test file.** This file
+recorded the s56/enquiries sync path as ✅ done on 20 Aug; only the constants had been written.
+`syncS56` and `syncEnquiries` now exist over one parameterised `syncTable` — not three copies, so
+the empty-read guard has one definition. Both tabs lack a stable key, so they replace rather than
+upsert.
+
+🔑 **`buildRecords` is extracted and pure**, which matters more than either fix: D-389's mapping bug
+was invisible until a real sync ran against a real sheet. The transformation is now testable with no
+database — `sync/build.test.mjs`, 26 checks on rows shaped like the live tabs.
+
+### ⬜ The honest remaining gap
+**There is no Google Sheets READER.** All three sync functions take `rows` and `headers` as
+arguments; nothing fetches them. That needs credentials we do not hold. **The sync is written; the
+thing that feeds it is not.**
+
+## Verified green — 24 Aug
+| | |
+|---|---|
+| typecheck · production build | ✅ |
+| unit | **185** — 45 derive · 97 sync columns · 26 sync build · 17 sync guard |
+| e2e | **153** across desktop · mobile 390px · dark |
+| every new guard | negative-tested — it fails when the defect is reintroduced |
 
 ## Deep audit, 20 Aug — what two specialist reviews found
 

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 588K /     7273 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 592K /     7334 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 11:10
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 11:21
 
 | # | Decision |
 |---|---|
@@ -387,3 +387,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-24 11:1
 | **D-388** | The unbilled position had five owners and no reader, so it never got said |
 | **D-389** | The dashboard mapped ENQUIRIES `Location` to `office`, and RLS would have denied in silence |
 | **D-390** | Dark mode had no test, and the brand wordmark was invisible in it |
+| **D-391** | /api/sync could be called by anyone with a spoofed header, and it holds the service-role key |
+| **D-392** | The s56 and enquiry sync paths were recorded as done. Only the allowlists existed |

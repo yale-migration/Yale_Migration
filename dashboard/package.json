@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
     "test:rls": "supabase test db",
-    "test": "node --experimental-strip-types lib/data/derive.test.mjs && node sync/columns.test.mjs",
+    "test": "node --experimental-strip-types lib/data/derive.test.mjs && node sync/columns.test.mjs && node sync/build.test.mjs && node app/api/sync/guard.test.mjs",
     "check": "npm run typecheck && npm run test && npm run build && npm run test:e2e",
     "test:e2e": "playwright test",
     "dev:demo": "NEXT_PUBLIC_SUPABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= next dev"

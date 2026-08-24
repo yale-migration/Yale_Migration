@@ -7271,3 +7271,64 @@ read at all, not an accessibility audit that fires on every muted caption.
 
 Also found stale: `STATE.md` listed *"mobile at 390px unseen"* — the mobile project has been testing
 at exactly 390×844 since it was written.
+
+## D-391 | /api/sync could be called by anyone with a spoofed header, and it holds the service-role key
+**24 Aug 2026.** Auditing the dashboard end to end, the sync route's guard read:
+
+```
+if (!secret || (!cron && given !== secret)) return 401
+```
+
+where `cron = request.headers.get('x-vercel-cron')`. **The presence of any value in that header
+short-circuited the secret check entirely.** `curl -H 'x-vercel-cron: 1' https://…/api/sync` was
+authorised. Proven by probe before a line was changed: **two ways in.**
+
+🔴 **This is the one route where every other access-control guarantee in the app is void.** It runs
+with `SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS completely — clients-see-only-their-own-matter
+and managers-see-only-their-branch mean nothing here.
+
+🔑 **A header supplied by the caller is not an authentication factor.** Vercel's own documented way to
+secure a cron route is a secret in the Authorization header; `x-vercel-cron` is a hint about origin.
+It is still read, but only as an extra signal, never as a substitute.
+
+**Nothing was ever exposed** — the route returns 503 while the Sheets reader is unwritten. ⛔ **It
+would have become live the moment that reader landed, which is precisely when nobody would have been
+re-reading the guard.** The dangerous window is the one where the code looks finished.
+
+**Fixed:** guard extracted to `app/api/sync/guard.ts` so it can be tested at all · always requires the
+secret · `timingSafeEqual`, because `!==` on a secret leaks length and prefix · **503 when
+`SYNC_SECRET` is unset, not 401** — an empty secret must never mean "no authentication required",
+and a misconfigured deploy has to be visible rather than quietly open. 17 tests, negative-tested by
+restoring the vulnerable version (3 failures).
+
+## D-392 | The s56 and enquiry sync paths were recorded as done. Only the allowlists existed
+**24 Aug 2026.** `STATE.md` for 20 Aug reads: *"✅ s56 and enquiries sync path. `sync/columns.ts`
+gained `S56_ALLOWLIST` and `ENQUIRY_ALLOWLIST`."* Both constants exist. **Nothing ever imported
+them** — grep finds their only consumer is the test file. The single exported sync function was
+`syncMatters`.
+
+So the Section 56 board and the enquiries board were exactly what the audit note one line above them
+warned about: **real UI over data nobody feeds.** The same defect, one level down, inside the fix for
+itself.
+
+🔑 **The allowlists were the visible half and they were mistaken for the whole job.** Defining a
+config and wiring a config are indistinguishable in a diff, and the constant existing is the part
+that feels like progress.
+
+**Built:** `syncS56` and `syncEnquiries`, over ONE parameterised `syncTable` rather than three copies
+— because the guard that matters (refusing to overwrite a populated table from an empty read) would
+otherwise exist in three versions, two of which nobody re-reads. Neither tab has a stable key, so
+those two replace rather than upsert; the failure mode of delete-then-insert is called out in the
+error text rather than left for someone to discover.
+
+🔑 **And the pure half was extracted as `buildRecords`, which is the actually important change.**
+D-389's mapping bug was untestable while it was welded to a network call — the only way to see it was
+to run a real sync against a real sheet, which nobody would do before go-live. Now the whole
+transformation is observable with no database: `sync/build.test.mjs`, **26 checks over rows shaped
+like the live tabs**, asserting that the phone number and street address never leave MASTER, that
+S56's TRN / Application ID / File Number never survive, that Notes is not carried, and that
+`'Onshore'` never lands in a field an office policy compares to `'BRISBANE'`.
+
+**Dashboard totals: unit 142 → 185, e2e 153.** ⬜ **Still genuinely absent: the Google Sheets READER.**
+All three sync functions take `rows` and `headers` as arguments and nothing fetches them. That needs
+credentials we do not hold, and it is the honest remaining item — not the sync itself.

@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkSyncAuth } from './guard'
 
 /**
  * The hourly refresh. It did not exist — `sync.ts` had no caller anywhere, so
@@ -16,12 +17,16 @@ import { NextResponse, type NextRequest } from 'next/server'
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-  const secret = process.env.SYNC_SECRET
-  const given = request.headers.get('authorization')?.replace(/^Bearer /, '')
-  // Vercel Cron sends its own header; accept either, refuse both missing.
-  const cron = request.headers.get('x-vercel-cron')
-  if (!secret || (!cron && given !== secret)) {
-    return NextResponse.json({ error: 'not authorised' }, { status: 401 })
+  // ⛔ The guard lives in ./guard.ts so it can be tested directly. It used to
+  // accept ANY request carrying an `x-vercel-cron` header, secret or not —
+  // two ways past the service-role key. See that file. (D-391)
+  const auth = checkSyncAuth({
+    secret: process.env.SYNC_SECRET,
+    authorization: request.headers.get('authorization'),
+    xVercelCron: request.headers.get('x-vercel-cron'),
+  })
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.reason }, { status: auth.status })
   }
 
   return NextResponse.json({

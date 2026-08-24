@@ -1056,3 +1056,28 @@ a dark Playwright project plus a real-luminance contrast spec now cover every pa
 — the injected column never landed because the string spans separate lines and `replace` is a silent
 no-op — and the contrast spec's first run produced **13 failures of which 9 were false positives**, every
 active nav pill. Both fixed. **A noisy gate is the same failure as a blind one.**
+
+2026-08-24 | internal | **End-to-end dashboard audit — two more defects, one of them a security hole.**
+
+🔴 **`/api/sync` was callable by anyone.** Its guard let through any request carrying an
+`x-vercel-cron` header, with or without the secret — and that route runs with the service-role key,
+which bypasses row-level security entirely. Every access rule in the app is void on that endpoint.
+Proven by probe first: two ways in. Nothing was ever exposed because the route still returns 503, but
+⛔ **it would have gone live the moment the Sheets reader landed — exactly when nobody re-reads a
+guard they wrote weeks earlier.** Fixed: secret always required, constant-time compare, and 503 rather
+than 401 when unconfigured so a bad deploy is loud instead of open.
+
+🔴 **The s56 and enquiry sync paths were recorded as done on 20 Aug. Only the allowlists existed** —
+their sole consumer was the test file. Both boards were real UI over data nobody fed, which is the
+exact phrase that same audit note used one line earlier. **Defining a config and wiring a config look
+identical in a diff.** Both now built, over one shared implementation rather than three copies.
+
+🔑 The change that matters most is quieter: the transformation is now a **pure, testable function**.
+D-389's mapping bug was invisible until a real sync ran against a real sheet — something nobody would
+do before go-live. 26 new checks assert the phone number and street address never leave MASTER, that
+S56's TRN and file numbers never survive, and that "Onshore" can never reach a field compared to
+"BRISBANE". D-391, D-392.
+
+**Dashboard: 185 unit checks (was 142) · 153 e2e · build · typecheck, all green.** ⬜ Still absent and
+honestly so: the Google Sheets reader. Every sync function takes rows as an argument and nothing
+fetches them — that needs credentials we do not hold.
