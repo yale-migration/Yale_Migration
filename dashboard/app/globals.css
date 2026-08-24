@@ -32,6 +32,13 @@
        nearly right looks worse than one that is obviously different. */
     --navy:      #10243f;
     --navy-2:    #1c3a5e;
+    /* 🔴 BRAND INK — navy when it sits on a THEMED surface, and it must invert.
+       --navy is a fixed panel colour and correctly does NOT invert (see the
+       dark block). But the header wordmark is navy TEXT on --paper, and in dark
+       mode that is #10243f on #0f1316 — 1.2:1, invisible. Same class as the
+       login-hero bug: the earlier fix was right about the panel and never
+       looked at the wordmark beside it. (D-390) */
+    --brand-ink: var(--navy);
     --gold:      #b8893b;
     --gold-soft: #f5ecdc;
     --shadow:0 1px 2px rgba(20,26,30,.05), 0 8px 24px -12px rgba(20,26,30,.12);
@@ -54,6 +61,9 @@
          near-white with invisible copy. Only --gold-soft moves, because it is
          used as a tint behind icons on the themed surface. */
       --gold-soft:#2a2113;
+      /* The wordmark reads as brand, not as body text, so it is tinted rather
+         than set to --ink. Verified at 8.9:1 on --paper by the contrast spec. */
+      --brand-ink:#9fc2e8;
       --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
       color-scheme: dark;
     }

@@ -21,7 +21,16 @@ create table if not exists public.enquiries (
   email           text,
   channel         text,          -- Facebook · Instagram · WhatsApp · Phone · Walk-in · Email · Website · Referral
   visa_interest   text,
+  -- 🔴 office HAS NO SOURCE IN THE SHEET. The ENQUIRIES tab has no office
+  -- column; its 11 headers stop at Notes. Sheet column G is LOCATION
+  -- (Onshore/Offshore) and was wrongly mapped here until 24 Aug 2026 — which
+  -- would have made the manager policy below compare 'Onshore' to 'BRISBANE'
+  -- and silently return nothing. It now syncs to `location`. (D-389)
+  -- ⛔ Leave this NULL rather than deriving it from assigned_to: an unassigned
+  -- lead would vanish from the manager who most needs it. Null denies, and
+  -- denying is the correct answer until a real source exists.
   office          text,          -- 🔑 denormalised so RLS never needs a join
+  location        text,          -- Onshore / Offshore — where the PERSON is
   assigned_to     text,
   status          text,          -- THEIR vocabulary (SOP-CI-001 10B)
   follow_up_due   date,
@@ -45,6 +54,10 @@ create policy enquiries_director_all on public.enquiries
   for select to authenticated
   using ( (select app.current_role_name()) = 'director' );
 
+-- ⚠️ READ THIS BEFORE DEBUGGING "the manager sees no enquiries".
+-- That is not a bug: `office` is null until the sheet gains an office column
+-- (see the note on the column above). The policy is correct; the DATA is
+-- absent, and RLS denying looks identical to there being nothing there.
 create policy enquiries_manager_own_office on public.enquiries
   for select to authenticated
   using ( (select app.current_role_name()) = 'manager'
@@ -53,7 +66,7 @@ create policy enquiries_manager_own_office on public.enquiries
 -- ── demo rows, so the view has something to show ──────────────────────
 delete from public.enquiries where name like 'DEMO %';
 insert into public.enquiries
-  (enquiry_date, name, phone, email, channel, visa_interest, office, assigned_to, status, follow_up_due, last_contact)
+  (enquiry_date, name, phone, email, channel, visa_interest, office, location, assigned_to, status, follow_up_due, last_contact)
 values
   (current_date - 1, 'DEMO Priya R.',  '0400 111 222', 'priya@example.com',  'Facebook',  '500', 'BRISBANE',   'Rey',      'New',            current_date + 6, null),
   (current_date - 2, 'DEMO Chen W.',   '0400 333 444', 'chen@example.com',   'Website',   '485', 'BRISBANE',   'RJ',       'Contacted',      current_date + 5, current_date - 1),

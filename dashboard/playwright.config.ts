@@ -25,6 +25,13 @@ export default defineConfig({
     // catch Safari-specific rendering. Worth knowing before trusting it.
     { name: 'mobile', use: { ...devices['Desktop Chrome'],
         viewport: { width: 390, height: 844 }, isMobile: false, hasTouch: true } },
+    // 🔴 DARK MODE HAD NO TEST UNTIL 24 AUG 2026, and it is where the worst
+    // visual defect of this build happened: `--navy` inverted in dark mode, so
+    // the login hero rendered white-on-white — invisible heading and an
+    // INVISIBLE SUBMIT BUTTON on the first screen a client ever sees. It was
+    // fixed by eye and nothing stopped it coming back. Roughly half of phones
+    // default to dark, so this is not a niche path. (D-390)
+    { name: 'dark', use: { ...devices['Desktop Chrome'], colorScheme: 'dark' } },
   ],
   webServer: {
     command: 'next dev -p 3100',

@@ -7208,3 +7208,66 @@ avoidable one. Verified in `CHANGE-REQUESTS.md:95`.
 ⛔ **This is D-383's shape again at the commercial layer:** the number was recorded in a place built
 for READING and in no place built for DOING. It looked documented from every angle except the one
 that acts on it.
+
+## D-389 | The dashboard mapped ENQUIRIES `Location` to `office`, and RLS would have denied in silence
+**24 Aug 2026.** Syncing the dashboard against the schema as it stands after a week of MVP changes,
+`sync/columns.ts` had `ENQUIRY_ALLOWLIST.G = 'office'`. **Sheet column G is `Location` — Onshore /
+Offshore.** ENQUIRIES has no office column at all; its headers stop at Notes.
+
+The RLS policy `enquiries_manager_own_office` reads `office = app.current_office()`, and
+`current_office()` returns BRISBANE / TOWNSVILLE. **"Onshore" can never equal "BRISBANE"**, so the
+first real sync would have shown every manager an empty enquiry list — and ⛔ **RLS denying a row is
+indistinguishable from there being no row.** No error, no warning, an empty page that looks correct.
+
+🔴 **It was green from every angle.** The live sync has never run, and the demo fixtures hardcode
+`office:'BRISBANE'` — so 100 unit checks, 82 e2e tests and a production build all passed over it.
+**There was no test on any allowlist MAPPING at all**, only on the credential regex beside it. The
+security guard was tested; the correctness of what it guarded was not.
+
+**Fixed:** G → `location`, a `location` column added to the table, type, query and fixtures, and the
+enquiries row now shows it. The row previously printed `e.office ?? 'no office'`, which on live data
+would have read *"no office"* on every single line — a field that looks missing when it was never
+collected.
+
+⛔ **`office` is left NULL rather than derived from `assigned_to`.** An unassigned lead would become
+invisible to the very manager who most needs to see it, and a lead filed to the wrong branch looks
+handled. Null denies, and denying is the correct answer until a real source exists. It costs nothing
+today: A-16 — Robinder is the only manager, and he is the director. An office source for enquiries is
+a client decision, logged for the backlog.
+
+**Closed as a class, not an instance:** `sync/columns.test.mjs` now parses `MASTER_HEADERS` **out of
+`setup_master_sheet.gs`** and asserts the header actually sitting at each mapped letter — because the
+allowlist addresses the sheet by LETTER, so one inserted column silently repoints every mapping after
+it (LESSONS § 4, the CALL LOG bug). Negative-tested: inserting one column produces **15 failures**.
+S56's TRN, Application ID and File Number are asserted absent. **70 → 97 sync checks.**
+
+⚠️ **And the first negative test passed for the wrong reason** — the injected column never landed,
+because the string I searched for spans separate lines in the file, and Python's `replace` is a silent
+no-op on no match. It reported "simulated" and proved nothing. The second version asserts the target
+exists before mutating. **Pattern 1, in the act of testing for pattern 1.**
+
+## D-390 | Dark mode had no test, and the brand wordmark was invisible in it
+**24 Aug 2026.** `--navy` is deliberately not inverted for dark mode — it paints a fixed dark panel
+that always carries white text, and inverting it once made the login hero near-white with invisible
+copy. That reasoning is right, and it was applied to the panel only.
+
+**The header wordmark is navy TEXT on `--paper`.** In dark mode that is `#10243f` on `#0f1316` —
+**1.2:1. "Yale Migration" is invisible on every page.** 🔑 The earlier fix solved the case it was
+looking at and never looked at the sibling case one component away.
+
+Nothing caught it because **there was no dark-mode test of any kind**, on a build whose worst visual
+defect had already been a dark-mode inversion. Added a third Playwright project (`colorScheme: 'dark'`)
+— which also re-runs every existing layout and crawl spec in dark — plus `e2e/contrast.spec.ts`:
+computed WCAG luminance on real rendered pixels, asserting no text and no control falls below **1.6:1**.
+Fixed with `--brand-ink`, which inverts, while `--navy` stays fixed. **82 → 153 e2e tests.**
+
+⚠️ **Its first run produced 13 failures and 9 were false positives** — every active nav pill and both
+role badges, because I asserted that a control's FILL must contrast with the page. The active pill is
+`bg-[var(--accent-soft)]` with `text-accent font-semibold`: distinguished by bold accent text, which
+needs no fill contrast at all. The assertion was dropped and the reasoning written into the spec.
+🔑 **Nine phantoms would have had the file deleted inside a week, taking the one real defect with it.**
+The bar is 1.6:1, not WCAG's 4.5:1, for the same reason: this is a tripwire for text that cannot be
+read at all, not an accessibility audit that fires on every muted caption.
+
+Also found stale: `STATE.md` listed *"mobile at 390px unseen"* — the mobile project has been testing
+at exactly 390×844 since it was written.

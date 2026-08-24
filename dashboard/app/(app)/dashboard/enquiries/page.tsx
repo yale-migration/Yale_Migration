@@ -59,9 +59,14 @@ export default async function EnquiriesPage(
           return (
             <Row key={e.id} tone={tone}
                  title={e.name ?? e.phone ?? 'No name or number recorded'}
-                 meta={`${fmtDate(e.enquiry_date)} · ${e.channel ?? '—'}${
-                   e.visa_interest ? ` · ${e.visa_interest}` : ''} · ${e.office ?? 'no office'} · ${
-                   e.assigned_to ?? 'Unassigned'}`}
+                 /* ⛔ `location` (Onshore/Offshore), NOT `office`. The ENQUIRIES tab has
+                    no office column, so `e.office` is null on every live row and this line
+                    used to read "no office" for all of them — a field that looks missing
+                    when it was never collected. Location IS collected, and onshore vs
+                    offshore changes which checklist and which lodgement path applies. */
+                 meta={[fmtDate(e.enquiry_date), e.channel ?? '—', e.visa_interest,
+                        e.location, e.assigned_to ?? 'Unassigned']
+                        .filter(Boolean).join(' · ')}
                  chip={isOver ? <Chip tone="crit">{dueIn}d overdue</Chip>
                               : <Chip tone={tone}>{e.status ?? '—'}</Chip>} />
           )

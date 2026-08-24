@@ -124,7 +124,7 @@ export async function getEnquiries(viewer: Viewer): Promise<Enquiry[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('enquiries')
-    .select('id, enquiry_date, name, phone, email, channel, visa_interest, office, assigned_to, status, follow_up_due, last_contact')
+    .select('id, enquiry_date, name, phone, email, channel, visa_interest, office, location, assigned_to, status, follow_up_due, last_contact')
     .order('enquiry_date', { ascending: false, nullsFirst: false })
 
   if (error) throw new Error(`enquiries query failed: ${error.message}`)

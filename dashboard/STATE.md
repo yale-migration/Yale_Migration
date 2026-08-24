@@ -1,5 +1,5 @@
 # Dashboard — state of play
-**One file a fresh session can read instead of the whole history.** Updated 20 Aug 2026.
+**One file a fresh session can read instead of the whole history.** Updated 24 Aug 2026.
 
 ## Live and working
 Supabase `rmvvlvjjebsskbhjxnap` (client Google account, Sydney, Pro). `.env.local` holds the keys.
@@ -39,8 +39,39 @@ supabase/paste/      SQL to paste. Order: 01 → 06 → 07 → 03 → 05
   that reading did not.
 
 ## Open
-Quote (`QUOTE-P3-DASHBOARD.md`, option A = 34h / USD 1,190) · mobile at 390px unseen · dark mode
-unseen · brand hexes · company-vs-client hosting decision.
+Quote (`QUOTE-P3-DASHBOARD.md`, option A = 34h / USD 1,190) · brand hexes (needs Robinder's logo) ·
+company-vs-client hosting decision · **an office source for ENQUIRIES** (see below).
+~~mobile at 390px unseen~~ — the mobile project has been testing at 390×844 all along.
+~~dark mode unseen~~ — closed 24 Aug, D-390.
+
+## 24 Aug — schema sync after a week of MVP changes (D-389, D-390)
+
+🔴 **`ENQUIRIES` column G was mapped to `office`. It is `Location` — Onshore/Offshore.** The RLS
+policy compares `office` to BRISBANE/TOWNSVILLE, so the first live sync would have shown every
+manager an empty list, and **RLS denying looks exactly like there being nothing there.** Green
+through 100 unit checks, 82 e2e and a production build, because the sync has never run live and the
+fixtures hardcode `office:'BRISBANE'`.
+- G → `location`; column, type, query, fixtures and the enquiries row all follow it.
+- ⛔ **`office` stays NULL — do not derive it from `assigned_to`.** An unassigned lead would vanish
+  from the manager who needs it most. Null denies; denying is correct until a real source exists.
+  Costs nothing today (A-16: Robinder is the only manager and he is the director).
+
+🔴 **Dark mode had no test, and `Yale Migration` in the header rendered at 1.2:1 — invisible.**
+`--navy` correctly does not invert (it paints the fixed panel); the wordmark is navy text on the
+THEMED surface and needed a token that does. → `--brand-ink`.
+
+**New guards — both negative-tested, because a gate that has never failed is not a gate:**
+| | |
+|---|---|
+| `sync/columns.test.mjs` | Parses `MASTER_HEADERS` **out of `setup_master_sheet.gs`** and asserts the header at each mapped letter. One inserted column → **15 failures**. Also asserts G≠office and that S56's TRN/App ID/File Number are absent. **70 → 97** |
+| `e2e/contrast.spec.ts` + `dark` project | Real computed luminance, no text or control below **1.6:1**. Reverting the wordmark → fails at 1.2:1. The dark project re-runs every layout and crawl spec too. **82 → 153** |
+
+⚠️ **The contrast spec's first run gave 13 failures and 9 were false positives** (every active nav
+pill — distinguished by bold accent text, not by fill). The fill assertion was removed. **A noisy
+gate is the same failure as a blind one**: nine phantoms would have deleted the file inside a week
+and taken the real defect with it. Same reason the bar is 1.6:1 and not WCAG's 4.5:1.
+
+**Green at 24 Aug: typecheck · 142 unit (45 derive + 97 sync) · production build · 153 e2e.**
 
 ## Deep audit, 20 Aug — what two specialist reviews found
 

@@ -25,7 +25,9 @@ export function YaleMark({ className = '' }: { className?: string }) {
         <path d="M17 23v-5" stroke="var(--gold)" strokeWidth="1.9" strokeLinecap="round" />
       </svg>
       <div className="leading-tight">
-        <div className="font-serif text-[17px] font-semibold text-[var(--navy)]">Yale Migration</div>
+        {/* ⛔ --brand-ink, NOT --navy. This sits on the themed surface, so it has
+            to invert; --navy does not and rendered at 1.2:1 in dark mode (D-390). */}
+        <div className="font-serif text-[17px] font-semibold text-[var(--brand-ink)]">Yale Migration</div>
         <div className="text-[11px] tracking-[.08em] uppercase text-ink-3">
           Education Consultants
         </div>

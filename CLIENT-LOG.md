@@ -1032,3 +1032,27 @@ it is now **31.7 of 40**. All three corrected.
 `QUOTE-` archive exemption is gone — **a quote is a live commercial document, not a record of what we
 once thought.** Treating it as history is exactly what let the spoken figure rot beside a correct table.
 Third real catch for the gate in two days; it flagged this one's forward reference too.
+
+2026-08-24 | internal | **Dashboard synced to the schema the MVP has moved to — and it was carrying two
+defects, both invisible to every existing test.**
+
+🔴 **`ENQUIRIES` column G was mapped to `office`; it holds `Location` (Onshore/Offshore).** The manager
+RLS policy compares that field to BRISBANE/TOWNSVILLE, so the first live sync would have shown every
+manager an empty enquiry list — and **RLS denying a row is indistinguishable from there being no row.**
+It passed 100 unit checks, 82 e2e tests and a production build, because the live sync has never run and
+the demo fixtures hardcode `office:'BRISBANE'`. **No test existed on any column mapping at all** — only
+on the credential regex beside it.
+
+🔴 **Dark mode had no test, and the header wordmark rendered at 1.2:1 — invisible on every page.**
+`--navy` correctly does not invert; the wordmark is navy text on the themed surface and needed a token
+that does. The earlier dark-mode fix was right about the panel and never looked at the component beside it.
+
+**Both closed as classes, both negative-tested:** the sync test now reads `MASTER_HEADERS` out of the
+sheet builder and asserts the header at each mapped letter — one inserted column produces 15 failures;
+a dark Playwright project plus a real-luminance contrast spec now cover every page.
+**Unit 70 → 97 · e2e 82 → 153.** D-389, D-390.
+
+⚠️ Two of my own process failures worth keeping: the first negative test **passed for the wrong reason**
+— the injected column never landed because the string spans separate lines and `replace` is a silent
+no-op — and the contrast spec's first run produced **13 failures of which 9 were false positives**, every
+active nav pill. Both fixed. **A noisy gate is the same failure as a blind one.**

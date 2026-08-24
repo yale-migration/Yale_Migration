@@ -114,6 +114,37 @@ export const S56_ALLOWLIST = {
   // show a deadline, and a web-facing copy of a TRN buys nothing and risks a lot.
 } as const
 
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * 🔴 G IS `location`, NOT `office`. Changing this back breaks access control
+ *    SILENTLY, which is the worst way for access control to break.
+ *
+ * ENQUIRIES column G holds **Onshore / Offshore** — where the person IS, not
+ * which Yale branch owns them. It was mapped to `office` until 24 Aug 2026.
+ *
+ * The RLS policy `enquiries_manager_own_office` reads
+ *     office = app.current_office()
+ * and `current_office()` returns BRISBANE / TOWNSVILLE. **"Onshore" can never
+ * equal "BRISBANE"**, so the first real sync would have shown every manager an
+ * empty enquiries list — and RLS denying a row looks EXACTLY like there being
+ * no row. Nobody would have seen an error. (D-389)
+ *
+ * ⚠️ It is masked today twice over: the sync has never run against real data,
+ * and the demo fixtures hardcode office:'BRISBANE'. Green all the way down.
+ *
+ * 🔴 THE REAL GAP THIS EXPOSES: the ENQUIRIES tab has **no office column at
+ * all** — its 11 headers are Date · Name · Phone · Email · Channel · Visa
+ * Interest · Location · Assigned To · Status · Follow-up Due · Notes. So
+ * `enquiries.office` has NO SOURCE and stays null after a live sync, and the
+ * manager policy therefore denies. **That is the correct fail-closed answer and
+ * it costs nothing today** — A-16: Robinder is the only manager and he is the
+ * director. ⛔ Do NOT invent an office by guessing from `assigned_to`: an
+ * unassigned lead would become invisible to the very manager who needs to see
+ * it, and a lead filed to the wrong branch looks handled. Blank beats a
+ * plausible guess (LESSONS § 6). An office source is a client decision →
+ * `PHASE-2-3-BACKLOG.md`.
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
 export const ENQUIRY_ALLOWLIST = {
   A: 'enquiry_date',
   B: 'name',
@@ -121,7 +152,7 @@ export const ENQUIRY_ALLOWLIST = {
   D: 'email',
   E: 'channel',
   F: 'visa_interest',
-  G: 'office',
+  G: 'location',        // ⛔ Onshore/Offshore. NOT office. See the block above.
   H: 'assigned_to',
   I: 'status',
   J: 'follow_up_due',

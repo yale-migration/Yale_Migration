@@ -51,7 +51,8 @@ export interface Enquiry {
   email: string | null
   channel: string | null
   visa_interest: string | null
-  office: Office | null
+  office: Office | null        // 🔴 null after a live sync — the sheet has no office column (D-389)
+  location: string | null      // Onshore / Offshore — sheet column G
   assigned_to: string | null
   status: string | null
   follow_up_due: string | null
