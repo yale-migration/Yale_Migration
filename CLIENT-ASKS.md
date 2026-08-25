@@ -15,8 +15,8 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 | 🔴 | **The Brisbane/Indian enquiry form** (A-46) | link is `/edit`, returns **401**. Not a blocker: both forms map to the same 11 ENQUIRIES columns |
 | 🔴 | **The unknown staff-list update** (A-45) | he asked *us*. Blocks clean go-live, not the build |
 | 🟡 | 600 + Citizenship checklists (A-47a) | *"tomorrow"* — 23 Aug. **Billable CR-013, blocks nothing** |
-| 🟠 | Contact numbers (A-47b) | ⚠️ **PROMISE MOVED.** Was *"monday"* (24 Aug); 25 Aug reply says *"already in process- will share them tomorrow"*. **Second slip. Chase once, gently** |
-| 🔴 | 12 emails + 11 expiry dates (A-47c) | ⛔ **NOT ANSWERED in the 25 Aug reply** — the section was left blank. We offered him an explicit way out (*"tell me and I'll stop asking"*) and neither answer came |
+| 🟡 | Contact numbers (A-47b) | 🟢 **10 of 40 ARRIVED** in the 25 Aug sheet (was 0). Partial delivery, not a slip. M7 degrades gracefully without the rest |
+| 🟠 | 12 emails + 11 expiry dates (A-47c) | **+1 email only** (27→28). Expiry dates are not a column in this sheet. 🔑 Fold into the shared Google Sheet rather than asking a third time |
 
 ✅ **In hand (16):** client list · checklist currency · Filipino enquiry form · no website form · no
 walk-in sheet · which list is live · both mailboxes · row 13 · rows 22/23 · rows 4 and 7 · column 4
@@ -54,7 +54,7 @@ agreed · client codes · RJ vs Rey · Gopi (closed by departure) · 186 checkli
 | ~~A-46~~ | ~~the Brisbane/Indian enquiry form EXISTS~~ — superseded by A-46b | 22 Aug | ✅ link corrected |
 | ~~A-46-old~~ | 🔴 ~~**NEW — the Brisbane/Indian enquiry form EXISTS**, and RJ sent it: form id `1kHw3yp8…`. ⚠️ **It is an `/edit` link again and returns 401 — we cannot read it.** Same as the first form until he sent the public `/viewform` link. **Ask for the live link (Send → copy link), or share with `project1@`.** Until then M6's Brisbane field set is unknown | 22 Aug | 🔴 |
 | **A-47** | 🟡 (a) ✅ **600 + Citizenship RECEIVED 22 Aug**, both opened, scanned clean, single-variant (D-365); (b) **contact numbers**, *"I can send these information on monday"* (24 Aug); (c) **emails + visa expiry**, *"I need to double-check this part"*. Chase (a) and (b) only if they do not arrive | 22 Aug | 🟡 |
-| **A-49** | 🔴 **STILL OPEN — asked twice, answered neither time.** We listed both addresses verbatim in the 23 Aug email and offered a one-line reply OR a sheet name. The 25 Aug return has **nothing typed against this section.** 🔑 RJ separately AGREED to move the client list into a shared Google Sheet — *"Yes we can do that"* — which closes this whole class rather than this instance, and is the better thing to chase. | 22 Aug | 🔴 |
+| ~~A-49~~ | ✅ **CLOSED 26 Aug — VERIFIED BY HASH, NOT BY EYE.** The 18 Aug file had exactly one duplicated email across rows 22/23; the 25 Aug file has **zero duplicates**. Row 23's address changed, row 22's did not — **22 was always correct and 23 was the error**, the reverse of what "rows 22 and 23 are wrong" implied. D-403 | 22 Aug | ✅ |
 | ~~A-48~~ | ✅ **CLOSED 25 Aug — ALL FOUR PIECES ARRIVED.** RJ returned our own email with his answers typed inline. Three client emails (one 500, one 485, one 482) **and the 485's assessing authority: ACECQA.** ✅ Verified USABLE, not merely present — `485_INDIVIDUAL_ACECQA.pdf` and `485_DEPENDENT_ACECQA.pdf` both exist and the CHECKLIST MAP carries both ACECQA rows, so M4 can actually file for this client. ⛔ Names and addresses live in `client-data/` ONLY (`2026-08-25_RJ-reply-annotated_test-clients.pdf`). 🔴 **This was the last team-side item blocking contracted hours — M10's 2 h is now unblocked.** | 21 Aug | ✅ |
 | ~~A-27~~ | ✅ **CLOSED 22 Aug — client codes confirmed.** RJ: *"Thank you."* Codes go live with the import | 18 Aug | ✅ |
 | ~~A-28~~ | ✅ **CLOSED 22 Aug — column 4 agreed.** RJ: *"we can start this to future clients"* — exactly the D-352 plan, in his own words | 18 Aug | ✅ |

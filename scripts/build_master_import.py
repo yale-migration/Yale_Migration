@@ -99,8 +99,28 @@ DEAD   = re.compile(r'no longer (a )?client', re.I)
 # reports PASS against a schema nobody is using.
 GS_SETUP = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'setup_master_sheet.gs')
 
+# 🔴 MASTER'S DROPDOWNS ARE NOT ALL IN ONE FILE, AND THE GATE MISSED ONE. (D-403)
+#
+# `setup_master_sheet.gs` builds columns A–W and declares nine locked lists in
+# MASTER_DROPDOWNS. Column X `Skills Authority` was added LATER by its own
+# script, with its own `SA_VALUES` and its own `setAllowInvalid(false)` — so for
+# every day this gate has existed it has validated nine of ten locked columns
+# and reported PASS. **A gate with a silent blind spot reads exactly like a gate
+# that passed.**
+#
+# Found when the client returned their list with the four `<-- needed` skills
+# authorities filled in as FREE TEXT — "acecqa" lowercase, "Bachelor Degree -no
+# skills assessment", "n/a". Every one of those is refused by the cell in
+# silence. That is the FOURTH appearance of this bug class (LESSONS § 3).
+#
+# ⛔ Any future locked column added by its own script must be registered here.
+EXTRA_DROPDOWN_SOURCES = [
+    # (file, variable name, the MASTER header it locks)
+    ('add_skills_authority_column.gs', 'SA_VALUES', 'Skills Authority'),
+]
+
 def locked_columns():
-    """{header name: set(allowed values)} straight from the sheet builder."""
+    """{header name: set(allowed values)} straight from the sheet builders."""
     src = open(GS_SETUP, encoding='utf-8').read()
     block = re.search(r'var MASTER_DROPDOWNS\s*=\s*\{(.*?)\n\};', src, re.S)
     if not block:
@@ -111,6 +131,21 @@ def locked_columns():
         idx = int(col) - 1                                   # 1-based column -> 0-based header
         if idx < len(MASTER_HEADERS):
             out[MASTER_HEADERS[idx]] = set(re.findall(r"'([^']*)'", arr))
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    for fname, var, header in EXTRA_DROPDOWN_SOURCES:
+        path = os.path.join(here, fname)
+        if not os.path.exists(path):
+            raise SystemExit('❌ %s is missing — it defines the %s dropdown. Refusing to '
+                             'validate against a schema I cannot read.' % (fname, header))
+        m = re.search(r'var\s+%s\s*=\s*\[(.*?)\];' % re.escape(var), open(path, encoding='utf-8').read(), re.S)
+        if not m:
+            raise SystemExit('❌ cannot find %s in %s — refusing to guess' % (var, fname))
+        vals = set(re.findall(r"'([^']*)'", re.sub(r'//[^\n]*', '', m.group(1))))
+        if not vals:
+            raise SystemExit('❌ %s in %s parsed to an EMPTY set — that would validate '
+                             'everything and prove nothing' % (var, fname))
+        out[header] = vals
     return out
 
 # Their sheet's wording -> the dropdown's wording. ⛔ Only ever a RENAME of the
@@ -258,6 +293,19 @@ def main():
 
         # 6. Skills authority — 485 only, and only the five the MAP resolves
         sk = skills.strip()
+        # 🔑 CASE-INSENSITIVE FIRST. The client returned "acecqa" in lower case on
+        # 25 Aug (D-403). Discarding a correct answer over capitalisation is the
+        # same class of loss as accepting a wrong one — and this is a pure
+        # normalisation, not a guess about meaning: the letters are identical.
+        # ⛔ Only an EXACT case-insensitive hit is resolved. Free text like
+        # "Bachelor Degree -no skills assessment" is still blanked and noted,
+        # because turning a sentence into a dropdown value IS a judgement.
+        if sk and sk not in SKILLS:
+            exact = {v.lower(): v for v in SKILLS}.get(sk.lower())
+            if exact:
+                note.append('skills authority %r normalised to %r (case only)' % (sk, exact))
+                flags['skills authority case-normalised'] += 1
+                sk = exact
         if sk.lower() in ('n/a', 'na', ''): sk = ''
         elif sk not in SKILLS:
             if '<--' in sk or 'needed' in sk.lower():

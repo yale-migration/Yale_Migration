@@ -1156,3 +1156,33 @@ part. Probably a partner or an agent — but rows 22/23 are already an instance 
 will email that address under Yale's name. One line to confirm.
 
 ⛔ PII: filed to `client-data/2026-08-25_RJ-reply-annotated_test-clients.pdf`, outside the repo. D-402.
+
+2026-08-26 | RJ (IN) | **The second file was real — and I was wrong yesterday to say otherwise.** I
+searched for PDFs, found three identical ones, and concluded there was one document. There was also an
+**XLSX, and it is the substantive one.** The PDF finding held; the conclusion drawn from it did not.
+
+**`CLIENT LIST TO UPDATE`, returned 25 Aug — genuinely new, and it moves four things:**
+**11 of 40** rows now answer *"anyone else on the application?"* (was 0, open since 18 Jul) ·
+**10 of 40** contact numbers (was 0) · **+1 email** · and **all four `<-- needed` skills authorities
+are filled**.
+
+✅ **A-49 CLOSED, verified by hash.** One duplicated address on 18 Aug, **zero** now. Row 23's changed
+and row 22's did not — **22 was always right**, the reverse of what we had assumed.
+
+⚠️ **A false alarm I nearly sent:** the Visa column appeared to change on ~30 rows. It is an
+`int → float` artifact of a Sheets round-trip — `485` → `485.0`. **Zero real differences.** Diffing as
+strings would have reported thirty phantom edits on the client's own data.
+
+🔴 **The real finding is ours, not theirs.** The four skills authorities came back as free text
+(`acecqa`, `Bachelor Degree -no skills assessment`…). That column is a locked dropdown that refuses
+them **silently** — fourth time this class has appeared. And **the import gate built in D-353 to stop
+exactly this had only ever checked nine of the ten locked columns**: `Skills Authority` is defined in
+its own script, in a file the gate never opened. It returned PASS every run. Now 10 of 10, and it
+refuses to run at all if a source file is missing or parses empty.
+
+Also fixed the opposite failure: we were discarding `acecqa` **on capitalisation alone**. Case-only
+matches now resolve; sentences stay blank and noted, because turning a sentence into a dropdown value
+is the RMA's judgement, not ours. **D-403.**
+
+⛔ Both files filed to `client-data/`, not `docs/` — 40 names, 28 addresses, 10 phone numbers. Every
+figure above was computed without printing a single client value.

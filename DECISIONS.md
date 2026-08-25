@@ -7617,3 +7617,60 @@ repo, and `repo_hygiene.py` would have refused the commit. The right place is th
 now been asked twice and answered neither time, and the cause is structural: we are diffing an
 emailed copy from the 18th against a sheet only he can see. **Chase the shared sheet, not the two
 addresses** — it closes the class instead of the instance.
+
+## D-403 | The second file was real, and the locked-column gate had a blind spot
+**26 Aug 2026.** ⚠️ **I was wrong yesterday to say there was only one file.** I searched for PDFs and
+concluded from PDF evidence. There was also an **XLSX**, and it is the substantive one. The three
+PDFs *were* identical — that part held — but *"there is only one document"* was a claim about the
+world drawn from a search of one file type. **LESSONS § 2, and I asserted it confidently.**
+
+`CLIENT LIST TO UPDATE (1) (2) (1).xlsx`, 25 Aug, is genuinely new (`md5 9531404…` vs the 18 Aug
+`93619c4…`, which matches our archived copy exactly). Same 11 columns; L–Z are empty padding.
+
+### What actually changed — counts, never values
+| Column | 18 Aug | 25 Aug | |
+|---|---|---|---|
+| **4 · Anyone else on the application** | 0 | **11** | I-16, unanswered since 18 Jul |
+| **7 · Contact number** | 0 | **10** of 40 | A-47b, partial |
+| **3 · Email address** | 27 | 28 | +1 of the 12 asked for |
+| 5 · Skills authority | 40 | 40 | **all four `<-- needed` now filled** — I-10 |
+| 2 · Consultant | 34 | 34 | 6 still blank |
+| 6 · Date last spoken | 0 | 0 | never answered |
+
+✅ **A-49 IS CLOSED — verified by hash, not by eye.** The 18 Aug file had exactly one duplicated
+address across rows 22 and 23; the new file has **zero duplicates**. Row 23's address changed, row
+22's did not — so 22 was always right and 23 was the error, which is the opposite of what "rows 22
+and 23 are wrong" implied.
+
+⚠️ **A false alarm I nearly reported: `Visa` appeared to change on ~30 rows.** It is an
+`int → float` artifact of a round-trip through Sheets — `485` became `485.0`. **Zero rows differ once
+normalised**, and the distinct-value sets are identical. Had I diffed as strings and reported, that
+would have been thirty phantom changes on a client's own data.
+
+### 🔴 THE REAL FINDING — the gate that exists to stop this has never checked one of the columns
+
+The four filled-in skills authorities came back as **free text**: `acecqa`, `Bachelor Degree -no
+skills assessment`, `485 dependent-no need for skills assessment`, `no update yet -did not submit
+documents yet`, plus an `n/a` elsewhere. MASTER column X `Skills Authority` is
+`requireValueInList(SA_VALUES, true).setAllowInvalid(false)` — **it refuses every one of those in
+silence.** Fourth appearance of this class (LESSONS § 3).
+
+⛔ **And `build_master_import.py`'s locked-column gate — built in D-353 precisely to stop this —
+covered nine of the ten locked columns.** It parses `MASTER_DROPDOWNS` out of `setup_master_sheet.gs`,
+but `Skills Authority` was added later by **its own script** with **its own `SA_VALUES`**, in a file
+the gate never opened. `locked_columns()` returned 9 entries and reported PASS every time it ran.
+🔑 **A gate with a silent blind spot is indistinguishable from a gate that passed.** The D-353 fix was
+right about the mechanism and wrong about the file count.
+
+**Fixed:** `EXTRA_DROPDOWN_SOURCES` registers any locked column defined outside the main builder; the
+gate now covers **10 of 10**, refuses to run if such a file is missing, and refuses an empty parse —
+because a list that parses to nothing validates everything.
+
+**Also fixed, and it is the opposite failure:** the importer discarded `acecqa` **on capitalisation
+alone**, losing a correct answer. Case-insensitive resolution added — ⛔ **exact matches only.**
+`Bachelor Degree -no skills assessment` is still blanked and noted, because turning a sentence into a
+dropdown value is a judgement, and on this project that judgement belongs to the RMA.
+
+⛔ **PII:** filed to `client-data/2026-08-25_CLIENT-LIST-TO-UPDATE_returned-v2.xlsx`. Not `docs/` —
+that is inside the repo and holds 40 names, 28 addresses and 10 phone numbers. Every number above was
+computed without printing a single client value.
