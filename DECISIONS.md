@@ -7570,3 +7570,50 @@ clicks: the service account, the Viewer share, the env vars, the SQL order, the 
 sync, and what each response code means. **Sharjeel 1–2 hours, Robinder 20 minutes on a call.**
 
 **Dashboard totals: unit 142 → 260 · e2e 156 · build · typecheck. Six suites, all negative-tested.**
+
+## D-402 | RJ's annotated reply — one file, not two, and it closes the last team blocker
+**25 Aug 2026.** Three PDFs were handed over as "yesterday's file and today's file". **All three are
+byte-identical** — `md5 2d866a1bfd7972b0ec3f210a5b30b514`, 93,823 bytes each, downloaded minutes
+apart. There is ONE document. ⛔ Checked before reading a word of it, because auditing "both files"
+would have produced a confident comparison of a file with itself.
+
+The document is **our own 23 Aug email to RJ, returned with his answers typed inline.** No PDF
+annotations exist (`/Annot` absent) — the "comments" are edits into the body, which is why they read
+as part of our text.
+
+### What actually arrived
+| Our ask | His answer |
+|---|---|
+| **3 test-client emails + the 485's assessing authority (A-48)** | ✅ **ALL FOUR.** One 500, one 485, one 482, and **ACECQA** for the 485 |
+| The stray `3` opening the 600 checklist | ✅ **"EDITED"** |
+| Move the client list into a shared Google Sheet | ✅ *"Yes we can do that. we can upload the question in google then we can edit."* |
+| Contact numbers (A-47b) | 🟠 *"-already in process- will share them tomorrow"* — **second slip**, was promised for Monday 24th |
+| Rows 22/23 correct emails (A-49) | ⛔ **nothing typed** |
+| 12 emails + 11 expiry dates (A-47c) | ⛔ **nothing typed**, despite an explicit *"tell me and I'll stop asking"* |
+
+🔑 **A-48 is verified USABLE, not merely present** — the distinction that matters. An assessing
+authority is only an answer if M4 can act on it: `485_INDIVIDUAL_ACECQA.pdf` and
+`485_DEPENDENT_ACECQA.pdf` both exist and `setup_m4_checklist_map.gs` carries **both** ACECQA rows.
+Had he said "Engineers Australia" the answer would have been equally polite and completely unusable.
+⛔ **Never close an input on receipt. Close it on the module being able to consume it** (LESSONS § 5).
+
+**This was the last team-side item blocking contracted hours.** M10's 2 h moves from blocked-on-RJ to
+**actionable by us** — the first time all session that number has been non-zero. ⚠️ None of the three
+is on `LODGEMENT: JULY TO PRESENT`, so the pilot must add them to MASTER before it can run.
+
+### 🔴 One anomaly worth a single line back
+The 482 client's name and their supplied address do not share a surname — the local part is a
+different person's name entirely. That may be perfectly normal (a partner, a parent, an agent
+handling correspondence), **but rows 22 and 23 are already an instance of exactly this class**, and
+M4 and M8 will email that address a document request under Yale's name. One line to confirm; not a
+blocker.
+
+⛔ **PII HANDLING.** The document carries three real client names and four addresses. Filed to
+`client-data/2026-08-25_RJ-reply-annotated_test-clients.pdf`, **outside the repo**, and every register
+entry references it by filename only. The user asked for it in `docs/` — that folder is inside the
+repo, and `repo_hygiene.py` would have refused the commit. The right place is the one the rule names.
+
+🔑 **The best thing in the reply is not an answer, it is the Google Sheet agreement.** Rows 22/23 have
+now been asked twice and answered neither time, and the cause is structural: we are diffing an
+emailed copy from the 18th against a sheet only he can see. **Chase the shared sheet, not the two
+addresses** — it closes the class instead of the instance.

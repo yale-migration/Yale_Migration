@@ -21,9 +21,14 @@ Modules 31.7/40 (79%) · C-items 6.3/9 (70%). Recomputed from evidence 23 Aug, n
 **Green as at 23 Aug:** 298 Apps Script checks · 79/79 blueprint · hygiene PASS · working tree clean.
 M6 and C-1 verified **live in Apps Script**, not just the node harness.
 
-🔑 **11 contracted hours remain and 0.0 of them are unblocked: 8.8 wait on Robinder** (Meta ·
-WhatsApp · OneDrive · a Make slot) **and 2.2 on RJ** (3 test-client emails + 1 assessing authority).
-**No MODULE is blocked on engineering.**
+🔑 **UPDATED 25 AUG — the team side is CLOSED and 2 hours came back to us.** A-48 landed: three
+test-client emails **and the 485's assessing authority (ACECQA)**, verified usable — both ACECQA
+checklists and both CHECKLIST MAP rows exist, so M4 can genuinely file for that client (D-402).
+**Of the 11 remaining hours: 8.8 wait on Robinder** (Meta · WhatsApp · OneDrive · a Make slot),
+**0.0 on RJ**, and **2.0 are now OURS — M10, the end-to-end pilot of three.**
+⚠️ Those three clients are **not** on `LODGEMENT: JULY TO PRESENT`, so none is in the 38-row import;
+the pilot adds them to MASTER first. RJ still owes contact numbers, rows 22/23 and 12 emails +
+11 expiry dates — **none of which blocks a contracted hour.**
 
 ⛔ **BUT "0.0 hours are ours" WAS WRONG AS A STATEMENT ABOUT THE PROJECT, and it read as
 "stop looking" (D-383).** Three pieces of work are ours, unblocked, and none is a contracted module

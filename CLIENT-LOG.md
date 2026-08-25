@@ -1131,3 +1131,28 @@ My first fix for that one also passed the mutation; the second caught it. **D-40
 the tracker tab gains a Client Code column — that means altering the client's live sheet, so it waits
 for Sharjeel. Plus the Sheets reader, deploy and onboarding, all of which need Robinder.
 **Unit 142 → 226 · e2e 156 · all green.**
+
+2026-08-25 | RJ (IN) | 🎉 **THE LAST TEAM-SIDE BLOCKER IS CLOSED.** RJ returned our 23 Aug email with
+his answers typed into it — **three test-client emails and the 485's assessing authority, ACECQA.**
+
+🔑 **Verified usable, not just received:** `485_INDIVIDUAL_ACECQA.pdf` and `485_DEPENDENT_ACECQA.pdf`
+both exist and the CHECKLIST MAP carries both ACECQA rows, so M4 can genuinely file for that client.
+"Engineers Australia" would have been an equally polite answer and completely unusable. **M10's 2 h
+moves from blocked-on-RJ to actionable by us** — the first non-zero our-side number this week.
+
+Also: the stray `3` on the 600 checklist is **"EDITED"**, and he agreed to move the client list into a
+shared Google Sheet — *"Yes we can do that."*
+
+⛔ **Three PDFs were handed to me as "yesterday's and today's". All three are byte-identical**
+(`md5 2d866a…`, 93,823 bytes). One document, downloaded three times — checked before reading, because
+comparing a file with itself produces a very confident and completely empty audit.
+
+**Still owed, none of it blocking a contracted hour:** contact numbers (*"will share them tomorrow"* —
+second slip, was promised Monday) · rows 22/23 (asked twice, answered neither time) · 12 emails + 11
+expiry dates (left blank despite an explicit *"tell me and I'll stop asking"*).
+
+🔴 **One anomaly:** the 482 client's supplied address carries a different person's name in the local
+part. Probably a partner or an agent — but rows 22/23 are already an instance of that class, and M4/M8
+will email that address under Yale's name. One line to confirm.
+
+⛔ PII: filed to `client-data/2026-08-25_RJ-reply-annotated_test-clients.pdf`, outside the repo. D-402.
