@@ -1206,3 +1206,15 @@ to the team.
 verified byte-identical to its copy before the original was removed. New `docs/CLIENT-FILES-RECEIVED.md`
 indexes everything they have ever sent — dates, contents, what each closed — with **no personal data in
 it**, so the repo can answer "what did they send and when" without opening a workbook.
+
+2026-08-26 | internal | **The import CSV on disk was from 22 Aug — regenerated from the 25 Aug data.**
+Repointing the importer was not enough: the artefact everyone actually pastes at go-live was still the
+old build. Had we imported today we would have pasted the **row 22/23 duplicate** back in, with no
+phone numbers and no party-2 answers, from a file that had already been superseded.
+
+**All 38 rows changed.** Contact Number 0 → 10 · Party 2 Name 0 → 11 · Email 26 → 27 · Skills
+Authority 0 → 1 (the client's lowercase `acecqa`, resolved by the D-403 fix).
+
+🔑 **Repointing the source and rebuilding the output are two separate acts**, and only the second one
+reaches the client's sheet. The code was correct and the file was stale — which looks exactly like
+everything being fine.
