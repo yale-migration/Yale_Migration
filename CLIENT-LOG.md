@@ -1186,3 +1186,23 @@ is the RMA's judgement, not ours. **D-403.**
 
 ⛔ Both files filed to `client-data/`, not `docs/` — 40 names, 28 addresses, 10 phone numbers. Every
 figure above was computed without printing a single client value.
+
+2026-08-26 | internal | **Team side audited item by item and CLOSED. 20 of 22 in hand, 2 withdrawn or
+reassigned, 0 open.** Checked against the two 25 Aug files rather than carried forward:
+A-48 ✅ · A-49 ✅ (hash-verified, 1 duplicate → 0) · A-47a ✅ all three CR-013 checklists held ·
+A-47b 10 of 40 delivered · **A-46b withdrawn by US in writing on 23 Aug** — do not re-raise ·
+**A-45 is Robinder's, not the team's** — RJ asked us, and it moved to his call.
+
+⚠️ **Thin ≠ open.** Their sheet still has 12 missing emails, 30 missing phone numbers, 6 missing
+consultants and no dates-last-spoken. 🔴 **Only the emails carry a real cost** — twelve clients cannot
+be sent a checklist or a chase because there is nowhere to send it. **None blocks a contracted hour.**
+
+🔑 **One final ask, and it is his own:** the shared Google Sheet. All four gaps are the same problem —
+a spreadsheet emailed back and forth — and we have asked for the contents twice and received +1 email.
+Asking a third time repeats a method that has already failed twice. After the sheet, nothing more goes
+to the team.
+
+**Filing:** both 25 Aug files moved out of the project root into `client-data/` with dated names, each
+verified byte-identical to its copy before the original was removed. New `docs/CLIENT-FILES-RECEIVED.md`
+indexes everything they have ever sent — dates, contents, what each closed — with **no personal data in
+it**, so the repo can answer "what did they send and when" without opening a workbook.

@@ -6,11 +6,32 @@ Status: 🔴 blocking · 🟠 blocks one module · 🟢 nice to have · ✅ answ
 
 ---
 
-## 📋 TEAM SIDE AT A GLANCE — as at 22 Aug 2026
-**22 discrete things have ever been needed from RJ's side. 16 in hand · 3 promised · 3 open.**
+## 📋 TEAM SIDE AT A GLANCE — CLOSED, as at 26 Aug 2026
+**22 discrete things have ever been needed from RJ. 20 in hand · 2 withdrawn or reassigned · 0 open.**
+🔑 **Nothing the build needs is outstanding with the team.** Audited item by item against the two
+files of 25 Aug (D-403), not carried forward.
 
 | | Item | State |
 |---|---|---|
+| ✅ | 3 test-client emails + assessing authority (A-48) | **CLOSED 25 Aug.** ACECQA verified supported by both checklist variants — **M10 unblocked** |
+| ✅ | Rows 22/23 duplicate email (A-49) | **CLOSED 25 Aug.** Verified by hash: 1 duplicate → **0**. Row 22 was always correct |
+| ✅ | 600 + Citizenship checklists (A-47a) | **RECEIVED.** All three CR-013 documents now held |
+| ✅ | Contact numbers (A-47b) | **10 of 40 delivered** (was 0). The rest is data thinness, not an open ask |
+| ➡️ | The Brisbane/Indian form (A-46b) | ⛔ **WITHDRAWN BY US, in writing, 23 Aug** — *"I didn't need the form at all. The response sheet already has the questions as its column headings."* **Do not re-raise** |
+| ➡️ | The staff-list update (A-45) | **NOT the team's.** RJ asked *us*; it is Robinder's to answer. Moved to his call |
+
+### ⚠️ What is thin rather than open
+Four data gaps remain in their sheet — **12 missing emails**, 30 missing phone numbers, 6 missing
+consultants, 0 dates-last-spoken. 🔴 **The email gap is the only one with a real cost:** twelve
+clients cannot be sent a checklist or a chase, because there is nowhere to send it.
+
+⛔ **Do NOT ask for them as a list. We have asked twice and received +1.** They are all the same
+problem — a spreadsheet emailed back and forth — and RJ has already proposed the fix himself:
+*"Yes we can do that. we can upload the question in google then we can edit."*
+🔑 **One final ask: the shared Google Sheet.** It closes all four gaps structurally and ends the
+back-and-forth. After that, nothing goes to the team.
+
+---|---|---|
 | ✅ | ~~3 test-client emails + 1 assessing authority~~ (A-48) | **CLOSED 25 Aug — M10 UNBLOCKED.** ACECQA verified supported |
 | 🔴 | **The Brisbane/Indian enquiry form** (A-46) | link is `/edit`, returns **401**. Not a blocker: both forms map to the same 11 ENQUIRIES columns |
 | 🔴 | **The unknown staff-list update** (A-45) | he asked *us*. Blocks clean go-live, not the build |
