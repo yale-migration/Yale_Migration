@@ -7703,3 +7703,39 @@ exactly one value — the client's lowercase `acecqa`.
 **Import position from the 25 Aug source:** 40 rows, 2 held back as *"no longer client"*, **38 ready.**
 Contact Number 10/38 (was 0) · Party 2 Name 11/38 (was 0) · Email 27/38 · M4 files a checklist for 30
 and stamps NEEDS REVIEW for 8 · ~343 operations on first run, against 519 left this month.
+
+## D-405 | C-1's live capture had no trigger — the forward path was a function nobody called
+**26 Aug 2026.** Auditing what the MVP still needs, `onC1FormSubmit()` has existed since 23 Aug,
+tested 40/40 and verified live in Apps Script. **`grep -rn onC1FormSubmit` across every installer
+returns only its own definition.** No trigger was ever created.
+
+So C-1 could backfill history on demand and **could not capture a single new enquiry** — the forward
+path, which is the entire point of the module, was unreachable. That is C-1's missing 10%, and it was
+recorded as *"90% — dry-run only"*, which reads as a cautious setting rather than an absent trigger.
+
+🔑 **Exactly the 19 Aug finding repeated:** the guide promised "every morning" and no trigger existed.
+**A tested function is not a running one, and the two are indistinguishable in a test report.**
+
+`installC1FormTrigger()` + `verifyC1FormTrigger()` added, with the guards this project has learned to
+need:
+- ⛔ **Not a clock trigger.** It binds to the RESPONSES spreadsheet, a different file from the one the
+  project is bound to, so it needs `forSpreadsheet(id).onFormSubmit()`. A clock trigger would do
+  nothing and would look installed.
+- Refuses if `onC1FormSubmit` is absent from the project — a trigger on a missing function fires into
+  nothing every time a client submits, forever, silently.
+- Refuses if the responses file cannot be opened, rather than binding to a file it cannot read.
+- Idempotent: two triggers would write every enquiry twice, and C-1 dedupes by email+date, so **the
+  second write is the one that would look correct.**
+- The verifier checks the trigger's TYPE and SOURCE, not just its existence (D-368), and prints the
+  owner because a trigger dies with the account that made it (D-153).
+
+⚠️ **Deliberately NOT run.** Installing it starts real enquiries flowing into the client's live sheet.
+That is capture, not action — nothing is emailed and nothing is decided — but it is a live write, and
+it is Sharjeel's call whether that happens before Robinder names a go-live date.
+
+### 🔴 What this audit also settled about C-1's backfill
+`c1ImportFromResponseSheet(true)` must **not** be run casually. The responses workbook holds **2,415
+rows** across the two form tabs (930 + 1,485), against an `M8_FLOOD_LIMIT` of 25. M8's flood guard
+would correctly refuse to process them, but the ENQUIRIES write itself would still be thousands of
+rows onto a live sheet. **Which responses to import, and from when, is a scoping decision nobody has
+made** — and 1,485 of them are from 2025.

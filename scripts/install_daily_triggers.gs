@@ -173,3 +173,90 @@ function trigFunctionExists_(name) {
     return true;
   }
 }
+
+
+/**
+ * ═══════════════════════════════════════════════════════════════════════════
+ * C-1 LIVE CAPTURE — the form-submit trigger.  (26 Aug 2026, D-405)
+ *
+ * 🔴 `onC1FormSubmit()` has existed and been tested since 23 Aug — 40/40, verified
+ * live in Apps Script. **Nothing has ever installed it.** `grep -rn onC1FormSubmit`
+ * across every installer returned only its own definition, so C-1 could backfill
+ * history on demand and could not capture a single NEW enquiry. The forward path,
+ * which is the whole point of the module, was a function nobody called.
+ *
+ * 🔑 Same shape as the 19 Aug finding above: the guide promised "every morning" and
+ * no trigger existed. **A tested function is not a running one**, and the two look
+ * identical in a test report.
+ *
+ * ⛔ THIS ONE IS NOT A CLOCK TRIGGER. It binds to the RESPONSES SPREADSHEET, which is
+ * a different file from the one this project is bound to, so it needs
+ * `forSpreadsheet(id).onFormSubmit()`. A clock trigger here would do nothing and
+ * would look installed.
+ *
+ * ⚠️ Installing this starts real enquiries flowing into ENQUIRIES the moment somebody
+ * submits the form. That is capture, not action — nothing is emailed and nothing is
+ * decided — but it is a live write to the client's own sheet, so read the two guards
+ * below before running it.
+ * ═══════════════════════════════════════════════════════════════════════════
+ */
+function installC1FormTrigger() {
+  // Guard 1 — the handler must exist in THIS project, or the trigger fires into nothing
+  // every time a client submits the form, forever, silently.
+  if (!trigFunctionExists_('onC1FormSubmit')) {
+    Logger.log('🔴 STOP — onC1FormSubmit is not in this project. Paste c1_enquiry_form_intake.gs first.');
+    return;
+  }
+  // Guard 2 — the responses file must be readable BEFORE a trigger is bound to it.
+  var id = (typeof C1_RESPONSES_ID === 'string') ? C1_RESPONSES_ID : '';
+  if (!id) { Logger.log('🔴 STOP — C1_RESPONSES_ID is not defined.'); return; }
+  try {
+    var name = SpreadsheetApp.openById(id).getName();
+    Logger.log('Responses file: "' + name + '"');
+  } catch (e) {
+    Logger.log('🔴 STOP — cannot open the responses spreadsheet (' + e.message + ').');
+    Logger.log('   Share it with this account first. Nothing installed.');
+    return;
+  }
+
+  var existing = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < existing.length; i++) {
+    if (existing[i].getHandlerFunction() === 'onC1FormSubmit') {
+      // Idempotent — two triggers would write every enquiry twice, and C-1's
+      // dedupe is by email+date, so the SECOND write is the one that looks correct.
+      Logger.log('  skip — an onC1FormSubmit trigger already exists. Nothing changed.');
+      return;
+    }
+  }
+
+  ScriptApp.newTrigger('onC1FormSubmit').forSpreadsheet(id).onFormSubmit().create();
+  Logger.log('✅ INSTALLED — onC1FormSubmit on form submit.');
+  Logger.log('');
+  Logger.log('🔴 NOW RUN verifyC1FormTrigger() — creating a trigger and having a WORKING');
+  Logger.log('   one are different claims (D-368).');
+}
+
+/** Proves the trigger exists, is the right TYPE, and is bound to the right file. */
+function verifyC1FormTrigger() {
+  var all = ScriptApp.getProjectTriggers(), found = null;
+  for (var i = 0; i < all.length; i++) {
+    if (all[i].getHandlerFunction() === 'onC1FormSubmit') { found = all[i]; break; }
+  }
+  Logger.log('=== C-1 form-submit trigger ===');
+  if (!found) {
+    Logger.log('  FAIL — no onC1FormSubmit trigger. Run installC1FormTrigger().');
+    return;
+  }
+  var src = String(found.getEventType());
+  var okType = src.indexOf('SUBMIT') > -1;
+  Logger.log('  handler ....... onC1FormSubmit');
+  Logger.log('  event type .... ' + src + (okType ? '  ✅' : '  🔴 NOT a form submit'));
+  Logger.log('  source ........ ' + found.getTriggerSource());
+  Logger.log('  owner ......... ' + Session.getEffectiveUser().getEmail());
+  Logger.log('');
+  Logger.log(okType
+    ? '✅ Live. A new form submission now writes one ENQUIRIES row.'
+    : '🔴 Wrong trigger type — delete it and re-run installC1FormTrigger().');
+  Logger.log('⚠️ D-153: this trigger runs as the account that created it and dies with');
+  Logger.log('   that account. The client must run installC1FormTrigger() themselves at handover.');
+}
