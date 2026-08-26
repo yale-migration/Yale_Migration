@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 620K /     7676 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 560K /     7705 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-26 00:13
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-26 13:04
 
 | # | Decision |
 |---|---|
@@ -399,3 +399,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-26 00:1
 | **D-401** | The Sheets reader — and proving, structurally, that nothing can destroy their data |
 | **D-402** | RJ's annotated reply — one file, not two, and it closes the last team blocker |
 | **D-403** | The second file was real, and the locked-column gate had a blind spot |
+| **D-404** | Repointing the import at the newer file exposed a defect that would have hit on go-live morning |

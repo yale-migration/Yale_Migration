@@ -7674,3 +7674,32 @@ dropdown value is a judgement, and on this project that judgement belongs to the
 ⛔ **PII:** filed to `client-data/2026-08-25_CLIENT-LIST-TO-UPDATE_returned-v2.xlsx`. Not `docs/` —
 that is inside the repo and holds 40 names, 28 addresses and 10 phone numbers. Every number above was
 computed without printing a single client value.
+
+## D-404 | Repointing the import at the newer file exposed a defect that would have hit on go-live morning
+**26 Aug 2026.** `build_master_import.py` still read the **18 Aug** return. The 25 Aug second pass has
+the rows 22/23 duplicate fixed, 10 contact numbers, 11 party-2 answers and the four skills authorities
+filled — **rebuilding from the old file would have quietly produced an import from superseded data,
+and a stale import looks exactly like a fresh one.** Now resolved at runtime: newest date-prefixed
+return wins, and it refuses to run if none is found.
+
+🔴 **The moment it read the new file, the locked-column gate refused: 30 of 38 rows carried a Visa
+Type the cell would reject.** `500.0`, `482.0`, `485.0` — openpyxl returns a float for any numeric
+cell, and the 25 Aug file came back **through Google Sheets**, so 32 of 40 visa types arrived as
+floats. The dropdown holds `'500'`; `setAllowInvalid(false)` refuses `'500.0'` **in silence.**
+
+⛔ **Thirty of thirty-eight clients would have vanished at paste time with no error message** — on the
+morning we finally put real people into the system.
+
+🔑 **This defect did not exist yesterday.** The 18 Aug file came from an Excel export and held ints.
+Nothing in our code changed; **the source changed underneath it.** That is the argument for the gate
+existing at all — and for pointing it at the real input early rather than on the day.
+
+Normalised inside `split_visa()` so every caller inherits it, with a string-level fallback for a value
+that arrives as `'500.0'` text. **All 10 locked columns now clean.**
+
+Also confirmed working on real data: the case-insensitive skills-authority fix from D-403 resolved
+exactly one value — the client's lowercase `acecqa`.
+
+**Import position from the 25 Aug source:** 40 rows, 2 held back as *"no longer client"*, **38 ready.**
+Contact Number 10/38 (was 0) · Party 2 Name 11/38 (was 0) · Email 27/38 · M4 files a checklist for 30
+and stamps NEEDS REVIEW for 8 · ~343 operations on first run, against 519 left this month.

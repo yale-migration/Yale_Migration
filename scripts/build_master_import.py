@@ -32,12 +32,22 @@ row in the original exactly. Two originals are absent from the returned list —
 * It does not assign a consultant where the sheet says `NO LONGER CLIENT`. Those rows
   are HELD BACK entirely (see below).
 """
-import argparse, collections, csv, datetime, os, re, sys, warnings
+import argparse, collections, csv, datetime, glob, os, re, sys, warnings
 warnings.filterwarnings("ignore")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CD   = os.path.join(HERE, "..", "..", "client-data")
-RET  = os.path.join(CD, "2026-08-18_CLIENT-LIST-TO-UPDATE_returned.xlsx")
+# 🔑 THE NEWEST RETURN WINS, and it is resolved at runtime rather than pinned.
+# The team returned a second pass on 25 Aug (D-403): the rows 22/23 duplicate is
+# gone, 10 contact numbers and 11 "anyone else on the application" answers
+# arrived, and the four `<-- needed` skills authorities are filled. Reading the
+# 18 Aug file would have quietly rebuilt the import from superseded data — and
+# an import built from a stale source looks exactly like one built from a fresh
+# one. ⛔ Sorted by DATE PREFIX, so a new return is picked up by dropping it in.
+_RETURNS = sorted(glob.glob(os.path.join(CD, "20??-??-??_CLIENT-LIST-TO-UPDATE_returned*.xlsx")))
+if not _RETURNS:
+    raise SystemExit("❌ no CLIENT-LIST-TO-UPDATE return found in %s — refusing to guess" % CD)
+RET  = _RETURNS[-1]
 ORIG = os.path.join(CD, "YALE BRISBANE OFFICE WORK.xlsx")
 OUT  = os.path.join(CD, "master-import.csv")
 
@@ -193,7 +203,23 @@ def sheets():
 
 def split_visa(raw):
     """'485 Dependent' -> ('485','Dependent').  '600  (no checklist yet)' -> ('600','')."""
+    # 🔴 A ROUND-TRIP THROUGH GOOGLE SHEETS TURNS 500 INTO 500.0. (D-404)
+    #
+    # openpyxl hands back a float for any numeric cell, and the 25 Aug return
+    # came back through Sheets, so 32 of 40 visa types arrived as floats. The
+    # locked dropdown holds '500', not '500.0', and `setAllowInvalid(false)`
+    # refuses the difference IN SILENCE — 30 of 38 rows would have vanished at
+    # paste time with no error, on go-live morning.
+    #
+    # 🔑 Caught only because the importer was repointed at the newer file and
+    # the gate ran. The 18 Aug file was read from an Excel export and had ints,
+    # so this defect did not exist until the source changed underneath it.
+    # ⛔ Normalise here, not at the call site: every caller of split_visa needs it.
+    if isinstance(raw, float) and raw.is_integer():
+        raw = int(raw)
     s = re.sub(r'\(.*?\)', '', str(raw or '')).strip()
+    # Belt and braces for a value that arrived as the STRING '500.0'.
+    s = re.sub(r'^(\d+)\.0+$', r'\1', s)
     variant = ''
     m = re.search(r'\b(dependent|subsequent entrant|sponsor|employer)\b', s, re.I)
     if m:
