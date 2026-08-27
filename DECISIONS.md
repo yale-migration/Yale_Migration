@@ -7739,3 +7739,45 @@ rows** across the two form tabs (930 + 1,485), against an `M8_FLOOD_LIMIT` of 25
 would correctly refuse to process them, but the ENQUIRIES write itself would still be thousands of
 rows onto a live sheet. **Which responses to import, and from when, is a scoping decision nobody has
 made** — and 1,485 of them are from 2025.
+
+## D-406 | `create table if not exists` is not a migration, and free Vercel would fail the deploy outright
+**26 Aug 2026.** Sharjeel ran the SQL against the live Supabase project and **06 failed**:
+`ERROR: 42703: column "location" of relation "enquiries" does not exist`.
+
+🔴 **My defect, and a clean example of the class.** I added `location` to the enquiries table
+definition on 24 Aug (D-389) and wrote **no migration**. `create table if not exists` does exactly
+what it says: on a table that already exists it does **nothing** — including nothing about a column
+added to the definition afterwards. The file was correct for a fresh database and wrong for the only
+database that matters.
+
+⚠️ **And 07 still reported ALL 22 CHECKS PASSED afterwards**, because its seed does not insert
+`location`. The access matrix was genuinely fine; the table was genuinely broken; the green tick was
+about a different question. **Pattern 1, in the verification script itself.**
+
+The app *does* select `location` (`getEnquiries`), so `/dashboard/enquiries` would have thrown at
+runtime against that database — after a full green SQL run.
+
+**Fixed by making both files self-healing:** 06 now asserts all 13 enquiries columns with
+`add column if not exists`, and 01 does the same for all 33 across `matters`, `s56_deadlines` and
+`profiles` — which had the identical trap waiting, just no column added to it yet. ⛔ Adding a column
+to a definition is now half the job; the ALTER list is the other half, and both files say so.
+
+### 🔴 The hosting question, verified against a primary source
+Asked whether free Vercel would do. **It would not — and it fails loudly, which is the good case.**
+Vercel's own cron docs (`/docs/cron-jobs/usage-and-pricing`, read 26 Aug):
+
+| | Cron minimum interval | Precision |
+|---|---|---|
+| **Hobby (free)** | **once per day** | ±59 min |
+| **Pro** | once per minute | per-minute |
+
+> *"Expressions like `0 * * * *` (per-hour) … **will fail deployment** with the error: Hobby accounts
+> are limited to daily cron jobs."*
+
+`vercel.json` carries exactly `0 * * * *`. **On a free account the deploy is rejected, not degraded** —
+recorded in the file itself so nobody rediscovers it at 2am.
+
+⛔ **But the deciding factor is not the cron, it is policy.** Real client data may only go to the
+company Vercel team or company AWS/GCP. Personal accounts, Netlify, and free tiers are permitted for
+**pure demos with fake data only** — which the fixtures mode is genuinely built for and is a
+legitimate use of a free account.

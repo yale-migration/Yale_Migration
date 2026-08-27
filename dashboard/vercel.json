@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/sync",
-      "//": "Hourly, on the hour. One of his four non-functional asks.",
+      "//": "Hourly. \ud83d\udd34 VERIFIED 26 Aug against Vercel's own docs: the HOBBY (free) plan caps cron at ONCE PER DAY, and an expression like this one FAILS THE DEPLOYMENT outright \u2014 'Hobby accounts are limited to daily cron jobs.' It does not silently degrade. On Hobby, change this to a daily expression such as '0 1 * * *'; hourly needs Pro. Pro also gives per-minute precision, where Hobby fires anywhere inside the hour. (D-406)",
       "schedule": "0 * * * *"
     }
   ]

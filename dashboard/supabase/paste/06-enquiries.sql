@@ -38,6 +38,36 @@ create table if not exists public.enquiries (
   synced_at       timestamptz not null default now()
 );
 
+-- ═══════════════════════════════════════════════════════════════════════════
+-- 🔴 SELF-HEAL FOR A TABLE THAT ALREADY EXISTS. (D-406)
+--
+-- `create table if not exists` does exactly what it says: if the table is
+-- already there it does NOTHING — including nothing about a column added to
+-- the definition later. `location` was added on 24 Aug (D-389); every database
+-- created before that kept the old shape, and the demo insert below then failed
+-- with `column "location" of relation "enquiries" does not exist`.
+--
+-- That is what happened in the live project on 26 Aug. The file was correct for
+-- a FRESH database and wrong for the only database that matters.
+--
+-- ⛔ So every column is asserted individually and idempotently. Adding one to
+-- the definition above is not enough — add it here too, or the next person to
+-- re-run this file on an existing database gets the same error.
+-- ═══════════════════════════════════════════════════════════════════════════
+alter table public.enquiries add column if not exists enquiry_date  date;
+alter table public.enquiries add column if not exists name          text;
+alter table public.enquiries add column if not exists phone         text;
+alter table public.enquiries add column if not exists email         text;
+alter table public.enquiries add column if not exists channel       text;
+alter table public.enquiries add column if not exists visa_interest text;
+alter table public.enquiries add column if not exists office        text;
+alter table public.enquiries add column if not exists location      text;   -- D-389
+alter table public.enquiries add column if not exists assigned_to   text;
+alter table public.enquiries add column if not exists status        text;
+alter table public.enquiries add column if not exists follow_up_due date;
+alter table public.enquiries add column if not exists last_contact  date;
+alter table public.enquiries add column if not exists synced_at     timestamptz;
+
 create index if not exists enquiries_office_idx on public.enquiries (office);
 create index if not exists enquiries_date_idx   on public.enquiries (enquiry_date desc);
 

@@ -89,6 +89,54 @@ create table if not exists public.profiles (
     check (role <> 'client'  or client_code is not null)
 );
 
+-- ═════════════════════════════════════════════════════════════════════════
+-- 🔴 SELF-HEAL — same reason as 06. (D-406)
+--
+-- `create table if not exists` does NOTHING to a table that already exists,
+-- including nothing about a column added to the definition later. On 26 Aug
+-- that exact gap made 06 fail on the live project: `location` had been added
+-- to the enquiries definition and never to the database.
+--
+-- ⛔ Add a column above and you MUST add it here too, or the next re-run on a
+-- real database silently keeps the old shape and fails somewhere else.
+-- ═════════════════════════════════════════════════════════════════════════
+
+alter table public.matters add column if not exists client_code        text;
+alter table public.matters add column if not exists full_name          text;
+alter table public.matters add column if not exists client_email       text;
+alter table public.matters add column if not exists office             text;
+alter table public.matters add column if not exists team               text;
+alter table public.matters add column if not exists consultant         text;
+alter table public.matters add column if not exists visa_type          text;
+alter table public.matters add column if not exists visa_variant       text;
+alter table public.matters add column if not exists processing_stage   text;
+alter table public.matters add column if not exists visa_outcome       text;
+alter table public.matters add column if not exists grant_date         date;
+alter table public.matters add column if not exists visa_expiry        date;
+alter table public.matters add column if not exists last_contact       date;
+alter table public.matters add column if not exists next_due           date;
+alter table public.matters add column if not exists docs_outstanding   text;
+alter table public.matters add column if not exists folder_url         text;
+alter table public.matters add column if not exists synced_at          timestamptz;
+
+alter table public.s56_deadlines add column if not exists client_code        text;
+alter table public.s56_deadlines add column if not exists client_name        text;
+alter table public.s56_deadlines add column if not exists office             text;
+alter table public.s56_deadlines add column if not exists subclass           text;
+alter table public.s56_deadlines add column if not exists letter_date        date;
+alter table public.s56_deadlines add column if not exists days_allowed       int;
+alter table public.s56_deadlines add column if not exists due_date_legal     date;
+alter table public.s56_deadlines add column if not exists due_date_internal  date;
+alter table public.s56_deadlines add column if not exists deadline_sentence  text;
+alter table public.s56_deadlines add column if not exists status             text;
+alter table public.s56_deadlines add column if not exists needs_review       text;
+alter table public.s56_deadlines add column if not exists synced_at          timestamptz;
+
+alter table public.profiles add column if not exists role               text;
+alter table public.profiles add column if not exists office             text;
+alter table public.profiles add column if not exists client_code        text;
+alter table public.profiles add column if not exists full_name          text;
+
 -- ── indexes ────────────────────────────────────────────────────────────────
 -- 🔴 NOT optional. Supabase's own guidance: wrapping the auth call in (select …)
 -- is a large win, but indexing the column the POLICY FILTERS ON is the bigger
