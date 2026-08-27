@@ -7822,3 +7822,40 @@ data-residency rule. Three independent reasons, any one of them sufficient.
 but it carries **no daily backups** — on a database holding immigration matters that is the line worth
 paying to cross, not the pause. Both are the CLIENT's running costs and belong in
 `QUOTE-P3-DASHBOARD.md`, which is still unsent.
+
+## D-408 | "7 demo enquiries" from a file that inserts 6 — a NULL that no cleanup could match
+**28 Aug 2026.** `06` finally ran clean and printed **`Enquiries table ready. 7 demo enquiries.`**
+The file inserts **six**. The number was right there in the output and read as success.
+
+The cleanup was `delete from public.enquiries where name like 'DEMO %'`, and one demo row has a
+**NULL name on purpose** — the phone-only enquiry, which exists because 82 rows in their own log look
+exactly like that. In SQL `NULL like 'DEMO %'` is **NULL, not TRUE**, and a WHERE clause keeps a row
+only when the predicate is TRUE. So that row was never deleted and a fresh copy was added on **every
+run**, growing by one each time.
+
+⛔ **Three-valued logic makes this class invisible by construction.** Nothing errors. The count simply
+drifts — and it drifts on *"new enquiries this week"*, one of the seven views Robinder asked for by
+name. A demo row is harmless; **an enquiry view that over-reports the pipeline is not**, and on real
+data the same predicate shape would spare any lead whose name was never captured.
+
+**Fixed** by matching the exact phone literals the file owns, so the predicate never depends on a
+column allowed to be null. **And the file now ASSERTS its own count** rather than printing it: 6 gives
+a ✅ line, anything else says the cleanup is leaking and not to trust the counts. 🔑 *A number you have
+to check yourself is not a check* — this one was printed plainly and nobody read it as wrong.
+
+**Closed as a class:** `sql.test.mjs` gains a third check — a cleanup DELETE must be able to match
+every row its own file inserts. If a row is NULL in every column the predicate touches, it is
+unreachable and the test fails. Negative-tested by restoring the name-only delete: 1 row unreachable.
+**18 checks.**
+
+### Hosting, both verified from primary sources on 28 Aug
+| | Commercial use | Cron |
+|---|---|---|
+| **Vercel Hobby** | 🔴 *"restricts users to non-commercial, personal use only"* | once per day; `0 * * * *` **fails the deploy** |
+| **Netlify Free** | not restricted on the pricing page — ⚠️ **not confirmed in their ToS** | ✅ *"available on all pricing plans"*, hourly and finer |
+| **Vercel Pro** | ✅ | per-minute |
+
+⚠️ **Netlify's scheduled functions cap at 30 seconds.** Our sync reads three tabs and upserts three
+tables; the route already declares `maxDuration = 60` for Vercel. On Netlify it would need a
+Background Function or a split. **Not a blocker, but not a drop-in either** — do not present Netlify
+as a free swap without testing that.

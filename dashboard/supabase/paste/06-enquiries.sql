@@ -94,7 +94,25 @@ create policy enquiries_manager_own_office on public.enquiries
           and office = (select app.current_office()) );
 
 -- ── demo rows, so the view has something to show ──────────────────────
-delete from public.enquiries where name like 'DEMO %';
+-- 🔴 THE CLEANUP MUST MATCH THE NAMELESS ROW TOO. (D-408)
+--
+-- This was `where name like 'DEMO %'` and one of the six demo rows has a NULL
+-- name on purpose — the phone-only enquiry. In SQL `NULL like 'DEMO %'` is
+-- NULL, not TRUE, and a WHERE clause keeps a row only when the predicate is
+-- TRUE. So that row was never deleted and a fresh one was added on every run:
+-- the live project reported **7 demo enquiries** from a file that inserts 6,
+-- and it would have grown by one every single time.
+--
+-- ⛔ A three-valued-logic leak is silent by construction. Nothing errors; the
+-- count just drifts, and "new enquiries this week" over-reports the pipeline —
+-- on the one view Robinder asked for by name.
+--
+-- Matching on the exact phone literals this file owns, so the predicate cannot
+-- depend on a column that is allowed to be null.
+delete from public.enquiries
+ where name like 'DEMO %'
+    or phone in ('0400 111 222','0400 333 444','0400 555 666',
+                 '0400 777 888','0400 999 000','0401 222 333');
 insert into public.enquiries
   (enquiry_date, name, phone, email, channel, visa_interest, office, location, assigned_to, status, follow_up_due, last_contact)
 values
@@ -107,4 +125,16 @@ values
   (current_date - 9, 'DEMO Sofia M.',  '0400 999 000', 'sofia@example.com',  'Referral',  '189', 'BRISBANE', 'Onshore',   'Priyanka', 'Pending Decision', current_date - 2, current_date - 8),
   (current_date - 34,'DEMO Ken T.',    '0401 222 333', 'ken@example.com',    'Instagram', '600', 'TOWNSVILLE', 'Offshore', 'Cristelle','Not Proceeding', null, current_date - 30);
 
-select 'Enquiries table ready. ' || count(*) || ' demo enquiries.' as result from public.enquiries;
+-- ⛔ ASSERT the count rather than print it. "7 demo enquiries" from a file that
+-- inserts 6 is the whole bug above, and it was printed plainly for days without
+-- anyone reading it as wrong. A number you have to check yourself is not a check.
+select case
+         when count(*) = 6
+           then '✅ Enquiries table ready. 6 demo enquiries, exactly as expected.'
+         else '🔴 EXPECTED 6 demo enquiries, found ' || count(*)
+              || ' — the cleanup is leaking rows. Do not trust the enquiry counts.'
+       end as result
+from public.enquiries
+where name like 'DEMO %'
+   or phone in ('0400 111 222','0400 333 444','0400 555 666',
+                '0400 777 888','0400 999 000','0401 222 333');
