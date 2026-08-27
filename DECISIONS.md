@@ -7781,3 +7781,44 @@ recorded in the file itself so nobody rediscovers it at 2am.
 company Vercel team or company AWS/GCP. Personal accounts, Netlify, and free tiers are permitted for
 **pure demos with fake data only** — which the fixtures mode is genuinely built for and is a
 legitimate use of a free account.
+
+## D-407 | The same half-applied edit, one layer down — and the SQL now has a compiler
+**28 Aug 2026.** `06` failed again in the live editor: `INSERT has more target columns than
+expressions`. **Twelve columns, eleven values, on all six rows.** When `location` was added to the
+demo insert's column list on 24 Aug, it was never added to the DATA. So D-406 fixed the missing
+migration and left the missing values — **the same half-applied edit, one layer down, found again by
+the client rather than by us.**
+
+🔑 **Three instances in three days is not bad luck, it is a missing tool.** These files are the only
+part of the system with no compiler and no test runner: they are validated by a human pasting them
+into a *production* SQL editor and reading the error. So:
+
+**`supabase/sql.test.mjs`**, wired into `npm test` (now 7 suites):
+1. **Every INSERT's column count equals every VALUES row's count** — the defect above.
+2. **Every column in a `create table if not exists` has a matching `add column if not exists`** — the
+   D-406 defect, so a definition can never again outrun the migration.
+
+Both negative-tested by reintroducing the exact bugs.
+
+⚠️ **And the gate's first run produced two false failures**, on `03-seed-demo-data.sql` — the one file
+nobody had run yet, which is exactly where a phantom would have been believed. It counted bare commas
+and split `'Bank statements — last 3 months, Health insurance certificate'` in half. `docs_outstanding`
+is a comma-separated list *by design*. The counter now tracks single-quoted strings, `''` escapes
+included. ⛔ **A brand-new gate crying wolf on its first run is how it gets ignored on the day it
+finds something real.** Also excluded primary keys from the ALTER check — demanding
+`add column if not exists` for a PK is a permanent false failure.
+
+### 🔴 Vercel Hobby is not an option, and it is their terms, not our policy
+Read 28 Aug from `vercel.com/docs/plans/hobby`:
+
+> *"As stated in the fair use guidelines, the Hobby plan **restricts users to non-commercial, personal
+> use only.**"*
+
+Yale is a commercial engagement, so the free tier is out on Vercel's own terms — **before** the cron
+limit (Hobby caps at once per day and rejects `0 * * * *` at deploy, D-406) and before our own
+data-residency rule. Three independent reasons, any one of them sufficient.
+
+**Pro is USD 20/user/month.** ⚠️ Supabase Free does not pause while the hourly sync keeps it active,
+but it carries **no daily backups** — on a database holding immigration matters that is the line worth
+paying to cross, not the pause. Both are the CLIENT's running costs and belong in
+`QUOTE-P3-DASHBOARD.md`, which is still unsent.

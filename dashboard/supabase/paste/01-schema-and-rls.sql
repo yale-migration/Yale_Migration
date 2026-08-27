@@ -136,6 +136,7 @@ alter table public.profiles add column if not exists role               text;
 alter table public.profiles add column if not exists office             text;
 alter table public.profiles add column if not exists client_code        text;
 alter table public.profiles add column if not exists full_name          text;
+alter table public.profiles add column if not exists created_at         timestamptz;
 
 -- ── indexes ────────────────────────────────────────────────────────────────
 -- 🔴 NOT optional. Supabase's own guidance: wrapping the auth call in (select …)

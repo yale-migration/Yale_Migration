@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 564K /     7783 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 628K /     7824 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-27 23:38
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-28 00:06
 
 | # | Decision |
 |---|---|
@@ -402,3 +402,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-27 23:3
 | **D-404** | Repointing the import at the newer file exposed a defect that would have hit on go-live morning |
 | **D-405** | C-1's live capture had no trigger — the forward path was a function nobody called |
 | **D-406** | `create table if not exists` is not a migration, and free Vercel would fail the deploy outright |
+| **D-407** | The same half-applied edit, one layer down — and the SQL now has a compiler |

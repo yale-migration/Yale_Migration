@@ -98,13 +98,13 @@ delete from public.enquiries where name like 'DEMO %';
 insert into public.enquiries
   (enquiry_date, name, phone, email, channel, visa_interest, office, location, assigned_to, status, follow_up_due, last_contact)
 values
-  (current_date - 1, 'DEMO Priya R.',  '0400 111 222', 'priya@example.com',  'Facebook',  '500', 'BRISBANE',   'Rey',      'New',            current_date + 6, null),
-  (current_date - 2, 'DEMO Chen W.',   '0400 333 444', 'chen@example.com',   'Website',   '485', 'BRISBANE',   'RJ',       'Contacted',      current_date + 5, current_date - 1),
-  (current_date - 4, 'DEMO Amara O.',  '0400 555 666', null,                 'WhatsApp',  '482', 'TOWNSVILLE', 'Star',     'New',            current_date + 3, null),
+  (current_date - 1, 'DEMO Priya R.',  '0400 111 222', 'priya@example.com',  'Facebook',  '500', 'BRISBANE', 'Onshore',   'Rey',      'New',            current_date + 6, null),
+  (current_date - 2, 'DEMO Chen W.',   '0400 333 444', 'chen@example.com',   'Website',   '485', 'BRISBANE', 'Onshore',   'RJ',       'Contacted',      current_date + 5, current_date - 1),
+  (current_date - 4, 'DEMO Amara O.',  '0400 555 666', null,                 'WhatsApp',  '482', 'TOWNSVILLE', 'Offshore', 'Star',     'New',            current_date + 3, null),
   -- 🔴 a number and no name. 82 rows in their own enquiry log look exactly like
   -- this, and any view that quietly drops them under-reports the pipeline.
-  (current_date - 5, null,             '0400 777 888', null,                 'Phone',     null,  'BRISBANE',   null,       'New',            current_date + 2, null),
-  (current_date - 9, 'DEMO Sofia M.',  '0400 999 000', 'sofia@example.com',  'Referral',  '189', 'BRISBANE',   'Priyanka', 'Pending Decision', current_date - 2, current_date - 8),
-  (current_date - 34,'DEMO Ken T.',    '0401 222 333', 'ken@example.com',    'Instagram', '600', 'TOWNSVILLE', 'Cristelle','Not Proceeding', null, current_date - 30);
+  (current_date - 5, null,             '0400 777 888', null,                 'Phone',     null,  'BRISBANE', null,   null,       'New',            current_date + 2, null),
+  (current_date - 9, 'DEMO Sofia M.',  '0400 999 000', 'sofia@example.com',  'Referral',  '189', 'BRISBANE', 'Onshore',   'Priyanka', 'Pending Decision', current_date - 2, current_date - 8),
+  (current_date - 34,'DEMO Ken T.',    '0401 222 333', 'ken@example.com',    'Instagram', '600', 'TOWNSVILLE', 'Offshore', 'Cristelle','Not Proceeding', null, current_date - 30);
 
 select 'Enquiries table ready. ' || count(*) || ' demo enquiries.' as result from public.enquiries;
