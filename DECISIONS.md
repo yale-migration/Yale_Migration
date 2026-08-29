@@ -7859,3 +7859,36 @@ unreachable and the test fails. Negative-tested by restoring the name-only delet
 tables; the route already declares `maxDuration = 60` for Vercel. On Netlify it would need a
 Background Function or a split. **Not a blocker, but not a drop-in either** — do not present Netlify
 as a free swap without testing that.
+
+## D-409 | RJ volunteered the staff list, and the roster is defined in four places
+**28 Aug 2026.** RJ replied to the client-list email with two things: *"May i know which clients you
+are referring to? is it the 40 clients?"* — yes, the 40 in `CLIENT LIST TO UPDATE` — and, separately,
+**"Also we have new hires."**
+
+🔑 **That second line is A-45 arriving on its own.** It has been open since 22 Aug and was parked as
+Robinder's to answer because RJ had asked *us* about it. He is now offering it unprompted, which makes
+it his to answer after all. ⛔ **Take the opening; do not defer it to a call that has not happened in
+fifteen days.**
+
+**Why a new hire is not routine admin here.** `Assigned Consultant` is a locked dropdown in **four**
+separate places, each built with `setAllowInvalid(false)`:
+`setup_master_sheet.gs` MASTER col 12 · the same file's ENQUIRIES col 8 · `setup_call_log_tab.gs` ·
+`setup_s56_tracker_tab.gs`. Plus `m6_enquiry_triage.gs` routes enquiries to a name.
+
+A name missing from one of them is **refused by the cell in silence** — the write reports success and
+the field stays blank. Fifth appearance of that class. Adding one consultant is a four-file edit, and
+missing one means they can be assigned in three tabs and not the fourth, discovered when a client is
+invisible to the person who owns them.
+
+**Verified today: all four agree — 9 names, and every consultant M6 can route to exists in the
+dropdown.** ⚠️ Getting there took two attempts: my first comparison scoped the regex wrongly and
+reported ENQUIRIES as holding 24 visa types rather than 9 consultants. **A false "the rosters have
+drifted" would have sent us editing files that were already correct.**
+
+**`scripts/test_roster_sync.js`** now asserts all four lists are identical and that M6 cannot route to
+a name the cell would refuse. Negative-tested: adding a hire to CALL LOG only fails with
+`extra NewHire`. Picked up automatically by `run_all_tests.sh`.
+
+🔑 **This is a guard rail, not the fix.** D-355 remains: the roster should be read from a tab THEY
+maintain, so a joiner is a row they add rather than a code change we make. Worth quoting at handover —
+three roster changes in two weeks says it will keep happening.
