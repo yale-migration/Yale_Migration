@@ -7892,3 +7892,50 @@ a name the cell would refuse. Negative-tested: adding a hire to CALL LOG only fa
 🔑 **This is a guard rail, not the fix.** D-355 remains: the roster should be read from a tab THEY
 maintain, so a joiner is a row they add rather than a code change we make. Worth quoting at handover —
 three roster changes in two weeks says it will keep happening.
+
+## D-410 | Robinder is ready to buy M365 — and one thing he proposed must not be done
+**28 Aug 2026.** He has offered to start the Microsoft 365 purchase this weekend, small first, then
+expand. ✅ **That matches the advice already in `GUIDE-microsoft-365-purchase.md` from 15 Aug** — buy
+it, but small, because the problem is *ownership* and ownership is fixed by the tenant existing, not
+by seat count. G2 paid off: the answer was already written.
+
+Two things changed, and one is a real risk.
+
+### 🔴 1 · "give the access to other person with the same account" — no
+He raised sharing one licensed account between several people. ⛔ **That must not happen here**, and
+the reason to give him is operational rather than contractual:
+
+- **No audit trail.** With one shared login, "who opened this client's passport scan" has no answer.
+  For a Registered Migration Agent holding identity documents, that is a professional exposure, not
+  an IT preference.
+- **No revocation.** Their roster changed **three times in two weeks** (Mershe left · Gopi joined
+  18 Aug and left 22 Aug · new hires 28 Aug). With shared credentials, one leaver means changing the
+  password for everybody, every time.
+- **MFA collapses.** A shared account needs a shared second factor — one phone between several people
+  — so in practice MFA gets switched off, on the account holding client files.
+- Each Microsoft 365 licence is assigned to an individual user account; sharing is not how the product
+  is sold. ⚠️ Confirm the exact licence wording at purchase rather than quoting terms at him.
+
+🔑 **The saving he is reaching for already exists legitimately:** shared addresses like `info@`,
+`visa.lodgement@` and `workvisa.bne@` can be **shared mailboxes, which are free** and need no licence.
+Only real humans need a seat.
+
+### 🔴 2 · The pricing in our own guide was stale — re-verified 28 Aug
+Microsoft has rebundled. **Business Standard is now sold with Copilot at AU$35.20/user/month**, against
+the ~$18.70 the guide assumed — we would have quoted him roughly half the real figure.
+
+| Plan (annual, ex GST) | AUD/user/mo | OneDrive |
+|---|---|---|
+| **Basic** | **$10.50** | 1 TB |
+| Standard *with Copilot* | $35.20 | 1 TB |
+| Premium *with Copilot* | $47.90 | 1 TB |
+
+**Recommendation changed to 3 × Basic ≈ AU$31.50 + GST**, down from 3 × Standard. **Basic includes the
+1 TB of OneDrive, and OneDrive is the entire reason we are here.** The only thing Basic omits is
+desktop Office, which does not fix the ownership problem and which staff already have some form of.
+Upgrading one person to Standard later is a one-click change, not a repurchase.
+
+⚠️ **The email warning from the guide still stands and is the thing that can actually break their
+business:** Yale's mail runs on Google Workspace (`aspmx.l.google.com`). **Verify the domain with a
+TXT record and never let the wizard change the MX record or "set as primary email"** — that step stops
+every Yale address receiving mail, including `visa.lodgement@`, where the Department sends s56 letters.

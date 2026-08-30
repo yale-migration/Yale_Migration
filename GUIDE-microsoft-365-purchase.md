@@ -112,10 +112,32 @@ Registered Migration Agent, that is Robinder's obligation, not an IT preference.
 **So: buy it, but small.** The problem is *ownership*, and ownership is fixed by the tenant existing —
 not by how many people are licensed.
 
-| | Licences | Cost/month | Fixes ownership? | Desktop Office for all? |
+> 🔴 **PRICING RE-VERIFIED 28 Aug 2026** at microsoft.com/en-au — **the plan line-up changed and the
+> old figures in this guide were wrong.** Business Standard is now sold bundled with Copilot at
+> **AU$35.20/user/month**, nearly double the ~$18.70 this guide assumed. Do not quote the old number.
+>
+> | Plan (annual commitment, ex GST) | AUD/user/month | OneDrive |
+> |---|---|---|
+> | **Business Basic** | **$10.50** | **1 TB** |
+> | Business Standard *with Copilot* | $35.20 | 1 TB |
+> | Business Premium *with Copilot* | $47.90 | 1 TB |
+
+### ⭐ REVISED RECOMMENDATION — 3 × **Basic**, not Standard (D-410)
+
+**Basic includes the 1 TB of OneDrive per user, and OneDrive is the entire reason we are here.**
+The problem is that ~1,436 client folders sit on one person's personal account; that is fixed by a
+company-owned tenant with company-owned storage. **Desktop Word does not fix it, and desktop Word is
+the only thing Basic leaves out.**
+
+| | Licences | Plan | Cost/month | Fixes ownership? |
 |---|---|---|---|---|
-| **Start here** | **3** | **~$56 + GST** | ✅ yes | ❌ not yet |
-| Later | 11 | ~$206 + GST | ✅ | ✅ |
+| **Start here** | **3** | **Basic** | **~AU$31.50 + GST** | ✅ yes |
+| If someone truly needs desktop Office | +1 | Standard | +$35.20 | — |
+| Everyone, later | 11 | Basic | ~$115.50 + GST | ✅ |
+
+⚠️ Staff keep whatever they use for documents today — buying this takes nothing away. Upgrade an
+individual from Basic to Standard later if they actually want the desktop apps; **that is a one-click
+change, not a repurchase.**
 
 Three licences — Robinder plus whoever manages the files — creates a company-owned tenant with
 company-owned storage. **Staff get added when they actually want desktop Word, not before.**
