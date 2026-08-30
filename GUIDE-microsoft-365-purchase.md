@@ -127,7 +127,8 @@ not by how many people are licensed.
 >
 > | Plan (annual commitment, ex GST) | AUD/user/month | OneDrive |
 > |---|---|---|
-> | **Business Basic** | **$10.50** | **1 TB** |
+> | **Business Basic — annual** | **$10.50** | **1 TB** |
+> | **Business Basic — month-to-month** | **$12.60** | **1 TB** |
 > | Business Standard *with Copilot* | $35.20 | 1 TB |
 > | Business Premium *with Copilot* | $47.90 | 1 TB |
 
@@ -140,7 +141,13 @@ the only thing Basic leaves out.**
 
 | | Licences | Plan | Cost/month | Fixes ownership? |
 |---|---|---|---|---|
-| **Start here** | **3** | **Basic** | **~AU$31.50 + GST** | ✅ yes |
+| **Start here** | **3** | **Basic, MONTHLY** | **AU$37.80 + GST ≈ $41.58** | ✅ yes |
+| Once proven | 3 | Basic, annual | AU$31.50 + GST ≈ $34.65 | ✅ |
+
+🔑 **Start MONTHLY, not annual — verified 28 Aug.** The difference is **$2.10 per user per month**
+($6.30 for three). Annual locks twelve months on a tenant nobody has tested yet, and Robinder's own
+plan is *"buy a few, check, then expand."* **$6.30/month is cheap insurance on a decision he has
+explicitly said he wants to trial**, and switching to annual afterwards costs nothing.
 | If someone truly needs desktop Office | +1 | Standard | +$35.20 | — |
 | Everyone, later | 11 | Basic | ~$115.50 + GST | ✅ |
 
