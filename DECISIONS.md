@@ -8007,3 +8007,44 @@ needs OneDrive over Microsoft Graph, not Word. **3 × Basic stands.**
 one-for-one onto a Business tenant. `Sites.Read.All` and `Group.Read.All` are work/school concepts.
 The connection will be **re-authorised** against the new tenant at cutover — expect to redo it, and do
 not promise a seamless switch.
+
+## D-413 | Do not add the domain to Microsoft at all — the dangerous screen can be skipped, not navigated
+**28 Aug 2026.** Asked to verify the MX advice properly before it goes to Robinder. Four primary
+sources, and the conclusion changed.
+
+**1 · The danger is real and Microsoft states it plainly** (`/admin/setup/add-domain`):
+> *"After you finish setting up a custom domain, the MX record for your domain is updated to point to
+> Microsoft 365. **All email for your domain starts coming to Microsoft 365.**"*
+
+**2 · 🔴 Their registrar is GoDaddy** — `whois` returns *"GoDaddy.com LLC"*, nameservers
+`ns39/ns40.domaincontrol.com`. **GoDaddy is on Microsoft's Domain Connect list**, and Domain Connect
+is the path Microsoft *recommends* and shows by default. It *"automatically handles… adding DNS
+records required for Microsoft 365 services."* ⛔ **So the wizard will steer him into one authorise
+click at GoDaddy that rewrites MX.** Our earlier advice — "say no when it asks" — assumed a manual
+flow with a clear prompt. On GoDaddy there may not be one.
+
+**3 · ✅ THE ACTUAL ANSWER: he does not need to add the domain at all**
+(`/admin/setup/add-or-replace-your-onmicrosoftcom-domain`):
+> *"When you sign up for Microsoft 365, Microsoft provides an onmicrosoft.com domain — your fallback
+> domain — **in case you don't own a domain, or don't want to connect it to Microsoft 365.**"*
+
+The tenant is fully functional on `something.onmicrosoft.com`. **OneDrive and SharePoint work**, and
+their URLs are built from that fallback name. Logins read `robinder@yalemigration.onmicrosoft.com`.
+🔑 **Never adding the custom domain means the MX screen never appears. The risk is removed rather than
+survived** — and "don't go near that screen" is advice a non-technical person can actually follow,
+where "click No at the right moment" is a coin toss on a screen he sees once.
+
+**4 · ⚠️ THE GOTCHA THAT WOULD HAVE BITTEN US:** *"You're limited to a total of five onmicrosoft.com
+domains… **once created, onmicrosoft.com domains can't be deleted**"*, and *"SharePoint URLs… are
+created based on your fallback domain name."* **The name typed at signup becomes the permanent
+OneDrive/SharePoint URL.** Type `yalemigration`, deliberately, at that one box.
+
+**Also checked and NOT a problem:** the domain's `serverRenewProhibited` / *"Not Currently Eligible For
+Renewal"* status is the normal .au renewal-window state, not an expiry risk. Registrant is
+**"yale migration and education consultants", ACN 607674859, contact Robinder Singh** — correctly
+company-owned. ⛔ Not raised with him: manufacturing alarm from a status code I had to look up would
+cost more credibility than it buys.
+
+**Trade-off to state honestly:** sign-in names will not be `@yalemigration.com.au`. For a tenant whose
+only job is owning client folders, that costs nothing, and the custom domain can be added later,
+deliberately, if they ever move email. ⛔ Do not describe that later step as easy.

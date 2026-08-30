@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 580K /     8009 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 644K /     8050 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-30 07:56
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-30 07:59
 
 | # | Decision |
 |---|---|
@@ -408,3 +408,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-30 07:5
 | **D-410** | Robinder is ready to buy M365 — and one thing he proposed must not be done |
 | **D-411** | Auditing my own M365 message found advice that contradicted the warning beside it |
 | **D-412** | The OneDrive holding 1,436 client folders is OUR consultant's personal account, not a staff member's |
+| **D-413** | Do not add the domain to Microsoft at all — the dangerous screen can be skipped, not navigated |

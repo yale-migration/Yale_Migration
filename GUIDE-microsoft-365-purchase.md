@@ -190,7 +190,21 @@ He will be asked for a company name and a temporary address like `yalemigration.
 It becomes the owner of every client file the business holds. **It must never be created under a
 staff member's personal account** — that is exactly the problem we are fixing.
 
-## Step 4 · Add the domain — ⚠️ THE CAREFUL BIT
+## Step 4 · ⛔ DO NOT ADD THE DOMAIN AT ALL — REVISED 28 Aug (D-413)
+
+**Skip this step entirely.** Microsoft gives every tenant a free `something.onmicrosoft.com` domain
+*"in case you don't own a domain, or don't want to connect it to Microsoft 365"* — their words.
+OneDrive and SharePoint work fully on it.
+
+🔴 **Their registrar is GoDaddy, which supports Domain Connect** — so the domain wizard offers to add
+Microsoft's DNS records *automatically*, in one authorise click, MX included. There may be no clear
+"no" to click. **Never opening that wizard is the only reliable protection.**
+
+⚠️ **At signup, the name typed into the tenant-name box becomes the permanent OneDrive/SharePoint URL
+and can never be deleted.** Type `yalemigration`.
+
+~~## Step 4 · Add the domain — ⚠️ THE CAREFUL BIT~~ *(kept below for the day they deliberately move
+email to Microsoft — not now)*
 Admin centre → **Settings → Domains → Add domain** → `yalemigration.com.au`.
 
 **Choose "Add a TXT record to verify ownership."**
