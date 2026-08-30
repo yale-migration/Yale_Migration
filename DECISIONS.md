@@ -7979,3 +7979,31 @@ themselves. That is a far better argument than quoting licence terms at him.
 ⚠️ Also softened *"your team changed three times in two weeks"* — true, but it invites "which three?",
 and one of the three is Gopi, who must not be raised (joined 18 Aug, left 22 Aug). The point stands
 without the count.
+
+## D-412 | The OneDrive holding 1,436 client folders is OUR consultant's personal account, not a staff member's
+**28 Aug 2026.** Verified against Make rather than our notes: `connections_get(9279810)`, named
+**"Yale's Microsoft connection"**, returns
+`"email": "sharry00010@gmail.com", "connectionLabel": "Muhammad Sharjeel"` — an `oauth` Microsoft
+account with **`Files.ReadWrite.All`**, `Sites.Read.All`, `Group.Read.All`.
+
+🔴 **The name on the connection says Yale. The account is Sharjeel's.** Every document I have written
+about this said *"one individual's personal Microsoft account"* — technically true and it reads as a
+Yale staff member. It is **ours**.
+
+⛔ **That reframes the ask completely.** This is not Robinder being slow about internal governance; it
+is a live exposure **our engagement created**: ~1,436 client folders holding passports and police
+checks sit on a contractor's personal Microsoft account, and the day our access ends Yale has no admin
+route to its own client files. It also cannot survive handover — M11 is blocked on precisely this.
+
+🔑 **And it is the more persuasive sentence.** *"Your files are on someone's personal account"* is a
+lecture he can defer. *"Your clients' files are on MY personal account and that has to change"* is
+true, is our problem to raise, and is the version that gets acted on. The guide now says it that way.
+
+✅ **Also verified, because the recommendation rests on it:** Business Basic includes **OneDrive 1 TB
+per user AND SharePoint**; the only omission versus Standard is *desktop* Office. The automation
+needs OneDrive over Microsoft Graph, not Word. **3 × Basic stands.**
+
+⚠️ One thing NOT verified and not to be claimed: whether the current personal-account scopes map
+one-for-one onto a Business tenant. `Sites.Read.All` and `Group.Read.All` are work/school concepts.
+The connection will be **re-authorised** against the new tenant at cutover — expect to redo it, and do
+not promise a seamless switch.

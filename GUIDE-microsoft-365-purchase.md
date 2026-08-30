@@ -104,10 +104,19 @@ Switch to annual once it is settled.
 **Is buying this compulsory? No.** Nothing breaks if he does nothing. The system works today. This is
 a **governance** problem, not a functional one.
 
-**But the exposure is real:** ~1,436 client folders — passports, police checks — sit on **one
-individual's personal Microsoft account**. If that person leaves or that account is closed or
-compromised, the business loses its client files and has no admin route to recover them. As a
-Registered Migration Agent, that is Robinder's obligation, not an IT preference.
+**But the exposure is real, and it is sharper than this guide first said.** ⛔ **Verified from Make
+28 Aug (D-412): connection 9279810, labelled "Yale's Microsoft connection", is
+`sharry00010@gmail.com` — SHARJEEL'S OWN personal Microsoft account.** Not Robinder's, not a staff
+member's. Ours.
+
+So ~1,436 client folders — passports, police checks — sit on **the consultant's personal account**,
+with `Files.ReadWrite.All` granted to it. That is not Yale's internal governance problem to get
+around to. **It is a live exposure this engagement created**, and it must not survive handover: the
+day our access ends, Yale loses the route to its own client files.
+
+🔑 **Say it that way.** "Your files are on someone's personal account" is a lecture. "Your clients'
+files are on MY personal account and that has to change" is true, and it is the version that gets
+acted on.
 
 **So: buy it, but small.** The problem is *ownership*, and ownership is fixed by the tenant existing —
 not by how many people are licensed.
