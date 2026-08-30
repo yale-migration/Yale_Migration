@@ -148,9 +148,16 @@ This also de-risks the migration: prove it on a small tenant before committing e
 Roughly **11 people** appear across their roster and tracker: Robinder, Priyanka, RJ, Inder, Star,
 Rey, Gayatri, Fiza, Cristelle, Mershe, Manali. **Confirm the real number with him.**
 
-**💡 Money-saving point most people miss:** shared addresses like `info@`, `visa.lodgement@` and
-`workvisa.bne@` can be **shared mailboxes**, which are **free** in Microsoft 365 (up to 50GB) and do
-**not** need a paid licence. Only real humans need licences.
+⛔ **STRUCK 28 Aug (D-411) — DO NOT USE THIS ARGUMENT WITH YALE.** ~~Shared addresses like `info@`
+can be free shared mailboxes.~~ True of Microsoft 365 in general (50 GB, no licence) and **moot here**:
+Yale's mail is delivered by **Google Workspace**, and this same guide tells them never to change the
+MX record. A Microsoft shared mailbox on that domain would receive nothing. 🔴 Offering the saving
+points them at the one switch that stops `visa.lodgement@` receiving Department letters.
+
+✅ **Use this instead, from Microsoft's own shared-mailbox docs — it supports the no-shared-login
+rule:** *"A shared mailbox isn't intended for direct sign-in… Always block sign-in for the shared
+mailbox account and keep it blocked."* Even Microsoft's way of sharing an inbox has each person sign
+in as themselves.
 
 At 11 licences on Business Standard: **≈ AUD $206/month + GST ≈ $2,470/year.**
 

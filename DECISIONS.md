@@ -7939,3 +7939,43 @@ Upgrading one person to Standard later is a one-click change, not a repurchase.
 business:** Yale's mail runs on Google Workspace (`aspmx.l.google.com`). **Verify the domain with a
 TXT record and never let the wizard change the MX record or "set as primary email"** — that step stops
 every Yale address receiving mail, including `visa.lodgement@`, where the Department sends s56 letters.
+
+## D-411 | Auditing my own M365 message found advice that contradicted the warning beside it
+**28 Aug 2026.** Asked to check the draft to Robinder before sending. Four claims verified, two
+defects found — both in advice I had written minutes earlier.
+
+**Verified and correct:**
+- ✅ **MX re-checked LIVE today**, not carried from 15 Aug: all five records for `yalemigration.com.au`
+  point at `aspmx.l.google.com`. The email warning is true right now.
+- ✅ Basic AU$10.50 · Standard-with-Copilot AU$35.20 · 1 TB each (microsoft.com/en-au).
+- ✅ ~1,436 folders — traced to the 3 Aug production audit, consistent across three files.
+- ✅ *"A shared mailbox can store up to 50 GB of data without assigning a license to it."*
+
+### 🔴 DEFECT 1 — the shared-mailbox saving is MOOT for Yale, and suggesting it is dangerous
+I told him he could save money by making `info@` and `visa.lodgement@` free shared mailboxes. **Yale's
+mail is on Google Workspace and the same message tells him never to change the MX record.** A
+Microsoft shared mailbox on a domain whose mail is delivered to Google **receives nothing**. The
+saving is imaginary.
+
+⛔ **Worse than useless — actively risky.** Dangling a saving that only materialises if mail moves to
+Microsoft points him at the exact switch that stops `visa.lodgement@` receiving Department s56 letters.
+**I put the temptation and the warning in the same message.** Removed.
+
+🔑 The lesson generalises: *advice inherited from a guide can be individually correct and collectively
+contradictory.* The shared-mailbox tip was written before the Google-Workspace constraint was
+established, and it survived because nobody re-read the two together.
+
+### 🔴 DEFECT 2 — AU$10.50 is the ANNUAL-COMMITMENT price
+Microsoft's page states these are *"paid yearly"* prices. Monthly billing costs more. Quoting $10.50
+and letting him meet a bigger number at checkout is how a consultant stops being believed on numbers.
+Stated as annual, with the choice called out.
+
+### ✅ And one finding that STRENGTHENS the no-shared-login advice
+Microsoft's own shared-mailbox documentation: *"A shared mailbox isn't intended for direct sign-in by
+using its associated user account. **Always block sign-in for the shared mailbox account and keep it
+blocked.**"* Even Microsoft's purpose-built way to share an inbox has each person sign in as
+themselves. That is a far better argument than quoting licence terms at him.
+
+⚠️ Also softened *"your team changed three times in two weeks"* — true, but it invites "which three?",
+and one of the three is Gopi, who must not be raised (joined 18 Aug, left 22 Aug). The point stands
+without the count.
