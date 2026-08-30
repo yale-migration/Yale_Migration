@@ -177,6 +177,30 @@ At 11 licences on Business Standard: **≈ AUD $206/month + GST ≈ $2,470/year.
 ## Step 1 · Decide the number
 Count only people, not shared addresses. Licences can be added later at any time.
 
+## Step 1b · 🔴 WHO SIGNS UP — the step that decides whether any of this works (D-414)
+
+⛔ **This guide never said it, and it is the most important line in the whole document.**
+
+The entire purpose of buying Microsoft 365 is to move ~1,436 client folders **off a personal account**
+— currently Sharjeel's (D-412). **If Robinder signs up using a personal Gmail and pays with a personal
+card, the new tenant is owned by a personal account too, and we have moved the problem rather than
+fixed it.** The files would be safer, and Yale would still not own the container.
+
+| | Use | Not |
+|---|---|---|
+| **Sign-up / billing email** | a Yale address — `info@` or `robinder@yalemigration.com.au` | any `@gmail.com` |
+| **Payment card** | the company card (ACN 607674859) | a personal card |
+| **Who holds the admin password** | Robinder | us |
+
+⚠️ **Using a Yale address at signup does NOT connect the domain.** Microsoft only asks for a contact
+address for receipts and account recovery — that is a completely separate thing from adding
+`yalemigration.com.au` to the tenant, which we are deliberately skipping (D-413). Two different
+screens; only one of them touches DNS.
+
+🔑 **Test the outcome, not the intention:** *if Robinder and Sharjeel both disappeared tomorrow, could
+Yale still reach its client files?* Signed up on a Yale address and paid on the company card, yes.
+Signed up on someone's Gmail, no — and that is the situation we are being paid to end.
+
 ## Step 2 · Buy direct from Microsoft
 Go to **microsoft.com/en-au/microsoft-365/business** → Business Standard → *Buy now*.
 

@@ -8048,3 +8048,27 @@ cost more credibility than it buys.
 **Trade-off to state honestly:** sign-in names will not be `@yalemigration.com.au`. For a tenant whose
 only job is owning client folders, that costs nothing, and the custom domain can be added later,
 deliberately, if they ever move email. ⛔ Do not describe that later step as easy.
+
+## D-414 | The purchase guide never said whose account should buy it
+**28 Aug 2026.** Final check before telling Robinder to go ahead: `grep` for *who buys / whose name /
+admin account* across `GUIDE-microsoft-365-purchase.md` returns **nothing**. Six weeks of guidance on
+plans, pricing, DNS and licences, and **the identity of the buyer was never specified.**
+
+🔴 **That is the one variable that decides whether the purchase achieves anything.** The entire reason
+for buying is to get ~1,436 client folders off a personal account (D-412 — Sharjeel's). If Robinder
+signs up with a personal Gmail and a personal card, **the tenant containing those folders is owned by
+a personal account again.** Safer than today, and still not the company's. We would have spent his
+money to move the problem sideways.
+
+**Now specified:** sign-up and billing on a **Yale address**, payment on the **company card**
+(ACN 607674859, the registrant on their own domain), admin password held by **Robinder, not us**.
+
+⚠️ **And the distinction that makes it safe to say:** using `robinder@yalemigration.com.au` as the
+*contact* address at signup does **not** connect the domain. Microsoft asks for a contact email for
+receipts and recovery; adding the domain to the tenant is a separate screen (D-413). Two different
+things that both involve the domain name, and conflating them would have made this advice contradict
+the previous message.
+
+🔑 **The test to apply, and the one to write into any handover: *if both of us disappeared tomorrow,
+could Yale still reach its client files?*** That question would have caught this six weeks ago. It is
+also the question M11 exists to answer, and the reason M11 is still blocked.
