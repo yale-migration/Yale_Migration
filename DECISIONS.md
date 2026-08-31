@@ -8134,3 +8134,38 @@ number and M7's caller lookup would have tried to match an incoming call against
   their Google form is refusing submissions, that is a **free setting to switch off**, not a purchase.
   ⛔ That possibility must reach RJ before he spends anything.
 - ✅ Microsoft Forms free = **200** responses; with a business licence = **5,000,000**.
+
+## D-417 | Buying the licence will NOT unblock their existing form — it has to be rebuilt
+**31 Aug 2026.** RJ's *"upgrade our microsoft subscription so that we can get more responses through
+the online form"* is the **same purchase Robinder is already planning**, not a separate request.
+Sharjeel read it correctly. The two threads join: Robinder wants it for file ownership, RJ wants it
+for the form. **One purchase, two drivers — and RJ's is the urgent one, because a full form is turning
+enquiries away today.**
+
+🔴 **But buying the licence does not fix the form he already has, and nobody has planned for that.**
+
+Verified against Microsoft's own documentation and support answers (31 Aug):
+- **There is no "transfer ownership" in the Forms UI.** *"Microsoft Forms does not provide a direct
+  transfer ownership option within the standard user interface."*
+- **"Move to a group" only works inside one tenant** — you must be a member of the target group. A
+  form sitting on a free personal Microsoft account cannot be moved into a new business tenant.
+- **The only cross-account route is DUPLICATE**, and *"the duplication method changes the form link."*
+
+So the actual sequence is:
+1. Buy the licence
+2. **Export the existing responses to Excel FIRST** — they belong to the old form and stay there
+3. Duplicate the form into the new licensed account
+4. 🔴 **Update the new link everywhere it is published** — website, Facebook, email signatures, anywhere
+   the old URL was shared
+
+⛔ **If he buys and expects the existing form to simply start accepting responses again, it will not.**
+The 200-response wall belongs to the form on the old account and moves with it, not with the
+subscription. **A purchase that does not visibly fix the thing it was bought for is how a client stops
+believing the next recommendation.**
+
+⚠️ Step 4 is the one that bites quietly: the old link keeps working and keeps refusing, so anyone who
+saved it, or any page not updated, carries on losing enquiries after the "fix". **Every place the form
+is linked must be inventoried before the switch, not after.**
+
+🔑 Still worth doing — 200 → 5,000,000 — and it is the first thing in this project the client's own
+team is asking for rather than being asked. **But it is a small project, not a checkout.**
