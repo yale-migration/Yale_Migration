@@ -8072,3 +8072,35 @@ the previous message.
 🔑 **The test to apply, and the one to write into any handover: *if both of us disappeared tomorrow,
 could Yale still reach its client files?*** That question would have caught this six weeks ago. It is
 also the question M11 exists to answer, and the reason M11 is still blocked.
+
+## D-415 | The shared sheet landed, and RJ's Microsoft request is about a form we have never seen
+**31 Aug 2026.** Two things from RJ.
+
+**1 · ✅ The shared Google Sheet exists and we can read it.** Verified, not assumed —
+`rpcSheet` on `1pqRhsEZcQDKX49qls4kEHvAni0KvQMRHsbJyjMu_D54` over connection 9501125 returns tab
+**`CLIENT LIST TO UPDATE`**, at zero operations. **A-49 is closed as a class**: no more emailed copies
+to diff, their edits visible immediately, and the structural cause of the rows-22/23 problem is gone.
+🔑 He proposed this himself on 25 Aug; chasing the mechanism rather than the two addresses was right.
+
+**2 · 🔴 *"upgrade our microsoft subscription so that we can get more responses through the online
+form"* — the obvious answer is probably wrong.**
+
+**Their enquiry form is GOOGLE Forms.** Verified across our own records: public `/viewform` links,
+form id `1kHw3yp8…`, responses in Google Sheet `1vNnefC2…` which `C1_RESPONSES_ID` reads.
+⛔ **Google Forms has no response limit, so a Microsoft licence cannot lift one.**
+
+But a limit is clearly being hit, and Microsoft Forms has exactly the shape he describes:
+**200 responses per form on a free personal account, up to 5,000,000 on a Microsoft 365 business
+licence** (support.microsoft.com, verified 31 Aug). That is a real wall, and buying a licence removes
+it completely.
+
+**So there is a form we have never seen** — almost certainly a Microsoft one on a free personal
+account, separate from the Google form C-1 is built against. ⚠️ **Do not answer "yes, buy the licence"
+without establishing which form he means.** If he means the Google one, he spends money and the
+problem does not move; if he means a Microsoft one, the licence fixes it outright.
+
+✅ **And if it IS a Microsoft form, this materially strengthens the purchase case** — it stops being
+*"fix a governance problem you did not know you had"* and becomes *"unblock the form that is turning
+enquiries away today."* That is a reason he feels, and it is the first genuinely urgent thing on his
+own list. ⛔ It also means new enquiries have been silently lost — worth asking how long it has been
+full.

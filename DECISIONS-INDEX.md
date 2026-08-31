@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 584K /     8074 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 648K /     8106 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-30 08:15
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 08:25
 
 | # | Decision |
 |---|---|
@@ -410,3 +410,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-30 08:1
 | **D-412** | The OneDrive holding 1,436 client folders is OUR consultant's personal account, not a staff member's |
 | **D-413** | Do not add the domain to Microsoft at all — the dangerous screen can be skipped, not navigated |
 | **D-414** | The purchase guide never said whose account should buy it |
+| **D-415** | The shared sheet landed, and RJ's Microsoft request is about a form we have never seen |
