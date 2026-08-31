@@ -80,31 +80,69 @@ from their own Drive without touching anyone's account.
 
 ---
 
-# STEP 2 · Give the credentials to the app · Sharjeel · ~5 min
+# STEP 2 · Vercel — import, configure, deploy · Sharjeel · ~20 min
 
-⛔ **Company Vercel team account only** — never a personal Vercel, never a free
-tier. This project holds real client data.
+⛔ **Company Vercel team only.** A personal GitHub repo connecting to a company Vercel team is fine —
+the repo and the host are separate decisions.
 
-Vercel → the project → **Settings** → **Environment Variables**. Add:
+## 2a · Import the project
 
-| Name | Value | Notes |
-|---|---|---|
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | the `client_email` from the JSON | ends `.iam.gserviceaccount.com` |
-| `GOOGLE_PRIVATE_KEY` | the `private_key` from the JSON | **paste the whole value**, including its BEGIN and END banner lines. Newlines are handled either way — tested. *(The banner text is deliberately not reproduced here: the repo's own secret scanner treats it as a credential, and it is right to.)* |
-| `SYNC_SECRET` | a long random string | generate with `openssl rand -hex 32` |
-| `SUPABASE_SERVICE_ROLE_KEY` | from Supabase → Settings → API | 🔴 see the rotation note below |
-| `NEXT_PUBLIC_SUPABASE_URL` | from the same page | |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | from the same page | |
+1. Vercel → **Add New… → Project**
+2. **Import** `m-sharjeel-saleem/Yale_Migration` *(authorise GitHub if prompted)*
+3. 🔴 **Root Directory → Edit → type `dashboard`**
 
-🔴 **Rotate the Supabase service-role key first.** The current one has been
-sitting in plaintext in `dashboard/.env.local` on a personal laptop. It is not in
-git — verified — but treat it as exposed: Supabase → **Settings** → **API** →
-**service_role** → reset, then use the new one everywhere.
+> **This is the step everyone gets wrong.** The repository root is `yale-build`; the Next.js app lives
+> in `dashboard/`. Leave it at the default and Vercel finds no `package.json`, the build fails, and the
+> error points at the framework rather than at the path. It is also how Vercel locates `vercel.json`.
 
-⚠️ **`NEXT_PUBLIC_*` values are baked in at BUILD time.** Changing them without
-redeploying does nothing. Always redeploy after editing them.
+4. **Framework Preset** should auto-detect **Next.js**. Build command and output directory: leave alone.
+5. ⚠️ **Before clicking Deploy, decide the cron** — see 2c. On a non-Pro plan the deploy is **rejected**.
 
----
+✅ **The first deploy will succeed even with no environment variables** — verified 31 Aug by building
+with `.env.local` removed. It comes up in demo mode showing invented people. **That is a useful
+checkpoint: you see the app working before wiring anything to real data.**
+
+## 2b · Environment variables
+
+**Settings → Environment Variables.** Tick **Production, Preview and Development** for each.
+
+| Variable | Value |
+|---|---|
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` |
+| `GOOGLE_PRIVATE_KEY` | the `private_key` from the JSON — **whole value**, BEGIN/END lines included |
+| `SYNC_SECRET` | generate: `openssl rand -hex 32` |
+| `SUPABASE_SERVICE_ROLE_KEY` | 🔴 **rotate it first** (step 0), then the new value |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | same page |
+
+🔴 **Then REDEPLOY.** `NEXT_PUBLIC_*` values are compiled into the JavaScript at build time. Adding
+them without a rebuild changes nothing, and the app keeps serving demo data while every variable looks
+correctly set in the dashboard. **Deployments → ⋯ → Redeploy.**
+
+## 2c · The cron — read before deploying
+
+`vercel.json` requests `0 * * * *` (hourly). **Hobby rejects that at deploy time**, with
+*"Hobby accounts are limited to daily cron jobs"* (D-406).
+
+- **On Pro** — leave it. Hourly.
+- **Not on Pro yet** — change the schedule in `dashboard/vercel.json` to `0 1 * * *` (daily, 1am),
+  commit, push. ⚠️ Daily is still frequent enough to stop Supabase Free pausing (D-419).
+
+## 2d · Prove it
+
+```
+curl -i -H "Authorization: Bearer $SYNC_SECRET" https://<your-domain>/api/sync
+```
+
+| Response | Meaning |
+|---|---|
+| `403 Access denied` | ✅ **the CORRECT result right now** — everything on our side works; Robinder has not shared the sheet yet |
+| `503 not_configured` | the two `GOOGLE_*` variables are missing or the redeploy did not happen |
+| `401` | wrong or missing `SYNC_SECRET` |
+| `500 partial` | some tabs synced; the body names which failed |
+| `200 ok` | all three tabs synced — check `read`/`written`/`skipped` |
+
+🔑 **Aim for the 403.** It is proof, not failure.
 
 # STEP 3 · Share the sheet with the service account · Robinder · 2 min
 
