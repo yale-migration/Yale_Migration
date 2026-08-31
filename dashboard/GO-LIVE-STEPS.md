@@ -8,6 +8,34 @@ SQL exists, the guards exist. What is missing is access and decisions.
 
 ---
 
+## 📊 STATUS — updated 31 Aug 2026
+
+⚠️ **Two different Google Sheets are involved. Do not confuse them.**
+| Sheet | Used for | Needs sharing with the service account? |
+|---|---|---|
+| **YALE BRISBANE OFFICE WORK** (`1ZE1OoTj…`) — MASTER · ENQUIRIES · S56 TRACKER | **the dashboard sync** | ✅ **YES — this is the one** |
+| **CLIENT LIST TO UPDATE** (`1pqRhsEZ…`) — shared by RJ 30 Aug | the 38-row MASTER import | ❌ no — read by `project1@` already |
+
+| # | Step | Who | Status |
+|---|---|---|---|
+| 0 | 🔴 **Rotate the Supabase service-role key** | Sharjeel | ⬜ **NOT DONE** — still sitting in `dashboard/.env.local` |
+| — | SQL `01-schema-and-rls.sql` | Sharjeel | ✅ ran |
+| — | SQL `06-enquiries.sql` | Sharjeel | 🔶 **RE-RUN NEEDED** — it ran, but the old version leaked a demo row (reported *7 demo enquiries*, should be 6). The fixed file cleans up and asserts the count |
+| — | SQL `07-verify-full-matrix.sql` | Sharjeel | ✅ **ALL 22 CHECKS PASSED** |
+| — | SQL `08-s56-nullable-office.sql` | Sharjeel | ✅ both checks PASS |
+| 1 | Google Cloud service account + enable Sheets API | Sharjeel | ⬜ |
+| 2 | Vercel env vars (6) | Sharjeel | ⬜ — locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
+| 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** | Robinder | ⬜ |
+| 6 | Deploy + prove `/api/sync` with curl | Sharjeel | ⬜ |
+| 5 | `Client Code` column in S56 TRACKER | Robinder | ⬜ — until then Section 56 cannot appear on a client's file |
+| 7 | Current staff list → `profiles` rows | Robinder | ⬜ |
+| 8 | Import the 38 real clients | both, on the day | ⬜ — needs a go-live date |
+
+🔑 **Steps 0, 1, 2 and the `06` re-run need nobody but Sharjeel.** Step 6's curl returns a clean `403`
+until Robinder does step 3 — which is itself a useful test that everything else is right.
+
+---
+
 ## Who owns what
 
 | | Steps | Roughly |
