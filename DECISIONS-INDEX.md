@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 592K /     8200 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 656K /     8237 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:18
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:22
 
 | # | Decision |
 |---|---|
@@ -414,3 +414,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:1
 | **D-416** | "10 contact numbers arrived" was 6 — and I nearly told the client the wrong column |
 | **D-417** | Buying the licence will NOT unblock their existing form — it has to be rebuilt |
 | **D-418** | I marked a step "not done" that Sharjeel had shown me completed |
+| **D-419** | Supabase can stay on Free — the database holds nothing that cannot be rebuilt |

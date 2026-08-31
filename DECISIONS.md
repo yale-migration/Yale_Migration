@@ -8198,3 +8198,40 @@ probably an unnecessary message to Robinder about permissions.
 🔑 **And the service-account address is now known**, which unblocks writing Robinder's ask precisely
 rather than as *"the email from your JSON file"*. Recorded in the tracker so the share request can be
 copy-pasted.
+
+## D-419 | Supabase can stay on Free — the database holds nothing that cannot be rebuilt
+**31 Aug 2026.** Asked whether both Vercel and Supabase need paying for. Re-verified both, and the
+answer is **$20/month, not $45.**
+
+**Supabase Free** (supabase.com/pricing, 31 Aug): 500 MB database · **pauses after 1 week of
+inactivity** · 2 projects · **no backups**. **Pro** is $25 and adds no-pause, 8 GB, and daily backups
+kept 7 days. ⚠️ Commercial use is **not** stated as prohibited — unlike Vercel Hobby, which says
+*"non-commercial, personal use only"* in as many words.
+
+🔑 **The reason Free is defensible here is architectural, not a corner cut.** Sheets is the system of
+record and the app never writes — `route.ts` says it outright: *"Postgres is a disposable copy — if it
+is ever wrong, delete it and re-sync."* **The one thing Pro adds that matters, daily backups, protects
+data we can regenerate in one HTTP call.** Paying $25/month to back up a cache is the kind of default
+nobody re-examines.
+
+- The **pause** is handled by the sync itself: any schedule more frequent than weekly keeps the project
+  active, and ours is hourly or daily.
+- **500 MB** against ~40 matters, a few s56 rows and their enquiries is not close.
+
+⚠️ **The failure mode to name rather than discover:** if the sync stops for over a week — Vercel issue,
+expired key, deleted cron — **the database pauses and the dashboard goes down.** On Pro it would keep
+serving stale data. That is the actual thing $25 buys, and it is a fair trade at this stage.
+⛔ Revisit if the dashboard ever becomes something clients depend on daily.
+
+### The cost, verified
+| | | |
+|---|---|---|
+| **Vercel Pro** | **USD 20/mo** | required — Hobby is contractually non-commercial (D-406) |
+| **Supabase Free** | **$0** | sufficient, for the reason above |
+| | **≈ USD 20/month** | client's cost, belongs in `QUOTE-P3-DASHBOARD.md` |
+
+**A genuinely free path exists and is untested:** Netlify's free tier does not prohibit commercial use
+and its scheduled functions are *"available on all pricing plans"* — but they **cap at 30 seconds**,
+against the `maxDuration = 60` this route already declares, and the enquiries tab is the big one.
+⛔ **Do not offer Netlify as a free swap until someone has actually deployed it and timed a real sync.**
+Saving $20/month is not worth presenting an untested migration as a recommendation.
