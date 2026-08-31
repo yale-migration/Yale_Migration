@@ -8169,3 +8169,32 @@ is linked must be inventoried before the switch, not after.**
 
 🔑 Still worth doing — 200 → 5,000,000 — and it is the first thing in this project the client's own
 team is asking for rather than being asked. **But it is a small project, not a checkout.**
+
+## D-418 | I marked a step "not done" that Sharjeel had shown me completed
+**31 Aug 2026.** The go-live tracker I wrote yesterday listed *"Google Cloud service account"* as ⬜.
+**He had already done it and shown me**, in this same conversation: the Google Cloud consent screen
+under `project1@yalemigration.com.au`, the **Create service account** screen filled in as
+`yale-dashboard-sync`, and the message *"The json key downloaded"*.
+
+🔴 **I built a status table from the runbook's step list instead of from what had actually happened,
+then presented it as the current position.** That is LESSONS pattern 2 with the evidence sitting in
+the same conversation — not a missing log, an unread one. Worse than the usual version: I told him to
+do work he had already finished.
+
+**Corrected state:**
+| | |
+|---|---|
+| Google Cloud project | ✅ under **`project1@yalemigration.com.au`** — a Yale account, which is the right outcome and better than the personal-account trap of D-414 |
+| Service account | ✅ `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` |
+| JSON key | ✅ downloaded |
+| **Sheets API enabled** | ❓ **never evidenced** |
+| Vercel | ⬜ ← the real next step |
+
+⚠️ **1d is the one to check before anything else.** Nothing in the screenshots showed the Sheets API
+being enabled, and it is the single most likely cause of the first failure — a **403 that reads as a
+sharing problem and is not**. Checking it takes ten seconds; misdiagnosing it costs an afternoon and
+probably an unnecessary message to Robinder about permissions.
+
+🔑 **And the service-account address is now known**, which unblocks writing Robinder's ask precisely
+rather than as *"the email from your JSON file"*. Recorded in the tracker so the share request can be
+copy-pasted.

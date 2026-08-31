@@ -23,9 +23,12 @@ SQL exists, the guards exist. What is missing is access and decisions.
 | — | SQL `06-enquiries.sql` | Sharjeel | 🔶 **RE-RUN NEEDED** — it ran, but the old version leaked a demo row (reported *7 demo enquiries*, should be 6). The fixed file cleans up and asserts the count |
 | — | SQL `07-verify-full-matrix.sql` | Sharjeel | ✅ **ALL 22 CHECKS PASSED** |
 | — | SQL `08-s56-nullable-office.sql` | Sharjeel | ✅ both checks PASS |
-| 1 | Google Cloud service account + enable Sheets API | Sharjeel | ⬜ |
-| 2 | Vercel env vars (6) | Sharjeel | ⬜ — locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
-| 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** | Robinder | ⬜ |
+| 1a | Google Cloud project | Sharjeel | ✅ **DONE** — created under **`project1@yalemigration.com.au`**, a Yale account, not a personal one |
+| 1b | Service account created | Sharjeel | ✅ **DONE** — `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` |
+| 1c | JSON key downloaded | Sharjeel | ✅ **DONE** — ⛔ open it once, copy `client_email` + `private_key`, then **delete the file** |
+| 1d | 🔶 **Google Sheets API enabled?** | Sharjeel | ❓ **UNCONFIRMED — check this before anything else.** Without it the sync fails with a 403 that looks like a permissions problem and is not. APIs & Services → Library → "Google Sheets API" → it should say **Manage**, not **Enable** |
+| 2 | Vercel env vars (6) | Sharjeel | ⬜ **← YOU ARE HERE.** Locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
+| 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** with `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` | Robinder | ⬜ |
 | 6 | Deploy + prove `/api/sync` with curl | Sharjeel | ⬜ |
 | 5 | `Client Code` column in S56 TRACKER | Robinder | ⬜ — until then Section 56 cannot appear on a client's file |
 | 7 | Current staff list → `profiles` rows | Robinder | ⬜ |

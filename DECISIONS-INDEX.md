@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 652K /     8171 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 592K /     8200 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 08:41
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:18
 
 | # | Decision |
 |---|---|
@@ -413,3 +413,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 08:4
 | **D-415** | The shared sheet landed, and RJ's Microsoft request is about a form we have never seen |
 | **D-416** | "10 contact numbers arrived" was 6 — and I nearly told the client the wrong column |
 | **D-417** | Buying the licence will NOT unblock their existing form — it has to be rebuilt |
+| **D-418** | I marked a step "not done" that Sharjeel had shown me completed |
