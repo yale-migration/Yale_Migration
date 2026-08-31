@@ -358,6 +358,16 @@ def main():
         rec['Assigned Consultant'] = consultant
         rec['Skills Authority']    = sk
         rec['Party 2 Name']        = party2
+        # 🔴 A CONTACT NUMBER WITH NO DIGITS IS NOT A CONTACT NUMBER. (D-416)
+        # Four rows of the 25 Aug return carry the word "OFFSHORE" in column I
+        # "7. Contact number" — the team recording onshore/offshore in the phone
+        # column. Imported as-is it becomes a phone number, and M7's caller lookup
+        # would try to match an incoming call against the string OFFSHORE.
+        # ⛔ It also inflated the coverage report: 10 "contact numbers" were really 6.
+        if phone and not re.search(r'\d', str(phone)):
+            note.append('contact number was %r — not a number, moved to Notes' % phone)
+            flags['contact number held text, not a number'] += 1
+            phone = ''
         rec['Contact Number']      = phone
         rec['Last Contact']        = as_date(last)
         rec['Visa Expiry']         = as_date(o.get('VISA EXPIRATION'))

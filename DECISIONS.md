@@ -8104,3 +8104,33 @@ problem does not move; if he means a Microsoft one, the licence fixes it outrigh
 enquiries away today."* That is a reason he feels, and it is the first genuinely urgent thing on his
 own list. ⛔ It also means new enquiries have been silently lost — worth asking how long it has been
 full.
+
+## D-416 | "10 contact numbers arrived" was 6 — and I nearly told the client the wrong column
+**31 Aug 2026.** Asked to verify the reply to RJ and whether I had actually opened what I was
+describing. Two corrections, both mine.
+
+**1 · ⛔ I read the client's screenshot and got the column wrong.** I saw `OFFSHORE` sitting in what
+looked like column H, *"6. Date you last spoke to the client"*, and was one sentence away from telling
+RJ his team was typing text into the date column. **It is column I, "7. Contact number"** — verified
+by reading the workbook rather than the picture. Spreadsheet text left-aligns and numbers
+right-align, so a text value and a numeric one in the SAME column appear at different x-positions and
+look like different columns. 🔑 **A screenshot is a rendering, not the data.**
+
+**2 · 🔴 The "10 contact numbers arrived" I reported on 26 Aug was really 6.** Of the ten non-empty
+values in that column, **four are the word `OFFSHORE`** — the team recording onshore/offshore in the
+phone column. I counted non-empty cells and called them phone numbers. **Non-empty is not valid**, and
+that is the same mistake as counting a `<-- needed` placeholder as an answer.
+
+**Fixed:** the importer now rejects a contact value containing no digit, records it in Notes and flags
+it. Coverage honestly reports **6/38**, not 10. Imported as-is, `OFFSHORE` would have become a phone
+number and M7's caller lookup would have tried to match an incoming call against the string.
+
+**Also verified this session, properly rather than from our notes:**
+- ✅ The shared sheet `1pqRhsEZ…` is readable by our connection — tab `CLIENT LIST TO UPDATE`, free RPC.
+- ✅ **Google Forms has no hard response limit** (degrades past 50,000; stops syncing to Sheets past
+  100,000). Their form holds 1,485 in one tab, so it is nowhere near — **a Microsoft licence cannot
+  be what unblocks it.**
+- 🔑 **But Google Forms DOES let the owner set their own cap** — *"After a number of responses"*. If
+  their Google form is refusing submissions, that is a **free setting to switch off**, not a purchase.
+  ⛔ That possibility must reach RJ before he spends anything.
+- ✅ Microsoft Forms free = **200** responses; with a business licence = **5,000,000**.
