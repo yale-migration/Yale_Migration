@@ -8378,3 +8378,46 @@ add both questions at once rather than asking him to edit the same form twice.
 🔑 **Nothing else is outstanding with the team.** Every remaining input either sits with Robinder or is
 ours to build. **Three passes over the same ground produced one item, and the correct decision on it
 was to wait** — which is itself the answer to "is there anything more to ask."
+
+## D-424 | Netlify Free is legitimately an option — Vercel Hobby never was
+**31 Aug 2026.** Asked again for a cheaper host. Researched properly rather than repeating "$20".
+
+**The decisive difference is contractual, and it is the opposite way round from what I assumed:**
+
+| | Commercial use on free tier |
+|---|---|
+| **Vercel Hobby** | 🔴 *"restricts users to non-commercial, personal use only"* — their docs |
+| **Netlify Free** | ✅ *"you can deploy commercial projects… you can definitely charge your customers for your services"* — Netlify's own support answer. Only reselling the hosting is barred |
+
+So **Netlify Free is a real option and Vercel Hobby is not.** I had been treating both as "free tier =
+not allowed", which was true of one and wrong about the other.
+
+### 🔑 And the cron does not have to come from the host
+`/api/sync` is a plain authenticated GET. **Any scheduler can call it** — GitHub Actions on a cron
+runs free within the private-repo minute allowance, and a curl job costs seconds. That **decouples the
+schedule from the hosting decision entirely**, and it removes the reason Vercel Pro looked mandatory.
+⛔ I had been treating "hourly cron" as a hosting requirement for days. It is not.
+
+### ⚠️ The one genuine risk with Netlify Free
+**Synchronous functions time out at 10 seconds** on the free plan (26s is paid, and requires a support
+request). This route declares `maxDuration = 60`.
+
+**Unmeasured, and I will not pretend otherwise.** Estimated: a token exchange, three Sheets reads and
+three Postgres writes over ~38 matters, a handful of s56 rows and an ENQUIRIES tab that is currently
+empty — likely ~5–6 s, **but that is arithmetic, not a measurement**, and it grows when ENQUIRIES
+fills to 621. 🔑 If it does exceed 10 s the fix is small — the route already syncs each tab
+independently, so it can take a `?tab=` parameter and be called three times.
+
+### The honest recommendation
+| | Cost | Risk |
+|---|---|---|
+| **Vercel Pro** | USD 20/mo | none — known-good, 60 s, native Next.js |
+| **Netlify Free + GitHub Actions cron** | **$0** | 10 s ceiling, unmeasured; Next.js support is a runtime adapter rather than the native target |
+
+⛔ **Do not present Netlify as "the free one that works" until a real deploy has been timed.** But it
+IS a legitimate answer to "is there anything cheaper", and the earlier framing that free tiers were
+categorically unavailable was wrong.
+
+💭 **Worth saying plainly to Sharjeel:** this is USD 20/month of the CLIENT's money against ~21 hours
+of unbilled work that has still not been quoted. **Optimising the $20 while the $735–1,190 sits unsent
+is the wrong end of the problem.**
