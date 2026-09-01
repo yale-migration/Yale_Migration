@@ -8235,3 +8235,41 @@ and its scheduled functions are *"available on all pricing plans"* — but they 
 against the `maxDuration = 60` this route already declares, and the enquiries tab is the big one.
 ⛔ **Do not offer Netlify as a free swap until someone has actually deployed it and timed a real sync.**
 Saving $20/month is not worth presenting an untested migration as a recommendation.
+
+## D-420 | The Microsoft form is real, and it is missing the one question 53% of their clients need
+**31 Aug 2026.** RJ sent the form link — `forms.cloud.microsoft/…&origin=QRCode`. ✅ **It IS a
+Microsoft Form**, which confirms D-415's inference and means the 200-response cap is genuinely what he
+is hitting. It is distributed by **QR code**, so it is in print somewhere.
+
+**Its seven questions, read from the live form:** Full Name* · Email* · Phone · Visa subclass* (radio:
+189/190/491/482/500/600/485/Other) · Your Inquiry* · **Visa Expiry Date** · Preferred Time to Call.
+
+🔴 **THEY HAVE TWO DIFFERENT ENQUIRY FORMS AND THE FIELDS DO NOT MATCH.** C-1 was built against the
+**Google** form's 13 fields (`NAME EMAIL PHONE LOCATION INTEREST … CONTACTPREF`). The Microsoft form
+has seven, and the differences run both ways:
+
+| | Google form | Microsoft form |
+|---|---|---|
+| **Location — onshore/offshore** | ✅ asked | 🔴 **NOT ASKED** |
+| Visa expiry date | — | ✅ asked, as a real date field |
+| Visa subclass | free text | ✅ clean radio list |
+
+### 🔴 Why the missing Location question is the finding
+`setup_m4_checklist_map.gs` has **four** subclass-500 checklists —
+`500_INDIVIDUAL_ONSHORE` / `_OFFSHORE` / `500_DEPENDENT_ONSHORE` / `_OFFSHORE` — and the discriminator
+is Onshore vs Offshore. **Measured against the real import: 20 of 38 clients (53%) are subclass 500.**
+
+⛔ So on the form they are actively promoting by QR code, **the single most common visa arrives with
+no way to choose between four checklists.** M4 would stamp NEEDS REVIEW on every one, or worse, a
+human would guess. That is not a build defect — it is a two-minute form edit, and RJ has offered a
+free day.
+
+✅ **And the Microsoft form is BETTER in two ways worth keeping:** the visa subclass is a controlled
+list rather than free text (no more *"Graduate Visa"* to interpret), and it captures **visa expiry as
+a date** — which M6 already uses to block on an expiry inside 30 days but currently has to parse out
+of prose.
+
+⚠️ **The question nobody has asked: which form is the system of record going forward?** C-1 parses the
+Google one. If the Microsoft form is the future, C-1's field mapping has to be redone — small, but it
+must be decided before the M365 rebuild (D-417), not after, or the form gets recreated with the wrong
+questions and has to be changed twice.

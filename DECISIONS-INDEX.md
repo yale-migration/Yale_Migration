@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 656K /     8237 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 596K /     8275 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:22
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 08:43
 
 | # | Decision |
 |---|---|
@@ -415,3 +415,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-08-31 10:2
 | **D-417** | Buying the licence will NOT unblock their existing form — it has to be rebuilt |
 | **D-418** | I marked a step "not done" that Sharjeel had shown me completed |
 | **D-419** | Supabase can stay on Free — the database holds nothing that cannot be rebuilt |
+| **D-420** | The Microsoft form is real, and it is missing the one question 53% of their clients need |
