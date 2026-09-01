@@ -8310,3 +8310,37 @@ use the answer.
 compliance decision (A-35), CRM (A-05), the RMA sign-offs (A-10, A-43), JRP scope (A-19), CR-013,
 Meta, WhatsApp, OneDrive, the Make slot, and the final payment. **Sending any of those to RJ makes him
 the messenger for decisions he cannot make.**
+
+## D-422 | Correction to D-421 — M9 DOES draft client emails, so the s56 wording IS needed
+**31 Aug 2026.** D-421 told Sharjeel **not** to ask RJ for Yale's s56 client-request wording, on the
+reasoning that *"M9 reads the Department email and records the deadline; it does not draft a client
+email."* **That is wrong.** Checked the contracted scope and the spec, and both say otherwise:
+
+- `ROADMAP.md` M9: *"…**draft-only output** · Needs-Review path"* — drafting is contracted, not future.
+- `docs/M9-EMAIL-AI-SPEC.md:72` — *"**Tone fingerprint (drafts must match exactly)**"*
+- `:123` — *"Draft replies: Sonnet-class, **grounded in the template snippets above, always as a
+  draft**."*
+- `:127` — *"**Yale's S56 client-request + follow-up email wording**"* is listed in the spec's own
+  needed-inputs section.
+
+🔴 **So the input feeds a contracted, specified feature — and I recommended withholding the ask on a
+day the person who handles those matters had volunteered his time.** The check I ran was
+*"does the code draft emails today?"*; the question that mattered was *"is drafting in scope?"*
+**Same LESSONS § 5 shape as the error it was trying to avoid, inverted: I closed an ask against the
+build's current state rather than its contracted state.**
+
+⚠️ **And it must be asked the right way.** *"Send us your s56 wording"* invites him to author
+something; **"what do you currently send a client when the Department asks for documents?"** asks for
+an artefact that already exists. The second is answerable by a consultant in two minutes and is not
+migration advice — it is their existing practice. ⛔ The final wording still needs the RMA's sign-off
+before anything drafts under his MARN (D-06), and that is Robinder's, not RJ's.
+
+🔑 **What s56 actually is, for anyone summarising this:** Section 56 of the *Migration Act 1958*. When
+the Department needs more information to decide a visa application it sends a formal request — usually
+**28 days** to supply documents. Miss it and the Department can decide on what it already has, which
+in practice means refusal. **It is the highest-consequence deadline in their whole workflow**, which is
+why M9 exists and why its drafts must carry Yale's own words rather than ours.
+
+⚠️ Memory note `yale-staff-list-update-pending` says *ask Robinder, not RJ*. **Superseded on the
+staff list only** — RJ volunteered the new hires himself on 28 Aug, so asking him is now correct.
+⛔ The **"never mention Gopi"** instruction in that memory stands unchanged.
