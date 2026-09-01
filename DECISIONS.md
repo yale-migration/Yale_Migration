@@ -8421,3 +8421,41 @@ categorically unavailable was wrong.
 💭 **Worth saying plainly to Sharjeel:** this is USD 20/month of the CLIENT's money against ~21 hours
 of unbilled work that has still not been quoted. **Optimising the $20 while the $735–1,190 sits unsent
 is the wrong end of the problem.**
+
+## D-425 | The full free-hosting picture, and a recommendation that is not "pay the $20"
+**31 Aug 2026.** Searched the remaining serious candidates rather than repeating the Vercel answer.
+
+⛔ **First, what I will not do:** suggest a way around Vercel Hobby's non-commercial terms. Splitting
+the project, hosting under a personal account "for now", or calling a client system a personal one are
+all the same thing — a term we would be advising the client to breach on a system holding immigration
+data. **Not a trick worth having.** The options below are legitimate free tiers, which is a different
+category entirely.
+
+| | Cost | Commercial on free? | Scheduler | Function time limit |
+|---|---|---|---|---|
+| **Vercel Pro** | $20/mo | ✅ | native cron, per-minute | 60 s (configurable to 800 s) |
+| Vercel Hobby | $0 | 🔴 **explicitly not** | daily only, and hourly **fails the deploy** | — |
+| **Netlify Free** | **$0** | ✅ *"you can deploy commercial projects"* | scheduled functions, **all plans** | 🔶 **10 s** (26 s is paid + a support request) |
+| **Cloudflare Workers Free** | **$0** | ✅ not restricted in their docs | Cron Triggers, **15-minute duration limit** | generous — bills **CPU**, not wall-clock |
+
+🔑 **Cloudflare is technically the strongest free option and the worst practical one.** Its 15-minute
+cron duration and CPU-based billing suit a sync that spends its life waiting on network I/O — our
+route would use milliseconds of CPU across several seconds of waiting. **But Next.js runs there only
+through the OpenNext adapter**, which is the largest migration of the three and the least like the
+target this app was built for.
+
+🔑 **And the constraint that has been distorting this decision for days: the cron does not have to come
+from the host.** `/api/sync` is an authenticated GET. A GitHub Actions schedule calls it for free.
+**Every "does this host do cron" row above is therefore optional**, which changes what we are actually
+choosing between — hosting quality, not scheduling features.
+
+### Recommendation — try Netlify first, and it is testable in an hour
+**Netlify Free is the right $0 attempt:** commercial use is explicitly permitted, it has first-party
+Next.js support rather than an adapter, and its single risk — the **10-second** ceiling — **is
+measured by the very first `curl`.** If the sync returns inside that, it is done and it costs nothing.
+If it times out, the route already syncs tabs independently and can take a `?tab=` parameter; failing
+that, Vercel Pro is a twenty-minute fallback.
+
+⛔ **Stop recommending the $20 as if it were the only answer.** It is the zero-risk answer, and the
+client's money — but "there is nothing cheaper" was not true, and I said it three times before
+checking properly.

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 608K /     8423 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 672K /     8461 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 09:39
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 09:42
 
 | # | Decision |
 |---|---|
@@ -420,3 +420,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 09:3
 | **D-422** | Correction to D-421 — M9 DOES draft client emails, so the s56 wording IS needed |
 | **D-423** | Final team-side sweep — one more form gap, deliberately NOT chased today |
 | **D-424** | Netlify Free is legitimately an option — Vercel Hobby never was |
+| **D-425** | The full free-hosting picture, and a recommendation that is not "pay the $20" |
