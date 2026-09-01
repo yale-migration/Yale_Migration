@@ -8273,3 +8273,40 @@ of prose.
 Google one. If the Microsoft form is the future, C-1's field mapping has to be redone — small, but it
 must be decided before the M365 rebuild (D-417), not after, or the form gets recreated with the wrong
 questions and has to be changed twice.
+
+## D-421 | Full input audit against RJ's free day — and two "never asked" items that should stay unasked
+**31 Aug 2026.** RJ offered a whole day. Audited all 25 inputs and every open ask, then sorted by **who
+can actually answer** rather than by what is outstanding.
+
+🔴 **Three inputs are still marked ⛔ never asked, 33 days after they were logged** — I-20's siblings
+from the 29 Jul batch: **I-22** (Yale's s56 client-request wording + cadence), **I-23** (s56 samples
+for 500/485/820-801), **A-34(a)** (2–3 real Department emails forwarded with headers intact).
+Confirmed still unsent by grepping every `SENT-` and `DRAFT-` file.
+
+⚠️ **But "never asked" is not the same as "must ask now", and treating it that way is how a helpful
+offer turns into a laundry list.** Checked what each actually feeds:
+
+| | Feeds | Verdict |
+|---|---|---|
+| **A-34(a)** real Department emails | M9's Gmail trigger filter — every sample we hold is an image-only scan, so no sender and no subject | ✅ **ASK** — 30 seconds of forwarding, improves a filter that runs on every email |
+| **I-23** s56 samples, other subclasses | confirms the 28-day figure generalises | 🟡 **ask lightly** — D-400 already derives the ladder from `days_allowed` rather than assuming 28, so this validates rather than unblocks |
+| **I-22** s56 client-request wording | **a step that does not exist yet.** M9 as built reads the Department email, classifies it and writes the deadline to S56 TRACKER. It does **not** draft a client email | ⛔ **DO NOT ASK TODAY.** Asking for wording for an unbuilt feature spends his goodwill on nothing and invites *"so when is that coming?"* |
+
+🔑 **That third row is the audit's real output.** The register said *never asked* and the reflex was to
+ask. **Checking what consumes it showed the module does not exist** — LESSONS § 5 in the other
+direction: not closing an input against the wrong question, but *raising* one for a module that cannot
+use the answer.
+
+**What RJ should actually be given today, in value order:**
+1. 🔴 **One question added to the Microsoft form** — Onshore/Offshore. Two minutes, unblocks correct
+   checklist selection for **53% of their clients** (D-420).
+2. **The 11 missing email addresses** in the shared sheet — the only gap with a real operational cost:
+   no email means no checklist and no chase, ever.
+3. **The staff list** (A-45) — he raised it himself on 22 Aug and it is still open.
+4. **Where the form link is published** — needed *before* the M365 rebuild changes it (D-417).
+5. **A-34(a)** — forward 2–3 Department emails.
+
+⛔ **Everything else outstanding is Robinder's** and must not go to RJ: row 28 spelling (A-44), the DOB
+compliance decision (A-35), CRM (A-05), the RMA sign-offs (A-10, A-43), JRP scope (A-19), CR-013,
+Meta, WhatsApp, OneDrive, the Make slot, and the final payment. **Sending any of those to RJ makes him
+the messenger for decisions he cannot make.**
