@@ -99,7 +99,7 @@ arrived with no email, and the tick on the parent carried the unanswered child a
 | ~~I-2~~ | ✅ **CLOSED 19 Aug — connection 9948850 live and PROVEN by a real call.** Robinder had already created the key; it had simply never reached Make. **M9's 5 hours are unblocked** (D-340) | — | ✅ **DONE** |
 | **I-3** | **Facebook + Instagram page access** (Meta) | M6 capture | ~3 of 8 | ⛔ **never asked** |
 | **I-4** | **WhatsApp Business verification status** | M6 WhatsApp channel | ~1 | 🟠 raised at proposal, never chased |
-| ~~I-5~~ | ✅ **CLOSED 21 Aug — there is NO website form.** RJ: *"none"*. Not a gap to fill; a channel that does not exist. ⛔ Do not build website capture |
+| **I-5** | 🔴 **REOPENED 31 Aug (D-427) — WRONGLY CLOSED.** Their website HAS a live contact form (*"fill out the contact form and submit it"*), and **Robinder told us where it goes on 25 July**: *"Website forms land in the client's Microsoft/OneDrive email"*. We closed this on 21 Aug on RJ's *"none"* and wrote *do not build website capture* into the register. ⛔ The ask is now precise: **which mailbox, and is anyone reading it?** | M6 capture · C-5 | ~1 | 🔴 |
 | ~~I-6~~ | ✅ **CLOSED 21 Aug — there is NO walk-in sheet.** RJ: *"none"*. ROADMAP's *"location still to confirm"* was looking for a file that was never created |
 | **I-7** | **👍 on the auto-reply wording** (A-10) | M6 going live | — | 🟠 held until M6 exists |
 | **I-8** | **OneDrive on a Yale account** | M11 · **C-2** | 2+2 | 🔴 **THE ASK WAS IMPOSSIBLE (D-341).** Checklist item 2 said create an `automation@` M365 user — **there is no M365 tenant**; the drive is Robinder's personal `@hotmail.com`. Revised ask: a Microsoft account on `project1@`, folder shared to it. Friday |

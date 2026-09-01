@@ -8516,3 +8516,50 @@ first-match-wins would silently steal a line from the incumbent. Reasoning writt
 Thirteen pages of website improvements — clickable visa pages, renaming TSS to Skills in Demand,
 "Learn More" affordances. **None of it is workflow automation and none of it is in the MVP.** Filed to
 `docs/07-client-requests/`. ⛔ Do not start any of it; it is Phase 2/3 and must be quoted.
+
+## D-427 | Final sweep — the website form was answered on 25 July and we overwrote it on 21 August
+**31 Aug 2026.** Fourth audit pass, from angles the earlier three did not use. Three outcomes.
+
+### 🔴 The website form: we had the right answer and threw it away
+| When | Who | What was said |
+|---|---|---|
+| **25 Jul** | **Robinder**, WhatsApp | *"Website forms land in the client's Microsoft/OneDrive email"* — a form exists, **and where it goes** |
+| 21 Aug | RJ | *"none"* → we closed I-5 and A-38 as *"a channel that does not exist"* |
+| 31 Aug | RJ's own website report | *"unclear where information submitted by a client through the website is received"* |
+| 31 Aug | the live site | *"fill out the contact form and submit it. We will reply immediately!"* |
+
+⛔ **The business owner told us in July. We closed it in August on a one-word answer from someone who
+did not know, and wrote "do not build website capture" into the register.** A later, more confident
+answer overwrote an earlier correct one, and nothing flagged the contradiction because the two lived
+in different files.
+
+🔑 **This changes the question to ask.** Not *"is there a website form?"* — we know there is. It is
+**"Robinder said in July these land in a Microsoft/OneDrive mailbox — which one, and is anyone
+reading it?"** That is answerable; *"where does it go"* invites another shrug.
+
+### ✅ Hypothesis tested and REJECTED — the form does not remove the Meta dependency
+RJ said the Microsoft form is on **all Yale social media**, which raised a real possibility: if social
+traffic clicks through to a form we can already read, M6 might not need Meta at all — worth ~3 h and
+one of Robinder's four blockers.
+
+**It does not.** `docs/M6-AUTOREPLY-SPEC.md:14` — the leads M6 exists for arrive as
+*"This chat started from an ad on Facebook or Instagram"*, i.e. **Messenger and Instagram DMs**, not
+form submissions. Two separate paths; the form covers people who click through, Meta covers people who
+message the page. ⛔ **Meta access is still required.** Recorded because the hypothesis was reasonable
+and someone will have it again.
+
+### ✅ The Department sender filter was designed correctly, and now there is proof
+We have now seen **two different sender addresses**: `noreply.skilled@homeaffairs.gov.au` (our own
+mailbox, I-20) and `noreply.temporary.graduate@homeaffairs.gov.au` (RJ's 485 samples). **The sender
+varies by visa stream.** The spec filters on `from:homeaffairs.gov.au` — the **domain** — so it catches
+both. 🔑 Had it pinned the single address we first saw, **every non-485 s56 letter would have been
+missed silently.** The design was right; this is the evidence that it had to be.
+
+### ⬜ What RJ did NOT answer
+1. **How long the Microsoft form has been full.** Asked, skipped. Matters because enquiries may have
+   been bouncing.
+2. **Their s56 client-request wording.** He wrote *"Share the email."* — ambiguous, and nothing
+   arrived. This is the one that feeds M9's drafts (D-422).
+
+**Everything else on the team side is answered.** The two above plus the routing question for
+Pooja/Anmol are the complete outstanding list.
