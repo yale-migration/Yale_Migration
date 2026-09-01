@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 664K /     8346 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 604K /     8380 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 08:59
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 09:35
 
 | # | Decision |
 |---|---|
@@ -418,3 +418,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 08:5
 | **D-420** | The Microsoft form is real, and it is missing the one question 53% of their clients need |
 | **D-421** | Full input audit against RJ's free day — and two "never asked" items that should stay unasked |
 | **D-422** | Correction to D-421 — M9 DOES draft client emails, so the s56 wording IS needed |
+| **D-423** | Final team-side sweep — one more form gap, deliberately NOT chased today |

@@ -8344,3 +8344,37 @@ why M9 exists and why its drafts must carry Yale's own words rather than ours.
 ⚠️ Memory note `yale-staff-list-update-pending` says *ask Robinder, not RJ*. **Superseded on the
 staff list only** — RJ volunteered the new hires himself on 28 Aug, so asking him is now correct.
 ⛔ The **"never mention Gopi"** instruction in that memory stands unchanged.
+
+## D-423 | Final team-side sweep — one more form gap, deliberately NOT chased today
+**31 Aug 2026.** Audited a third time, module by module rather than through the registers, to catch
+anything the register lens misses. **One new finding.**
+
+🟡 **The Microsoft form is missing a SECOND question the Google form has: "Referred by".**
+`c1_enquiry_form_intake.gs:112` resolves `REFERRED: ['referred by']`, and both the `Source` (col U) and
+`Channel` dropdowns already carry **`Referral`** as a value. The Microsoft form asks neither where the
+person is nor how they heard of Yale.
+
+**It feeds C-5** — *"Referral + SMS enquiry channels"*, contracted at 1 h and currently 50%. Without
+the question there is no capture path for a referral, so `Source` stays blank and the one number the
+enquiry view exists to report — which channel actually produces clients — is incomplete.
+
+⛔ **Deliberately NOT added to today's email.** The Location question affects **53% of clients and
+blocks checklist selection**; "Referred by" affects reporting. Sending a second message an hour after
+the first, to add a lesser item, **dilutes the ask that matters** and trains him to skim. G5 exists for
+exactly this.
+
+✅ **The right home for it is the form rebuild**, which is already required after the M365 purchase
+(D-417) — the form has to be recreated on the licensed account regardless, and that is the moment to
+add both questions at once rather than asking him to edit the same form twice.
+
+### Team-side position after today
+| | |
+|---|---|
+| ✅ **Asked today** | form Location question · 12 missing emails + sheet gaps · staff list · where the form is published · how long it has been full · 2–3 Department emails forwarded · **their existing s56 client wording** (D-422) |
+| 🟡 **Held for the form rebuild** | the "Referred by" question |
+| 🟡 **Not chased** | I-23, s56 samples across other subclasses — D-400 made the ladder derive from `days_allowed` rather than assuming 28, so this validates rather than unblocks |
+| ⛔ **Robinder only** | Meta · WhatsApp · OneDrive · Make slot · row 28 · DOB · CRM · JRP · CR-013 · the two RMA sign-offs · final payment |
+
+🔑 **Nothing else is outstanding with the team.** Every remaining input either sits with Robinder or is
+ours to build. **Three passes over the same ground produced one item, and the correct decision on it
+was to wait** — which is itself the answer to "is there anything more to ask."
