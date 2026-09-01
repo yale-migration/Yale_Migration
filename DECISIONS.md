@@ -8459,3 +8459,60 @@ that, Vercel Pro is a twenty-minute fallback.
 ⛔ **Stop recommending the $20 as if it were the only answer.** It is the zero-risk answer, and the
 client's money — but "there is nothing cheaper" was not true, and I said it three times before
 checking properly.
+
+## D-426 | RJ's delivery of 31 Aug — five artefacts, and two findings that reopen closed items
+**31 Aug 2026.** RJ answered everything and attached real documents. Audited each, filed each, and two
+things came back that we had recorded as settled.
+
+### What arrived
+| | |
+|---|---|
+| **2 real Department s56 emails**, forwarded with headers intact | ✅ **A-34(a) / I-20 CLOSED** — 33 days after it was logged |
+| 3 PDFs — 1 letter, 2 per-client checklists | filed to `client-data/s56-samples/` |
+| The staff list | Pooja and Anmol |
+| Where the form is published | Microsoft form = **all Yale social media**; Google form = **Brisbane office only** |
+| `YM-WEBSITE REPORT.docx` | their own website review |
+
+⚠️ **The two s56 letter PDFs are byte-identical** (`md5 c7902715`) — RJ attached the same letter twice.
+We hold client B's *checklist* but not client B's *letter*. Not a problem: the letter is a template.
+
+### ✅ What the real emails gave M9 — this is the payoff
+Every earlier sample was an image-only scan, so we had never seen a sender or a subject. Now:
+- Sender **`noreply.temporary.graduate@homeaffairs.gov.au`** — the trigger filter can finally be written
+- Subject: `s56 Request for More Information - <FILE NO> - <APP ID> - <NAME> [SEC=OFFICIAL:Sensitive…]`
+- 🔑 **A structured footer:** `Subclass:485; Stream:Post-Vocational Education Work; Citizenship:INDIA;
+  State:QLD` — **the subclass is machine-readable**, so it never has to be inferred from prose
+- Page 3 carries an **Application summary table**: Visa · Stream · Date of application · TRN ·
+  Application ID · File number · Primary applicant + DOB
+
+### 🔴 FINDING 1 — a possible off-by-one on the statutory deadline. NOT changed.
+The letter's exact words: **"You have 28 days starting on the day after we emailed this request."**
+Letter dated 13 Aug → day 1 is 14 Aug → **day 28 is 10 September**.
+Our rule (D-33) is `due = letter_date + 1 + days_allowed` = 13 Aug + 29 = **11 September**. **One day
+late, in the dangerous direction.**
+
+⛔ **Deliberately NOT corrected.** This is a statutory date under an RMA's registration; "starting on
+the day after" is a legal-counting question, not an arithmetic one, and I will not silently change how
+a visa deadline is computed. **It must go to Robinder.** ✅ Partially mitigated already: `INTERNAL DUE`
+is `allowed − 2`, so the working date still lands before either reading. Neither document states a
+calendar date, so there is nothing to check the arithmetic against — which is exactly why it needs the
+person who does this for a living.
+
+### 🔴 FINDING 2 — I-5 was closed on a wrong answer. Their website HAS a contact form.
+I-5 was closed 21 Aug: *"there is NO website form. RJ: 'none'."* **RJ's own website report says
+otherwise** — *"It is unclear where information submitted by a client through the website is received"*
+— and the live site says *"fill out the contact form and submit it. We will reply immediately!"*
+
+**So there is a fourth enquiry channel, it is live, and by their own admission nobody knows where its
+submissions go.** ⛔ **REOPENED.** LESSONS § 2: a one-word answer was taken as fact about the world.
+
+### Staff list — dropdowns updated, routing deliberately not
+Pooja (Indian, Brisbane, *"485 dependent"*) and Anmol (Indian, Brisbane, *"PR"*) added to **all four**
+locked dropdowns — 11 names, all agreeing, guard green. ⛔ **Neither added to M6 routing:** "485
+dependent" collides with Fiza and "PR" collides with Inder, and `m6AssignTo_` returns ONE name, so
+first-match-wins would silently steal a line from the incumbent. Reasoning written into the file.
+
+### ⚠️ The website report is a change request, not a task
+Thirteen pages of website improvements — clickable visa pages, renaming TSS to Skills in Demand,
+"Learn More" affordances. **None of it is workflow automation and none of it is in the MVP.** Filed to
+`docs/07-client-requests/`. ⛔ Do not start any of it; it is Phase 2/3 and must be quoted.

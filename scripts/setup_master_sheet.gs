@@ -66,6 +66,7 @@ var MASTER_DROPDOWNS = {
   10: ['BRISBANE','TOWNSVILLE','PHILIPPINES'],                                          // J Office
   11: ['INDIAN','FILIPINO'],                                                            // K Team
   12: ['Robinder','Inder','Gayatri','Priyanka','Fiza','RJ','Star','Rey','Cristelle',
+       'Pooja','Anmol',
        'Unassigned'],                                                                   // L Consultant
   13: ['Enquiry','Engaged','Documents Pending','Documents Complete','Ready for Lodgement',
        'Lodged','Awaiting Outcome','Closed'],                                           // M Stage
@@ -84,6 +85,7 @@ var ENQUIRY_DROPDOWNS = {
   5: ['Facebook','Instagram','WhatsApp','Phone','Walk-in','Email','Website','Referral'],  // Channel
   7: ['Onshore','Offshore'],                                                              // Location
   8: ['Robinder','Inder','Gayatri','Priyanka','Fiza','RJ','Star','Rey','Cristelle',
+       'Pooja','Anmol',
       'Unassigned'],                                                                      // Assigned To
   9: ['New','Assigned','Contacted','Pending Decision','Not Proceeding','Lost Lead',
       'Converted']                                                                        // Status

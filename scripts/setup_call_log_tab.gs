@@ -108,7 +108,8 @@ var CL_NEW_EXISTING = ['New', 'Existing', 'Unknown'];
 var CL_ID_VERIFIED  = ['Yes', 'No — could not confirm', 'N/A — general enquiry'];
 var CL_CB_STATUS    = ['Not required', 'Pending', 'Done', 'Missed'];
 var CL_STAFF        = ['Robinder', 'Inder', 'Gayatri', 'Priyanka', 'Fiza', 'RJ',
-                       'Star', 'Rey', 'Cristelle', 'Unassigned'];
+                       'Star', 'Rey', 'Cristelle',
+                     'Pooja', 'Anmol', 'Unassigned'];
 var CL_YES_NO       = ['Yes', 'No', 'Already a client'];
 
 

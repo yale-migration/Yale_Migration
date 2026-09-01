@@ -91,6 +91,28 @@ var M6_OFFSHORE = /\boffshore\b|\boverseas\b|outside australia|in (?:the )?phili
  * is refused by the cell without an error (D-353), which looks like the write "worked".
  * ⛔ Gopi is deliberately absent — she left on 22 Aug, four days after joining (D-355).
  */
+/* 🔴 POOJA AND ANMOL ARE DELIBERATELY NOT ROUTED HERE YET. (D-426, 31 Aug 2026)
+ *
+ * RJ gave both as new hires: **Pooja — Indian, Brisbane, "485 dependent"** and
+ * **Anmol — Indian, Brisbane, "PR"**. Both are now in all four locked dropdowns
+ * so they CAN be assigned by hand. Neither is in this routing table, because
+ * both overlap someone already here and this function returns exactly ONE name:
+ *
+ *   · "485 dependent" collides with **Fiza**, who already takes 485
+ *   · "PR" collides with **Inder**, who already takes 189/190/491/482/494/186
+ *
+ * ⛔ Adding either would silently steal a line from the incumbent — first match
+ * in this array wins, with no error and no log. And "485 dependent" cannot be
+ * expressed here at all: routing keys on subclass, and has no concept of
+ * dependent-vs-primary.
+ *
+ * 🔑 Two questions must be answered before either is added, and they are RJ's or
+ * Robinder's, not ours to infer:
+ *   1. Does Pooja take 485 dependents INSTEAD of Fiza, or alongside her?
+ *   2. Does Anmol take PR INSTEAD of Inder, or alongside?
+ * "Alongside" needs a rule for splitting — round-robin, by workload, by office —
+ * which is a decision about their business, not a defect in this table.
+ */
 var M6_ROSTER = [
   { office: 'TOWNSVILLE', team: null,       visas: null,                                   who: 'Cristelle' },
   { office: null,         team: 'FILIPINO', visas: ['500','485','820/801'],                who: 'Star' },
