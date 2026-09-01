@@ -80,6 +80,42 @@ from their own Drive without touching anyone's account.
 
 ---
 
+# STEP 2 · Host — Netlify Free (decided, D-429) · ~20 min
+
+**Decision: Netlify Free + GitHub Actions cron + Supabase Free = $0/month.** Vercel Pro at USD 20 is
+the fallback, and nothing built here is Netlify-specific — the per-tab sync and the external scheduler
+work identically on either.
+
+## What is identical either way
+The application code, the GitHub deploy, the six environment variables, the URL, and the `curl` test.
+**No code change is needed to move between them.**
+
+## What differs
+| | Netlify Free | Vercel Pro |
+|---|---|---|
+| Commercial use on the free tier | ✅ permitted | 🔴 forbidden (Hobby) |
+| The subdirectory setting is called | **Base directory** | Root Directory |
+| Function timeout | **10 s** | 60 s |
+| Next.js | supported via their adapter | native — Vercel builds Next.js |
+
+The 10-second limit is handled: `?tab=` syncs one tab at a time, 2–3 round trips each.
+
+## 🔴 THE ONE THING TO TEST FIRST — `middleware.ts`
+This is the most platform-sensitive file in the app and the likeliest thing to behave differently.
+It runs Supabase SSR, **mutates auth cookies**, calls `getClaims()`, and redirects anyone
+unauthenticated. Netlify runs Next.js middleware through its own Edge layer, and cookie handling in
+middleware is exactly where the two platforms diverge.
+
+⛔ **A build that succeeds proves nothing about it.** Test in this order, and stop at the first failure:
+1. Open the deployed URL → you should be **redirected to `/login`**, not shown the board
+2. Sign in → you should land on the board and **stay** signed in across a page refresh
+3. `curl` `/api/sync` → expect **403** until Robinder shares the sheet
+
+**If step 1 or 2 misbehaves, switch to Vercel Pro rather than debug it.** Twenty minutes against an
+open-ended session on someone else's platform quirk is not a good trade for $20 of the client's money.
+
+---
+
 # STEP 2 · Vercel — import, configure, deploy · Sharjeel · ~20 min
 
 ⛔ **Company Vercel team only.** A personal GitHub repo connecting to a company Vercel team is fine —
