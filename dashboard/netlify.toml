@@ -1,0 +1,46 @@
+# Netlify configuration for the Yale dashboard.  (D-429)
+#
+# 🔑 THIS FILE EXISTS SO THE DEPLOY IS NOT A SET OF UI CLICKS. The same reasoning
+# as install_daily_triggers.gs: a setting typed into a web form cannot be
+# reviewed, cannot be re-applied after someone recreates the site, and cannot be
+# proved. Everything here is the deploy, in the repo, in git history.
+#
+# ⚠️ The repository root is `yale-build`; the application is in `dashboard/`.
+# `base` is what tells Netlify that — it is the equivalent of Vercel's
+# "Root Directory", and getting it wrong produces a "no package.json" error that
+# blames the framework rather than the path.
+
+[build]
+  base    = "dashboard"
+  command = "npm run build"
+  # ⛔ No `publish` here on purpose. The Next.js Runtime plugin sets it, and a
+  # hardcoded `.next` fights the plugin and serves a broken static export.
+
+[build.environment]
+  # Pinned. package.json declares no `engines`, so without this Netlify picks a
+  # default that can move underneath us between deploys — the class of change
+  # that breaks a build nobody touched.
+  NODE_VERSION = "22"
+
+# Netlify's first-party Next.js support. Handles SSR, the App Router, API routes
+# and middleware.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# ⛔ NO [[scheduled functions]] BLOCK, DELIBERATELY.
+# The sync is driven from .github/workflows/sync.yml instead — see D-429. Two
+# schedulers pointing at the same endpoint is not redundancy, it is double
+# writes and a confusing log. If you ever move the schedule here, delete the
+# workflow in the same commit.
+#
+# The free tier also caps a synchronous function at 10 s, which is why
+# /api/sync accepts `?tab=` and the workflow calls it once per tab.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Belt and braces alongside next.config.mjs — these apply even to responses
+    # the framework does not generate, such as a platform error page.
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
