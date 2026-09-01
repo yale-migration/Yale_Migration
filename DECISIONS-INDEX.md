@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 680K /     8565 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 620K /     8605 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 11:02
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 11:11
 
 | # | Decision |
 |---|---|
@@ -423,3 +423,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-01 11:0
 | **D-425** | The full free-hosting picture, and a recommendation that is not "pay the $20" |
 | **D-426** | RJ's delivery of 31 Aug — five artefacts, and two findings that reopen closed items |
 | **D-427** | Final sweep — the website form was answered on 25 July and we overwrote it on 21 August |
+| **D-428** | Fifth pass — the clients with live legal deadlines are NOT in the system we are about to launch |

@@ -8563,3 +8563,43 @@ missed silently.** The design was right; this is the evidence that it had to be.
 
 **Everything else on the team side is answered.** The two above plus the routing question for
 Pooja/Anmol are the complete outstanding list.
+
+## D-428 | Fifth pass — the clients with live legal deadlines are NOT in the system we are about to launch
+**31 Aug 2026.** Audited the two s56 samples as *data* rather than as format examples, and asked what
+the project has never asked at all. Two findings.
+
+### 🔴 FINDING 1 — neither s56 client appears in the 38-row import
+Checked both names against all 40 rows of `CLIENT LIST TO UPDATE`: **no match for either.**
+
+So on go-live day MASTER holds 38 clients, and the two people we know have **live 28-day statutory
+deadlines are not among them.** The Section 56 tracker would carry deadlines for clients the system has
+never heard of.
+
+⚠️ **This is not new information — it is the first concrete instance of it.** D-330 established that
+`LODGEMENT: JULY TO PRESENT` is the *engaged-onwards subset*, and I-17 recorded RJ's own words: *"This
+is live but I am the only one using it. Its my personal sheet before I can transfer them in the main
+lists."* **We knew clients existed outside the list. We now know that the ones under the most legal
+pressure are among them**, which is a different and much sharper fact.
+
+🔑 **The question to ask is not "are there more clients".** It is: **"how many people currently have an
+open Department request, and are any of them missing from the list?"** ⛔ That reframes go-live: a
+system tracking 38 clients while active s56 deadlines sit outside it looks complete and is not.
+
+### 🔴 FINDING 2 — we have never asked who to train, or what happens after handover
+`grep` across every file for *who needs training · training session · who attends · support after ·
+post-go-live · maintenance*: **nothing. Not once.**
+
+**M11 is contracted at 2 hours for "Training, docs & handover"** and we do not know who attends, in
+what format, or — more importantly — **what happens when something breaks after the 48 hours end.**
+There is no support arrangement, and nobody has raised one.
+
+⚠️ **Split by who can answer:** *who uses which part and needs showing* is RJ's, and cheap to ask now.
+**Post-handover support is commercial and Robinder's** — ⛔ do not raise it with RJ, and do not raise
+it at all until the dashboard and CR-013 quotes have been sent, or it becomes a third unpriced
+conversation competing with two that are already overdue.
+
+### ✅ Also extracted from the samples — their real s56 workflow, confirmed
+The forwarding chain in the second email is their process, written down for the first time:
+**Department → `visa.lodgement@` (Robinder) → manually forwarded to `reynaldo@` and `philippines@`.**
+That manual forward is precisely what M9 replaces, and it is worth confirming with RJ in one line
+rather than inferring from a single sample.
