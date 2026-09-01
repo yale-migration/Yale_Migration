@@ -1,0 +1,60 @@
+# Hourly Sheets → Postgres sync, driven from GitHub rather than from the host.
+#
+# 🔑 WHY THIS EXISTS (D-429). "The dashboard needs hourly cron" was treated as a
+# HOSTING requirement for a week, and it is not one. /api/sync is an ordinary
+# authenticated GET, so anything that can make an HTTP request on a schedule can
+# drive it. Moving the schedule here means the host is chosen on hosting merits —
+# not on whose cron tier is cheapest.
+#
+# ⛔ THE SECRET IS NEVER IN THIS FILE. Set it once at
+# Settings → Secrets and variables → Actions:
+#   SYNC_SECRET   the same value as the deployment's SYNC_SECRET
+#   SYNC_URL      https://<your-domain>/api/sync
+#
+# ⚠️ GitHub's scheduler is best-effort and runs late under load — minutes, not
+# hours. Fine for a board refresh; it is NOT a guarantee, and nothing here should
+# ever become the thing a legal deadline depends on.
+name: sync
+
+on:
+  schedule:
+    - cron: '0 * * * *'      # hourly, on the hour (UTC)
+  workflow_dispatch:          # and a manual "Run workflow" button, for testing
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # 🔑 One call per tab, not one call for all three. Each is 2–3 network
+      # round trips instead of ~7, so it fits inside even a 10-second function
+      # limit — and one slow tab can no longer consume the budget the others
+      # need. `fail-fast: false` so a broken S56 tab still lets the others run.
+      - name: Sync each tab
+        env:
+          SYNC_URL: ${{ secrets.SYNC_URL }}
+          SYNC_SECRET: ${{ secrets.SYNC_SECRET }}
+        run: |
+          set -u
+          if [ -z "${SYNC_URL:-}" ] || [ -z "${SYNC_SECRET:-}" ]; then
+            echo "::error::SYNC_URL or SYNC_SECRET is not set in repository secrets."
+            exit 1
+          fi
+          overall=0
+          for tab in matters s56 enquiries; do
+            echo "── $tab ────────────────────────────────"
+            # ⛔ Capture the body AND the status. A cron that only checks the
+            # exit code of curl treats an HTTP 500 as success — the exact
+            # silent-failure shape this project keeps hitting.
+            body=$(curl --silent --show-error --max-time 120 \
+                        --write-out '\n%{http_code}' \
+                        -H "Authorization: Bearer $SYNC_SECRET" \
+                        "$SYNC_URL?tab=$tab") || { echo "::error::curl failed for $tab"; overall=1; continue; }
+            code=$(printf '%s' "$body" | tail -n1)
+            printf '%s' "$body" | sed '$d'
+            echo ""
+            if [ "$code" != "200" ]; then
+              echo "::error::$tab returned HTTP $code"
+              overall=1
+            fi
+          done
+          exit $overall

@@ -60,10 +60,34 @@ export async function GET(request: NextRequest) {
     }, { status: 503 })
   }
 
+  /* 🔑 `?tab=` SYNCS ONE TAB. (D-429)
+   *
+   * Syncing all three in one request needs ~7 network round trips, which is
+   * comfortable on a 60-second budget and NOT comfortable on the 10 seconds a
+   * free Netlify function gets. Splitting per tab makes each call 2–3 round
+   * trips, so the whole thing fits on any host worth using — and the choice of
+   * host stops being decided by a timeout.
+   *
+   * ⛔ Not just a hosting workaround. One slow tab currently eats the budget the
+   * other two need, so a big ENQUIRIES read can fail `matters` — which has
+   * nothing wrong with it. Independent calls cannot do that to each other.
+   *
+   * No parameter = all three, exactly as before. An unknown name is rejected
+   * rather than silently syncing nothing and reporting success.
+   */
+  const want = request.nextUrl.searchParams.get('tab')
+  const selected = want ? TABS.filter((t) => t.name === want) : TABS
+  if (want && selected.length === 0) {
+    return NextResponse.json({
+      error: `unknown tab "${want}"`,
+      valid: TABS.map((t) => t.name),
+    }, { status: 400 })
+  }
+
   const results: Record<string, SyncResult | { error: string }> = {}
   let ok = 0, failed = 0
 
-  for (const tab of TABS) {
+  for (const tab of selected) {
     try {
       const { headers, rows } = await readTab(SHEET_ID, tab.range)
       results[tab.name] = await tab.run(rows, headers)
@@ -77,7 +101,8 @@ export async function GET(request: NextRequest) {
   }
 
   return NextResponse.json(
-    { status: failed === 0 ? 'ok' : ok === 0 ? 'all_failed' : 'partial', synced: ok, failed, results },
+    { status: failed === 0 ? 'ok' : ok === 0 ? 'all_failed' : 'partial',
+      scope: want ?? 'all', synced: ok, failed, results },
     { status: failed === 0 ? 200 : 500 },
   )
 }

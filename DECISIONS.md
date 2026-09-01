@@ -8603,3 +8603,49 @@ The forwarding chain in the second email is their process, written down for the 
 **Department → `visa.lodgement@` (Robinder) → manually forwarded to `reynaldo@` and `philippines@`.**
 That manual forward is precisely what M9 replaces, and it is worth confirming with RJ in one line
 rather than inferring from a single sample.
+
+## D-429 | The hosting decision, settled — and the constraint that forced it, removed
+**31 Aug 2026.** Asked to choose. Rather than pick between a paid host and a risky free one, removed
+the thing that made the free one risky.
+
+### The constraint was never real
+*"The dashboard needs an hourly cron"* was treated as a **hosting** requirement for a week. It is not.
+`/api/sync` is an ordinary authenticated GET — **anything that can make an HTTP request on a schedule
+can drive it.** `.github/workflows/sync.yml` now does, free, on the repo we already have.
+
+⛔ That single assumption is what made Vercel Pro look mandatory, ruled Netlify out on cron tiers, and
+sent me researching Cloudflare's cron limits. **None of it mattered.**
+
+### And the one genuine risk is now engineered away
+Netlify Free caps a function at **10 seconds**. Syncing all three tabs in one request needs ~7 network
+round trips — fine on 60 s, uncomfortable on 10.
+
+`/api/sync?tab=matters|s56|enquiries` syncs **one tab**, 2–3 round trips, and the workflow calls it
+three times. ⛔ **Not merely a hosting workaround:** today one slow tab consumes the budget the others
+need, so a large ENQUIRIES read can fail `matters`, which has nothing wrong with it. Independent calls
+cannot starve each other. An unknown tab name is rejected with 400 rather than syncing nothing and
+reporting success.
+
+### 🔑 THE DECISION: Netlify Free + GitHub Actions — USD 0
+| | |
+|---|---|
+| **Host** | Netlify Free — commercial use **explicitly permitted** in their own words |
+| **Schedule** | GitHub Actions, hourly, free |
+| **Database** | Supabase Free — the DB is a rebuildable cache (D-419) |
+| **Total** | **$0/month** |
+
+**Fallback, if a real deploy shows a problem:** Vercel Pro at USD 20. Twenty minutes to switch, and
+nothing built here is Netlify-specific — the per-tab split and the external scheduler work identically
+on both, which is the point.
+
+⛔ **Not Cloudflare.** Technically the strongest free tier — 15-minute cron duration, CPU-based billing
+— and the worst practical choice: Next.js reaches it only through the OpenNext adapter, the largest
+migration of the three, on an app built for a different target. **Best on paper is not best.**
+
+⚠️ **What the workflow does NOT guarantee:** GitHub's scheduler is best-effort and runs late under
+load. Minutes, not hours — fine for refreshing a board, and **it must never become the thing a legal
+deadline depends on.** Written into the file so nobody later assumes otherwise.
+
+🔑 **The lesson worth keeping: I spent a week comparing hosts on a requirement that did not have to be
+satisfied by a host.** The right question was never *"which host has the best cron?"* — it was
+*"does the cron have to come from the host at all?"*
