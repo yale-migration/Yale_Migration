@@ -62,6 +62,23 @@ quoted properly, not leaked out in free increments.
 
 ---
 
+## P2-10 — Extract the requested ITEM from the s56 attachment (D-433)
+
+**What:** the s56 tracker records *when* a response is due. It does not record **what the Department
+asked for** — because the item is named in the `Request Checklist and Details` PDF, not in the email
+body, which is boilerplate.
+
+**Why it matters:** their own `s56` tab has an `S56 REQUIREMENT` column, so they already know this is
+the field that makes a tracker usable. Without it a consultant opens the attachment every time to
+answer *"what am I chasing?"*
+
+**Work:** PDF text extraction on the attachment, feeding the existing classifier, plus one column
+appended at T. ⚠️ **Appended, not inserted** — `s56_parse_classifications.gs` and
+`s56_deadline_verifier.gs` both hold hardcoded column indices, so anything inserted before S breaks
+both guards.
+
+**Estimate:** 2–3 h. ⛔ Not started. Not in the MVP.
+
 ## 🎯 P2-01 — OPERATIONS DASHBOARD (the live ask, 6 Aug)
 
 **Driver:** multi-branch oversight. Robinder is opening branches and needs to see all of them in one place.

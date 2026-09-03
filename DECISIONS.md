@@ -8797,3 +8797,35 @@ We have been treating s56 as a small stream — the spec estimated volumes from 
 **~2,200 historical records** is a different order of magnitude and needs checking against M9's
 operations estimate before the Make plan is sized. Not urgent (they are historical, not a live queue),
 but the number in the quote was not built on this.
+
+## D-433 | Their s56 sheet suggests a column we should NOT add yet
+**3 Sep 2026.** Their `s56` tab carries **`S56 REQUIREMENT`** — *what the Department asked for*
+("Skills assessment", "medical", "AFP"). **Our `S56 TRACKER` has no equivalent.** A consultant reading
+our tracker sees who, when and how long — but not what they actually have to obtain, and would open
+the attachment every time.
+
+It is a good column and their design was right to have it. ⛔ **Not adding it, and the reason is the
+point.**
+
+**The requirement is not in the email.** The letter says only *"The attached checklist tells you what
+we need"* — the item is named in the **PDF attachment**, which M9 does not read. Both samples confirm
+it: the body is boilerplate, and `Skills assessment` appears only in `Request Checklist and Details`.
+
+🔑 **So adding the column would create a field with no source** — the exact "real UI over data nobody
+feeds" antipattern this project has now hit three times (the enquiries board before its sync, the s56
+and enquiry allowlists with no importer, the dashboard's empty-state assertions). **A column that is
+always blank is worse than no column: it looks like missing data rather than an unbuilt feature.**
+
+⚠️ **And it could not be inserted cheaply anyway.** Both `s56_parse_classifications.gs` and
+`s56_deadline_verifier.gs` hold `var EXPECT = { 4: 'DUE DATE (legal)', … }` — **hardcoded column
+indices**. Inserting anywhere before column S shifts them and both guards start checking the wrong
+cells. Appending at T would be safe; inserting where it logically belongs would not. LESSONS § 4.
+
+**Logged as a Phase-2 item instead:** *extract the requested item from the s56 attachment.* It needs
+PDF text extraction feeding the classifier — real work, genuinely valuable, and it is what would make
+the tracker answer *"what do I have to chase?"* rather than only *"when is it due?"*
+
+✅ **What their sheet DID change today:** nothing in the code, and one thing in what we say to Robinder.
+*"You built this tracker, it has ~1,200 rows, and the 7-day column has five entries in it"* is a far
+stronger case for M9 than any description of what we are building. **Evidence from their own file
+beats a feature list.**
