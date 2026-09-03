@@ -48,6 +48,16 @@ agreed · client codes · RJ vs Rey · Gopi (closed by departure) · 186 checkli
 
 ---
 
+## 🟠 OPEN WITH THE TEAM — as at 3 Sep 2026
+
+| # | Ask | Why it matters |
+|---|---|---|
+| **A-50** | 🔴 **Who is JASMEET?** Named 3 Sep as having `visa.lodgement@` access — *"Fiza, Jasmeet and I (rj)"*. **No match anywhere in our records.** ⛔ NOT added to the consultant dropdowns: mailbox access ≠ being a consultant clients are assigned to, and guessing roster membership is how D-353's bug class is created | a consultant missing from the locked dropdown **cannot be assigned, silently** |
+| **A-51** | 🟡 **Do Department emails for STUDENT (500) applications arrive at `visa.lodgement@` too?** RJ said it receives *"485, and tourist"*. ⚠️ Our own log shows a **skilled** matter arriving there (I-20), so his list is descriptive rather than exhaustive — but **500 is 53% of their clients** and M9 monitors that mailbox only | if 500 letters land elsewhere, **M9 never sees the biggest group** |
+| **A-52** | 🟢 **The LATEST s56 requests.** RJ offered: *"Those s56 was from before july clients I can share the latest one as well."* | the only way to answer whether clients with **live** deadlines sit outside the 40-row list |
+
+---
+
 ## 🔴 BLOCKING GO-LIVE
 
 | # | Ask | Asked | Status |

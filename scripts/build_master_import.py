@@ -49,6 +49,39 @@ if not _RETURNS:
     raise SystemExit("❌ no CLIENT-LIST-TO-UPDATE return found in %s — refusing to guess" % CD)
 RET  = _RETURNS[-1]
 ORIG = os.path.join(CD, "YALE BRISBANE OFFICE WORK.xlsx")
+
+# 🔴 ORIG IS A POINT-IN-TIME EXPORT OF A SHEET THEY EDIT DAILY. (D-430)
+#
+# `LODGEMENT: JULY TO PRESENT` lives in that workbook and the client works in it.
+# On 3 Sep RJ said "I also added the contact number and email of the client in
+# the July to present lodgment sheet" — while our copy was **19 days old**.
+# Rebuilding then would have used the stale version and reported as missing the
+# exact fields he had just filled in.
+#
+# ⛔ Nothing about a stale export looks wrong. It opens, it parses, every row is
+# there. This is the same shape as D-404, where the importer read the older of
+# two returns. That one was fixed by resolving the newest file at runtime; this
+# one cannot be, because there is only ever one export and its age is invisible.
+#
+# So: refuse to run quietly on an old copy. The permanent fix is to stop reading
+# an export at all — the dashboard sync reads the live tab over the Sheets API.
+_ORIG_MAX_AGE_DAYS = 7
+
+def _warn_if_stale(path, label, max_days):
+    if not os.path.exists(path):
+        return
+    age = (datetime.datetime.now()
+           - datetime.datetime.fromtimestamp(os.path.getmtime(path))).days
+    if age > max_days:
+        print("")
+        print("  " + "=" * 68)
+        print("  🔴 STALE SOURCE — %s is %d days old (limit %d)." % (label, age, max_days))
+        print("     %s" % os.path.basename(path))
+        print("     The client EDITS this sheet. Re-export it before trusting this run:")
+        print("     open the workbook -> File -> Download -> Microsoft Excel (.xlsx)")
+        print("     -> replace the file in client-data/, keeping the same name.")
+        print("  " + "=" * 68)
+        print("")
 OUT  = os.path.join(CD, "master-import.csv")
 
 # 🔴 THE LIVE GOOGLE SHEET AND THE .xlsx EXPORT DISAGREE ON THIS TAB NAME (D-337).
@@ -417,6 +450,7 @@ def main():
     for k, v in flags.most_common(): print("  %-52s %d" % (k, v))
 
     # ── LOCKED-COLUMN GATE (D-353) ───────────────────────────────────────
+    _warn_if_stale(ORIG, "the LODGEMENT tab export", _ORIG_MAX_AGE_DAYS)
     locked = locked_columns()
     bad = collections.defaultdict(list)
     for i, r in enumerate(out, start=1):
