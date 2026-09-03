@@ -8649,3 +8649,62 @@ deadline depends on.** Written into the file so nobody later assumes otherwise.
 🔑 **The lesson worth keeping: I spent a week comparing hosts on a requirement that did not have to be
 satisfied by a host.** The right question was never *"which host has the best cron?"* — it was
 *"does the cron have to come from the host at all?"*
+
+## D-430 | RJ's 1–3 Sep replies — four attachments with nothing new, and three findings that are
+**3 Sep 2026.** Audited every claim and every file rather than reading the covering note.
+
+### ⚠️ The four attachments are all duplicates
+`Request Checklist and Details (2)` and `(3)` are both `md5 cb650ded`; `s56 Request for More
+Information (1)` and `(2)` are both `c7902715`. **Both hashes are documents we already held** —
+client A's checklist and letter. RJ re-forwarded the same 1 Sep email again on 3 Sep, each carrying the
+same two attachments. **Four files, zero new documents.** ⛔ Nothing filed; the folder already has them.
+
+### ✅ The pre-July answer explains the gap, and offers to close it
+> *"Those s56 was from before july clients I can share the latest one as well."*
+
+That resolves D-428 cleanly: the two clients are **pre-July**, and the list is `LODGEMENT: JULY TO
+PRESENT`. Not a data problem — a date boundary. 🔑 **And he offered the current ones.** Take it: the
+open question is not *"why weren't those two there"* but *"are there clients with LIVE deadlines who
+are outside the list"*, and only the latest requests answer it.
+
+### 🔴 FINDING 1 — "Jasmeet" is a name we have never seen
+> *"Fiza, Jasmeet and I (rj) have access to that email."*
+
+`grep` across every `.md` and `.gs`: **no match anywhere.** Twelfth person, arriving in a sentence
+about mailbox access rather than as a roster update.
+⛔ **NOT added to the consultant dropdowns.** Having access to `visa.lodgement@` is not the same as
+being a consultant clients get assigned to, and D-353's class of bug is created by guessing at roster
+membership. **Ask, do not infer.**
+
+### 🟡 FINDING 2 — the mailbox scope claim, checked against our own evidence
+> *"That email directly receives emails from Immigration for 485, and tourist visa applications."*
+
+Read narrowly that is alarming — `ARCHITECTURE.md` has M9 monitoring **only** `visa.lodgement@`, so
+any visa type routed elsewhere would be invisible, and **500 is 53% of their clients**.
+
+⚠️ **But our own log contradicts the narrow reading.** I-20: the first live M9 run pulled a real
+Department email from that mailbox with sender `noreply.skilled@homeaffairs.gov.au` — a **skilled**
+matter, neither 485 nor tourist. So the mailbox receives more than RJ listed; he was describing what
+he personally handles.
+
+🔑 **Nearly recorded a false alarm.** The precise question is not *"does it receive everything"* but
+**"do Department emails for STUDENT (500) applications also arrive there?"** — the one group big
+enough that being wrong matters.
+
+### 🔴 FINDING 3 — he updated a sheet we are not reading
+> *"I also added the contact number and email of the client in the July to present lodgment sheet."*
+
+The importer reads two sources: the returned `CLIENT LIST TO UPDATE` (fresh, 25 Aug) **and
+`YALE BRISBANE OFFICE WORK.xlsx` — a static export from 15 August.** The `LODGEMENT: JULY TO PRESENT`
+tab he just edited lives in that second file.
+
+⛔ **Our copy is 19 days old, and he has added exactly the data we said was missing.** Rebuilding the
+import today would silently use the stale version and report the same gaps he has just filled.
+**The export must be refreshed before the next import build** — 2 minutes, and it is ours to do, not
+another ask.
+
+🔑 **The general shape, and it is the third time:** a client updates the live system, our copy is a
+point-in-time export, and nothing tells us the two have diverged. It is the same failure as D-404
+(importer pointed at the older return) — **fixed there by resolving the newest file at runtime; here
+the fix is to stop reading an export at all and read the live tab, which the dashboard sync will do
+once it is deployed.**
