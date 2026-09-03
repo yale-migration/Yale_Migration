@@ -8708,3 +8708,47 @@ point-in-time export, and nothing tells us the two have diverged. It is the same
 (importer pointed at the older return) — **fixed there by resolving the newest file at runtime; here
 the fix is to stop reading an export at all and read the live tab, which the dashboard sync will do
 once it is deployed.**
+
+## D-431 | The fresh export made the import look WORSE, and the reason is their data model
+**3 Sep 2026.** Sharjeel downloaded the current `YALE BRISBANE OFFICE WORK`. Old copy archived to
+`client-data/_superseded/`, new one in place. Then the rebuild got **worse**, which is the finding.
+
+### ✅ What RJ actually did
+Compared by header NAME, not position: **`CONTACT NUMBER` and `EMAIL ADDRESS` are entirely NEW
+COLUMNS** on the LODGEMENT tab, carrying 20 and 18 values — and **`NAME` went 42 → 74.** He added two
+columns *and* 32 clients.
+
+⚠️ **My first comparison said contact numbers had gone DOWN by 22.** They had not. The two new columns
+were inserted at positions 1 and 2, shifting every later column right, and I compared by index.
+**Comparing spreadsheet versions by column position is wrong whenever a column can be inserted** —
+the same mistake shape as D-416's screenshot misread, caught the same way: the result contradicted
+what the client said, so I checked instead of reporting.
+
+✅ **And the importer survives it** — it builds `idx = {header: position}` and reads `r[idx['NAME']]`,
+so inserted columns cannot shift it. The defensive pattern paid off silently.
+
+### 🔴 The real finding: unmatched rows went 2 → 8
+Names on the LODGEMENT tab: **34 in both exports · 38 newly added · 7 gone.**
+
+Chasing the 7 across all 31 tabs (⛔ skipping `eca password` and anything else matching the credential
+pattern — the rule applies to reads, not just writes): **5 turned up on other tabs** — `Sheet62`,
+`LODGEMENTS`, `All EOIs`, `SA EOI`, `Copy of JRP LIST`, `Tourist Visa` — and **2 are nowhere in the
+workbook at all.**
+
+🔑 **So `LODGEMENT: JULY TO PRESENT` is not a register. It is a STAGE.** Clients move off it as their
+matter progresses, into whichever tab matches where they now are. Our importer joins one tab to get
+STATUS, CURRENT VISA and VISA EXPIRATION — **so the join degrades as clients succeed**, and the more
+current the export, the more clients have moved on.
+
+⛔ **The fresher file is not worse data. It is a more accurate picture of a moving target**, and the
+import is a snapshot join against it. That is a structural fact about their workbook, not a defect in
+ours, and it will not improve by refreshing more often.
+
+**Consequences for go-live, stated rather than discovered later:**
+- 8 of 38 will import with no status or expiry, up from 2. Both `IMPORT_BASELINE` and the
+  pre-stamped `Checklist Filed` already cover them, so nothing breaks — but the coverage report will
+  look worse on the day and somebody will ask why.
+- **2 clients are in the list we are importing and nowhere in their live workbook.** Worth one line
+  to RJ; not alarming, and not something to guess about.
+- 🔑 **This is the argument for the dashboard sync over exports.** Reading the live sheet does not fix
+  the moving target, but it stops us reasoning from a snapshot that is wrong in a way nobody can see.
