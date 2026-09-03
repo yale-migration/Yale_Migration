@@ -8909,3 +8909,47 @@ verify the address, then stop.** The filter does the selective part.
 🔑 **All four came from checking claims I had already written down as facts.** Three were about our own
 system and one was a UI path — the two categories G1 exists for. **Nothing here was found by thinking
 harder; all of it by opening the file.**
+
+## D-436 | 22 live s56 matters — and a Python truthiness trap that hid them
+**3 Sep 2026.** Final verification pass before sending. Three corrections to my own numbers, and one
+genuinely useful figure for the first time.
+
+### 🔴 The mailbox split is 87%, not 76%
+RJ's rule is *"485 and tourist → `visa.lodgement@`, **the other visas** → `info@`"*. I had applied it
+to a hand-picked list of subclasses and left out **Citizenship, 820/801 and ART**. Applying his actual
+words to the real import:
+
+| | |
+|---|---|
+| → `visa.lodgement@` (485/600) | **5 of 38 — 13%** |
+| → `info@` (everything else) | **33 of 38 — 87%** |
+
+**M9 as built sees 13% of their s56 flow.** ⚠️ Twice now I have understated this by choosing which
+subclasses "count". **Apply the client's rule verbatim; do not paraphrase it into a list.**
+
+### 🔴 Unassigned clients: 6, not 7
+7 is the count in their raw sheet across 39 live rows. **6** is what reaches MASTER, after the importer
+holds back the two marked *"no longer client"*. **Quote the number that will exist in the system**,
+not the number in the source.
+
+### 🔴 The truthiness trap — and the number it was hiding
+`S56S57ART NEW SHEET` column K holds **1,004 non-empty values**, which I first reported as "STATUS
+filled on 99% of rows". A second pass reported **159**. Both were measurements of the same column.
+
+**845 of those values are the boolean `False`** — a formula artefact, not a status. My second script
+used `if r[i] and str(r[i]).strip()`, and **in Python `False` is falsy**, so it silently dropped all
+845. The first counted them as content.
+
+🔑 **Neither number was the answer. `if value` is not the same as `if value is not None`, and on a
+spreadsheet column that can hold `False` or `0` the difference is invisible until the totals disagree.**
+The only reason it surfaced is that two measurements of one column returned different results and I
+refused to pick one.
+
+### ✅ The real figure, and it is the useful one
+Of the 159 genuine statuses: **135 Done · 18 Monitor · 4 Update Needed · 2 Withdrawn.**
+
+**They have 22 live Section 56 matters right now** — 18 being monitored, 4 needing an update.
+
+⛔ That is the first concrete measure of the live s56 load, and it reframes M9's value: not
+*"~2,200 historical rows"* but *"22 open legal deadlines, tracked in a sheet whose 7-day and 14-day
+columns are empty."* **Say that number to Robinder.**
