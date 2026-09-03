@@ -8829,3 +8829,44 @@ the tracker answer *"what do I have to chase?"* rather than only *"when is it du
 *"You built this tracker, it has ~1,200 rows, and the 7-day column has five entries in it"* is a far
 stronger case for M9 than any description of what we are building. **Evidence from their own file
 beats a feature list.**
+
+## D-434 | M9 watches one mailbox. Half their s56 letters arrive at a different one.
+**3 Sep 2026.** RJ, answering A-51 directly:
+
+> *"For 485 visa and tourist visa — the s56 will be received on **Visa.lodgment** email while **the
+> other visas it will be sent on info email**."*
+
+🔴 **`ARCHITECTURE.md:97` — M9's Gmail OAuth is on `visa.lodgement@`, "as that mailbox".** One mailbox.
+
+So M9 as built sees **485 and 600 only.** Every s56 request for **500, 482, 491, 407, 189** arrives at
+`info@yalemigration.com.au` and **M9 would never see it** — no error, no gap in a log, simply a
+tracker that looks healthy while missing whole visa lines.
+
+⛔ **500 is 53% of their client base**, and their own `s56` tab proves those requests exist:
+485 ×46 · 500 ×3 · 407 ×3 · 815 ×2 · 482 ×2 · 491 · 189 · 600.
+
+🔑 **This is the single most consequential thing the team has told us**, and it was found by asking a
+question we had first tried to answer ourselves. The earlier framing — *"his list is descriptive, our
+log shows a skilled matter arriving there"* (D-430) — was **half right and dangerously reassuring**:
+a skilled matter did arrive at `visa.lodgement@`, so the mailbox is not strictly 485-only, and that
+observation made the risk look smaller than it is. **One counter-example disproved "only 485"; it
+never established "everything".** ⚠️ Do not let a single sample stand in for a rule.
+
+### The fix — theirs, two minutes, and it costs us nothing
+⛔ **Do NOT build a second Gmail connection.** It needs another OAuth, doubles the polling operations
+against a plan that already caps at two active scenarios, and adds a second thing to break.
+
+✅ **Ask for a Gmail filter on `info@`:** *from `homeaffairs.gov.au` → forward to
+`visa.lodgement@`*. One rule, no extra connection, no extra operations, and M9's existing
+`from:homeaffairs.gov.au` filter then catches everything. Their mail flow is otherwise unchanged and
+`info@` keeps its own copy.
+
+⚠️ **Alternative if they refuse to forward:** M9 reads both mailboxes — ~2 h plus roughly double the
+monthly operations. Quote it rather than absorb it.
+
+### Jasmeet is a consultant — added
+> *"Jasmeet is doing the visa draft for 482, 600, 500, 407 and other visa types."*
+
+**A-50 answered.** Added to all four locked dropdowns — **12 names, all agreeing, guard green.**
+⛔ **Not added to M6 routing:** his lines collide with Gayatri (500) and Fiza (600), and **his team and
+office were not stated** — routing keys on both. Two facts short of a rule, so no rule.

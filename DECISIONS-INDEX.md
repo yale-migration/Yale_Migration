@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 636K /     8831 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 636K /     8872 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-03 10:25
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-03 12:52
 
 | # | Decision |
 |---|---|
@@ -429,3 +429,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-03 10:2
 | **D-431** | The fresh export made the import look WORSE, and the reason is their data model |
 | **D-432** | They already have an s56 tracker. It has ~2,200 rows and the ladder columns are empty. |
 | **D-433** | Their s56 sheet suggests a column we should NOT add yet |
+| **D-434** | M9 watches one mailbox. Half their s56 letters arrive at a different one. |
