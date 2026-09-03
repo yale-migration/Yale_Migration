@@ -8752,3 +8752,48 @@ ours, and it will not improve by refreshing more often.
   to RJ; not alarming, and not something to guess about.
 - 🔑 **This is the argument for the dashboard sync over exports.** Reading the live sheet does not fix
   the moving target, but it stops us reasoning from a snapshot that is wrong in a way nobody can see.
+
+## D-432 | They already have an s56 tracker. It has ~2,200 rows and the ladder columns are empty.
+**3 Sep 2026.** Before sending RJ another question, opened the workbook we had just received. **G2 paid
+for itself twice over.**
+
+The workbook contains **two s56 tracking tabs we had never looked at**: `s56` (1,184 rows) and
+`S56S57ART NEW SHEET` (1,010 rows) — **~2,200 records.** Their headers are almost exactly what M9
+builds:
+
+`Name · DOB · Date Received · **7 days · 14 days · 28 Days** · VISA TYPE · S56 REQUIREMENT · Status ·
+Action Taken · Requested For` — and the second adds **`DAYS LAPSED`**.
+
+### 🔴 The ladder columns are essentially never filled
+| | `s56` | `S56S57ART` |
+|---|---|---|
+| **7 days** | **0%** (5 of 1,184) | **0%** (2 of 1,010) |
+| **14 days** | 5% | **0%** |
+| 28 Days | 23% | 21% |
+| Date Received | 25% | 20% |
+
+⛔ **They designed the exact escalation ladder we are automating and do not run it.** D-58 recorded the
+7/14/21/26 ladder from Robinder's WhatsApp message — that is **what he says they do.** The sheet is
+what they actually do, and it is a free-text log with the structured columns blank. Same shape as the
+`48hr Alert` that had been broken for months and the P/Q summary abandoned mid-build: **the right
+structure, built once, then never maintained.**
+
+🔑 **This is the strongest evidence yet that M9 is the right module** — and it should be said to
+Robinder in exactly these terms. Not *"we will build you a deadline tracker"* but *"you built one, it
+has 2,200 rows, and the 7-day column has five entries in it."*
+
+### ✅ A-51 answered from their own data, without asking
+Subclasses appearing in the s56 log: **485 ×46 · 500 ×3 · 407 ×3 · 815 ×2 · 482 ×2 · 491 · 189 · 600.**
+
+So **student (500) applications DO receive s56 requests**, as do 482, 491, 189 and 407. RJ's *"485 and
+tourist"* describes the **bulk**, not the boundary — 485 genuinely dominates.
+
+⚠️ **The question narrows rather than closing.** We now know 500 letters exist; we still do not know
+whether they arrive at `visa.lodgement@` or another address. But it can now be asked with evidence
+attached instead of as an open worry, which is a better question and a shorter answer.
+
+### ⚠️ Scale correction
+We have been treating s56 as a small stream — the spec estimated volumes from a handful of samples.
+**~2,200 historical records** is a different order of magnitude and needs checking against M9's
+operations estimate before the Make plan is sized. Not urgent (they are historical, not a live queue),
+but the number in the quote was not built on this.
