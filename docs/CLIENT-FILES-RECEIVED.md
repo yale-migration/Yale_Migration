@@ -24,6 +24,17 @@ in it, so "what did they send and when" is answerable without opening anything.
 | 22 Aug | `2026-08-22_Inquiry-form-Responses.xlsx` | the enquiry form's responses | I-14 → C-1 |
 | **25 Aug** | **`2026-08-25_RJ-reply-annotated_test-clients.pdf`** | our own 23 Aug email, returned with his answers typed inline | **A-48** — 3 test clients + ACECQA |
 | **25 Aug** | **`2026-08-25_CLIENT-LIST-TO-UPDATE_returned-v2.xlsx`** | the client list, second pass | **A-49** — the row 22/23 duplicate is gone |
+| **30 Aug** | 🔗 **Google Sheet** `1pqRhsEZ…` — *not a file* | the client list, now shared live | **A-49 closed as a CLASS** — no more emailed copies |
+| **31 Aug** | `s56-samples/2026-08-13_s56-letter_485_client-A.pdf` | the Department's s56 letter, 3 pages — **the template** | **A-34(a) / I-20** — first real sender + subject we have ever seen |
+| **31 Aug** | `s56-samples/2026-08-13_s56-checklist_485_client-A.pdf` | client A's checklist — the per-client half | names the requested item (`Skills assessment`) |
+| **31 Aug** | `s56-samples/2026-08-19_s56-checklist_485_client-B.pdf` | client B's checklist | second data point, same requirement |
+| **31 Aug** | `docs/07-client-requests/2026-08-31_YM-WEBSITE-REPORT.docx` ✅ *in repo — no PII* | their own website review, 13 pages | ⚠️ **a change request, not a task.** Phase 2/3, must be quoted |
+| **3 Sep** | **`YALE BRISBANE OFFICE WORK.xlsx`** *(refreshed)* | 31 tabs. +2 columns, +32 clients on the LODGEMENT tab | previous copy → `_superseded/`. 🔑 Also contains the **two s56 tracking tabs** nobody had opened (D-432) |
+
+⚠️ **Received and NOT filed — deliberately.** On 1 and 3 Sep RJ re-forwarded the same 13 Aug email
+twice, carrying four attachments. **All four were byte-identical to documents already held**
+(`cb650ded`, `c7902715`). Eight duplicate copies were removed after checksum verification. **Four
+files arrived; zero new documents.** Recorded here so nobody later wonders where they went.
 
 ⚠️ **The three checklists sit in the repo deliberately** — they are blank Yale-letterhead templates
 with no client data, verified against the D-249 markers before filing.

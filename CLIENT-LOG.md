@@ -1218,3 +1218,64 @@ Authority 0 → 1 (the client's lowercase `acecqa`, resolved by the D-403 fix).
 🔑 **Repointing the source and rebuilding the output are two separate acts**, and only the second one
 reaches the client's sheet. The code was correct and the file was stale — which looks exactly like
 everything being fine.
+
+2026-08-28 | RJ (IN) | **Two things, and the second was the one that mattered.** He asked which clients
+the shared-sheet request referred to — *"is it the 40 clients?"* — yes, `CLIENT LIST TO UPDATE`. Then,
+separately and unprompted: **"Also we have new hires."** 🔑 That is **A-45 arriving on its own**, open
+since 22 Aug and parked as Robinder's because RJ had asked *us* about it. He volunteered it, so it
+became his to answer. D-409.
+
+2026-08-30 | RJ (IN) | 🎉 **The client list is now a SHARED GOOGLE SHEET** —
+`1pqRhsEZ…`, tab `CLIENT LIST TO UPDATE`, **verified readable by our connection at zero operations**.
+**A-49 closed as a CLASS**, not as an instance: no more emailed copies to diff, and their edits are
+visible the moment they make them. He proposed this himself on 25 Aug — chasing the mechanism rather
+than the two wrong addresses was the right call.
+
+Also: *"I also need your help to upgrade our microsoft subscription so that we can get more responses
+through the online form."* → D-415.
+
+2026-08-31 | RJ (IN + OUT) | **A large delivery, audited file by file.** The Microsoft form link
+(confirming it IS a Microsoft form, 200-response cap) · **two real Department s56 emails, forwarded
+with headers intact** — closing A-34(a)/I-20 **33 days** after it was logged · three PDFs · the staff
+list (Pooja, Anmol) · where each form is published · and `YM-WEBSITE REPORT.docx`.
+
+🔑 **The emails were the payoff.** Every prior sample was an image scan, so we had never seen a real
+sender or subject. Now: `noreply.temporary.graduate@homeaffairs.gov.au`, the subject pattern, and a
+**machine-readable footer** — `Subclass:485; Stream:…; Citizenship:…; State:…`.
+
+🔴 **And two findings that reopened settled items.** A possible **one-day error in the s56 deadline**
+(their letter says *"28 days starting on the day after"*; our rule gives one day later) — ⛔ NOT
+changed, it is the RMA's call and still unasked. And **I-5 reopened**: their website HAS a contact
+form, Robinder told us on 25 July where it goes, and we closed it on 21 Aug on a one-word *"none"*.
+D-420 · D-426 · D-427.
+
+2026-09-01→03 | RJ (IN) | **Four attachments, all duplicates** of documents already held (`cb650ded`,
+`c7902715`) — the same 13 Aug email re-forwarded twice. Nothing new filed.
+
+**What was new was in the text**, and it was substantial:
+- 🔴 **"For 485 visa and tourist visa the s56 will be received on Visa.lodgment email while the other
+  visas it will be sent on info email."** ⛔ **M9 watches `visa.lodgement@` ONLY.** Measured against
+  the real import: **33 of 38 clients (87%) are visa types whose letters go to `info@`.** The system
+  would have seen **13%** of their s56 flow and missed the rest silently. **The single most
+  consequential thing the team has told us.** Fix asked for: a Gmail filter on `info@`, theirs, two
+  minutes. D-434.
+- **Jasmeet is a consultant** (482/600/500/407) — A-50 answered, added to all four dropdowns, 12 names.
+  ⬜ Team and office still needed before he can be routed.
+- *"Most of the s56 received comes from the client that was lodge last july"* — **reassuring**: the
+  live deadlines are largely inside the list the system covers. A-52 closed.
+- He updated the **lodgment sheet** with contact numbers and emails, and encoded more clients.
+
+2026-09-03 | internal | **Fresh workbook received and audited; old copy archived to
+`client-data/_superseded/`.** RJ added **two new columns** (`CONTACT NUMBER`, `EMAIL ADDRESS`) and
+**32 more clients** to the LODGEMENT tab.
+
+🔴 **The rebuild then got WORSE — unmatched rows 2 → 8 — and the reason is structural.** Of the names
+that left that tab, **5 turned up on other tabs** and 2 are nowhere in the workbook. **`LODGEMENT:
+JULY TO PRESENT` is a STAGE, not a register**: clients move off it as their matter progresses, so the
+join degrades as they succeed. A fresher export is a more accurate picture of a moving target, not
+worse data. D-431.
+
+🔑 **And opening their workbook found something nobody had looked at: two s56 tracking tabs, ~2,200
+rows**, with headers almost identical to what M9 builds — including **7 days · 14 days · 28 Days**.
+**Those columns are 0–5% filled.** They designed the exact ladder we are automating and cannot
+maintain it by hand. **22 matters are live right now** — 18 Monitor, 4 Update Needed. D-432 · D-436.
