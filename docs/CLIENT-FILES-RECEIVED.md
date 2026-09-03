@@ -59,3 +59,33 @@ report thirty edits that never happened.
 
 🔑 **None of these blocks a contracted hour.** All four are the same problem — a spreadsheet emailed
 back and forth — and all four are solved by the shared Google Sheet RJ has already agreed to.
+
+---
+
+# 🔄 SOURCE FRESHNESS — which files must be re-downloaded, and which must not
+**Added 3 Sep 2026 (D-431).** A blanket "everything is 19 days old" reading is wrong and would send
+someone chasing files that are correctly frozen. **Two different kinds of file live in
+`client-data/`.**
+
+## 🔴 LIVE — they edit these, so our copy rots
+| File | Why it matters | Refresh |
+|---|---|---|
+| **`YALE BRISBANE OFFICE WORK.xlsx`** | holds **MASTER · ENQUIRIES · S56 TRACKER · LODGEMENT: JULY TO PRESENT**. RJ edited the LODGEMENT tab on 3 Sep — *"I also added the contact number and email"* — while our copy was **19 days old** | 🔴 **NOW, before the next import build** |
+| `2026-08-22_Inquiry-form-Responses.xlsx` | the Google form is live and still collecting | 🟡 before C-1 is switched on |
+| `DATA SHEET.xlsx` · `STUDENTS.xlsx` · `REYWARD JAKE M GAMOL-2026.xlsx` | their working sheets | 🟢 only when a module actually reads them |
+
+## ✅ FROZEN — dated deliveries. Age is meaningless and re-downloading is wrong
+`2026-08-18_CLIENT-LIST-TO-UPDATE_returned.xlsx` · `2026-08-18_ANSWERED_YM-DQ-e573.docx` ·
+`2026-08-25_..._returned-v2.xlsx` · everything in `s56-samples/`
+
+These are **records of what was sent on a date.** A "fresher" version is a different document, not an
+update — and overwriting one destroys the evidence of what we were working from when a decision was
+made. ⛔ Never refresh a dated file in place.
+
+## 🔑 The permanent fix, and why this list shrinks
+`CLIENT LIST TO UPDATE` is **already solved** — RJ shared it as a Google Sheet on 30 Aug, so we read
+it live and it can never go stale. **The same fix applies to everything in the LIVE table above.**
+
+Once the dashboard sync is deployed it reads `YALE BRISBANE OFFICE WORK` over the Sheets API directly,
+and the top row of that table disappears. ⚠️ **Until then the importer runs on a local export**, which
+is why `build_master_import.py` now refuses quietly to trust one older than 7 days (D-430).
