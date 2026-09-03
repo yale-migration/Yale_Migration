@@ -52,9 +52,9 @@ agreed · client codes · RJ vs Rey · Gopi (closed by departure) · 186 checkli
 
 | # | Ask | Why it matters |
 |---|---|---|
-| **A-50** | 🔴 **Who is JASMEET?** Named 3 Sep as having `visa.lodgement@` access — *"Fiza, Jasmeet and I (rj)"*. **No match anywhere in our records.** ⛔ NOT added to the consultant dropdowns: mailbox access ≠ being a consultant clients are assigned to, and guessing roster membership is how D-353's bug class is created | a consultant missing from the locked dropdown **cannot be assigned, silently** |
-| **A-51** | 🟡 **Do Department emails for STUDENT (500) applications arrive at `visa.lodgement@` too?** RJ said it receives *"485, and tourist"*. ⚠️ Our own log shows a **skilled** matter arriving there (I-20), so his list is descriptive rather than exhaustive — but **500 is 53% of their clients** and M9 monitors that mailbox only | if 500 letters land elsewhere, **M9 never sees the biggest group** |
-| **A-52** | 🟢 **The LATEST s56 requests.** RJ offered: *"Those s56 was from before july clients I can share the latest one as well."* | the only way to answer whether clients with **live** deadlines sit outside the 40-row list |
+| ~~A-50~~ | ✅ **ANSWERED 3 Sep — Jasmeet IS a consultant.** RJ: *"Jasmeet is doing the visa draft for 482, 600, 500, 407 and other visa types."* Added to all four locked dropdowns — **12 names, guard green**. ⬜ **Still needed before he can be routed automatically: his TEAM (Filipino/Indian) and OFFICE (Brisbane/Townsville)** — M6 keys on both, and his visa lines already collide with Gayatri (500) and Fiza (600) | 3 Sep | 🟡 partial |
+| ~~A-51~~ | 🔴 **ANSWERED 3 Sep — AND IT IS THE BIGGEST FINDING OF THE PROJECT.** RJ: *"For 485 visa and tourist visa the s56 will be received on Visa.lodgment email while **the other visas it will be sent on info email**."* M9 watches `visa.lodgement@` ONLY, so it would see **5 of 38 clients (13%)** and miss the other 33 silently. ▶ **D-434** — the fix is a Gmail filter on `info@`, theirs, two minutes, zero build cost | 3 Sep | ✅ answered · ⬜ fix not yet applied |
+| ~~A-52~~ | ✅ **ANSWERED 3 Sep.** RJ: *"most of the s56 received comes from the client that was lodge last july"* — so the live deadlines are largely INSIDE the July-to-present list, which is the reassuring answer. He also pointed at `S56/S57/ART NEW SHEET`, already held and analysed: **22 live matters — 18 Monitor, 4 Update Needed** (D-436) | 3 Sep | ✅ |
 
 ---
 
