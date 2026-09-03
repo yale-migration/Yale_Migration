@@ -8870,3 +8870,42 @@ monthly operations. Quote it rather than absorb it.
 **A-50 answered.** Added to all four locked dropdowns — **12 names, all agreeing, guard green.**
 ⛔ **Not added to M6 routing:** his lines collide with Gayatri (500) and Fiza (600), and **his team and
 office were not stated** — routing keys on both. Two facts short of a rule, so no rule.
+
+## D-435 | Auditing my own draft to RJ found four errors, two of them promises we cannot keep
+**3 Sep 2026.** Verified every claim before sending. Four wrong.
+
+### 🔴 1 · "Each consultant sees their own clients" — THERE IS NO CONSULTANT ROLE
+RLS has exactly three: **director · manager · client**. There is a `consultant/[name]` **page**, but it
+is a drill-down a director or manager opens — **not a login**. A consultant cannot sign in and see
+their own caseload. ⛔ I was about to promise a role we have not built.
+
+### 🔴 2 · Team-based monitoring is a CHANGE, not a setting
+RJ asked about *"one for Filipino and one for Indian clients"*. Checked both tables:
+
+| | team | office | consultant |
+|---|---|---|---|
+| `matters` | ✅ | ✅ | ✅ |
+| **`profiles`** | 🔴 **no** | ✅ | 🔴 **no** |
+
+`matters_manager_own_office` filters on **office only**. **The data knows Filipino vs Indian; the
+access control cannot express it.** Splitting by team needs a `team` column on `profiles`, a policy
+variant, viewer resolution and a re-run of the 22-check matrix — ~2–3 h **touching RLS**, which is the
+security-critical part. ⛔ It is a quotable change, not *"already built for it"*.
+
+### 🔴 3 · "More than half your clients" — it is THREE QUARTERS
+Measured against the real import: **29 of 38 (76%)** are visa types whose s56 goes to `info@`.
+Only **5 (13%)** are 485/600. **M9 as built would see 13% of their s56 flow.** My draft understated it.
+
+### 🔴 4 · The Gmail steps were in the wrong order and carried a trap
+Verified at support.google.com: **a forwarding address must be added AND VERIFIED first**, under
+**Settings → Forwarding and POP/IMAP**, before *"Forward it to"* appears as a filter action. My draft
+sent RJ straight to Filters, where the dropdown would have been **empty** and he would have concluded
+it could not be done.
+
+⚠️ **And the trap:** that same screen offers *"Forward a copy of incoming mail to…"*. Ticking it
+forwards **everything** from `info@` — their main public address — into `visa.lodgement@`. **Add and
+verify the address, then stop.** The filter does the selective part.
+
+🔑 **All four came from checking claims I had already written down as facts.** Three were about our own
+system and one was a UI path — the two categories G1 exists for. **Nothing here was found by thinking
+harder; all of it by opening the file.**
