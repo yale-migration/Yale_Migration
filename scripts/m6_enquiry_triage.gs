@@ -138,7 +138,7 @@ var M6_ROSTER = [
    * honest outcome — a visible gap beats silently handing a PR enquiry to
    * someone who left — but it is a real hole until Robinder names a successor.
    *
-   * 🔑 Anmol is "Indian, Brisbane, PR" (RJ, 28 Aug) — which is EXACTLY this
+   * 🔑 Anmol is "Indian, Brisbane, PR" (RJ, 31 Aug — D-426) — which is EXACTLY this
    * line. He is very likely Inder's replacement, and what looked like a
    * collision in D-409 may have been a handover. ⛔ NOT assumed. Asked.
    */
