@@ -211,10 +211,39 @@ def check_money(rel, txt):
             warn(rel, f'line {i}: money language "{m.group(0).strip()}" in client-facing '
                       f'text — is it TRUE of Yale, and does it belong there?')
 
+
+def check_register_uniqueness():
+    """🔴 A SECOND FILE WITH A REGISTER'S NAME SPLITS THE REGISTER IN SILENCE.
+
+    Written after doing exactly this: three new decisions were appended to a
+    freshly-created `docs/DECISIONS.md` while the real 9,026-line register sat
+    at the repo root. Every gate stayed green — this one resolves registers by
+    a fixed relative path, so it simply never looked at the new file — and the
+    decisions would have been invisible to the index, to `D-` reference
+    checking, and to anyone reading the register.
+
+    ⛔ The failure mode is not a wrong answer, it is a LOST WRITE. Nothing is
+    broken, nothing is red; the content is just somewhere no reader goes.
+    """
+    for key, (fname, _re) in REGISTERS.items():
+        canonical = os.path.normpath(os.path.join(ROOT, fname))
+        for dirpath, dirnames, filenames in os.walk(ROOT):
+            dirnames[:] = [d for d in dirnames
+                           if d not in ('.git', 'node_modules', '.next', 'archive')]
+            if fname not in filenames:
+                continue
+            found = os.path.normpath(os.path.join(dirpath, fname))
+            if found != canonical:
+                fail(os.path.relpath(found, ROOT),
+                     f'a SECOND "{fname}" — the {key}- register is '
+                     f'{fname} at the repo root. Ids written here are invisible to every '
+                     f'gate and to the index. Merge it in and delete this file.')
+
 # ----------------------------------------------------------------------- main
 def run():
     pos = json.load(open(os.path.join(ROOT, 'POSITION.json'), encoding='utf-8'))
     idx = build_register_index()
+    check_register_uniqueness()
     checked = 0
     for rel in LIVE_DOCS:
         txt = load(rel)
@@ -247,6 +276,10 @@ def self_test():
     """⛔ A gate that has never failed is not a gate (LESSONS pattern 1).
     Re-inject each real defect into a scratch copy and prove it is caught."""
     cases = [
+        ('a duplicate register file that would swallow new ids',
+         'docs/DECISIONS.md',
+         lambda t: t + '\n## D-901 | a decision written where no reader goes\n',
+         'a SECOND "DECISIONS.md"'),
         ('the ④-4b dangling section reference (D-384)',
          'CALL-RUNBOOK-robinder-friday.md',
          lambda t: t.replace('(④-10)', '(④-4b)', 1).replace('④-10', '④-97', 1)
@@ -276,7 +309,9 @@ def self_test():
                             ignore=shutil.ignore_patterns('.git', 'node_modules',
                                                           '__pycache__', 'dashboard'))
             p = os.path.join(work, target)
-            src = open(p, encoding='utf-8').read()
+            # A missing target is not an error: some defects ARE the new file.
+            src = open(p, encoding='utf-8').read() if os.path.exists(p) else ''
+            os.makedirs(os.path.dirname(p), exist_ok=True)
             open(p, 'w', encoding='utf-8').write(mutate(src))
             r = subprocess.run([sys.executable, os.path.join(work, 'scripts', 'docs_hygiene.py')],
                                capture_output=True, text=True)

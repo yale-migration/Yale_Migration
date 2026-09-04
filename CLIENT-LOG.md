@@ -1300,3 +1300,35 @@ rule, and his visa lines already collide with Gayatri and Fiza. Still two questi
 wrong consultant name misdirects document requests and reminders. It does not: M4 and M5 never read
 that field. The real consequence is **visibility** — wrong caseload, invisible to the right person,
 wrong name read out on a phone lookup. D-437 · D-438.
+
+---
+
+## 4 Sep 2026 (pm) — RJ: Inder has left. Three answers, one of them structural.
+
+**Verbatim:** *"Inder sir has left the office for good sir. we can just make it blank then."* ·
+*"Jameet is based in Brisbane"* · *"If there is a new Filipino inquiry, it should be given to Filipino
+consultants. once they are ready for visa drafting that's the only time we will forward to Jasmeet."*
+
+🔴 **The departure is the fourth roster change in three weeks** and the first to touch live records.
+Measured before touching anything: **Inder holds 8 of the 38 importing clients** (6 × 500, 2 × 485),
+and with the six RJ has now confirmed blank that is **14 of 38 — 37% — with no active owner at go-live**.
+
+**What his departure forced us to separate**, having previously conflated the two:
+*routing* (who gets NEW work — Inder removed) and *the dropdown* (who may appear on a record — Inder
+KEPT). ⛔ Deleting him from a `setAllowInvalid(false)` list while 8 rows hold his name is the D-353
+bug: those rows are refused at paste, silently. **The tidy-up would have been the defect.**
+
+🔑 **Jasmeet's answer reframed the question rather than answering it.** We had been asking which team
+and office to route him by. He is not an enquiry destination at all — he picks work up at the drafting
+stage, after assignment. His "collisions" with Gayatri and Fiza were never collisions. He stays out of
+M6, which independently confirms the call already taken in D-409.
+
+⚠️ **The test suite was blind here.** Removing Inder's route left all 46 M6 triage checks green,
+because not one of them named him or any of the six PR subclasses. Four roster changes in three weeks
+and zero coverage of the thing that keeps changing. `test_roster_sync.js` went 10 → 22 checks, now
+executing `m6AssignTo_` rather than grepping for names, with both negative injections verified to fail.
+
+⚠️ **A slip of my own, caught by looking rather than by a gate:** the three decisions above were first
+appended to a `docs/DECISIONS.md` I had just created, while the real 9,026-line register sat at the
+repo root. Every gate stayed green — a lost write, not a wrong answer. Merged, stray deleted, and the
+docs gate now fails on a second file bearing a register's name. D-439 · D-440 · D-441 · A-53 · A-54.
