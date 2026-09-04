@@ -119,7 +119,29 @@ var M6_ROSTER = [
   { office: null,         team: 'FILIPINO', visas: ['189','190','491','482','494','186'],  who: 'RJ' },
   { office: null,         team: 'INDIAN',   visas: ['500'],                                who: 'Gayatri' },
   { office: null,         team: 'INDIAN',   visas: ['820/801','485','600'],                who: 'Fiza' },
-  { office: null,         team: 'INDIAN',   visas: ['189','190','491','482','494','186'],  who: 'Inder' }
+  /* 🔴 INDER HAS LEFT — RJ, 4 Sep: "Inder sir has left the office for good."  (D-439)
+   *
+   * His route is REMOVED so no NEW enquiry is assigned to someone who is gone.
+   * ⛔ But he is deliberately KEPT in the locked dropdowns, and that distinction
+   * matters: **8 of the 38 importing clients still carry his name**, and a
+   * dropdown that no longer offers "Inder" would REFUSE those rows in silence
+   * at paste time — the D-353 bug, caused by tidying up.
+   *
+   *   dropdown  = who may appear on a record   → must include leavers
+   *   routing   = who receives NEW work        → must exclude them
+   *
+   * These are different questions and this file previously answered both with
+   * one list.
+   *
+   * ⚠️ CONSEQUENCE, STATED NOT HIDDEN: Indian-team 189/190/491/482/494/186
+   * enquiries now match no rule and fall through to `Unassigned`. That is the
+   * honest outcome — a visible gap beats silently handing a PR enquiry to
+   * someone who left — but it is a real hole until Robinder names a successor.
+   *
+   * 🔑 Anmol is "Indian, Brisbane, PR" (RJ, 28 Aug) — which is EXACTLY this
+   * line. He is very likely Inder's replacement, and what looked like a
+   * collision in D-409 may have been a handover. ⛔ NOT assumed. Asked.
+   */
 ];
 
 var M6_REPLY_ACK =

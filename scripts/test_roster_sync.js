@@ -52,6 +52,7 @@ const rosters = {
   'S56 TRACKER':                  fromArray(read('setup_s56_tracker_tab.gs')),
 };
 
+
 console.log('=== the consultant roster, in every place it is defined ===');
 for (const [k, v] of Object.entries(rosters)) {
   check(`${k} — parsed`, Array.isArray(v) && v.length > 0,
@@ -79,6 +80,69 @@ const unknown = [...new Set(who)].filter((n) => base && !base.includes(n));
 check('every consultant M6 can route to exists in the MASTER dropdown',
       unknown.length === 0,
       unknown.length ? `🔴 ${unknown.join(', ')} would be REFUSED by the cell` : [...new Set(who)].join(', '));
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+ * DEPARTED STAFF  (D-439)
+ *
+ * Four roster changes in three weeks — Mershe, Gopi in and out, three hires,
+ * now Inder — and the M6 suite referenced NONE of them. Removing Inder's route
+ * left all 46 triage checks green, because not one of them named him or any of
+ * the six PR subclasses he owned. The suite was blind exactly where the roster
+ * moves most.
+ *
+ * A leaver needs TWO OPPOSITE things to be true, and only asserting both catches
+ * a half-done departure:
+ *   1. GONE from routing   — or new enquiries are handed to someone who has left.
+ *   2. STILL in dropdowns  — or their existing rows are refused at paste in
+ *      silence, which is D-353. **Inder holds 8 of the 38 importing clients.**
+ *
+ * ⚠️ These checks EXECUTE m6AssignTo_ rather than grepping for `who:`. The text
+ * check above proves a name is spelled consistently; only running the function
+ * proves where an enquiry actually lands, and the two can disagree — a route can
+ * be present and unreachable because an earlier rule matched first.
+ * ─────────────────────────────────────────────────────────────────────────── */
+const refuse = (n) => () => { throw new Error(n + ' must not be called in a unit test'); };
+global.SpreadsheetApp = { getActive: refuse('SpreadsheetApp'), openById: refuse('SpreadsheetApp') };
+(0, eval)(m6);
+
+const DEPARTED = ['Inder', 'Mershe', 'Gopi'];
+DEPARTED.forEach((name) => {
+  check(
+    `departed: ${name} receives no NEW work via M6`,
+    M6_ROSTER.every((r) => r.who !== name),
+    M6_ROSTER.some((r) => r.who === name) ? `M6_ROSTER still routes to ${name}, who has left` : ''
+  );
+});
+
+/* Inder alone is asserted to REMAIN selectable: he is the only leaver with live
+ * rows (8). Mershe and Gopi never reached a client record, so pinning their
+ * names into the dropdown forever would be cargo cult. */
+check(
+  'departed: Inder is STILL offered by the MASTER dropdown (8 clients hold his name)',
+  rosters['MASTER · Assigned Consultant'].includes('Inder'),
+  rosters['MASTER · Assigned Consultant'].includes('Inder')
+    ? ''
+    : 'REMOVED from the dropdown — his 8 existing rows will be REJECTED at paste (D-353)'
+);
+
+/* The hole his departure leaves, asserted rather than assumed. When someone
+ * fills these routes this test FAILS and asks to be updated — which is the
+ * point: the gap must never close by accident, and must never widen unnoticed. */
+['189', '190', '491', '482', '494', '186'].forEach((v) => {
+  const got = m6AssignTo_('', 'INDIAN', v);
+  check(
+    `Indian PR ${v} is Unassigned until Robinder names Inder's successor`,
+    got === 'Unassigned',
+    got === 'Unassigned' ? '' : `now routes to ${got} — if intended, update D-439 and this check`
+  );
+});
+
+/* ⛔ Guard against the opposite error. Proving those six are Unassigned is
+ * worthless if EVERYTHING became Unassigned — that is a check passing for the
+ * wrong reason. Two routes that must still work. */
+check('routing still works: Filipino 500 -> Star',  m6AssignTo_('', 'FILIPINO', '500') === 'Star');
+check('routing still works: Indian 500 -> Gayatri', m6AssignTo_('', 'INDIAN',   '500') === 'Gayatri');
 
 console.log(`\n${pass}/${pass + fail} checks passed`);
 process.exit(fail === 0 ? 0 : 1);
