@@ -8953,3 +8953,44 @@ Of the 159 genuine statuses: **135 Done · 18 Monitor · 4 Update Needed · 2 Wi
 ⛔ That is the first concrete measure of the live s56 load, and it reframes M9's value: not
 *"~2,200 historical rows"* but *"22 open legal deadlines, tracked in a sheet whose 7-day and 14-day
 columns are empty."* **Say that number to Robinder.**
+
+## D-437 | RJ's 4 Sep answers — the mailbox fix moves to Robinder, and a helpful guess became data
+**4 Sep 2026.** Three answers, two of which change something.
+
+### 🔴 1 · The `info@` fix is Robinder's, not RJ's
+> *"Sorry, I don't have access to info email only sir Robin."*
+
+**So the highest-impact fix in the project — 87% of s56 letters reaching M9 — now sits on Robinder's
+list**, alongside Meta, WhatsApp, OneDrive, the Make slot and the deadline question. ⛔ Do not ask RJ
+again; he cannot do it. **Move it to the Robinder call and lead with it** — it is two minutes of his
+time and it is worth more than anything else on that list.
+
+### 🔴 2 · A helpful guess has been written into the live sheet
+> *"For the six clients that have no consultant assigned — I put sir robin because **I think** it was
+> Inders client before."*
+
+He has filled the six blanks with **Robinder**, on a belief that they were **Inder's**.
+
+⛔ **That is LESSONS § 6 happening on their side of the fence, in their own data.** A blank consultant
+is visibly missing and gets asked about; **Robinder's name against Inder's client looks handled and
+never gets questioned again.** M4's checklist draft and M5b's chase would be attributed to the wrong
+person, and Inder would never see six of his own files in his list.
+
+🔑 **The fix is not ours and is not a guess either: ask Inder.** Thirty seconds internally, and it
+replaces a belief with a fact. ⚠️ Raise it as *"worth confirming"*, never as a correction — he was
+being helpful and volunteered the reasoning, which is exactly the behaviour to encourage.
+
+⚠️ **Our copy still shows the six as `Unassigned`** — his edit post-dates the export we hold, so it
+will arrive on the next refresh. **Nothing to change in code**; the importer already writes what the
+sheet says.
+
+### 🟡 3 · Jasmeet — team answered, office still missing, and the routing got harder
+> *"he is in indian team and but she is doing the draft for Indian and Philippines"*
+
+**Team = Indian** ✅. **Office still unanswered** — and M6 routing keys on office AND team, so he still
+cannot be routed automatically.
+
+⚠️ **And "drafts for Indian and Philippines" breaks the model rather than filling it in.** `M6_ROSTER`
+assigns one person per (office, team, visa) combination; **someone who spans both teams cannot be
+expressed** without a precedence rule — and his visa lines already collide with Gayatri (500) and
+Fiza (600). ⛔ Still not routed. **Two questions short, not one.**
