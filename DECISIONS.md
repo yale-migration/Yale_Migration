@@ -8994,3 +8994,33 @@ cannot be routed automatically.
 assigns one person per (office, team, visa) combination; **someone who spans both teams cannot be
 expressed** without a precedence rule — and his visa lines already collide with Gayatri (500) and
 Fiza (600). ⛔ Still not routed. **Two questions short, not one.**
+
+## D-438 | Verifying my own draft again — "reminders go to that person" is not true
+**4 Sep 2026.** Checked the consequence I was about to state to RJ about a wrong consultant name.
+
+**I wrote:** *"the document requests and follow-up reminders go to that person."* **False.**
+
+| | Uses `Assigned Consultant`? |
+|---|---|
+| **M4** checklist / chase drafts | 🔴 **NO.** Its only "Consultant" strings are the company name in the signature — *"Yale Migration and Education Consultants"*. Drafts land in `visa.lodgement@` regardless |
+| **M5** dormancy / chase | 🔴 **NO.** One passing comment, no use |
+| **Dashboard** consultant page | ✅ **YES** — `all.filter(m => m.consultant === name)` |
+| **M7** caller lookup | ✅ shows it to whoever answers the phone |
+
+🔑 **So the real consequence is VISIBILITY, not routing.** A wrong name does not misdirect an email —
+it puts the client in the wrong person's caseload, keeps them out of the right person's, and tells
+whoever answers the phone the wrong consultant. **Still a genuine problem, and a different one.**
+
+⛔ **Had I sent it, RJ would have acted on a mechanism that does not exist** — and the first time
+someone checked where a draft actually went, the explanation would have been wrong. **Being right
+about the risk is not the same as being right about why.**
+
+⚠️ Third draft in a row where verification changed the content (D-435, D-436, this). All three were
+claims about **our own system** that I had written down as facts without opening the file. **The
+pattern is not carelessness about the client's data — it is confidence about our own.**
+
+### Doc refresh: not needed today
+RJ's consultant edit post-dates our export, so the six will still read `Unassigned` until the next
+refresh. ⛔ **Nothing depends on it before import day**, and the staleness guard (D-430) will refuse
+quietly if the export ages past 7 days. **Ask for it once, close to go-live — or not at all, if the
+dashboard sync is live by then and reads the sheet directly.**

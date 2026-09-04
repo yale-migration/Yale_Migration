@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 704K /     8996 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 708K /     9026 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-04 09:34
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-04 09:38
 
 | # | Decision |
 |---|---|
@@ -433,3 +433,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-04 09:3
 | **D-435** | Auditing my own draft to RJ found four errors, two of them promises we cannot keep |
 | **D-436** | 22 live s56 matters — and a Python truthiness trap that hid them |
 | **D-437** | RJ's 4 Sep answers — the mailbox fix moves to Robinder, and a helpful guess became data |
+| **D-438** | Verifying my own draft again — "reminders go to that person" is not true |

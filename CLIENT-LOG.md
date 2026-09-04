@@ -1279,3 +1279,24 @@ worse data. D-431.
 rows**, with headers almost identical to what M9 builds — including **7 days · 14 days · 28 Days**.
 **Those columns are 0–5% filled.** They designed the exact ladder we are automating and cannot
 maintain it by hand. **22 matters are live right now** — 18 Monitor, 4 Update Needed. D-432 · D-436.
+
+2026-09-04 | RJ (IN) | **Three answers; two change something.**
+
+🔴 **The `info@` fix is not his to make** — *"I don't have access to info email only sir Robin."* So the
+highest-impact item in the project (87% of s56 letters reaching M9) **moves to Robinder's list** and
+should lead that call. ⛔ Do not ask RJ again.
+
+🔴 **A helpful guess became data.** *"For the six clients that have no consultant assigned — I put sir
+robin because I think it was Inders client before."* He has filled six blanks with Robinder on a belief
+they were Inder's. **A blank gets asked about; a plausible name never does.** Asked him to confirm with
+Inder — framed as worth checking, not as a correction, because volunteering the reasoning is exactly
+the behaviour to encourage.
+
+🟡 **Jasmeet: Indian team ✅, office still missing**, and *"drafts for Indian and Philippines"* breaks
+the routing model rather than completing it — one person cannot span both teams without a precedence
+rule, and his visa lines already collide with Gayatri and Fiza. Still two questions short.
+
+⚠️ **Verifying the reply before sending caught a false claim of my own** — I was about to tell him a
+wrong consultant name misdirects document requests and reminders. It does not: M4 and M5 never read
+that field. The real consequence is **visibility** — wrong caseload, invisible to the right person,
+wrong name read out on a phone lookup. D-437 · D-438.
