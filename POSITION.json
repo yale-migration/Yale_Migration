@@ -1,6 +1,6 @@
 {
-  "_comment": "\ud83d\udd11 THE SINGLE SOURCE for the project's position numbers (G6). Every LIVE document must agree with this file; scripts/docs_hygiene.py enforces it. Append-only archives (DECISIONS.md, CLIENT-LOG.md, STATUS.md) are exempt \u2014 an old number in a dated entry is history, not drift. UPDATE THIS FILE FIRST, then the prose.",
-  "as_at": "2026-09-03",
+  "_comment": "🔑 THE SINGLE SOURCE for the project's position numbers (G6). Every LIVE document must agree with this file; scripts/docs_hygiene.py enforces it. Append-only archives (DECISIONS.md, CLIENT-LOG.md, STATUS.md) are exempt — an old number in a dated entry is history, not drift. UPDATE THIS FILE FIRST, then the prose.",
+  "as_at": "2026-09-05",
   "built_pct": 78,
   "built_hours": 38.0,
   "contracted_hours": 49,
@@ -9,12 +9,13 @@
   "hours_blocked_on_rj": 0.0,
   "hours_blocked_on_us": 0.0,
   "real_clients_processed": 0,
-  "apps_script_checks": 298,
+  "apps_script_checks": 320,
   "blueprint_checks": 79,
   "_ours_note": "hours_blocked_on_us counts CONTRACTED MODULE HOURS ONLY and is not an answer to 'is anything left on our side?' (D-383). hours_actionable_by_us is work we CAN now do: M10.",
   "hours_actionable_by_us": 2.0,
-  "_rj_note": "A-48 closed 25 Aug \u2014 3 test-client emails + ACECQA. M10's 2 h moved from blocked-on-RJ to actionable-by-us. What RJ still owes (contact numbers, rows 22/23, 12 emails + 11 expiry dates) blocks NO contracted hour.",
-  "_verified_note": "Re-verified 3 Sep. built_pct unchanged at 78 \u2014 everything since 25 Aug has been correctness, tooling and client-data intake, not new contracted modules. Inflating the figure for defect-fixing is the drift this file exists to prevent.",
-  "_team_side": "CLOSED for blocking items. Three clarifications open with RJ (A-50 Jasmeet \u00b7 A-51 which mailbox receives non-485 s56 \u00b7 A-52 are any open s56 requests for July-to-present clients). None blocks a contracted hour.",
-  "_robinder_side": "8.8 h: Meta \u00b7 WhatsApp \u00b7 OneDrive onto a Yale account \u00b7 Make slot. PLUS: the s56 deadline off-by-one question (D-426), the S56 TRACKER Client Code column, row 28 spelling, the two unsent quotes."
+  "_rj_note": "A-48 closed 25 Aug — 3 test-client emails + ACECQA. M10's 2 h moved from blocked-on-RJ to actionable-by-us. What RJ still owes (contact numbers, rows 22/23, 12 emails + 11 expiry dates) blocks NO contracted hour.",
+  "_verified_note": "Re-verified 5 Sep. built_pct unchanged at 78 - everything since 25 Aug has been correctness, tooling, client-data intake and the Phase-3 dashboard, none of which are contracted MVP modules. Inflating the figure for defect-fixing or for out-of-scope work is the drift this file exists to prevent.",
+  "_team_side": "CLOSED for blocking items. Three clarifications open with RJ (A-50 Jasmeet · A-51 which mailbox receives non-485 s56 · A-52 are any open s56 requests for July-to-present clients). None blocks a contracted hour.",
+  "_robinder_side": "8.8 h: Meta · WhatsApp · OneDrive onto a Yale account · Make slot. PLUS: the s56 deadline off-by-one question (D-426), the S56 TRACKER Client Code column, row 28 spelling, the two unsent quotes.",
+  "_dashboard_note": "Phase-3 dashboard is OUT OF SCOPE and unquoted: ~21 h built 20 Aug (QUOTE-P3-DASHBOARD.md option C = USD 735), plus further unbilled hours since - deployment, Google Sheets sync, auth, RLS hardening, identifier-first sign-in and 165 e2e checks. It is LIVE at yalemigration.netlify.app on demo data only."
 }
