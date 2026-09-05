@@ -27,7 +27,7 @@ SQL exists, the guards exist. What is missing is access and decisions.
 | 1b | Service account created | Sharjeel | ✅ **DONE** — `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` |
 | 1c | JSON key downloaded | Sharjeel | ✅ **DONE** — ⛔ open it once, copy `client_email` + `private_key`, then **delete the file** |
 | 1d | 🔶 **Google Sheets API enabled?** | Sharjeel | ❓ **UNCONFIRMED — check this before anything else.** Without it the sync fails with a 403 that looks like a permissions problem and is not. APIs & Services → Library → "Google Sheets API" → it should say **Manage**, not **Enable** |
-| 2 | **Netlify** site + the 6 env vars + 2 GitHub secrets | Sharjeel | ⬜ **← YOU ARE HERE.** Locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
+| 2 | **Netlify** site + the 6 env vars + 2 GitHub secrets | Sharjeel | ⬜ **← YOU ARE HERE.** Locally 3 of the 6 required are set; **`SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing**. (A 7th, `YALE_SHEET_ID`, exists but is **optional** — `route.ts` falls back to the correct workbook id, so leave it unset.) |
 | 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** with `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` | Robinder | ⬜ |
 | 6 | Deploy + prove `/api/sync` with curl | Sharjeel | ⬜ |
 | 5 | `Client Code` column in S56 TRACKER | Robinder | ⬜ — until then Section 56 cannot appear on a client's file |
