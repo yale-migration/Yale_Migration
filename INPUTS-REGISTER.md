@@ -48,7 +48,7 @@ The Engagement Letter names it: *"the access checklist … sent the same day the
 | 5 | **WhatsApp Business — verification status + number** | 🔴 **NEVER ANSWERED.** ⚠️ The Engagement Letter calls this *"the longest single item in the timeline"* and says start it *"right away"*. **28 days have passed** |
 | 6 | **Website enquiries — where do they land?** | 🔴 **NEVER ANSWERED** → M6 |
 | 7 | Make.com account + admin invite | ✅ **DONE** — team 2210317 |
-| 8 | **Claude AI key** | 🔴 **NEVER DONE** (D-331) → M9, 5h |
+| 8 | **Claude AI key** | ✅ **HELD — corrected 5 Sep (D-456).** Verified live in Make team 2210317: *"Muhammad's Anthropic Claude connection"* (id 9948850), attached to scenario **YM-M9-email-triage** (7064554). ⚠️ It is **OUR** key, not Yale's — a cost question, not a blocker |
 | 9 | Sample emails sent + received, incl. a real s56 | ✅ **good coverage** — 4 s56 artefacts, 485 + student threads |
 | 10 | Follow-up Email / SMS templates | 🟠 s56 template only; the Inquiry-SOP follow-up templates never arrived |
 | 11 | Team roster | ✅ **DONE** 26 Jul |

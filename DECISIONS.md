@@ -9480,3 +9480,44 @@ Two e2e tests asserted the code field was visible — **written the same day, pa
 describing a screen that could not work in production.** They now assert the opposite: no code field,
 no "6-digit" promise, and helper text that says *link*. **A test written from the same wrong belief as
 the code confirms the belief, not the behaviour.**
+
+## D-456 | The Claude key was held all along, and Make is on the Free plan — both checked in the live account
+
+Sharjeel: *"We already have the Claude API and already set up in the make.com."* He is right, and the
+register was wrong.
+
+**Verified via the Make API, not by reading our own notes** (team 2210317):
+
+| | |
+|---|---|
+| `Muhammad's Anthropic Claude connection` (9948850) | attached to **YM-M9-email-triage** (7064554) |
+| `Muhammad's Google connection` (9501125) | `project1@yalemigration.com.au` ✅ Yale |
+| `Yale's Gmail connection` (9452213) | `visa.lodgement@yalemigration.com.au` ✅ Yale |
+| 🔴 `Yale's Microsoft connection` (9279810) | **`sharry00010@gmail.com` — PERSONAL** |
+
+🔴 **`INPUTS-REGISTER` item 8 said "Claude AI key — NEVER DONE" and it was about to be asked for on a
+client call.** Asking a client for something they already gave you is the most expensive kind of
+small error: it says nobody is keeping track. **G2 exists for exactly this and was not run** —
+the register was trusted instead of the system.
+
+⚠️ **The real question is different and better:** the connection is on **our** Anthropic key, so we
+are paying for their inference. That is a cost decision for Robinder, not a blocker.
+
+✅ **It also confirms the OneDrive ask from the live system rather than from a note** — the Microsoft
+connection behind M3 folder-create and M4 checklist-file is a personal Gmail account.
+
+### Make.com: they are on Free, and the fix is USD 9
+`organizations_list` returns `productName: "Free"` — **1,000 operations/month, 2 active scenarios,
+15-minute minimum interval.** Twelve scenarios are built.
+
+| Plan | /month | Operations | Active scenarios |
+|---|---|---|---|
+| **Free** (theirs) | $0 | 1,000 | **2** |
+| **Core** | **$9** | 10,000 | Unlimited |
+| Pro | $16 | 10,000 | Unlimited |
+| Teams | $29 | 10,000 | Unlimited |
+
+🔑 **"Which two scenarios run first" was the wrong question for a year.** At ~600 ops/month their
+volume fits the free tier; it is the **two-scenario cap** that hurts, and **USD 9 removes it
+entirely.** We had been treating a $9 subscription as an architectural constraint. Ask for the
+upgrade first; the pick-two fallback only if he refuses.
