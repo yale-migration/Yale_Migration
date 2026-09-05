@@ -9293,3 +9293,40 @@ assert the absence of role language and a single control inside the form.
 
 ⚠️ The replacement's first assertion — *exactly one button on the page* — failed against the theme
 toggle. Scoped to the form. **A test that fails for the wrong reason is not evidence either way.**
+
+## D-451 | Clients have no RLS policy on s56_deadlines — they will never see their own deadline
+
+Found while writing out the permission matrix, by listing every policy rather than describing the
+design from memory. There are eight policies. **Three tables carry `director` and `manager` policies;
+only `matters` carries a `client` one.**
+
+| table | director | manager | client |
+|---|---|---|---|
+| `matters` | all | own office | **own file** |
+| `s56_deadlines` | all | own office | 🔴 **none** |
+| `enquiries` | all | own office | none — correct, leads are not theirs |
+| `profiles` | own row | own row | own row |
+
+✅ **It fails CLOSED**, which is the right direction: `getMatterS56` returns zero rows for a client and
+the matter page renders `s56.length > 0 &&`, so the section is simply absent. No error, no leak.
+
+🔴 **But it is a functional gap, not a decision.** The stated intent for the `Client Code` column in
+`S56 TRACKER` is *"without it Section 56 deadlines can never appear on a client's own file"* — so the
+column is being requested from Robinder to enable something the database will still refuse. **Adding
+the column will not make the deadline appear.** A one-line policy is also needed:
+
+```sql
+create policy s56_client_own on public.s56_deadlines for select to authenticated
+  using ( (select app.current_role_name()) = 'client'
+          and client_code = (select app.current_client_code()) );
+```
+
+⛔ **NOT added unilaterally.** Whether a client should see a statutory deadline before their agent has
+spoken to them is a professional judgement for the RMA, not a technical default — the same reasoning
+that keeps AI off migration advice. ▶ **Robinder's call.** Logged as A-55.
+
+🔑 **The lesson is the method.** Every earlier description of the role model in this project said
+"director all, manager office, client own file" — true of `matters` and quietly false of everything
+else. **Describing a permission model from intent instead of enumerating the policies is how a gap
+survives 22 passing RLS tests** — the matrix test asserts what each role CAN see, and nothing asserted
+what a client *should* see and does not.
