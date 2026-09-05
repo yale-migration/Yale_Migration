@@ -9447,3 +9447,36 @@ them.
 🔑 **The pattern, and it is the sharpest instance yet:** *we test what we can reach, and we reach what
 we thought to make reachable.* The gap was not in the assertions but one level below them, in what the
 fixtures allowed to exist.
+
+## D-455 | The UI must follow the mailbox — a code screen against a link email is a UI that lies
+
+Sharjeel requested a sign-in and received *"Your sign-in link"*, twice, while the app asked for six
+digits. **Expected, and entirely our fault for shipping it that way** (D-452 → D-453).
+
+Supabase's built-in sender **locks the email template** — *"Set up custom SMTP to edit templates"* —
+so `{{ .ConfirmationURL }}` cannot be swapped for `{{ .Token }}`. Every email carries a link no matter
+what the interface asks for. D-453 recorded that and left the UI saying *"a 6-digit code is on its
+way"* anyway, on the reasoning that client email sign-in was not part of today's demo.
+
+🔴 **That reasoning was wrong.** A deployed page does not know it is not part of the demo. Anyone who
+signed in — Sharjeel did, twice — met a screen asking for something that was never sent, with no way
+to know why. **We believed our own intention over the observable behaviour of the mail that actually
+arrived**, which is LESSONS § 2 in a new costume.
+
+### The fix: one flag, flipped with the thing it describes
+`otpCodesEnabled()` reads `NEXT_PUBLIC_AUTH_OTP`. **Default off** — the honest state today, showing
+*"Check your email"* and a link. Set it to `1` **at the same time** as configuring SMTP and switching
+the template, and the code screen from D-452 appears. One flip, both true.
+
+⚠️ **The flag is not a preference; it is an assertion about the mailbox.** Setting it without changing
+the template recreates exactly the defect it was written to prevent, which is why the comment says so
+in the file rather than in a decision nobody reads at 2am.
+
+✅ The link screen also carries the warning the code flow was meant to remove: *"Open the link in this
+same browser."* Second best, honestly labelled, beats first best that is not true yet.
+
+### The tests were pinning the lie
+Two e2e tests asserted the code field was visible — **written the same day, passing all along, and
+describing a screen that could not work in production.** They now assert the opposite: no code field,
+no "6-digit" promise, and helper text that says *link*. **A test written from the same wrong belief as
+the code confirms the belief, not the behaviour.**

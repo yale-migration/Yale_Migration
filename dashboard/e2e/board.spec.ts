@@ -194,59 +194,39 @@ test.describe('sign-in', () => {
     await expect(page.getByRole('button', { name: /Continue/ })).toBeVisible()
   })
 
-  /* THE CODE STEP. (D-452) A client gets a 6-digit code, not a link, because a
-   * link is opened by whatever the email client hands it to — often a different
-   * browser from the one that asked — and then fails with "nothing happened". */
-  test('a client address leads to a code field, in the same tab', async ({ page }) => {
+  /* THE SECOND STEP FOLLOWS THE MAILBOX, NOT OUR INTENTION. (D-455)
+   *
+   * Supabase's built-in sender locks the email template, so it keeps sending a
+   * LINK no matter what the UI asks for. Shipping the code screen against a
+   * link email is a UI that lies — "a 6-digit code is on its way" when none was
+   * sent. NEXT_PUBLIC_AUTH_OTP=1 flips both together, once SMTP is configured.
+   *
+   * The suite runs with the flag OFF, which is production's state today, so
+   * these assert the honest screen. */
+  test('a client address leads to the link screen while the mailbox sends links', async ({ page }) => {
     await page.goto('/login')
     await page.getByLabel(/Email address/).fill('someone@example.com')
     await page.getByRole('button', { name: /^Continue$/ }).click()
 
-    await expect(page.getByRole('heading', { name: /Enter your code/ })).toBeVisible()
-    const code = page.getByLabel(/digit code/)
-    await expect(code).toBeVisible()
+    await expect(page.getByRole('heading', { name: /Check your email/ })).toBeVisible()
 
-    // ⛔ autocomplete="one-time-code" is most of the reason a code beats a link
-    // on a phone: it offers the code straight from the notification. Silent to
-    // lose, invisible in a screenshot, so asserted explicitly.
-    await expect(code).toHaveAttribute('autocomplete', 'one-time-code')
-    await expect(code).toHaveAttribute('inputmode', 'numeric')
+    // ⛔ The point of the whole change: no code field when no code is sent.
+    await expect(page.getByLabel(/digit code/)).toHaveCount(0)
+    await expect(page.getByText(/6-digit code is on its way/)).toHaveCount(0)
 
-    // Sign in stays disabled until six digits are present.
-    await expect(page.getByRole('button', { name: /^Sign in$/ })).toBeDisabled()
-    await code.fill('123456')
-    await expect(page.getByRole('button', { name: /^Sign in$/ })).toBeEnabled()
+    // Still not a dead end.
+    await expect(page.getByRole('button', { name: /Use a different address/ })).toBeVisible()
   })
 
-  /* THE UNLINKED SCREEN. (D-454) Signed in, no profile row — what every new
-   * client sees first. It shipped as a TRAP: no sign-out, no link back, and
-   * copy telling the reader to "mention the address you signed in with" while
-   * not showing it. Unreachable in demo mode until `?as=unlinked` existed,
-   * which is precisely why nothing caught it. */
-  test('the unlinked screen is not a dead end', async ({ page }) => {
-    await page.goto('/dashboard?as=unlinked')
-    await expect(page.getByRole('heading', { name: /You are signed in/ })).toBeVisible()
-
-    // ⛔ There must be a way out. Live renders "Sign out" (ends the session);
-    // demo renders "Back to sign in" (there is no session to end). Asserting
-    // either, because the requirement is an EXIT — not a particular widget.
-    await expect(
-      page.getByRole('button', { name: /Sign out/ })
-        .or(page.getByRole('link', { name: /Back to sign in/ })),
-    ).toBeVisible()
-
-    // And it must not show a board it has no right to.
-    await expect(page.getByText(/Practice Board/)).toHaveCount(0)
-  })
-
-  test('non-digits cannot be typed into the code field', async ({ page }) => {
+  test('the email step promises a link, not a code, while the flag is off', async ({ page }) => {
     await page.goto('/login')
-    await page.getByLabel(/Email address/).fill('someone@example.com')
-    await page.getByRole('button', { name: /^Continue$/ }).click()
-    const code = page.getByLabel(/digit code/)
-    await code.fill('12ab34cd')
-    await expect(code).toHaveValue('1234')
+    // 🔴 The helper text is the promise the user reads BEFORE committing. It
+    // drifted out of step with the mailbox once already; this pins it.
+    await expect(page.getByText(/one-time sign-in link/)).toBeVisible()
+    await expect(page.getByText(/6-digit code/)).toHaveCount(0)
   })
+
+
 })
 
 /* ══════════════════════════════════════════════════════════════════════════

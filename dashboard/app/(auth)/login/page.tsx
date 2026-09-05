@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { otpCodesEnabled } from '@/lib/supabase/config'
 import { AuthShell } from '@/components/brand'
 
 /**
@@ -41,7 +42,9 @@ const isStaff = (email: string) =>
 
 const CODE_LENGTH = 6
 
-type Step = 'email' | 'code'
+/* 'code' when the mailbox really sends a code; 'sent' while it still sends a
+ * link. The UI follows the mailbox — see otpCodesEnabled (D-455). */
+type Step = 'email' | 'code' | 'sent'
 type Busy = 'no' | 'sending' | 'verifying'
 
 export default function LoginPage() {
@@ -106,7 +109,9 @@ export default function LoginPage() {
 
     await requestCode(email.trim())
     setBusy('no')
-    setStep('code')
+    // ⛔ Never show the code screen when the email carries a link. Asking for
+    // six digits that were never sent is worse than a plain "check your email".
+    setStep(otpCodesEnabled() ? 'code' : 'sent')
   }
 
   async function onCodeSubmit(e: React.FormEvent) {
@@ -135,6 +140,54 @@ export default function LoginPage() {
     // cookies, and without it the dashboard renders once as a signed-out user.
     router.refresh()
     router.push('/dashboard')
+  }
+
+  if (step === 'sent') {
+    return (
+      <AuthShell>
+        <div className="w-11 h-11 rounded-xl grid place-items-center mb-5"
+             style={{ background: 'var(--gold-soft)' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="2.5" y="5" width="19" height="14" rx="2.5"
+                  stroke="var(--gold)" strokeWidth="1.7" />
+            <path d="M3.5 7l8.5 6 8.5-6" stroke="var(--gold)" strokeWidth="1.7"
+                  strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <h1 className="text-[26px] leading-tight">Check your email</h1>
+        <p className="text-[14px] text-ink-2 mt-3 leading-relaxed">
+          If <b className="text-ink">{email}</b> is on a Yale file, a sign-in link is on its way.
+          It works once and expires shortly.
+        </p>
+        <div className="mt-6 p-4 rounded-card border border-rule bg-card">
+          <p className="text-[13px] text-ink-2">
+            ⚠️ Open the link in <b className="text-ink">this same browser</b>. Opening it elsewhere
+            starts a new sign-in and will not bring you back here.
+          </p>
+        </div>
+        <div className="mt-6 flex flex-col gap-3">
+          <button type="button" disabled={busy !== 'no'}
+            onClick={async () => { setBusy('sending'); await requestCode(email.trim()); setBusy('no'); setResent(true) }}
+            className="text-[13.5px] font-medium text-[var(--navy)] underline underline-offset-4
+                       min-h-[44px] text-left disabled:opacity-45">
+            {resent ? 'Link sent again' : 'Send a new link'}
+          </button>
+          <button type="button"
+            onClick={() => { setStep('email'); setError(null); setResent(false) }}
+            className="text-[13.5px] font-medium text-ink-2 underline underline-offset-4
+                       min-h-[44px] text-left">
+            Use a different address
+          </button>
+        </div>
+        <p className="text-[12.5px] text-ink-3 mt-6 leading-relaxed">
+          Nothing arrived? Check your spam folder, then contact your consultant — some files do not
+          have an email address recorded yet.
+        </p>
+        <p className="text-[12px] text-ink-3 mt-8 pt-5 border-t border-rule">
+          Yale Migration and Education Consultants · Robinder Pal Singh, MARN 1573959
+        </p>
+      </AuthShell>
+    )
   }
 
   if (step === 'code') {
@@ -243,7 +296,9 @@ export default function LoginPage() {
                      hover:opacity-95"
           style={{ background: 'var(--navy)' }}>
           {busy === 'sending'
-            ? (isStaff(email) ? 'Taking you to Google…' : 'Sending your code…')
+            ? (isStaff(email)
+                ? 'Taking you to Google…'
+                : otpCodesEnabled() ? 'Sending your code…' : 'Sending your link…')
             : 'Continue'}
         </button>
       </form>
@@ -257,8 +312,9 @@ export default function LoginPage() {
       {/* 🔑 Describes what will happen rather than asking the visitor to choose. */}
       <p id="signin-help" className="text-[12.5px] text-ink-3 mt-4 leading-relaxed">
         A <b className="text-ink-2">@{STAFF_DOMAIN}</b> address continues with your work Google
-        account. Any other address gets a {CODE_LENGTH}-digit code by email — no password to
-        remember, and nothing to lose.
+        account. Any other address gets a one-time
+        {otpCodesEnabled() ? ` ${CODE_LENGTH}-digit code` : ' sign-in link'} by email — no password
+        to remember, and nothing to lose.
       </p>
 
       <p className="text-[12px] text-ink-3 mt-8 pt-5 border-t border-rule">
