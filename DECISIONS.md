@@ -9330,3 +9330,45 @@ that keeps AI off migration advice. ▶ **Robinder's call.** Logged as A-55.
 else. **Describing a permission model from intent instead of enumerating the policies is how a gap
 survives 22 passing RLS tests** — the matrix test asserts what each role CAN see, and nothing asserted
 what a client *should* see and does not.
+
+## D-452 | A 6-digit code instead of a magic link — and the Netlify wall that is not our error
+
+Sharjeel clicked the sign-in link from Gmail and got a **Netlify** page: *"You don't have access to
+this site. Signed in as sharry00010@gmail.com. Need access? Ask the owner to invite you."*
+
+### 🔴 THAT IS NOT OUR APP, AND NOT AN AUTH FAILURE
+The URL is `app.netlify.com/edge-access?domain=yalemigration.netlify.app&requested_path=%2Fauth%2Fcallback…`.
+It is **Netlify's new "Private by default"** site protection, which the team settings screen showed as
+*"Default project visibility: Private for new projects."* The magic link worked perfectly — Supabase
+issued it, Gmail delivered it, the browser followed it — and Netlify's edge blocked the request before
+a single line of our code ran, because the visitor is not a member of the Yale Netlify team.
+
+⚠️ **Every client would hit this**, and the message tells them to ask an owner for access to a
+*hosting account*, which is nonsense to a visa applicant. **Fix: Project configuration → Visitor
+access → Public.** One setting, theirs to change.
+
+🔑 **The instructive part: a green deploy, a working login page and a delivered email all told us the
+system worked.** The failure lived in a layer none of them touch, and it presented as an auth problem.
+**"It failed after sign-in" did not mean sign-in failed.**
+
+### And the redesign — link → code
+Independently, Sharjeel asked for a code. He is right, and the reason is not aesthetic:
+
+**A link must be *opened*, and what opens it is whatever the email client chooses** — often a
+different browser from the one that asked, sometimes an in-app webview, on a shared office machine
+sometimes a different person's session. The link lands somewhere with no pending sign-in and fails
+with *"nothing happened"*. ⚠️ These clients are visa applicants, frequently on a phone. **A code
+travels in the person's eyes**: they read it and type it into the tab they already have open.
+
+* `signInWithOtp` unchanged; the email template must use **`{{ .Token }}`** instead of
+  `{{ .ConfirmationURL }}` — Supabase: *"Modify the template to include the {{ .Token }} variable."*
+* Verified with `verifyOtp({ email, token, type: 'email' })`, signature confirmed against their docs.
+* `autoComplete="one-time-code"` — the phone offers the code from the notification, which is most of
+  the mobile benefit and is invisible in a screenshot, so the e2e suite asserts the attribute.
+
+### 🔴 A real bug the tests caught, that only the test environment could reach
+`signInWithOtp` **rejects** on a network or config failure — it does not return `{ error }`. The
+unhandled rejection took the whole submit handler down: `setStep('code')` never ran, and the button
+span *"Sending your code…"* forever with no message and no way back. The e2e suite has no Supabase to
+talk to, so it hit that path on **every** run — **the one environment guaranteed to reproduce it**,
+and the reason it was found before a client sat looking at a frozen button.

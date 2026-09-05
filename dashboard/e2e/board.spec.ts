@@ -193,6 +193,39 @@ test.describe('sign-in', () => {
     // identifier-first, and it is cheap to regress silently.
     await expect(page.getByRole('button', { name: /Continue/ })).toBeVisible()
   })
+
+  /* THE CODE STEP. (D-452) A client gets a 6-digit code, not a link, because a
+   * link is opened by whatever the email client hands it to — often a different
+   * browser from the one that asked — and then fails with "nothing happened". */
+  test('a client address leads to a code field, in the same tab', async ({ page }) => {
+    await page.goto('/login')
+    await page.getByLabel(/Email address/).fill('someone@example.com')
+    await page.getByRole('button', { name: /^Continue$/ }).click()
+
+    await expect(page.getByRole('heading', { name: /Enter your code/ })).toBeVisible()
+    const code = page.getByLabel(/digit code/)
+    await expect(code).toBeVisible()
+
+    // ⛔ autocomplete="one-time-code" is most of the reason a code beats a link
+    // on a phone: it offers the code straight from the notification. Silent to
+    // lose, invisible in a screenshot, so asserted explicitly.
+    await expect(code).toHaveAttribute('autocomplete', 'one-time-code')
+    await expect(code).toHaveAttribute('inputmode', 'numeric')
+
+    // Sign in stays disabled until six digits are present.
+    await expect(page.getByRole('button', { name: /^Sign in$/ })).toBeDisabled()
+    await code.fill('123456')
+    await expect(page.getByRole('button', { name: /^Sign in$/ })).toBeEnabled()
+  })
+
+  test('non-digits cannot be typed into the code field', async ({ page }) => {
+    await page.goto('/login')
+    await page.getByLabel(/Email address/).fill('someone@example.com')
+    await page.getByRole('button', { name: /^Continue$/ }).click()
+    const code = page.getByLabel(/digit code/)
+    await code.fill('12ab34cd')
+    await expect(code).toHaveValue('1234')
+  })
 })
 
 /* ══════════════════════════════════════════════════════════════════════════
