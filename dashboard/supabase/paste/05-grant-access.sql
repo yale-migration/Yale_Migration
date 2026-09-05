@@ -50,12 +50,17 @@ end as result;
 -- ═══════════════════════════════════════════════════════════════════════════
 
 -- ── BRANCH MANAGER — one office only ───────────────────────────────────────
--- ⛔ `office` must match the MASTER sheet's spelling EXACTLY ('Brisbane' /
--- 'Townsville'). A typo does not error; it silently matches no rows, and the
--- manager sees an empty board that looks like a quiet week.
+-- 🔴 `office` IS UPPERCASE: 'BRISBANE' / 'TOWNSVILLE'. That is what the MASTER
+-- sheet contains (all 38 real rows read BRISBANE) and what the RLS policy
+-- compares with `=`, which is case-SENSITIVE.
+--
+-- ⛔ 'Brisbane' matches NOTHING. It does not error. The manager simply sees an
+-- empty board that looks like a quiet week — and this file shipped with exactly
+-- that mistake in its own example until it was caught reading the seed data.
+-- Run the "valid offices" query at the bottom before typing a value.
 --
 -- insert into public.profiles (user_id, role, office, full_name)
--- select u.id, 'manager', 'Brisbane', 'Name Here'
+-- select u.id, 'manager', 'BRISBANE', 'Name Here'
 -- from auth.users u, app_grant_target t
 -- where lower(u.email) = lower(t.email)
 -- on conflict (user_id) do update
@@ -81,3 +86,24 @@ end as result;
 select u.email, p.role, p.office, p.client_code, p.full_name
 from public.profiles p join auth.users u on u.id = p.user_id
 order by p.role, u.email;
+
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- ⛔ BEFORE GRANTING A MANAGER: what offices actually exist, and would they
+-- see anything? A role that matches no rows is the failure mode here, and it
+-- is invisible from the profiles table alone.
+-- ═══════════════════════════════════════════════════════════════════════════
+select office, count(*) as matters
+from public.matters
+group by office
+order by matters desc;
+
+-- Every manager, and how many matters their office scope actually returns.
+-- 🔴 A zero here means a case or spelling mismatch, not a quiet branch.
+select u.email, p.office, count(m.client_code) as visible_matters
+from public.profiles p
+join auth.users u on u.id = p.user_id
+left join public.matters m on m.office = p.office
+where p.role = 'manager'
+group by u.email, p.office
+order by visible_matters;
