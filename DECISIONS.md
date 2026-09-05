@@ -9255,3 +9255,41 @@ config` — the file is in control of everything else.
 location, D-448's omission). The pattern from LESSONS § 1 holds: **we are least accurate about the
 parts of the system we wrote and never executed.** Neither was caught by a gate, and neither could
 have been — only a real deploy resolves `publishOrigin`.
+
+## D-449 | The login page asked the visitor to classify themselves — replaced with identifier-first
+
+Sharjeel, on seeing the deployed page: *"its poor ux that u are saying if youa re cleint then login
+with the link thats wrong."* Correct, and it was wrong in three distinct ways:
+
+1. **It made the user do the routing.** They know their email address; they do not necessarily think
+   of themselves as *"a client"*, and nobody should read an org chart to log in.
+2. **It published the role model on the front door** — an unauthenticated visitor was told exactly how
+   the system is segmented.
+3. **It punished a wrong guess** with an error instead of a sign-in.
+
+### The fix — one field, and the address decides
+**Identifier-first**, the standard pattern for precisely this: collect the identifier, then route.
+Auth0 documents matching the entered domain against a registered connection and redirecting; login-UX
+guidance is *"one column, identifier-first (email → route)"*. Google, Slack and Microsoft all work this
+way.
+
+⛔ **Every staff address is on `@yalemigration.com.au`** — checked against the real addresses on file,
+not assumed — so the domain is a reliable router. Staff → Google (with `login_hint` and `hd`, so the
+chooser skips their personal account). Anyone else → magic link. **No labels, no self-selection.**
+
+✅ **Robinder's "no new login if avoidable" is still honoured** — now by the address rather than by
+asking the visitor which kind of person they are.
+
+### Two defects found while rewriting
+🔴 **`signInWithOAuth`'s return value was discarded.** On success the browser navigates away, so
+reaching the next line at all means it failed — which is exactly what happened live: Supabase returned
+*"Unsupported provider: provider is not enabled"* and the old page showed the user an unchanged
+screen. Now surfaced.
+
+🔴 **The e2e test was pinning the defect in place.** It asserted *"a Google button is visible AND a
+magic-link button is visible"* — the two-branch page itself. **A test can hold a defect as firmly as
+it holds a feature**, and this one would have failed the fix rather than the fault. Rewritten to
+assert the absence of role language and a single control inside the form.
+
+⚠️ The replacement's first assertion — *exactly one button on the page* — failed against the theme
+toggle. Scoped to the form. **A test that fails for the wrong reason is not evidence either way.**

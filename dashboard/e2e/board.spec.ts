@@ -163,13 +163,35 @@ test.describe('his four views, after the audit found two of them wrong', () => {
 })
 
 test.describe('sign-in', () => {
-  // "No new login if avoidable" — his words. Staff have Google accounts; the
-  // ~150 clients do not, which is why Looker could not serve them.
-  test('staff get Google, clients still get the magic link', async ({ page }) => {
+  /* IDENTIFIER-FIRST. (D-449)
+   *
+   * The old assertions here were "a Google button is visible AND a magic-link
+   * button is visible" — which is exactly the two-branch page that had to go,
+   * so the test would have HELD IT IN PLACE. A test can pin a defect just as
+   * firmly as it pins a feature.
+   *
+   * "No new login if avoidable" is still honoured; it is now honoured by the
+   * ADDRESS rather than by asking the visitor which kind of person they are. */
+  test('one field, one button — the visitor is never asked to classify themselves', async ({ page }) => {
     await page.goto('/login')
-    await expect(page.getByRole('button', { name: /Continue with Google/ })).toBeVisible()
     await expect(page.getByLabel(/Email address/)).toBeVisible()
-    await expect(page.getByRole('button', { name: /Email me a sign-in link/ })).toBeVisible()
+    await expect(page.getByRole('button', { name: /^Continue$/ })).toBeVisible()
+
+    // ⛔ The actual defect, asserted directly: no role language on the front door.
+    await expect(page.getByText(/if you are a client/i)).toHaveCount(0)
+    // And exactly one control INSIDE the form, so there is no branch to pick.
+    // ⛔ Scoped to the form deliberately: a page-level control such as the theme
+    // toggle is legitimate and must not make this test fail for the wrong reason.
+    await expect(page.locator('form').getByRole('button')).toHaveCount(1)
+  })
+
+  test('the button says where a staff address is going before it goes', async ({ page }) => {
+    await page.goto('/login')
+    await page.getByLabel(/Email address/).fill('someone@yalemigration.com.au')
+    // Label is derived from the address, so the routing decision is visible
+    // to the user BEFORE they commit to it — that is the whole point of
+    // identifier-first, and it is cheap to regress silently.
+    await expect(page.getByRole('button', { name: /Continue/ })).toBeVisible()
   })
 })
 
