@@ -9198,3 +9198,26 @@ issues and stars, and GitHub redirects the old URL. **It is the client's call, n
 **Netlify Pro is USD 20/month flat with unlimited members**, not "USD 20 per user/month" as recorded in
 D-429 and repeated in GO-LIVE-STEPS. The fallback is cheaper than we have been saying. The decision is
 unchanged — $0 still beats $20 — but the number was wrong in writing.
+
+## D-447 | Repo transferred to the client's GitHub org — verified, with one access limit found
+
+`m-sharjeel-saleem/Yale_Migration` → **`yale-migration/Yale_Migration`**, 5 Sep 2026. Private, history
+intact, local clone repointed and in sync at `cd91ff6`.
+
+**Org roles, read from the API rather than assumed:** `project1-yale` is **Owner**; we are a plain
+**member**. That is the shape we wanted — **the client owns the code and the host, we hold invited
+access** — and it finally makes the whole stack consistent with the architecture: Google Cloud under
+`project1@yalemigration.com.au`, Netlify under the Yale team, GitHub under the Yale org.
+
+### ⚠️ What that costs us, discovered before it bit
+Our permissions on the transferred repo are `{admin: false, maintain: false, push: true}`.
+
+✅ **Push still works** — GitHub adds the previous owner as a collaborator, so day-to-day work is
+unchanged, and the old URL redirects.
+🔴 **We cannot change repository settings**, which means **step 5's two GitHub Actions secrets
+(`SYNC_URL`, `SYNC_SECRET`) may need an Owner.** `GET actions/permissions` returns 404 for us, which is
+the admin-only signal.
+
+▶ **Either Yale sets those two secrets, or Yale grants us Admin on this one repo.** Not a blocker,
+but it is a handover step that did not exist before the transfer — **the cost of doing ownership
+properly, paid deliberately rather than discovered at deploy time.**
