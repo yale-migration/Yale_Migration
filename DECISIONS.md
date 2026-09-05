@@ -9221,3 +9221,37 @@ the admin-only signal.
 ▶ **Either Yale sets those two secrets, or Yale grants us Admin on this one repo.** Not a blocker,
 but it is a handover step that did not exist before the transfer — **the cost of doing ownership
 properly, paid deliberately rather than discovered at deploy time.**
+
+## D-448 | Omitting `publish` did not leave it unset — it handed the choice to the UI
+
+First real Netlify deploy, `main@fda1443`. **The Next.js build itself succeeded** — all 11 routes
+compiled, middleware 92.8 kB, 31 seconds — and then the plugin refused to publish:
+
+```
+Error: Your publish directory cannot be the same as the base directory of your site
+  base:          /opt/build/repo/dashboard
+  publish:       /opt/build/repo/dashboard
+  publishOrigin: ui
+```
+
+🔴 **`netlify.toml` carried a comment instructing that `publish` be left out**, on the reasoning that
+the Next.js Runtime sets it and a hardcoded value "fights the plugin". That was wrong, and the deploy
+log names exactly how: **`publishOrigin: ui`.**
+
+🔑 **Leaving a key out of the config file does not leave it unset. It delegates it.** Netlify filled
+the gap with its own default — the base directory — which is the one value the plugin rejects. A file
+written specifically to keep settings out of the UI had, in this one key, handed the UI the decision.
+**Silence is not a default; it is a delegation.** Fixed with `publish = ".next"` — relative to `base`,
+so `/opt/build/repo/dashboard/.next`.
+
+### What the same log independently confirmed
+✅ **`Config file: /opt/build/repo/netlify.toml`** — moving it to the root (D-442) was necessary and
+is now proven by the build, not by reading docs.
+✅ `base` resolved to `/opt/build/repo/dashboard`, `commandOrigin: config`, headers `headersOrigin:
+config` — the file is in control of everything else.
+✅ All six environment variables were already present in the build environment.
+
+⚠️ **Two bad comments in two days, both confidently worded, both about our own config** (D-442's
+location, D-448's omission). The pattern from LESSONS § 1 holds: **we are least accurate about the
+parts of the system we wrote and never executed.** Neither was caught by a gate, and neither could
+have been — only a real deploy resolves `publishOrigin`.

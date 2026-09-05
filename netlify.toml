@@ -26,8 +26,23 @@
 [build]
   base    = "dashboard"
   command = "npm run build"
-  # ⛔ No `publish` here on purpose. The Next.js Runtime plugin sets it, and a
-  # hardcoded `.next` fights the plugin and serves a broken static export.
+  # 🔴 `publish` IS REQUIRED HERE, and the opposite was asserted in this file
+  # until the first real deploy disproved it (D-448).
+  #
+  # The old comment said to omit it so the Next.js Runtime could set it. What
+  # actually happens when it is omitted: the **UI** fills the gap with its own
+  # default — the base directory — and the plugin refuses:
+  #
+  #     Error: Your publish directory cannot be the same as the base directory
+  #     publish: /opt/build/repo/dashboard   publishOrigin: ui
+  #
+  # `publishOrigin: ui` is the tell. Leaving a key out of this file does not
+  # leave it unset; it hands the decision to the UI, which is precisely what
+  # this file exists to prevent. **Silence is not a default — it is a delegation.**
+  #
+  # Paths here are relative to `base`, so this resolves to
+  # /opt/build/repo/dashboard/.next — Next.js's own output directory.
+  publish = ".next"
 
 [build.environment]
   # Pinned. package.json declares no `engines`, so without this Netlify picks a
