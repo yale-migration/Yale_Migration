@@ -193,3 +193,5 @@ account and billing questions to Robinder.**
 - `SAMPLE` was dropped by them without being asked again (answers Q8 in practice).
 - one client is duplicated in **their** tab; the returned list correctly has him once.
 - Office is BRISBANE on all 41 — Q3 answered by omission, no Townsville clients in this batch.
+
+| **I-30** | 🔴 **Custom SMTP credentials, Yale-owned** | **GO-LIVE BLOCKER for the client portal.** Supabase's built-in sender is **2 emails/hour** and explicitly non-production, and it also locks the email template so the 6-digit code cannot be enabled (D-453). Resend 3,000/mo free or Brevo 300/day free. ⛔ Blocks every client sign-in; does NOT block staff Google sign-in | 5 Sep | 🔴 not held |

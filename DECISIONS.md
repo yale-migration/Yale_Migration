@@ -9372,3 +9372,43 @@ unhandled rejection took the whole submit handler down: `setStep('code')` never 
 span *"Sending your code…"* forever with no message and no way back. The e2e suite has no Supabase to
 talk to, so it hit that path on **every** run — **the one environment guaranteed to reproduce it**,
 and the reason it was found before a client sat looking at a frozen button.
+
+## D-453 | Supabase's built-in email is 2 messages PER HOUR — custom SMTP is a go-live blocker
+
+Found while trying to switch the Magic Link template to `{{ .Token }}` for D-452's code flow. The
+template editor is locked: *"Set up custom SMTP to edit templates. Emails will be sent using the
+default templates."* So the code flow cannot be completed on the built-in sender.
+
+🔴 **But the template lock is the small half.** Supabase's docs on the default SMTP service:
+
+> *"The default SMTP service is provided as best-effort only and intended for the following
+> non-production use cases"* — capped at **2 messages per hour**, with *"no uptime guarantee"* and
+> limits that *"can change without notice"*. — *"We urge all customers to set up custom SMTP server
+> for all other use cases."*
+
+**Two emails an hour, for a portal whose entire client-side sign-in is email.** ~150 clients. This is
+not a limit to work around; it is a service that was never for this.
+
+⚠️ **IT ALSO ENDANGERS THE DEMO ITSELF.** Testing a client sign-in three times before the meeting
+consumes the hour's allowance, and the fourth attempt — the one in front of Robinder — fails silently
+with a delivery that never arrives. ⛔ **Do not demo client email sign-in today.** Google (staff)
+needs no email, and local demo mode needs no auth at all.
+
+### Where this leaves the code flow
+✅ **The D-452 code is correct and stays.** `verifyOtp` is right, the UI is right; the email simply
+does not carry a token yet. ⚠️ Meanwhile the app asks for six digits while the email contains a
+**link** — the link still works (it reaches `/auth/callback`), so the account is reachable, but the
+screen and the email disagree. That is tolerable only because client email sign-in is not being shown
+today, and it is resolved the moment SMTP is configured.
+
+### What must happen before a real client ever signs in
+▶ **Custom SMTP in a YALE-OWNED account**, consistent with every other credential on this project.
+Resend (3,000/month free) or Brevo (300/day free) are the usual choices; their own Google Workspace
+SMTP also works but carries its own sending caps and is fiddlier.
+⚠️ **Flagging the data point rather than assuming it away:** an SMTP provider sees client email
+addresses and sign-in codes. That is ordinary for transactional email, but the account must be Yale's,
+not ours, and it belongs on the same list as everything else they own.
+
+🔑 **The general lesson: a free tier can be free of *charge* and still not be a service.** Netlify Free
+is a real host with real limits; this was a best-effort courtesy with a 2/hour cap. **"Works on the
+free plan" and "works" are different claims,** and we checked one while believing the other.
