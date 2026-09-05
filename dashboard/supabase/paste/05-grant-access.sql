@@ -1,109 +1,86 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- GRANT ACCESS — link a signed-in account to a role.
+-- GRANT ACCESS — give a signed-in account a role.
 --
--- ⚠️ THE PERSON MUST SIGN IN ONCE FIRST. There is no row in auth.users until
--- they do, so this finds nobody and tells you so rather than failing silently.
+-- HOW TO USE: pick ONE block below, change the email, select just that block,
+-- press Run. That is all.
+--
+-- ⚠️ THE PERSON MUST SIGN IN ONCE FIRST. There is no account until they do, so
+-- running this beforehand quietly does nothing. Sign in → you will see
+-- "Your account is not connected to a file yet" → then run this.
 --
 -- ⛔ This is the ONLY way anyone gains visibility. Signup is disabled, and a
--- logged-in user with no profile row sees nothing. That is the designed
--- default, it is covered by a test, and it is why the screen says
--- "Your account is not connected to a file yet."
+-- signed-in user with no row here sees nothing at all. That is by design.
 --
--- 🔑 THE ADDRESS APPEARS IN EXACTLY ONE PLACE — the line below. It used to be
--- repeated four times per grant, which is four chances to update three of them
--- and then debug a result that is telling the truth about the wrong person.
+-- 🔑 Re-running is safe. Each block overwrites that person's existing role, so
+-- it is also how you CHANGE someone's role or move a manager to another office.
 -- ═══════════════════════════════════════════════════════════════════════════
 
--- ┌─────────────────────────────────────────────────────────────────────────┐
--- │  EDIT THIS ONE LINE, THEN RUN.                                          │
--- └─────────────────────────────────────────────────────────────────────────┘
-create or replace view app_grant_target as select 'CHANGE-ME@yalemigration.com.au'::text as email;
 
-
--- ── DIRECTOR — sees every branch, every matter, every deadline ─────────────
+-- ══ 1 · DIRECTOR — sees every branch, every matter ═════════════════════════
 -- Robinder. ⛔ Give this to as few people as the practice can tolerate: it is
--- the only role with no scope restriction at all.
-insert into public.profiles (user_id, role, full_name)
-select u.id, 'director', 'Robinder Pal Singh'
-from auth.users u, app_grant_target t
-where lower(u.email) = lower(t.email)
+-- the only role with no limit on what it can see.
+
+insert into public.profiles (user_id, role, office, client_code, full_name)
+select id, 'director', null, null, 'Robinder Pal Singh'
+from auth.users
+where email = 'CHANGE-ME@yalemigration.com.au'      -- ← EDIT THIS
 on conflict (user_id) do update
   set role = 'director', office = null, client_code = null,
       full_name = excluded.full_name;
 
 
--- ── Did it work? Says WHY if it did not, rather than returning nothing. ────
-select case
-  when not exists (select 1 from auth.users u, app_grant_target t
-                   where lower(u.email) = lower(t.email))
-    then '🔴 That address has never signed in. Open /login, sign in once, then run this again.'
-  when exists (select 1 from public.profiles p
-               join auth.users u on u.id = p.user_id, app_grant_target t
-               where lower(u.email) = lower(t.email))
-    then '✅ Linked. Refresh the dashboard.'
-  else '🔴 The user exists but no profile was created — check the insert above for an error.'
-end as result;
+-- ══ 2 · BRANCH MANAGER — one office only ═══════════════════════════════════
+-- 🔴 THE OFFICE MUST BE UPPERCASE: 'BRISBANE' or 'TOWNSVILLE'.
+-- The security rule compares it exactly, so 'Brisbane' matches NOTHING. It does
+-- not show an error — the manager just sees an empty board that looks like a
+-- quiet week. This file shipped with that exact mistake in its own example.
+
+insert into public.profiles (user_id, role, office, client_code, full_name)
+select id, 'manager', 'BRISBANE', null, 'Branch Manager'
+from auth.users
+where email = 'CHANGE-ME@yalemigration.com.au'      -- ← EDIT THIS
+on conflict (user_id) do update
+  set role = 'manager', office = excluded.office, client_code = null,
+      full_name = excluded.full_name;
+
+
+-- ══ 3 · CLIENT — exactly one file ══════════════════════════════════════════
+-- 🔴 Tied to the CLIENT CODE, not the email. Families share an address, people
+-- change addresses, and a mistyped email would otherwise hand someone another
+-- person's visa file. Demo codes are YM-DEMO-0001 … YM-DEMO-0007.
+
+insert into public.profiles (user_id, role, office, client_code, full_name)
+select id, 'client', null, 'YM-DEMO-0001', 'Client'
+from auth.users
+where email = 'CHANGE-ME@example.com'               -- ← EDIT THIS
+on conflict (user_id) do update
+  set role = 'client', office = null, client_code = excluded.client_code,
+      full_name = excluded.full_name;
 
 
 -- ═══════════════════════════════════════════════════════════════════════════
--- THE OTHER TWO ROLES — change the address above, uncomment one, run again.
+-- ══ CHECK IT WORKED — run this on its own, any time ════════════════════════
+-- Shows every account, its role, and HOW MANY FILES IT WILL ACTUALLY SEE.
+-- 🔴 Read the last column. A role row proves nothing; a scope that matches zero
+-- rows is the failure this project keeps hitting, and it is invisible from the
+-- role alone.
 -- ═══════════════════════════════════════════════════════════════════════════
-
--- ── BRANCH MANAGER — one office only ───────────────────────────────────────
--- 🔴 `office` IS UPPERCASE: 'BRISBANE' / 'TOWNSVILLE'. That is what the MASTER
--- sheet contains (all 38 real rows read BRISBANE) and what the RLS policy
--- compares with `=`, which is case-SENSITIVE.
---
--- ⛔ 'Brisbane' matches NOTHING. It does not error. The manager simply sees an
--- empty board that looks like a quiet week — and this file shipped with exactly
--- that mistake in its own example until it was caught reading the seed data.
--- Run the "valid offices" query at the bottom before typing a value.
---
--- insert into public.profiles (user_id, role, office, full_name)
--- select u.id, 'manager', 'BRISBANE', 'Name Here'
--- from auth.users u, app_grant_target t
--- where lower(u.email) = lower(t.email)
--- on conflict (user_id) do update
---   set role = 'manager', office = excluded.office, client_code = null,
---       full_name = excluded.full_name;
+select
+  u.email,
+  coalesce(p.role, '🔴 no role — sees nothing') as role,
+  p.office,
+  p.client_code,
+  case
+    when p.role = 'director' then (select count(*) from public.matters)
+    when p.role = 'manager'  then (select count(*) from public.matters m where m.office = p.office)
+    when p.role = 'client'   then (select count(*) from public.matters m where m.client_code = p.client_code)
+    else 0
+  end as files_they_can_see
+from auth.users u
+left join public.profiles p on p.user_id = u.id
+order by p.role nulls last, u.email;
 
 
--- ── CLIENT — exactly one file ──────────────────────────────────────────────
--- 🔴 Bound to `client_code`, NOT to the email address. Two people share one
--- family matter, addresses change, and a typo'd email would otherwise hand
--- someone another person's visa file.
---
--- insert into public.profiles (user_id, role, client_code, full_name)
--- select u.id, 'client', 'YM-DEMO-0001', 'Name Here'
--- from auth.users u, app_grant_target t
--- where lower(u.email) = lower(t.email)
--- on conflict (user_id) do update
---   set role = 'client', office = null, client_code = excluded.client_code,
---       full_name = excluded.full_name;
-
-
--- ── Who has access right now? Run this any time. ───────────────────────────
-select u.email, p.role, p.office, p.client_code, p.full_name
-from public.profiles p join auth.users u on u.id = p.user_id
-order by p.role, u.email;
-
-
--- ═══════════════════════════════════════════════════════════════════════════
--- ⛔ BEFORE GRANTING A MANAGER: what offices actually exist, and would they
--- see anything? A role that matches no rows is the failure mode here, and it
--- is invisible from the profiles table alone.
--- ═══════════════════════════════════════════════════════════════════════════
-select office, count(*) as matters
-from public.matters
-group by office
-order by matters desc;
-
--- Every manager, and how many matters their office scope actually returns.
--- 🔴 A zero here means a case or spelling mismatch, not a quiet branch.
-select u.email, p.office, count(m.client_code) as visible_matters
-from public.profiles p
-join auth.users u on u.id = p.user_id
-left join public.matters m on m.office = p.office
-where p.role = 'manager'
-group by u.email, p.office
-order by visible_matters;
+-- ══ Valid values, if you need to check ═════════════════════════════════════
+-- select distinct office from public.matters;              -- offices that exist
+-- select client_code, full_name from public.matters;       -- codes that exist
