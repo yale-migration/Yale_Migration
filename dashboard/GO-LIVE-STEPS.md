@@ -222,6 +222,66 @@ curl -i -H "Authorization: Bearer $SYNC_SECRET" https://<your-site>.netlify.app/
 
 ---
 
+# STEP 2c · Enable Google sign-in · Sharjeel + Yale · ~15 min
+
+⚠️ **Separate from STEP 1.** That created a *service account* — a robot identity for reading the
+sheet. This is *OAuth* — letting a human staff member sign in as themselves. Same Google project
+(`yale-dashboard-sync`), different mechanism. Until this is done, a `@yalemigration.com.au` address hits
+`{"error_code":"validation_failed","msg":"Unsupported provider: provider is not enabled"}` (D-450).
+
+## 2c·i · Consent screen — Google Auth Platform → Project configuration
+
+| Step | Value |
+|---|---|
+| **App name** | `Yale Migration Dashboard` — staff see this on the consent screen |
+| **User support email** | `project1@yalemigration.com.au` |
+| **Audience** | 🔴 **Internal** if offered — see below |
+| **Contact Information** | `project1@yalemigration.com.au` |
+
+🔑 **INTERNAL vs EXTERNAL IS THE DECISION ON THIS PAGE.**
+* **Internal** — only `@yalemigration.com.au` accounts can ever sign in, and ⛔ **Google verification
+  is not required.** It is the correct answer for a staff-only dashboard and it makes the domain rule
+  structural rather than advisory. Only offered if the domain is on **Google Workspace**.
+* **External** — offered when the domain is *not* Workspace. Then the app starts in **Testing**, where
+  ⚠️ **only addresses listed as test users can sign in, capped at 100**. Add every staff member there.
+  ⛔ Do **not** click *Publish app* to escape that cap: an unverified published app shows an
+  "unverified" warning, and clients never use this path anyway — they get magic links.
+
+## 2c·ii · Create the OAuth client
+
+**Clients → Create client**
+
+| Field | Value |
+|---|---|
+| Application type | **Web application** |
+| Name | `Yale Dashboard (Supabase)` |
+| Authorised JavaScript origins | `https://yalemigration.netlify.app` |
+| 🔴 Authorised redirect URI | `https://rmvvlvjjebsskbhjxnap.supabase.co/auth/v1/callback` |
+
+⛔ **The redirect URI is Supabase's, not ours.** A common and costly mistake is entering the app's own
+`/auth/callback` — Google then rejects the sign-in with `redirect_uri_mismatch`. Copy it from
+**Supabase → Authentication → Providers → Google**, which prints the exact string.
+
+Then copy the **Client ID** and **Client secret**. ⛔ Neither goes in the repo.
+
+## 2c·iii · Supabase
+
+1. **Authentication → Providers → Google →** enable, paste Client ID + Secret, **Save**
+2. 🔴 **Authentication → URL Configuration:**
+   * **Site URL** → `https://yalemigration.netlify.app`
+   * **Redirect URLs** → add `https://yalemigration.netlify.app/auth/callback`
+
+⚠️ **Step 2 is not optional and is easy to skip.** Site URL defaults to `http://localhost:3000`, and it
+is the base for **magic links** — so leaving it wrong sends every client a link to a machine that is
+not theirs. That failure lands on clients, not on us, and nothing warns.
+
+## 2c·iv · Prove it
+1. Private window → `https://yalemigration.netlify.app/login`
+2. Enter a `@yalemigration.com.au` address → **Continue** → Google chooser appears already filtered
+3. Enter any other address → **Continue** → "Check your email"
+
+---
+
 # STEP 3 · Share the sheet with the service account · Robinder · 2 min
 
 On the call, with him sharing his screen:
