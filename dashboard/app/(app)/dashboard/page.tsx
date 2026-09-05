@@ -6,8 +6,9 @@ import { StaffView } from '@/components/staff-view'
 import { ClientView } from '@/components/client-view'
 import { DemoSwitcher } from '@/components/demo-switcher'
 import { Nav } from '@/components/nav'
-import { resolveViewer } from '@/lib/viewer'
+import { resolveViewer, viewerEmail } from '@/lib/viewer'
 import { YaleMark } from '@/components/brand'
+import { SignOut } from '@/components/sign-out'
 
 /* Static, so it cannot vary by role — "Yale Migration" alone is correct for
    both audiences, where "Practice Board" was correct for only one. */
@@ -27,6 +28,11 @@ export default async function DashboardPage(
   // anything until a human decides what this person may see. Say that, warmly,
   // and give them the next move rather than a dead end.
   if (!viewer) {
+    // 🔴 Show WHICH account, and offer a way out. Both were missing (D-454):
+    // the copy said "mention the address you signed in with" without showing
+    // it, and there was no sign-out — so a person who used the wrong Google
+    // account was stuck on this screen with no route back to /login.
+    const signedInAs = await viewerEmail()
     return (
       <main id="main" className="min-h-dvh grid place-items-center px-6 py-16">
         <div className="w-full max-w-[460px]">
@@ -46,14 +52,42 @@ export default async function DashboardPage(
             consultants links it — that is deliberate, so nobody ever sees a matter that is
             not theirs.
           </p>
+          {signedInAs && (
+            <p className="text-[13.5px] text-ink-2 mt-4">
+              Signed in as <b className="text-ink">{signedInAs}</b>
+            </p>
+          )}
           <div className="mt-6 rounded-card border border-rule bg-card p-4">
             <h2 className="text-[14px]">What to do</h2>
             <p className="text-[13px] text-ink-2 mt-1.5">
               Reply to the email that invited you, or call us on
-              {' '}<a href="tel:+61405268738" className="font-medium">0405 268 738</a>. Mention
-              the address you signed in with and we will connect it straight away.
+              {' '}<a href="tel:+61405268738" className="font-medium">0405 268 738</a>
+              {signedInAs
+                ? <> and quote <b className="text-ink">{signedInAs}</b>, and we will connect it
+                    straight away.</>
+                : <>. Mention the address you signed in with and we will connect it straight away.</>}
             </p>
           </div>
+
+          {/* ⛔ THE WAY OUT. Without this the screen is a trap: wrong Google
+              account, no sign-out, no link back — the only escape is clearing
+              cookies. The comment above this block promised "the next move
+              rather than a dead end" while shipping the dead end. */}
+          {/* ⚠️ TWO PATHS, because `SignOut` correctly renders nothing when there
+              is no session to end — which left this screen a dead end in demo
+              mode even after the live fix. A control that hides itself is not a
+              route out; the page must supply one either way. */}
+          <div className="mt-6 flex items-center gap-1 -ml-3">
+            {isLive()
+              ? <SignOut live />
+              : <a href="/login"
+                   className="text-[13px] px-3 min-h-[44px] inline-flex items-center rounded-lg
+                              text-ink-2 hover:text-ink hover:bg-[var(--card-sunk)] transition-colors">
+                  Back to sign in
+                </a>}
+            <span className="text-[12.5px] text-ink-3">to try a different account</span>
+          </div>
+
           <p className="text-[12px] text-ink-3 mt-8 pt-5 border-t border-rule">
             Yale Migration and Education Consultants · Robinder Pal Singh, MARN 1573959
           </p>

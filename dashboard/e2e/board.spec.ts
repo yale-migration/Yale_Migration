@@ -218,6 +218,27 @@ test.describe('sign-in', () => {
     await expect(page.getByRole('button', { name: /^Sign in$/ })).toBeEnabled()
   })
 
+  /* THE UNLINKED SCREEN. (D-454) Signed in, no profile row — what every new
+   * client sees first. It shipped as a TRAP: no sign-out, no link back, and
+   * copy telling the reader to "mention the address you signed in with" while
+   * not showing it. Unreachable in demo mode until `?as=unlinked` existed,
+   * which is precisely why nothing caught it. */
+  test('the unlinked screen is not a dead end', async ({ page }) => {
+    await page.goto('/dashboard?as=unlinked')
+    await expect(page.getByRole('heading', { name: /You are signed in/ })).toBeVisible()
+
+    // ⛔ There must be a way out. Live renders "Sign out" (ends the session);
+    // demo renders "Back to sign in" (there is no session to end). Asserting
+    // either, because the requirement is an EXIT — not a particular widget.
+    await expect(
+      page.getByRole('button', { name: /Sign out/ })
+        .or(page.getByRole('link', { name: /Back to sign in/ })),
+    ).toBeVisible()
+
+    // And it must not show a board it has no right to.
+    await expect(page.getByText(/Practice Board/)).toHaveCount(0)
+  })
+
   test('non-digits cannot be typed into the code field', async ({ page }) => {
     await page.goto('/login')
     await page.getByLabel(/Email address/).fill('someone@example.com')

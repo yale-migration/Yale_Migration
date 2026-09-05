@@ -9412,3 +9412,38 @@ not ours, and it belongs on the same list as everything else they own.
 🔑 **The general lesson: a free tier can be free of *charge* and still not be a service.** Netlify Free
 is a real host with real limits; this was a best-effort courtesy with a 2/hour cap. **"Works on the
 free plan" and "works" are different claims,** and we checked one while believing the other.
+
+## D-454 | The "signed in, not connected" screen was a trap — no exit, and it hid the one fact it asked for
+
+Sharjeel signed in with the wrong Google account and could not get back out. **There was no sign-out,
+no link to `/login`, and no way to try another address short of clearing cookies.**
+
+⚠️ **The code comment directly above it read:** *"give them the next move rather than a dead end"* —
+written while shipping the dead end. **A comment describing an intention is not evidence the intention
+was carried out**, and it reads as reassurance to every later reader.
+
+### Two defects, and the second is the crueller one
+1. **No exit.** Wrong account = stuck.
+2. **It said *"mention the address you signed in with"* and did not show the address.** On a shared
+   machine, or for anyone with two Google accounts, that is an unanswerable instruction — and it is
+   the **one fact the consultant needs** to link them. Now displayed, and quoted back inside the
+   instruction itself.
+
+⚠️ `SignOut` renders nothing when there is no session to end, which is right — but it left the screen
+a dead end in **demo mode even after the live fix**. A control that hides itself is not a route out.
+Live gets *Sign out*; demo gets *Back to sign in*. The test asserts **either**, because the
+requirement is an exit, not a widget.
+
+### 🔴 Why nothing caught it: the state was unreachable
+`resolveViewer` in demo mode fell back to `director` for every unknown key, so `viewer` was **never
+null** and this branch could not be rendered by any test, screenshot or walkthrough. **An unreachable
+state is an untested state** — 165 e2e checks, and not one could touch the screen every new client
+sees first.
+
+✅ Fixed at the root: **`?as=unlinked`** now returns null in demo mode. The state is reachable, tested,
+and demonstrable — Robinder can be shown exactly what a newly invited client sees before anyone links
+them.
+
+🔑 **The pattern, and it is the sharpest instance yet:** *we test what we can reach, and we reach what
+we thought to make reachable.* The gap was not in the assertions but one level below them, in what the
+fixtures allowed to exist.
