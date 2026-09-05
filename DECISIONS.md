@@ -9080,3 +9080,44 @@ already taken in D-409 not to add him. It was the right answer for a reason we h
 
 ⚠️ M6 assigns at *enquiry* time only. It has no concept of a *stage handover*, so the Jasmeet step is
 **human, by design**, and nothing in the build needs to change to support it.
+
+## D-442 | `netlify.toml` was in `dashboard/`, where Netlify never reads it
+
+Found while writing the deploy steps, before the first deploy rather than after a confusing failure.
+
+**Netlify's own docs:** *"If you store the Netlify configuration file in a directory other than the
+root, you will need to set either the base directory or the package directory to indicate where it is
+located."* (file-based-configuration, verified 5 Sep 2026.)
+
+🔴 **The file existed specifically to remove UI clicks, and could only be found by first performing
+the exact UI click it was written to avoid.** Until that click every setting in it is ignored — no
+Node 22 pin, no Next.js plugin, no security headers — and the build fails with *"no package.json"*
+while the config sits in the repo looking perfectly correct.
+
+**A config in the wrong place does not warn. It is simply not there.** Same shape as D-353 and the
+`docs/DECISIONS.md` slip earlier today: nothing red, nothing wrong — just content somewhere no reader
+goes. Moved to the repository root; `base = "dashboard"` now does its job.
+
+## D-443 | The runbook told you to deploy to Vercel three sections after deciding Netlify
+
+`GO-LIVE-STEPS.md` had **two "STEP 2"**: the Netlify decision (D-429) was inserted ahead of the older
+Vercel section, and the Vercel section was never rewritten. Anyone following the runbook top to bottom
+would read the decision and then execute the thing it decided against.
+
+⚠️ **Superseding a decision is not the same as superseding the instructions that carry it out**, and
+the docs gate cannot catch this — every id and path resolved. Rewritten as **2a decision / 2b Netlify
+clicks**, with Vercel Pro kept below as the explicit fallback for a failed middleware test.
+
+## D-444 | Netlify Free is legitimate TODAY only because there is no real client data on it
+
+`POSITION.json` records `real_clients_processed: 0`; MASTER holds 14 invented people. Under the
+standing rule — free tiers for demos with fake data, client data only on approved hosts — the current
+deployment is **a demo, and Netlify Free is fine for it**.
+
+🔴 **STEP 8 is the line.** The moment the 38 real clients are imported, this becomes real client data
+and must be on an approved host under a **Yale-owned or company-owned** account, exactly as Google
+Cloud already is (`project1@yalemigration.com.au`). ⛔ **Never a personal Netlify or Vercel login.**
+
+✅ **The move costs nothing:** the app, the six variables, the GitHub Actions cron and the curl test
+are identical on either platform. **No code change.** That is the whole reason the scheduler was moved
+out of the host in D-429 — so this stays a billing decision, not an engineering one.

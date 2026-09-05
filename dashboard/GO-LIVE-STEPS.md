@@ -27,7 +27,7 @@ SQL exists, the guards exist. What is missing is access and decisions.
 | 1b | Service account created | Sharjeel | ✅ **DONE** — `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` |
 | 1c | JSON key downloaded | Sharjeel | ✅ **DONE** — ⛔ open it once, copy `client_email` + `private_key`, then **delete the file** |
 | 1d | 🔶 **Google Sheets API enabled?** | Sharjeel | ❓ **UNCONFIRMED — check this before anything else.** Without it the sync fails with a 403 that looks like a permissions problem and is not. APIs & Services → Library → "Google Sheets API" → it should say **Manage**, not **Enable** |
-| 2 | Vercel env vars (6) | Sharjeel | ⬜ **← YOU ARE HERE.** Locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
+| 2 | **Netlify** site + the 6 env vars + 2 GitHub secrets | Sharjeel | ⬜ **← YOU ARE HERE.** Locally only 3 of 7 are set; `SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing |
 | 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** with `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` | Robinder | ⬜ |
 | 6 | Deploy + prove `/api/sync` with curl | Sharjeel | ⬜ |
 | 5 | `Client Code` column in S56 TRACKER | Robinder | ⬜ — until then Section 56 cannot appear on a client's file |
@@ -80,7 +80,7 @@ from their own Drive without touching anyone's account.
 
 ---
 
-# STEP 2 · Host — Netlify Free (decided, D-429) · ~20 min
+# STEP 2a · Host — the decision, and the one test that settles it · 5 min
 
 **Decision: Netlify Free + GitHub Actions cron + Supabase Free = $0/month.** Vercel Pro at USD 20 is
 the fallback, and nothing built here is Netlify-specific — the per-tab sync and the external scheduler
@@ -116,31 +116,33 @@ open-ended session on someone else's platform quirk is not a good trade for $20 
 
 ---
 
-# STEP 2 · Vercel — import, configure, deploy · Sharjeel · ~20 min
+# STEP 2b · Netlify — import, configure, deploy · Sharjeel · ~20 min
 
-⛔ **Company Vercel team only.** A personal GitHub repo connecting to a company Vercel team is fine —
-the repo and the host are separate decisions.
+⛔ **Create the Netlify site under a YALE-owned login, not a personal one** — the same rule already
+followed for Google Cloud (`project1@yalemigration.com.au`). The repo may stay personal; the repo and
+the host are separate decisions. **Where the client's data is served from is not.**
 
-## 2a · Import the project
+## 2b·i · Import
 
-1. Vercel → **Add New… → Project**
-2. **Import** `m-sharjeel-saleem/Yale_Migration` *(authorise GitHub if prompted)*
-3. 🔴 **Root Directory → Edit → type `dashboard`**
+1. Netlify → **Add new site → Import an existing project → GitHub**
+2. Authorise, then pick **`m-sharjeel-saleem/Yale_Migration`**
+3. ✅ **Leave every build setting BLANK.** `netlify.toml` at the repository root supplies the base
+   directory, the build command, Node 22, the Next.js plugin and the security headers.
+4. **Deploy site**
 
-> **This is the step everyone gets wrong.** The repository root is `yale-build`; the Next.js app lives
-> in `dashboard/`. Leave it at the default and Vercel finds no `package.json`, the build fails, and the
-> error points at the framework rather than at the path. It is also how Vercel locates `vercel.json`.
+> 🔴 **`netlify.toml` must be at the repo ROOT — it was originally written inside `dashboard/`.**
+> Netlify's docs: *"If you store the Netlify configuration file in a directory other than the root,
+> you will need to set either the base directory or the package directory to indicate where it is
+> located."* In `dashboard/` it is never read: no Node pin, no plugin, no headers, and a build that
+> fails with *"no package.json"* while the file sits in the repo looking correct. Moved 5 Sep 2026.
 
-4. **Framework Preset** should auto-detect **Next.js**. Build command and output directory: leave alone.
-5. ⚠️ **Before clicking Deploy, decide the cron** — see 2c. On a non-Pro plan the deploy is **rejected**.
+✅ **The first deploy succeeds with no environment variables** — verified 31 Aug by building with
+`.env.local` removed. It comes up in demo mode showing invented people. **Useful checkpoint: you see
+the app working before wiring anything to real data.**
 
-✅ **The first deploy will succeed even with no environment variables** — verified 31 Aug by building
-with `.env.local` removed. It comes up in demo mode showing invented people. **That is a useful
-checkpoint: you see the app working before wiring anything to real data.**
+## 2b·ii · Environment variables
 
-## 2b · Environment variables
-
-**Settings → Environment Variables.** Tick **Production, Preview and Development** for each.
+**Site configuration → Environment variables → Add a variable.** Same six as any host:
 
 | Variable | Value |
 |---|---|
@@ -151,34 +153,53 @@ checkpoint: you see the app working before wiring anything to real data.**
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | same page |
 
-🔴 **Then REDEPLOY.** `NEXT_PUBLIC_*` values are compiled into the JavaScript at build time. Adding
-them without a rebuild changes nothing, and the app keeps serving demo data while every variable looks
-correctly set in the dashboard. **Deployments → ⋯ → Redeploy.**
+🔴 **Then REDEPLOY — Deploys → Trigger deploy → _Clear cache and deploy site_.** `NEXT_PUBLIC_*` are
+compiled into the JavaScript at build time. Adding them without a rebuild changes nothing, and the app
+keeps serving demo data while every variable looks correctly set in the UI.
 
-## 2c · The cron — read before deploying
+## 2b·iii · The cron — GitHub, not the host
 
-`vercel.json` requests `0 * * * *` (hourly). **Hobby rejects that at deploy time**, with
-*"Hobby accounts are limited to daily cron jobs"* (D-406).
+⛔ **Nothing to configure on Netlify.** `.github/workflows/sync.yml` drives the hourly sync (D-429),
+which is why the host was chosen on hosting merits rather than on whose cron tier is cheapest.
 
-- **On Pro** — leave it. Hourly.
-- **Not on Pro yet** — change the schedule in `dashboard/vercel.json` to `0 1 * * *` (daily, 1am),
-  commit, push. ⚠️ Daily is still frequent enough to stop Supabase Free pausing (D-419).
+**GitHub → repo → Settings → Secrets and variables → Actions → New repository secret:**
 
-## 2d · Prove it
+| Secret | Value |
+|---|---|
+| `SYNC_URL` | `https://<your-site>.netlify.app/api/sync` |
+| `SYNC_SECRET` | **the same string** as the Netlify variable |
+
+Then **Actions → sync → Run workflow** to test it now rather than waiting an hour.
+
+## 2b·iv · Prove it
 
 ```
-curl -i -H "Authorization: Bearer $SYNC_SECRET" https://<your-domain>/api/sync
+curl -i -H "Authorization: Bearer $SYNC_SECRET" https://<your-site>.netlify.app/api/sync
 ```
 
 | Response | Meaning |
 |---|---|
 | `403 Access denied` | ✅ **the CORRECT result right now** — everything on our side works; Robinder has not shared the sheet yet |
-| `503 not_configured` | the two `GOOGLE_*` variables are missing or the redeploy did not happen |
+| `503 not_configured` | the two `GOOGLE_*` variables are missing, or the redeploy did not happen |
 | `401` | wrong or missing `SYNC_SECRET` |
 | `500 partial` | some tabs synced; the body names which failed |
 | `200 ok` | all three tabs synced — check `read`/`written`/`skipped` |
 
 🔑 **Aim for the 403.** It is proof, not failure.
+
+---
+
+## Fallback · Vercel Pro (USD 20/user/month)
+
+⚠️ Only if the middleware test above fails. `dashboard/vercel.json` is kept for this case.
+
+- Root Directory → `dashboard` *(Vercel's name for the base directory)*
+- Same six environment variables, then **Deployments → ⋯ → Redeploy**
+- 🔴 `vercel.json` requests hourly cron. **Hobby rejects that at deploy time** — *"Hobby accounts are
+  limited to daily cron jobs"* (D-406). On Pro, leave it; on Hobby, change to `0 1 * * *`.
+- ⛔ If it ever holds real client data it must be the **company Vercel team**, never a personal account.
+
+---
 
 # STEP 3 · Share the sheet with the service account · Robinder · 2 min
 
