@@ -9161,3 +9161,40 @@ is the **team**, not the GitHub account that linked it. No repo transfer, ~5 min
 the collaborator — the exact reverse of today. That matches this project's own architecture
 (everything in client-owned accounts, we hold invited access). **Do it before step 8 puts real client
 data on the site**, not now — it is a move, not a blocker.
+
+## D-446 | Netlify Free is single-member — so fix the OWNERSHIP, not the invitation
+
+The Yale Netlify team was created (`project1-yale`, Free, **"1 team member"**) and the plan from D-445
+was for Yale to invite us into it. **Free is sold as *"Audience: Individual"***, and Netlify's docs say
+*"Depending on your team plan, you may need to upgrade in order to add new members."* Paying USD 20 to
+add one seat, purely so a deploy can see a repo, is the wrong purchase.
+
+### The better route — it removes the dependency instead of paying to work around it
+⛔ Stop trying to make a **personally-owned repo** visible to a **Yale-owned host**. That mismatch is
+the actual problem, and D-445's invite was a workaround for it.
+
+✅ **Create a Yale-owned GitHub organisation (free) and transfer the repo into it.** Then the Yale
+Netlify user installs the Netlify GitHub App on the Yale **org** — which it *can* do, because the org
+is theirs — and the repo appears with no extra Netlify seat and no upgrade.
+
+| | invite us to the Netlify team (D-445) | transfer the repo to a Yale org |
+|---|---|---|
+| Cost | **USD 20/mo** if Free blocks the seat | **$0** |
+| Netlify members needed | 2 | **1** |
+| Who owns the code | still us | **the client** |
+| If we leave | rebuilds break | nothing breaks |
+
+🔑 **This was already the recommended end-state** — D-445 filed it as the durable fix "before step 8".
+The seat limit simply removes the reason to defer it. Netlify's own guidance: *"Your client owns the
+code… it's more natural that the client owns the GitHub repository and give you access."* It also
+matches this project's architecture everywhere else: **built in client-owned accounts, we hold invited
+access.** Google Cloud is already under `project1@yalemigration.com.au`.
+
+⚠️ **Transfer is a real ownership change** — the URL becomes `github.com/<yale-org>/Yale_Migration`
+and our local remote must be repointed (`git remote set-url`). It is reversible, it preserves history,
+issues and stars, and GitHub redirects the old URL. **It is the client's call, not ours to execute.**
+
+### ⚠️ Correction carried into the runbook
+**Netlify Pro is USD 20/month flat with unlimited members**, not "USD 20 per user/month" as recorded in
+D-429 and repeated in GO-LIVE-STEPS. The fallback is cheaper than we have been saying. The decision is
+unchanged — $0 still beats $20 — but the number was wrong in writing.

@@ -128,10 +128,15 @@ or organization"*), and `Yale_Migration` belongs to the personal user `m-sharjee
 owner can install the app there, so **no collaborator grant will ever make it appear** in a Yale
 Netlify account. A README edit from the Yale account proves repo access — **not** app visibility.
 
-✅ **Invert it, which is Netlify's own documented workaround:**
-1. **Yale** creates the Netlify team and, under **Team → Members**, invites **Sharjeel**
-2. **Sharjeel** accepts, switches to the **Yale team** in the top-left team picker
-3. **Sharjeel** runs 2b·i below — his GitHub already has the repo
+✅ **Fix the ownership rather than the invitation (D-446).** The Yale Netlify team is **Free =
+single-member**, so inviting us would cost USD 20/mo. Move the repo instead:
+1. **Yale** → GitHub → **New organization → Free**
+2. **Yale** invites **Sharjeel** into the org as **Owner**
+3. **Sharjeel** → repo **Settings → General → Transfer ownership** → the Yale org
+4. **Sharjeel** repoints his clone: `git remote set-url origin <new URL>`
+5. **Yale** → Netlify → **Add new site → GitHub** → install the app on the **Yale org** → the repo is there
+
+The site and the code are then both Yale's, on one free Netlify seat, and nothing breaks if we leave.
 
 The site is then **owned and billed by Yale** while linked through the account that owns the code.
 ⚠️ Because the Git link uses Sharjeel's identity, removing him later stops rebuilds (the site keeps
@@ -205,7 +210,7 @@ curl -i -H "Authorization: Bearer $SYNC_SECRET" https://<your-site>.netlify.app/
 
 ---
 
-## Fallback · Vercel Pro (USD 20/user/month)
+## Fallback · Vercel Pro (USD 20/user/month — Vercel IS per-user; Netlify Pro is $20 flat, D-446)
 
 ⚠️ Only if the middleware test above fails. `dashboard/vercel.json` is kept for this case.
 
