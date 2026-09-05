@@ -118,9 +118,25 @@ open-ended session on someone else's platform quirk is not a good trade for $20 
 
 # STEP 2b · Netlify — import, configure, deploy · Sharjeel · ~20 min
 
-⛔ **Create the Netlify site under a YALE-owned login, not a personal one** — the same rule already
-followed for Google Cloud (`project1@yalemigration.com.au`). The repo may stay personal; the repo and
-the host are separate decisions. **Where the client's data is served from is not.**
+⛔ **The site must be owned by YALE** — the same rule already followed for Google Cloud
+(`project1@yalemigration.com.au`). The repo may stay personal; the repo and the host are separate
+decisions. **Where the client's data is served from is not.**
+
+🔴 **BUT DO NOT LOG INTO NETLIFY AS YALE AND LOOK FOR THE REPO — IT WILL NOT BE THERE (D-445).**
+The Netlify GitHub App is installed **per account** (*"all repositories belonging to your GitHub user
+or organization"*), and `Yale_Migration` belongs to the personal user `m-sharjeel-saleem`. Only its
+owner can install the app there, so **no collaborator grant will ever make it appear** in a Yale
+Netlify account. A README edit from the Yale account proves repo access — **not** app visibility.
+
+✅ **Invert it, which is Netlify's own documented workaround:**
+1. **Yale** creates the Netlify team and, under **Team → Members**, invites **Sharjeel**
+2. **Sharjeel** accepts, switches to the **Yale team** in the top-left team picker
+3. **Sharjeel** runs 2b·i below — his GitHub already has the repo
+
+The site is then **owned and billed by Yale** while linked through the account that owns the code.
+⚠️ Because the Git link uses Sharjeel's identity, removing him later stops rebuilds (the site keeps
+serving). ▶ Durable fix before step 8: **move the repo into a Yale-owned GitHub org** and make us the
+collaborator — the reverse of today, and what Netlify recommends.
 
 ## 2b·i · Import
 

@@ -9121,3 +9121,43 @@ Cloud already is (`project1@yalemigration.com.au`). ⛔ **Never a personal Netli
 ✅ **The move costs nothing:** the app, the six variables, the GitHub Actions cron and the curl test
 are identical on either platform. **No code change.** That is the whole reason the scheduler was moved
 out of the host in D-429 — so this stays a billing decision, not an engineering one.
+
+## D-445 | A GitHub collaborator can never see the repo in their OWN Netlify — invert it instead
+
+**What was tried:** the Yale account was added as a **collaborator on the repo**, then Yale logged into
+Netlify expecting to import it. The repo never appeared — even though a README edit from the Yale
+account worked, which proved the collaborator grant itself was fine.
+
+### Why it cannot work, and why the README edit was a false comfort
+Two different permission systems, and only one of them was satisfied:
+
+| | |
+|---|---|
+| **Editing the README** | GitHub *repo collaborator* rights. Granted ✅ |
+| **Appearing in Netlify's picker** | the **Netlify GitHub App**, installed **per account**: *"access to all repositories belonging to your GitHub user or organization"* |
+
+`Yale_Migration` belongs to the personal user `m-sharjeel-saleem`. The app must therefore be installed
+**on that account**, and ⛔ **only its owner can install an app there.** No level of collaborator
+permission changes this — it is not a refresh, a scope tick, or a re-auth. **The repo will never be
+listed in a Netlify account that is not the owner's.**
+
+🔑 **A working README edit says nothing about app visibility.** Same shape as every LESSONS § 2 miss:
+one permission verified, a different one assumed to follow.
+
+### The fix — invert who invites whom (Netlify's own documented workaround)
+⛔ **Do not** connect Yale's GitHub to our repo. **Yale invites US to the Yale Netlify team**, and the
+site is created from our side *inside* that team. Netlify support, verbatim: *"They can invite you as a
+collaborator and then you create the site connected through your private repo."*
+
+✅ The site is **owned and billed by Yale** — which is the requirement (D-444). Netlify site ownership
+is the **team**, not the GitHub account that linked it. No repo transfer, ~5 minutes.
+
+⚠️ **Two things this leaves open, worth knowing before real data:**
+1. The Git connection is authorised through **our** GitHub identity. If we are removed, auto-deploy
+   can break — the site keeps serving, but stops rebuilding.
+2. Netlify has **no per-repo permission control**; that lives entirely in GitHub.
+
+▶ **The durable fix, and Netlify's actual recommendation:** the client owns the repository and we are
+the collaborator — the exact reverse of today. That matches this project's own architecture
+(everything in client-owned accounts, we hold invited access). **Do it before step 8 puts real client
+data on the site**, not now — it is a move, not a blocker.
