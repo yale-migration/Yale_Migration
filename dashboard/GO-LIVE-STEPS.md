@@ -13,7 +13,8 @@ SQL exists, the guards exist. What is missing is access and decisions.
 ⚠️ **Two different Google Sheets are involved. Do not confuse them.**
 | Sheet | Used for | Needs sharing with the service account? |
 |---|---|---|
-| **YALE BRISBANE OFFICE WORK** (`1ZE1OoTj…`) — MASTER · ENQUIRIES · S56 TRACKER | **the dashboard sync** | ✅ **YES — this is the one** |
+| 🔴 **Yale Migration — MASTER DATABASE** (`1ZE1OoTj…`) — MASTER · ENQUIRIES · S56 TRACKER | **the dashboard sync** | ✅ **and it is OURS, in the `project1@` account (D-457).** This row previously named it *YALE BRISBANE OFFICE WORK*, which is a **different workbook** (`1Nbaxgz…`, 31 tabs, theirs) that contains **no MASTER tab at all**. |
+| **YALE BRISBANE OFFICE WORK** (`1Nbaxgz…`) — 31 tabs incl. `LODGEMENT: JULY TO PRESENT` | the 38-client **import**, not the sync | ✅ theirs, we hold exports |
 | **CLIENT LIST TO UPDATE** (`1pqRhsEZ…`) — shared by RJ 30 Aug | the 38-row MASTER import | ❌ no — read by `project1@` already |
 
 | # | Step | Who | Status |
@@ -28,7 +29,7 @@ SQL exists, the guards exist. What is missing is access and decisions.
 | 1c | JSON key downloaded | Sharjeel | ✅ **DONE** — ⛔ open it once, copy `client_email` + `private_key`, then **delete the file** |
 | 1d | 🔶 **Google Sheets API enabled?** | Sharjeel | ❓ **UNCONFIRMED — check this before anything else.** Without it the sync fails with a 403 that looks like a permissions problem and is not. APIs & Services → Library → "Google Sheets API" → it should say **Manage**, not **Enable** |
 | 2 | **Netlify** site + the 6 env vars + 2 GitHub secrets | Sharjeel | ⬜ **← YOU ARE HERE.** Locally 3 of the 6 required are set; **`SYNC_SECRET`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY` are missing**. (A 7th, `YALE_SHEET_ID`, exists but is **optional** — `route.ts` falls back to the correct workbook id, so leave it unset.) |
-| 3 | Share **YALE BRISBANE OFFICE WORK** as **Viewer** with `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` | Robinder | ⬜ |
+| 3 | Share **Yale Migration — MASTER DATABASE** (`1ZE1OoTj…`) as **Viewer** with `yale-dashboard-sync@yale-dashboard-sync.iam.gserviceaccount.com` | 🔴 **SHARJEEL, not Robinder (D-457)** — that workbook is in the `project1@` account we already control. It was on Robinder's list for weeks and never needed to be. | ⬜ |
 | 6 | Deploy + prove `/api/sync` with curl | Sharjeel | ⬜ |
 | 5 | `Client Code` column in S56 TRACKER | Robinder | ⬜ — until then Section 56 cannot appear on a client's file |
 | 7 | Current staff list → `profiles` rows | Robinder | ⬜ |

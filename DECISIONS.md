@@ -9521,3 +9521,55 @@ connection behind M3 folder-create and M4 checklist-file is a personal Gmail acc
 volume fits the free tier; it is the **two-scenario cap** that hurts, and **USD 9 removes it
 entirely.** We had been treating a $9 subscription as an architectural constraint. Ask for the
 upgrade first; the pick-two fallback only if he refuses.
+
+## D-457 | Two workbooks, one name — and the sheet we were asking Robinder to share is our own
+
+Fresh exports arrived 6 Sep. Auditing them before import surfaced a confusion that had been sitting
+in the go-live runbook for two weeks.
+
+| Workbook | ID | Whose | Contains |
+|---|---|---|---|
+| **YALE BRISBANE OFFICE WORK** | `1Nbaxgz…` | **theirs** | 31 tabs incl. `LODGEMENT: JULY TO PRESENT` — the 38 clients |
+| **Yale Migration — MASTER DATABASE** | `1ZE1OoTj…` | ✅ **OURS**, in `project1@` | **MASTER · ENQUIRIES · S56 TRACKER** |
+
+🔴 **`GO-LIVE-STEPS.md` labelled `1ZE1OoTj…` as "YALE BRISBANE OFFICE WORK".** Proven wrong by
+opening both exports: **neither copy of their workbook contains a MASTER tab** — 31 tabs, none of
+them the three the sync reads. `ACCESS.md` had the correct mapping all along; the runbook did not.
+
+### The consequence, and it is not cosmetic
+**Step 3 — "Robinder shares the sheet with the service account" — has been on HIS list for weeks and
+was never his to do.** The workbook the dashboard reads is in the `project1@` account we already
+control. ⛔ Worse, had he followed it he would have shared the **wrong** workbook, the sync would have
+found no MASTER tab, and we would have debugged the service account, the API and the key before
+questioning the sheet.
+
+✅ **The dashboard's data path is not blocked on the client at all.** Import the 38 into MASTER
+DATABASE, share that workbook from `project1@`, run the sync. Every step is ours.
+
+🔑 **The lesson: an ID and a human name for the same thing drift apart silently.** Two documents
+disagreed for weeks and nothing caught it, because the id was right in one place and the label was
+right in another. **Where a document names a Google file, the id is the fact and the name is a
+comment.**
+
+## D-458 | The 6 unassigned clients went to Robinder, not to blank
+
+RJ said on 4 Sep: *"we can just make it blank then"* (D-440). The 6 Sep return says otherwise.
+Compared directly, file to file, not from notes:
+
+| Consultant | 25 Aug | 6 Sep |
+|---|---|---|
+| ROBIN | 7 | **13** |
+| *(blank)* | 7 | **1** |
+| INDER | 7 | 7 |
+| all others | — | unchanged |
+
+**Six of the seven blanks were assigned to Robinder.** One remains blank. ✅ Better than blank —
+those files now have an owner — but it means **D-440 recorded an intention, not an outcome**, and the
+outcome is the opposite.
+
+🔴 **Inder's 7 (+1 shared "INDER / ROBIN") are untouched.** He left on 4 Sep and is still the named
+consultant on 8 of the 38. A-53 remains open and is now the largest single data question before
+go-live.
+
+⚠️ **No other coverage moved since 25 Aug** — contact numbers 6/38, emails 27/38, expiry 21/38,
+last contact 0/38. RJ has filled in nothing further. None of it blocks a contracted hour.
