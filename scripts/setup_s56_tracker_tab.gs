@@ -61,7 +61,17 @@ var S56_HEADERS = [
   'Gmail Link',          // P  straight to the message
   'Assigned To',         // Q  dropdown
   'Status',              // R  dropdown — worked by a human
-  'Raw Classification'   // S  the model's JSON, kept for debugging
+  'Raw Classification',  // S  the model JSON, kept for debugging
+  /* 🔴 T — ADDED 6 Sep (D-460). `client_code` is what the client file reads
+   * to find its deadlines. Without it every synced deadline arrived
+   * with it NULL, so the practice board looked right (it lists by name) while
+   * EVERY individual file showed no deadline at all — staff included.
+   *
+   * ⛔ APPENDED AT T, NOT INSERTED AT A. Inserting would shift all 19 existing
+   * columns one letter to the right and silently break the sync allowlist, both
+   * parse scripts and the deadline verifier — every one of which addresses this
+   * tab by column letter. The natural position is the dangerous one. */
+  'Client Code'          // T  filled from MASTER by name; blank when ambiguous
 ];
 
 var S56_ASSIGNEES = ['Robinder', 'Inder', 'Gayatri', 'Priyanka', 'Fiza', 'RJ',

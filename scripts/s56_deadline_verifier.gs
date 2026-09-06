@@ -57,6 +57,13 @@ var S56V_CLOSED = ['Closed'];
 
 
 function verifyS56Deadlines() {
+  /* 🔑 Fill the Client Code column first (D-460). A deadline with no code never
+   * reaches the client's own file, and MASTER gains clients daily — so this
+   * has to re-run, not be a one-off backfill. Failure here must not stop the
+   * verification that follows: a wrong deadline matters more than an unlinked one. */
+  try { linkS56ClientCodes(); }
+  catch (e) { Logger.log('verifyS56Deadlines: linkS56ClientCodes failed — ' + e); }
+
   var lock = LockService.getDocumentLock();
   if (!lock.tryLock(30000)) { Logger.log('ABORT — could not get the document lock.'); return; }
   try { s56vRun_(); } finally { lock.releaseLock(); }

@@ -109,6 +109,10 @@ export const S56_ALLOWLIST = {
   H: 'deadline_sentence',
   N: 'needs_review',
   R: 'status',
+  /* 🔴 T — the join to a client file. Added 6 Sep (D-460). Before this column
+   * existed every deadline synced with client_code NULL, so the board looked
+   * right while no individual file showed a deadline at all. */
+  T: 'client_code',
   // ⛔ I, J, K (TRN · Application ID · File Number) are DELIBERATELY not synced.
   // They identify a person to the Department. The dashboard never needs them to
   // show a deadline, and a web-facing copy of a TRN buys nothing and risks a lot.

@@ -9629,3 +9629,45 @@ exists the synced value wins and this stops firing on its own.
 accepting any match in the trigger, accepting any match in the backfill, and removing the
 never-overwrite guard. A name-matching join that silently loosens is exactly the edit nothing else
 would catch.
+
+## D-460 | The Client Code column was ours to add all along — asked of the client for weeks
+
+Follows D-457. Having established that **`Yale Migration — MASTER DATABASE` is our workbook**, the
+same question applies to everything we had been waiting on inside it — and the Section 56 `Client
+Code` column was one of them.
+
+⛔ **It has been on Robinder's list since 25 August.** It is in a workbook in the `project1@` account,
+created by our own `setup_s56_tracker_tab.gs`. **Nobody outside this project could have added it.**
+
+🔑 **The pattern is now twice confirmed: once a task lands on the client's list it stops being
+re-examined.** D-457 was "share the sheet"; this is "add the column". Both were ours. **A blocker
+attributed to someone else is the least likely thing in a project to be checked again.**
+
+### What was built
+* **Column T `Client Code`** appended to `S56_HEADERS`.
+  ⚠️ **Appended at T, not inserted at A.** The natural position is the dangerous one: inserting would
+  shift all 19 existing columns one letter and silently break the sync allowlist, both parse scripts
+  and the deadline verifier — every one of which addresses this tab by letter.
+* **`s56_link_client_codes.gs`** fills it from MASTER by name, and **runs first inside
+  `verifyS56Deadlines()`** so it self-heals as clients are added — wrapped in try/catch, because a
+  failure to link must never stop the verification of the deadlines themselves.
+* **Sync updated**: `S56_ALLOWLIST` maps `T → client_code`, range widened `A1:S` → `A1:T`.
+
+### What it refuses to do, and why that is the feature
+A code is written **only when exactly one client in MASTER carries that name**, compared case- and
+whitespace-insensitively. Zero matches or two both leave the cell blank, and a code a human typed is
+never overwritten.
+
+**Attaching a statutory deadline to the wrong person's file is worse than showing no deadline.** A
+blank still appears on the practice board where someone sees it; a wrong link is invisible and
+confidently incorrect. Duplicate MASTER rows for one client are treated as one client, not an
+ambiguity — otherwise a duplicated row would block a perfectly good link.
+
+**13 new checks** (`test_s56_link.js`), **three loosening injections all verified to fail**: linking
+on any match, overwriting a human-typed code, and dropping case-insensitivity.
+
+⚠️ **The SQL bridge (D-459) stays**, and is now correctly a fallback: it only acts when `client_code`
+is NULL, so rows written through the new column pass straight past it. Two mechanisms, one rule —
+`s56lNorm_()` and `lower(btrim())` must stay in step, which is why both are asserted.
+
+**Green: 334 Apps Script · 282 dashboard unit · 165 e2e · typecheck · build · all gates.**

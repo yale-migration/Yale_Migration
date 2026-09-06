@@ -37,7 +37,7 @@ const SHEET_ID = process.env.YALE_SHEET_ID
  */
 const TABS = [
   { name: 'matters',   range: 'MASTER!A1:AE',      run: syncMatters },
-  { name: 's56',       range: 'S56 TRACKER!A1:S',  run: syncS56 },
+  { name: 's56',       range: 'S56 TRACKER!A1:T',  run: syncS56 },  // T = Client Code (D-460)
   { name: 'enquiries', range: 'ENQUIRIES!A1:L',    run: syncEnquiries },
 ] as const
 
