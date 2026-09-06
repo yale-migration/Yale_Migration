@@ -149,5 +149,44 @@ for (const f of files) {
   }
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * 10-s56-link-client-code.sql — the two properties that make it SAFE. (D-459)
+ *
+ * This file attaches a STATUTORY DEADLINE to a client file by matching names.
+ * That is only defensible because of two guards, and an edit that quietly drops
+ * either one turns a helpful join into a legal-deadline-on-the-wrong-file bug
+ * that nothing else would catch. So they are asserted, not trusted.
+ * ───────────────────────────────────────────────────────────────────────── */
+{
+  const f = '10-s56-link-client-code.sql'
+  if (files.includes(f)) {
+    const sql = readFileSync(join(DIR, f), 'utf8')
+
+    // GUARD 1 — never overwrite a real client_code. When the sheet finally
+    // gains its own column, the synced value must win over this guess.
+    check(`${f} · trigger refuses to overwrite an existing client_code`,
+          /if new\.client_code is not null then return new\s*;/i.test(
+            sql.replace(/\s+/g, ' ')),
+          'must return early when client_code is already set')
+
+    // GUARD 2 — exactly one match, in BOTH the trigger and the backfill.
+    // Two clients sharing a name must leave the field NULL, not pick one.
+    check(`${f} · trigger links only on a UNIQUE name match`,
+          /hits\s*=\s*1/.test(sql),
+          'trigger must require exactly one matching client')
+
+    check(`${f} · backfill links only on a UNIQUE name match`,
+          /count\(\*\)\s+from\s+public\.matters\s+m2[\s\S]{0,200}?\)\s*=\s*1/i.test(sql),
+          'the UPDATE must carry the same one-match subquery as the trigger')
+
+    // The match itself must be case- and whitespace-insensitive on both sides,
+    // or "  Ana Cruz" and "ana cruz" are different people.
+    const norm = (sql.match(/lower\(btrim\(/g) || []).length
+    check(`${f} · names normalised on both sides of every comparison`,
+          norm >= 4, `${norm} lower(btrim(...)) wrappers — expected at least 4`)
+  }
+}
+
+
 console.log(`\n${pass}/${pass + fail} checks passed`)
 process.exit(fail === 0 ? 0 : 1)

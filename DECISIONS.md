@@ -9573,3 +9573,59 @@ go-live.
 
 ⚠️ **No other coverage moved since 25 Aug** — contact numbers 6/38, emails 27/38, expiry 21/38,
 last contact 0/38. RJ has filled in nothing further. None of it blocks a contracted hour.
+
+## D-459 | Section 56 deadlines would have appeared on NO client file — for staff either
+
+The `Yale Migration — MASTER DATABASE` export arrived 6 Sep. Auditing its three sync tabs against
+the sync's own allowlists produced a clean result and then a bad one.
+
+### ✅ The good half — the sync is structurally correct against the real sheet
+Every mapped column exists, at the right letter, with no credential columns anywhere:
+
+| tab | range the sync reads | columns in the sheet | mapped | broken |
+|---|---|---|---|---|
+| MASTER | `A1:AE` | 31 | 18 | **0** |
+| S56 TRACKER | `A1:S` | 19 | 10 | **0** |
+| ENQUIRIES | `A1:L` | 12 | 11 | **0** |
+
+That also confirms **D-389** against reality: `ENQUIRIES!G` really is `Location`, not `Office`.
+
+**Current contents:** MASTER 14 invented clients · S56 TRACKER **empty** · ENQUIRIES **empty**.
+The system still has not processed a real client.
+
+### 🔴 The defect — a silent disconnect between two things that both look fine
+`s56_deadlines.client_code` exists in the schema and is indexed. The client file reads it:
+
+```ts
+getMatterS56 →  all.filter((d) => d.client_code === code)
+```
+
+⛔ **`syncS56` never sets it.** Its `required` field is `client_name`, the S56 TRACKER tab has no
+Client Code column, and nothing else fills the gap. So every synced deadline arrives with
+`client_code = NULL` and that filter matches **nothing**.
+
+**The failure is worse than "clients cannot see deadlines" (A-55).** *Nobody* can:
+
+* the practice board lists deadlines **by name**, so it looks completely correct;
+* every individual client file shows **no deadline at all** — including for Robinder;
+* nothing errors, nothing warns, no row is missing anywhere.
+
+🔑 **A feature can be wired at both ends and joined nowhere in the middle, and every surface you
+would think to check still looks right.** The board was the surface we kept checking.
+
+### The fix, and why it refuses to guess
+`10-s56-link-client-code.sql` — a trigger plus a one-off backfill that links a deadline to a client by
+an **exact, case- and whitespace-insensitive name match, only when exactly one client matches.**
+
+⛔ **Zero matches or two both leave it NULL.** Attaching a statutory deadline to the wrong person's
+file in an immigration practice is worse than showing none — so where there is doubt it does nothing,
+and the deadline stays visible on the board where a human will see it.
+
+⚠️ **It is a bridge, not the answer.** The real fix is the **Client Code column in S56 TRACKER**,
+already asked of Robinder. The trigger only acts when the value is NULL, so the day that column
+exists the synced value wins and this stops firing on its own.
+
+**Four gates added** (`sql.test.mjs`, 18 → 22), and **all three injections verified to fail**:
+accepting any match in the trigger, accepting any match in the backfill, and removing the
+never-overwrite guard. A name-matching join that silently loosens is exactly the edit nothing else
+would catch.
