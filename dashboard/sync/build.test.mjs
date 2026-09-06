@@ -169,5 +169,55 @@ const allSkipped = await throwsWith(
   'Refusing to sync an empty set')
 check('rows that all get skipped also count as an empty read', allSkipped.threw, allSkipped.msg)
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * GOOGLE PADS EVERY SHEET WITH BLANK ROWS. (D-461)
+ *
+ * Verified against the real exported workbook on 6 Sep: MASTER returned 983
+ * body rows of which 969 were entirely empty, S56 TRACKER 1000 of 1000, and
+ * ENQUIRIES 999 of 999. That is not their data being messy — it is what a
+ * Google Sheet is. Every tab is ~1000 rows tall whether or not anyone typed
+ * in them.
+ *
+ * ⛔ Two ways this could have gone wrong, both silent:
+ *   · a blank row counted as a real record → ~1000 junk rows written per sync
+ *   · a blank row raising a warning → 969 warnings burying the one that matters
+ *
+ * It does neither today. These lock that in, because the day it changes the
+ * symptom is a database full of empty clients, not an error.
+ * ───────────────────────────────────────────────────────────────────────── */
+console.log('\n=== Google pads sheets to ~1000 rows — blanks must vanish quietly ===')
+{
+  const real = [['YM-2026-00001', '', 'ANJALI SHARMA', '', '', '', '', '485', '', 'BRISBANE']]
+  const width = 31
+  const pad = () => new Array(width).fill('')
+  const rows = [
+    ...real.map((r) => { const x = pad(); r.forEach((v, i) => (x[i] = v)); return x }),
+    ...Array.from({ length: 969 }, pad),
+  ]
+  const r = buildRecords(rows, {
+    map: C.MASTER_ALLOWLIST, required: 'client_code', notNull: ['full_name', 'office'],
+  })
+  check('970 rows in, only the 1 real one becomes a record',
+        r.records.length === 1, `${r.records.length} records`)
+  check('the 969 blanks are counted as skipped, not lost',
+        r.skipped === 969, `skipped ${r.skipped}`)
+  check('🔴 blanks raise NO warnings — 969 would bury the real one',
+        r.warnings.length === 0, `${r.warnings.length} warnings`)
+  check('the surviving record is the real client',
+        r.records[0]?.client_code === 'YM-2026-00001', JSON.stringify(r.records[0]))
+}
+{
+  // ⚠️ A row that is blank EXCEPT for a stray space is still blank. Someone
+  // clicking into a cell and out again must not create a client.
+  const width = 31
+  const x = new Array(width).fill('')
+  x[0] = '   '
+  const r = buildRecords([x], {
+    map: C.MASTER_ALLOWLIST, required: 'client_code', notNull: ['full_name', 'office'],
+  })
+  check('a row holding only whitespace is not a client',
+        r.records.length === 0, `${r.records.length} records`)
+}
+
 console.log(`\n${pass}/${pass + fail} checks passed`)
 process.exit(fail === 0 ? 0 : 1)

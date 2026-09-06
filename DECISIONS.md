@@ -9671,3 +9671,40 @@ is NULL, so rows written through the new column pass straight past it. Two mecha
 `s56lNorm_()` and `lower(btrim())` must stay in step, which is why both are asserted.
 
 **Green: 334 Apps Script · 282 dashboard unit · 165 e2e · typecheck · build · all gates.**
+
+## D-461 | The sync run against the real workbook — it works, and the probe was wrong twice before it was right
+
+With `MASTER DATABASE` exported, the sync's own `buildRecords` was run over the **actual sheet rows**
+— same code path as production, no Google API, no network. The closest thing to proving the sync
+short of calling it, and it can be done without waiting on anyone.
+
+### ✅ Result
+| tab | rows fed | blank | records | skipped | warnings |
+|---|---|---|---|---|---|
+| MASTER | 983 | 969 | **14** | 969 | **0** |
+| S56 TRACKER | 1000 | 1000 | 0 | 1000 | 0 |
+| ENQUIRIES | 999 | 999 | 0 | 999 | 0 |
+
+The 14 invented clients come through clean. Both empty tabs behave. **The sync works against their
+real workbook.**
+
+### 🔑 Google pads every sheet to ~1000 rows
+969 of MASTER's 983 body rows are entirely empty. That is not messy data — **it is what a Google
+Sheet is.** Two silent failures were possible and neither happens: blanks are not written as junk
+records, and they raise **no warnings** — 969 of them would have buried the one that mattered.
+Locked in with 5 checks (`build.test.mjs`, 38 → 43), including a row holding only a space.
+
+### ⚠️ Two false alarms, both mine, and the second is the instructive one
+1. **"983 rows, 0 records built."** I called `buildRecords(body, headers, spec)`; it takes **two**
+   arguments, so my spec was silently ignored. Fixed, 14 records.
+2. **`visa_type: "485.0"`** looked like the D-404 float bug reaching the sync. It is not. The cells
+   genuinely hold floats, but that string came from **openpyxl → Python `str(485.0)`** in my probe.
+   The Sheets API with `UNFORMATTED_VALUE` returns a JSON *number*, and `String(485)` is `"485"` —
+   confirmed by the test above emitting `"visa_type":"485"`.
+
+🔴 **The second nearly went in a decision as a real defect.** A probe built to check production is
+itself unverified code, and it is written fast, by the person least inclined to doubt it.
+**When a probe reports a defect, the probe is the first suspect — not the second.**
+
+✅ It did surface one genuine reassurance: `clean()` is typed `(v: unknown)` and uses `String(v ?? '')`,
+so the mismatch between the declared `string[][]` and the numbers the API really returns is harmless.
