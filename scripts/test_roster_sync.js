@@ -126,16 +126,28 @@ check(
     : 'REMOVED from the dropdown — his 8 existing rows will be REJECTED at paste (D-353)'
 );
 
-/* The hole his departure leaves, asserted rather than assumed. When someone
- * fills these routes this test FAILS and asks to be updated — which is the
- * point: the gap must never close by accident, and must never widen unnoticed. */
+/* ✅ THE GAP IS CLOSED — and this is the test doing exactly what it was for.
+ *
+ * Written on 4 Sep to fail the moment someone filled these routes, so the hole
+ * could not close by accident. On 6 Sep RJ answered: "for Indian, it will be
+ * Anmol." The test failed, as designed, and is now updated to pin the successor
+ * rather than the gap. (D-462)
+ *
+ * ⛔ It still fails if the owner changes again, which is the whole point: four
+ * roster changes in three weeks, and routing is where they bite silently. */
 ['189', '190', '491', '482', '494', '186'].forEach((v) => {
   const got = m6AssignTo_('', 'INDIAN', v);
   check(
-    `Indian PR ${v} is Unassigned until Robinder names Inder's successor`,
-    got === 'Unassigned',
-    got === 'Unassigned' ? '' : `now routes to ${got} — if intended, update D-439 and this check`
+    `Indian PR ${v} routes to Anmol — Inder's successor`,
+    got === 'Anmol',
+    got === 'Anmol' ? '' : `routes to ${got} — if the owner changed, update D-462 and this check`
   );
+});
+
+/* RJ's other half: "for Filipino - Rj". Already true before he said it, and
+ * asserted so the confirmation is not lost next time someone edits the roster. */
+['189', '190', '491', '482', '494', '186'].forEach((v) => {
+  check(`Filipino PR ${v} routes to RJ`, m6AssignTo_('', 'FILIPINO', v) === 'RJ');
 });
 
 /* ⛔ Guard against the opposite error. Proving those six are Unassigned is

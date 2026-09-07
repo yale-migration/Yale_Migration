@@ -9708,3 +9708,44 @@ itself unverified code, and it is written fast, by the person least inclined to 
 
 ✅ It did surface one genuine reassurance: `clean()` is typed `(v: unknown)` and uses `String(v ?? '')`,
 so the mismatch between the declared `string[][]` and the numbers the API really returns is harmless.
+
+## D-462 | RJ closes the Inder gap — Anmol takes the Indian PR line, and the SQL bridge is proven live
+
+**RJ, 6 Sep 2026, verbatim:** *"For the clients handled by Inder before. We can just leave it blank.
+For the second question, for Indian, it will be Anmol. For Filipino-Rj."*
+
+### A-54 — answered, and the hypothesis was right
+`{ team: 'INDIAN', visas: ['189','190','491','482','494','186'], who: 'Anmol' }` restored to
+`M6_ROSTER`. **The gap opened on 4 Sep is closed.**
+
+🔑 **D-439 guessed this and refused to act on it.** Anmol was "Indian, Brisbane, PR" (RJ, 31 Aug),
+which is exactly this line, and the note read *"very likely Inder's replacement… ⛔ NOT assumed.
+Asked."* Two days later the client confirmed it. **The cost of asking was two days; the cost of being
+wrong would have been every Indian PR enquiry silently routed to the wrong consultant.**
+
+**"For Filipino-Rj"** confirms the FILIPINO row that already routed these six subclasses to him. It
+changes nothing — and is now asserted anyway, because a confirmation that changes nothing is still
+evidence the model is right, and is the cheapest kind to collect.
+
+### A-53 — answered: leave Inder's clients blank
+⚠️ **This contradicts the 6 Sep file, which is the more interesting fact.** The export shows the six
+previously-unassigned clients were given to **ROBIN** (7 → 13), while **Inder's 7 are untouched**
+(D-458). So the team assigned the *unassigned* ones and left the *departed* one's alone — the reverse
+of RJ's instruction on both counts. ▶ **Not ours to reconcile: raise it with Robinder, who is now the
+named consultant on 13 of 38.**
+
+### 🔴 The test earned its keep, on schedule
+`test_roster_sync.js` was written on 4 Sep to **fail the moment anyone filled these routes**, so the
+hole could not close unnoticed. Adding Anmol broke 6 checks immediately. That is the guard working,
+not a regression — updated to pin the successor rather than the gap, and re-verified by injection:
+changing the owner to Pooja fails 6 checks, restoring passes 28/28.
+
+### ✅ And D-459 is proven in the live database
+Sharjeel ran `10-s56-link-client-code.sql` in Supabase:
+
+| total_deadlines | linked_to_a_file | still_unlinked |
+|---|---|---|
+| 3 | **3** | **0** |
+
+Every deadline in the database now resolves to a client file. Before this, the answer would have been
+**0 linked, 3 unlinked** — with nothing on screen to say so.

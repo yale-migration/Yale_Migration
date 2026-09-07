@@ -119,6 +119,19 @@ var M6_ROSTER = [
   { office: null,         team: 'FILIPINO', visas: ['189','190','491','482','494','186'],  who: 'RJ' },
   { office: null,         team: 'INDIAN',   visas: ['500'],                                who: 'Gayatri' },
   { office: null,         team: 'INDIAN',   visas: ['820/801','485','600'],                who: 'Fiza' },
+  /* ✅ ANMOL TAKES INDER'S LINE — RJ, 6 Sep: "for Indian, it will be Anmol."  (D-462)
+   *
+   * This is the successor to the route removed below. The hypothesis in D-439
+   * was that Anmol — "Indian, Brisbane, PR" (RJ, 31 Aug) — was Inder's
+   * replacement rather than a collision, and asking rather than assuming has
+   * now confirmed it. The gap that opened on 4 Sep is closed.
+   *
+   * RJ's "Filipino - RJ" in the same message confirms the FILIPINO row above,
+   * which already routed these six subclasses to him. No change needed there —
+   * worth noting, because a confirmation that changes nothing is still evidence
+   * the model is right, and is the cheapest kind to collect. */
+  { office: null,         team: 'INDIAN',   visas: ['189','190','491','482','494','186'],  who: 'Anmol' },
+
   /* 🔴 INDER HAS LEFT — RJ, 4 Sep: "Inder sir has left the office for good."  (D-439)
    *
    * His route is REMOVED so no NEW enquiry is assigned to someone who is gone.
