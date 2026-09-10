@@ -9778,7 +9778,7 @@ claim about the world.**
 
 ### A-34(a) — CLOSED, and it was already closed on 31 Aug
 It asked for *"2–3 real Department emails forwarded as emails, headers intact"* because *"every
-sample we hold is an image-only scan, so no sender and no subject."* ✅ **`s56-samples/00-READ-ME.md`
+sample we hold is an image-only scan, so no sender and no subject."* ✅ **the s56 samples read-me (in `client-data/`, outside the repo)
 records exactly those**, from RJ's 31 Aug delivery: sender
 `noreply.temporary.graduate@homeaffairs.gov.au`, the full subject pattern, and the parseable body
 footer. The register was never updated. **We were one draft away from asking for it again** — the
