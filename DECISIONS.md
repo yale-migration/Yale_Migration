@@ -9749,3 +9749,44 @@ Sharjeel ran `10-s56-link-client-code.sql` in Supabase:
 
 Every deadline in the database now resolves to a client file. Before this, the answer would have been
 **0 linked, 3 unlinked** — with nothing on screen to say so.
+
+## D-463 | Demo data quoted to the client as their own — and two asks that were already answered
+
+RJ, 10 Sep: *"I just want to ask if You still need some information for the Automation?"* Building
+the open-items list separately, as the gate requires, turned up three things. Only one is about him.
+
+### 🔴 A false claim about the client's own files, in a document written to be spoken from
+The call brief said the Section 56 deadline *"is usually 28 days, but not always — we have already
+seen a **14-day** one in their own files."*
+
+**It is not in their files. It is invented.** `E. TAN · 491 · 14 days allowed` is a row in
+`dashboard/lib/data/fixtures.ts` — demo scaffolding. Checked against reality:
+
+| | |
+|---|---|
+| Real s56 samples held | 2 letters, **both subclass 485, both "28 days"** |
+| Real `S56 TRACKER` rows in MASTER DATABASE | **0** |
+
+⛔ **Told to a Registered Migration Agent about his own practice, that is checkable in seconds and
+wrong.** It would have cost more than every correct sentence around it earned.
+
+🔑 **The mechanism: demo fixtures exist to be indistinguishable from real data on screen, and they
+succeed.** I read a number off the demo board and wrote it down as evidence about the client. The
+board cannot tell you which it is showing — only its source file can, and that is the one place I did
+not look. **Anything quoted from a running demo needs its provenance checked before it becomes a
+claim about the world.**
+
+### A-34(a) — CLOSED, and it was already closed on 31 Aug
+It asked for *"2–3 real Department emails forwarded as emails, headers intact"* because *"every
+sample we hold is an image-only scan, so no sender and no subject."* ✅ **`s56-samples/00-READ-ME.md`
+records exactly those**, from RJ's 31 Aug delivery: sender
+`noreply.temporary.graduate@homeaffairs.gov.au`, the full subject pattern, and the parseable body
+footer. The register was never updated. **We were one draft away from asking for it again** — the
+D-310 failure, which is why the gate demands opening the file rather than reasoning about it.
+
+⚠️ **A-34(c) stays open and is genuinely RJ's**: both real samples are 485. Whether the 28-day figure
+holds for 500 and 820/801 is unverified — and unverifiable from our side.
+
+### A-33 — CLOSED as moot
+Gopi's work email, team and visa line. **He joined 18 Aug and left 22 Aug.** Asking would be worse
+than useless; it would show we are not tracking their staff. ⛔ Never raise his name.
