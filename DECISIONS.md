@@ -9790,3 +9790,42 @@ holds for 500 and 820/801 is unverified — and unverifiable from our side.
 ### A-33 — CLOSED as moot
 Gopi's work email, team and visa line. **He joined 18 Aug and left 22 Aug.** Asking would be worse
 than useless; it would show we are not tracking their staff. ⛔ Never raise his name.
+
+## D-464 | Second-pass audit of the team asks — two arguments of mine died on contact with the files
+
+Re-derived the team-vs-Robinder split independently rather than re-reading the first pass. The split
+held: **2 items are the team's, everything else is Robinder's.** But two justifications I had built
+for the team ask turned out to be wrong, and both were refuted by our own documents.
+
+### ⛔ Wrong argument 1 — "a subclass 500 has an unknown sender, so the filter would miss it"
+Two real Department senders are on file: `noreply.skilled@` (D-427, from the mailbox itself) and
+`noreply.temporary.graduate@` (the 31 Aug 485 letters). The per-stream naming made it look like a
+500 would arrive from a third, unseen address.
+
+`M9-EMAIL-AI-SPEC.md` refutes it in a sentence written weeks ago:
+> *"`noreply.skilled@` is one sender. Other Department correspondence may come from other
+> `@homeaffairs.gov.au` addresses, so the `from:homeaffairs.gov.au` **domain** filter stays — it is
+> broader than any one address."*
+
+**The filter is domain-level. An unseen sender is already covered.**
+
+### ⛔ Wrong argument 2 — "a differently-worded 500 letter would break the parser"
+`days_allowed` is not extracted by a regex. It comes from the **AI classifier**, and
+`s56_parse_classifications.gs` only lifts it out of the returned JSON. A model reading *"you have 21
+days"* or *"within 28 days of the date of this letter"* handles both, and low confidence sets
+**Needs Review** rather than guessing.
+
+### ✅ What survives, and it is thinner than I first wrote
+Asking for a **500 letter is still worth doing** — 20 of the 38 clients are subclass 500 and we have
+tested the reader against **one subclass, twice**. Testing a classifier on one example of one visa
+line is thin coverage before go-live. But it is *"this would raise our confidence"*, **not** *"we are
+blocked"*, and the ask must say so.
+
+🔑 **Both wrong arguments shared a shape: a real observation, extended into a consequence the system
+does not actually have.** Two senders IS a real pattern; the filter simply does not use senders.
+Parsing IS fragile; this parse is not a parse. **The observation being true is what makes the leap
+persuasive — and the file that refutes it is always one already in the repo.**
+
+⚠️ Third time this session (D-461, D-463, this) that my own reasoning outran the files. The pattern
+is not carelessness about facts — every fact here was right. It is **inventing the mechanism that
+connects them.**
