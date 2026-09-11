@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 708K /     9026 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 696K /     9831 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-04 09:38
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:24
 
 | # | Decision |
 |---|---|
@@ -434,3 +434,28 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-04 09:3
 | **D-436** | 22 live s56 matters — and a Python truthiness trap that hid them |
 | **D-437** | RJ's 4 Sep answers — the mailbox fix moves to Robinder, and a helpful guess became data |
 | **D-438** | Verifying my own draft again — "reminders go to that person" is not true |
+| **D-439** | Inder has left — removed from ROUTING, deliberately kept in the DROPDOWNS |
+| **D-440** | The six blanks are confirmed blank — not a data gap to chase |
+| **D-441** | Jasmeet is Brisbane, and is NOT an enquiry-routing destination — A-50 CLOSED |
+| **D-442** | `netlify.toml` was in `dashboard/`, where Netlify never reads it |
+| **D-443** | The runbook told you to deploy to Vercel three sections after deciding Netlify |
+| **D-444** | Netlify Free is legitimate TODAY only because there is no real client data on it |
+| **D-445** | A GitHub collaborator can never see the repo in their OWN Netlify — invert it instead |
+| **D-446** | Netlify Free is single-member — so fix the OWNERSHIP, not the invitation |
+| **D-447** | Repo transferred to the client's GitHub org — verified, with one access limit found |
+| **D-448** | Omitting `publish` did not leave it unset — it handed the choice to the UI |
+| **D-449** | The login page asked the visitor to classify themselves — replaced with identifier-first |
+| **D-451** | Clients have no RLS policy on s56_deadlines — they will never see their own deadline |
+| **D-452** | A 6-digit code instead of a magic link — and the Netlify wall that is not our error |
+| **D-453** | Supabase's built-in email is 2 messages PER HOUR — custom SMTP is a go-live blocker |
+| **D-454** | The "signed in, not connected" screen was a trap — no exit, and it hid the one fact it asked for |
+| **D-455** | The UI must follow the mailbox — a code screen against a link email is a UI that lies |
+| **D-456** | The Claude key was held all along, and Make is on the Free plan — both checked in the live account |
+| **D-457** | Two workbooks, one name — and the sheet we were asking Robinder to share is our own |
+| **D-458** | The 6 unassigned clients went to Robinder, not to blank |
+| **D-459** | Section 56 deadlines would have appeared on NO client file — for staff either |
+| **D-460** | The Client Code column was ours to add all along — asked of the client for weeks |
+| **D-461** | The sync run against the real workbook — it works, and the probe was wrong twice before it was right |
+| **D-462** | RJ closes the Inder gap — Anmol takes the Indian PR line, and the SQL bridge is proven live |
+| **D-463** | Demo data quoted to the client as their own — and two asks that were already answered |
+| **D-464** | Second-pass audit of the team asks — two arguments of mine died on contact with the files |
