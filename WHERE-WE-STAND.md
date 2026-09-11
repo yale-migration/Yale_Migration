@@ -1,7 +1,57 @@
-# WHERE WE STAND — 22 Aug 2026
+# WHERE WE STAND — 11 Sep 2026
 **The one file to read after a context reset.** Position, gaps, resume point.
-🗣 **Talking to the client instead of to a machine? Read `MVP-STATUS-simple.md`** — same facts, plain words.
-`STATUS.md` is history only. `DECISIONS-INDEX.md` → `DECISIONS.md` is why.
+🗣 Talking to the client? `MVP-STATUS-simple.md`. `STATUS.md` is history. `DECISIONS-INDEX.md` is why.
+
+---
+
+# 0 · RESUME HERE (11 Sep 2026)
+
+**MVP 78% · 38 of 49 h · 340 Apps Script + 287 dashboard unit + 165 e2e + 18 RLS checks, all green ·
+0 dirty, 0 unpushed · highest decision D-464.**
+⛔ **Still ZERO real clients processed.** MASTER holds 14 invented people; ENQUIRIES and S56 TRACKER
+are empty. Built is not running.
+
+## The live estate
+| | |
+|---|---|
+| Dashboard | **LIVE** at `yalemigration.netlify.app` — Netlify Free, Yale-owned team |
+| Repo | **`yale-migration/Yale_Migration`** (moved 5 Sep). ⚠️ our access is **`admin=false`** — push yes, settings no |
+| Sheets | **`1Nbaxgz…` YALE BRISBANE OFFICE WORK** = theirs, 31 tabs · **`1ZE1OoTj…` MASTER DATABASE** = **OURS**, holds MASTER/ENQUIRIES/S56 TRACKER |
+| Make.com | **Free plan** — 1,000 ops, **2 scenarios at once**, 12 built. Core is USD 9 |
+| Supabase | Free. Pro (USD 25) needed before real client data — free tier pauses and has no backups |
+
+## 🔴 Ours, still open
+1. **Share MASTER DATABASE with `yale-dashboard-sync@…gserviceaccount.com` (Viewer)** — D-457, ours
+   not his. *Sharjeel said 11 Sep he will do this himself later.*
+2. **Rotate the Supabase `service_role` key** and update it in Netlify.
+3. **Re-run `06-enquiries.sql`** — the old version leaked a demo row.
+4. ⚠️ **The 2 GitHub Actions secrets (`SYNC_URL`, `SYNC_SECRET`)** drive the hourly refresh. **We
+   cannot set them** — needs a Yale org owner or Admin on the repo. Blocks only the hourly refresh.
+5. **Custom SMTP (I-30)** — Supabase's built-in sender is **2 emails/hour** and cannot be raised
+   except by custom SMTP. Blocks every client sign-in; blocks nothing for staff (Google).
+
+## 🔴 Robinder's — for the call
+`info@` forwarding rule (**87%, 33 of 38 s56 letters invisible** — highest value on the call) ·
+Meta access · WhatsApp verification · storage on a Yale account · the USD 9 Make upgrade ·
+the s56 day-count rule · **confirm the checklist VERSIONS** (RJ already said they are *"currently in
+used"* — acknowledge that, do not ask cold) · who owns Inder's 8 files · approve the follow-up
+wording · the full staff list · whether clients see their own s56 deadline · whose Anthropic account ·
+**a go-live date**.
+
+⛔ **Do not raise:** the enquiry form (withdrawn in writing 23 Aug) · Gopi (joined and left in Aug) ·
+the Client Code column (**we did it**, D-460) · who takes the Indian PR visas (**RJ answered: Anmol**,
+D-462).
+
+## Client-facing artefacts (published)
+**⚙️ The Yale Automation** · **📊 The Yale Dashboard** — charts drawn from their own data.
+**✅ What We Need From Robinder** — *private, do not share*.
+
+## 🧠 The three lessons this month keeps teaching
+1. **A task on the client's list stops being re-examined.** Two were ours all along (D-457, D-460).
+2. **Demo fixtures are indistinguishable from real data on screen — and they succeed.** A 14-day s56
+   deadline got quoted to the client as their own; it was `fixtures.ts` (D-463).
+3. **My reasoning outruns the files.** Every fact right, the mechanism connecting them invented —
+   three times in one session (D-461, D-463, D-464).
 
 ---
 

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 696K /     9831 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 696K /     9857 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:24
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:27
 
 | # | Decision |
 |---|---|
@@ -459,3 +459,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:2
 | **D-462** | RJ closes the Inder gap — Anmol takes the Indian PR line, and the SQL bridge is proven live |
 | **D-463** | Demo data quoted to the client as their own — and two asks that were already answered |
 | **D-464** | Second-pass audit of the team asks — two arguments of mine died on contact with the files |
+| **D-465** | RJ had already answered the checklist question — caught by opening a file, not by thinking |

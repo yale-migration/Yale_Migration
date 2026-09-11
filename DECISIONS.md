@@ -9829,3 +9829,29 @@ persuasive — and the file that refutes it is always one already in the repo.**
 ⚠️ Third time this session (D-461, D-463, this) that my own reasoning outran the files. The pattern
 is not carelessness about facts — every fact here was right. It is **inventing the mechanism that
 connects them.**
+
+## D-465 | RJ had already answered the checklist question — caught by opening a file, not by thinking
+
+Refreshing `WHERE-WE-STAND.md` for the compaction surfaced its 22 Aug headline: *"RJ confirmed the
+checklists are current — **'all the checklists are currently in used'**"*.
+
+🔴 **Question 2 in the Robinder call document asked for that cold**, as though nobody had ever
+answered. Asking a client for something his own team supplied three weeks earlier is the D-310 failure
+in its purest form — and this draft had already survived two audits.
+
+⚠️ **The distinction that survives is narrower than the original ask.** RJ confirmed the checklists
+are the ones **in use**. He did not confirm that the **copies we hold are the latest versions** — a
+real gap, because M4 sends those exact files to real clients under Yale's name. So the question stays,
+**reframed as a confirmation that credits his team's answer first**:
+
+> *"Your team confirmed in August that these checklists are the ones you use — thank you. The last
+> thing I need before switching on automatic sending is that the 23 copies I hold are the current
+> versions."*
+
+🔑 **The register said "never confirmed" and the handoff file said "confirmed".** Both were written by
+us, three weeks apart, and neither was wrong — they were answering different questions under the same
+label. **A register row is a label, not a fact; only the logged words are the fact.**
+
+⚠️ It also says something about stale documents: `WHERE-WE-STAND.md` was three weeks old and still
+carried the answer nothing else did. **Refreshing it was worth more than the refresh** — the value was
+in reading what it already said.
