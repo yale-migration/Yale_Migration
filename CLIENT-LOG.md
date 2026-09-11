@@ -1332,3 +1332,46 @@ executing `m6AssignTo_` rather than grepping for names, with both negative injec
 appended to a `docs/DECISIONS.md` I had just created, while the real 9,026-line register sat at the
 repo root. Every gate stayed green — a lost write, not a wrong answer. Merged, stray deleted, and the
 docs gate now fails on a second file bearing a register's name. D-439 · D-440 · D-441 · A-53 · A-54.
+
+---
+
+## 11 Sep 2026 — presentation artefacts built, and three stale asks caught before they reached him
+
+RJ asked on 10 Sep whether we still needed anything. Building the open-items list separately, as G8
+requires, found **three items that were on someone's list and should not have been**:
+
+| Item | Reality |
+|---|---|
+| A-34(a) — real Department emails with headers | ✅ **RJ delivered them 31 Aug.** Register never updated. **One draft from asking twice** |
+| A-33 — Gopi's email and team | ⛔ **Moot.** Joined 18 Aug, left 22 Aug |
+| Step 5 — "Client Code column, Robinder, not done" | ✅ **We did it 6 Sep.** It was never his (D-460) |
+
+🔴 **And one false claim of my own, in a document written to be spoken aloud.** The call brief said a
+**14-day** Section 56 deadline had been *"seen in their own files"*. It had not — `E. TAN · 491 ·
+14 days` is a row in `fixtures.ts`, demo scaffolding. Their two real letters are both 485 and both say
+28 days; their real S56 TRACKER holds **zero rows**. Said to a registered agent about his own practice
+that is checkable in seconds. **Demo fixtures exist to be indistinguishable from real data on screen,
+and they succeed** — only the source file can tell you which, and that is the one place I had not
+looked (D-463).
+
+### Built today — two client-facing pages and one private one
+**⚙️ The Yale Automation** and **📊 The Yale Dashboard** — every chart drawn from their own data: the
+visa mix (500 = 20 of 38), the `info@` split (33 of 38, 87%), and the consultant workload, where
+**Inder shows in red still holding 8 files after leaving.** That last one demonstrates the product by
+being useful rather than by describing itself.
+
+⛔ **No money in either.** Pricing stays in the change order; money inside a demo makes the demo read
+as a sales document.
+
+**✅ What We Need From Robinder** — rebuilt, private, marked do-not-share. Meta's two-layer permission
+model confirmed from their own help centre (*"first you add people… then use task-based permissions to
+grant access to your assets"*), and a simpler Page-level route found that does both layers at once.
+
+### Verified, not assumed
+52 render checks across both client pages — desktop and mobile, light and dark — caught a chart label
+(`186 · 190 · 491 · ART`) starting at a negative x and rendering clipped, and two grids orphaning a
+card. Bar animation added and proven to rest at full length under forced reduced-motion.
+
+### Standing position
+340 Apps Script · 287 dashboard unit · 165 e2e · 18 access-control · all gates green · 0 dirty,
+0 unpushed. **Still zero real clients processed.**
