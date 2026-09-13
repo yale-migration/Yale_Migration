@@ -1,5 +1,12 @@
 # Build prompt — the Yale STAFF sheet
 
+> ⚠️ **SUPERSEDED 13 Sep 2026.** The sheet was built, audited, and **rebuilt** — see D-475. This
+> prompt is kept for the reasoning; the authoritative artefact is the workbook itself. Four things
+> this prompt got wrong: it had **no `Receives Enquiries` column** (so routing would have gone to
+> Jasmeet, Manali and Robinder), it **omitted Jasmeet and Manali**, it left **every email blank**
+> when all of them were already in `ACCESS.md`, and it **omitted Mershe**, whose mailbox is still
+> live under her name.
+
 **Give this whole file to Claude Desktop.** It builds one Google Sheet / Excel file. Nothing else
 is needed.
 

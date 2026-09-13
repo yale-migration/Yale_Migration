@@ -10017,3 +10017,36 @@ harder. Reading each at source keeps the provenance intact.
 ⛔ **The one hard dependency is his:** the `info@` connection must be authorised **as `info@`**.
 Gmail delegation — which `project1@` now holds — is a UI feature and is **invisible to the API**
 (D-78/79/80). Five minutes on a screen-share. A-57.
+
+## D-475 | Auditing the staff sheet found four gaps — and one was a hole in my own spec
+**13 Sep 2026.** The sheet built from `STAFF-SHEET-BUILD-PROMPT.md` was structurally correct:
+validations set to **reject** rather than warn, the red "nobody is covering this person" rule
+present, panes frozen, headers protected, and `Staff Name` correctly left as free text. Opening it
+and checking it against `ACCESS.md` — rather than eyeballing it — found four things wrong.
+
+**1 · 🔴 A design hole in the prompt itself: there was no way to say "staff, but never send them
+enquiries."** Three of the eleven people are exactly that. **Jasmeet** receives work only once a
+file reaches drafting (A-50/D-441 — *"that's the only time we will forward to Jasmeet"*),
+**Manali** is marketing, and **Robinder** is the director. Wiring routing to this sheet (CR-019)
+without that column would have sent live client enquiries to all three. Added column H,
+**`Receives Enquiries` (Yes/No)** — the field M6 will actually read.
+
+**2 · Two people missing entirely.** **Jasmeet**, who is in all three MASTER dropdowns, and
+**Manali** (`manali@yalemigration.com.au`), who is in `ACCESS.md` and was in no version of my list.
+
+**3 · Every email blank — and we have held them since 21 Aug.** All eleven were sitting in
+`ACCESS.md`, verified. This is G2 in miniature: *the answer was already in our own files.* Filled,
+including the three reassignments Robinder gave on the call — Inder's `skilled.visa@` → **Anmol**,
+Priyanka's `admissions@` → **Pooja**, Gayatri's `student2@` → her unnamed replacement.
+
+**4 · Mershe absent, and with her a live risk.** She left ~11 Aug and
+`student@yalemigration.com.au` **is still open under her name** (D-269). A roster that omits her
+omits the reason to close it. Added as `Left`, with the mailbox named in Notes so it is visible to
+the person who can act on it.
+
+⛔ **Gopi is deliberately NOT in this sheet.** She joined and left inside four days and is never to
+be raised with the client (D-355). A sheet that goes to Yale is exactly where that rule bites.
+
+**Kept blank on purpose**, now highlighted yellow by a `??` conditional-format rule so the questions
+are visible rather than buried: Gayatri's replacement's name, the Pooja/Puja spelling, and visa
+types for Pooja and Rey.
