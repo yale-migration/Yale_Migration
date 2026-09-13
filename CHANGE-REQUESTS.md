@@ -271,3 +271,23 @@ has decided about the number:
 |---|---|
 | Cloud API onboarding + webhook into the enquiry pipeline | 6 |
 | **Total** | **6 h · USD 210** — *after* the app-vs-API decision, not before |
+
+## CR-019 — Routing reads the STAFF sheet instead of a hard-coded list (13 Sep 2026)
+Robinder offered to keep the staff list current himself. Taking him up on it means `M6_ROSTER` stops
+being a constant a developer edits and becomes a **read of a sheet Yale owns** (D-473).
+
+| | h |
+|---|---|
+| Read + cache the STAFF tab, with a fallback to the last good roster | 2.0 |
+| Honour `Status` and `Covered By` — route a leaver's work to their cover | 1.5 |
+| Refuse-and-alert on a bad row rather than routing to nobody | 1.0 |
+| Tests | 1.5 |
+| **Total** | **6 h · USD 210** |
+
+🔑 **Worth more than it costs.** Five roster changes in six weeks, each needing us. This removes us
+from that loop permanently — and removes the window where enquiries route to someone who has left.
+
+⛔ **Must fail loudly, never silently.** If the sheet is unreachable or a row is malformed, the
+routing falls back to the last known-good roster **and says so in the log**. A roster read that
+quietly returns nothing would route every enquiry to Unassigned — worse than the hard-coded list it
+replaced.

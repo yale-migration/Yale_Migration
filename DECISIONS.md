@@ -9970,3 +9970,50 @@ in `m6_enquiry_triage.gs` says so, because the next person to read that line wil
 **"Pooja"**. Same person, two transliterations — but `setAllowInvalid(false)` means a sheet value
 that does not match the list **is rejected in silence**. Do not normalise on a guess; ask which
 spelling their own records use, then make all three lists match it.
+
+## D-473 | The staff roster becomes a sheet Yale owns, not a constant we edit
+**13 Sep 2026.** Robinder, on the call: *"staff ki list mujhe idhar daal do, main abhi update kar
+deta hoon"* — give me the list and I will keep it updated.
+
+**Take him up on it.** The roster has changed **five times in six weeks** (Mershe, Gopi in and out,
+Inder, Priyanka, Gayatri) and every change has required a developer to edit `M6_ROSTER` by hand.
+The window between a change happening and us hearing about it is a window where real enquiries route
+to someone who has left.
+
+🔑 **The sheet is therefore not an HR list — it is the routing table.** That single framing decides
+the design: `Status` and `Covered By` are the load-bearing columns, `Covered By` is conditionally
+formatted **red** when someone is not Active and nobody is named to catch their work, and `Staff
+Name` is deliberately **free text** so a new hire can be added without first editing a dropdown.
+
+⛔ **Three cells ship deliberately blank**, because a plausible guess in a routing table misroutes a
+real client's file: Gayatri's replacement (unnamed — A-58), the Pooja/Puja spelling (his word vs our
+dropdowns; `setAllowInvalid(false)` rejects a mismatch **in silence**), and the visa types for Pooja,
+Priyanka and Rey, which were never established.
+
+Build prompt for Claude Desktop: `docs/STAFF-SHEET-BUILD-PROMPT.md`. Wiring `M6_ROSTER` to read the
+sheet is the follow-on and is **not** in the 48 hours — it is CR-019.
+
+## D-474 | Two mailboxes, two connections, two scenarios — and it is the right answer, not a workaround
+**13 Sep 2026.** Robinder refused forwarding (D-467). Question raised: is reading both `info@` and
+`visa.lodgement@` actually implementable, or is forwarding the only realistic path?
+
+**It is implementable, and it is now the better option.** What changed is that Make Core is paid:
+verified live at **5,000 operations and a 1-minute interval**, against Free's 1,000 and 15 minutes,
+and without Free's cap of two active scenarios.
+
+**Shape:** a Make scenario has exactly **one** trigger module, so two mailboxes means **two
+scenarios** — not one scenario with two triggers. `M9a` on `visa.lodgement@`, `M9b` on `info@`,
+sharing the classifier and writing to the same tracker.
+
+**Budget, computed not guessed:** 15-min polling across Mon–Fri 08:00–18:00 is 40 polls/day ≈ **880
+ops/month per mailbox**. Two mailboxes ≈ **1,760** of 5,000, leaving ~3,200 for actual processing at
+roughly 3 ops per email handled. Comfortable.
+
+**Why it beats forwarding even ignoring his preference:** a forwarded message arrives with the
+forwarder as sender, which damages the `from:homeaffairs.gov.au` signal the classifier keys on; and
+one mailbox carrying both Department mail and general correspondence makes every future filter
+harder. Reading each at source keeps the provenance intact.
+
+⛔ **The one hard dependency is his:** the `info@` connection must be authorised **as `info@`**.
+Gmail delegation — which `project1@` now holds — is a UI feature and is **invisible to the API**
+(D-78/79/80). Five minutes on a screen-share. A-57.

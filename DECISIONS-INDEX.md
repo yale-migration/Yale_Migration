@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 704K /     9972 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 708K /    10019 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 16:29
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 19:51
 
 | # | Decision |
 |---|---|
@@ -467,3 +467,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 16:2
 | **D-470** | Sign-in email moves to Resend on the Yale domain (closes I-30) |
 | **D-471** | WhatsApp is the Business APP, not the API — and that is a dead end as it stands |
 | **D-472** | Priyanka → Pooja; Gayatri on leave, and her route deliberately stays |
+| **D-473** | The staff roster becomes a sheet Yale owns, not a constant we edit |
+| **D-474** | Two mailboxes, two connections, two scenarios — and it is the right answer, not a workaround |
