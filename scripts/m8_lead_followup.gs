@@ -42,9 +42,59 @@
 
 var M8_TAB      = 'ENQUIRIES';
 var M8_FIRST    = 2;
-var M8_DAY1     = 7;     // SOP-CI-001 10D — "within 7 days"
-var M8_DAY2     = 30;    // SOP-CI-001 10D — "and again after 30 days"
+
+/**
+ * ================== THE LADDER — READ THE CONVENTION ==================     (D-466)
+ *
+ * 🔑 THESE ARE **DAY NUMBERS**, NOT OFFSETS. Robinder's own counting, verbatim
+ * from the 12 Sep call:
+ *
+ *   "First, okay, that will be day one, right? **Same day of inquiry.**"
+ *   "Third day of contact, we are here. Seventh day, we are here. Fifteenth day."
+ *   "7, 2 weeks, and then 30."
+ *
+ * So **day 1 IS the day the enquiry arrives**, and the date for day N is
+ * `enquiry_date + (N - 1)`. Writing these as offsets (0,1,2,6,14,29) would be
+ * arithmetically identical and unreadable next to his words — and the first
+ * person to "fix" 0 to 1 would silently shift the whole ladder by a day.
+ *
+ * ⛔ SCOPE. The contracted cadence is SOP-CI-001 10D: "within 7 days and again
+ * after 30 days" — TWO touches. This is SIX. It is CR-016, raised by the client
+ * on 12 Sep, and it is QUOTED, not absorbed (`CHANGE-REQUESTS.md`).
+ */
+var M8_LADDER   = [1, 2, 3, 7, 15, 30];
+
+/* ⚠️ KEPT so nothing that referenced the old names breaks, and so the contracted
+ * cadence stays visible beside the one that replaced it. Do not compute from these. */
+var M8_DAY1     = 7;     // SOP-CI-001 10D — "within 7 days"        (superseded by M8_LADDER)
+var M8_DAY2     = 30;    // SOP-CI-001 10D — "and again after 30 days" (superseded)
+
 var M8_BASELINE = '';    // 'yyyy-MM-dd' on enquiry-import day. '' = branch off.
+
+/**
+ * The date of ladder day N for an enquiry received on `d`.
+ * Day 1 = the day itself, so the offset is N-1. Exported for the test harness.
+ */
+function m8LadderDate_(d, dayNumber) {
+  return addDays_(d, dayNumber - 1);
+}
+
+/**
+ * The next touch that has NOT yet passed, as {day, date}, or null when the whole
+ * ladder is behind us. `today` and `d` must both be start-of-day.
+ *
+ * ⛔ Strictly "not yet passed", i.e. date >= today — NOT date > today. A touch
+ * falling on today is DUE today, not missed. Getting that backwards would skip
+ * the same-day touch entirely, which is the single rung the client cared most
+ * about.
+ */
+function m8NextTouch_(d, today) {
+  for (var i = 0; i < M8_LADDER.length; i++) {
+    var when = m8LadderDate_(d, M8_LADDER[i]);
+    if (when.getTime() >= today.getTime()) return { day: M8_LADDER[i], date: when };
+  }
+  return null;
+}
 
 var M8_COL = { DATE:1, NAME:2, PHONE:3, STATUS:9, DUE:10, NOTES:11, LAST_CONTACT:12 };
 
@@ -138,7 +188,7 @@ function m8Run_() {
 
   var today = startOfDay_(new Date());
   var live = 0, closed = 0, historical = 0, nodate = 0, blank = 0;
-  var due7 = 0, due30 = 0, lapsed = 0, replied = 0;
+  var dueEarly = 0, dueLate = 0, lapsed = 0, replied = 0;
 
   for (var i = 0; i < n; i++) {
     // An enquiry is a row with someone to contact. Name OR phone — the log has
@@ -183,21 +233,17 @@ function m8Run_() {
     }
 
     live++;
-    var first  = addDays_(d, M8_DAY1);
-    var second = addDays_(d, M8_DAY2);
+    var next = m8NextTouch_(d, today);
 
-    if (today < first) {
-      due[i][0] = fmt_(first);              // first window not open yet
-      due7++;
-    } else if (today < second) {
-      due[i][0] = fmt_(second);             // 7-day window passed, 30-day is next
-      due30++;
+    if (next) {
+      due[i][0] = fmt_(next.date);          // the next rung still ahead of us
+      if (next.day <= 3) dueEarly++; else dueLate++;
     } else {
-      // Both windows are behind us. SOP-CI-001 stops at 30 days, so there is no
-      // third date to offer — what is needed now is a decision, not another chase.
+      // The whole ladder is behind us. There is no seventh date to offer —
+      // what is needed now is a decision, not another chase.
       due[i][0] = '';
       notes[i][0] = m8Note_(notes[i][0],
-        'both follow-ups (day ' + M8_DAY1 + ' and day ' + M8_DAY2 +
+        'all ' + M8_LADDER.length + ' follow-ups (days ' + M8_LADDER.join(', ') +
         ') are past and no outcome is recorded — set a Status');
       lapsed++;
     }
@@ -223,8 +269,8 @@ function m8Run_() {
 
   Logger.log('=== M6 enquiry follow-up ===');
   Logger.log('  live enquiries ................ ' + live);
-  Logger.log('     next touch = day ' + M8_DAY1 + ' ..... ' + due7);
-  Logger.log('     next touch = day ' + M8_DAY2 + ' .... ' + due30);
+  Logger.log('     next touch = day 1-3 (early) ..... ' + dueEarly);
+  Logger.log('     next touch = day 7+ (later) ...... ' + dueLate);
   Logger.log('     🔴 lapsed, needs a Status .. ' + lapsed);
   Logger.log('  replied -> sequence stopped ... ' + (hasLC ? replied
              : 'column L ABSENT — stop-on-reply is OFF. Run add_enquiries_last_contact.gs'));

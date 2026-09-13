@@ -9855,3 +9855,118 @@ label. **A register row is a label, not a fact; only the logged words are the fa
 ⚠️ It also says something about stale documents: `WHERE-WE-STAND.md` was three weeks old and still
 carried the answer nothing else did. **Refreshing it was worth more than the refresh** — the value was
 in reading what it already said.
+
+## D-466 | The enquiry ladder is six touches, not two (CR-016)
+**12 Sep 2026, Robinder call.** Asked how enquiries should be chased, he gave a cadence in his own
+counting: *"First, okay, that will be day one, right? **Same day of inquiry**"* … *"Third day of
+contact, we are here. Seventh day, we are here. Fifteenth day, we are here"* … *"7, 2 weeks, and
+then 30."* Also: *"jis din gayi, us din shaam ko paanch baje poochna hai"* — on the arrival day,
+check at ~5pm whether anyone replied.
+
+**Ladder: days 1, 2, 3, 7, 15, 30 — where day 1 IS the arrival day.**
+
+🔑 **Stored as day NUMBERS, not offsets.** `M8_LADDER = [1,2,3,7,15,30]` with
+`date = enquiry_date + (N-1)`. Offsets `[0,1,2,6,14,29]` are arithmetically identical and
+unreadable beside his words — and the first person to "fix" the leading 0 to a 1 shifts the whole
+ladder by a day, silently, forever.
+
+⛔ **This is CR-016 and it is out of scope.** The contracted cadence is SOP-CI-001 10D — *"within 7
+days and again after 30 days"* — **two** touches. Six is three times the work of the thing we
+quoted. `M8_DAY1`/`M8_DAY2` are kept in the file, marked superseded, so the contracted cadence stays
+visible next to the one that replaced it.
+
+**Implemented** in `m8_lead_followup.gs` via `m8NextTouch_()`. The boundary is `date >= today`, not
+`> today`: a rung falling today is DUE today. Inverting that would skip the same-day touch — the one
+rung he actually cared about. Test suite 37 → **45 checks**, including two regression guards that
+fail if anyone reverts to 7/30.
+
+## D-467 | info@ and visa.lodgement@ stay SEPARATE; forwarding is refused
+**12 Sep 2026.** Our standing plan since D-434 was one Gmail filter forwarding Department mail from
+`info@` to `visa.lodgement@`, on the grounds that 87% of s56 letters land in `info@` and M9 watches
+only the other mailbox.
+
+🔴 **Robinder declined it.** Both mailboxes are to be read **separately**, because `info@` carries far
+more than Department mail — it is their general client correspondence address, and he does not want
+that volume pushed into the lodgement mailbox.
+
+**Consequence, and it is architectural:** `info@` needs **its own Make↔Gmail OAuth connection.**
+
+⛔ **Delegation does not solve this.** `project1@` now holds Gmail *delegation* on `info@` (set up
+live on the call). Delegation is a **UI** feature — it is **invisible to the Gmail API** (D-78/79/80,
+proven then, unchanged now). A Make connection authorised as `project1@` cannot see `info@` mail.
+The connection must be authorised **as `info@` itself**, which only Robinder can do.
+
+**So the plan is: two mailboxes, two connections, one classifier.** Recorded as A-57.
+
+## D-468 | Reversed: the restricted ad account IS live, and there are two
+**12 Sep, corrected 13 Sep.** On the call Robinder said *"Yale Migration ads kar nahi use kar rahe"* —
+we are not using it — which pointed at simply removing it to unblock WhatsApp. **That reading was
+wrong.** Sharjeel confirmed afterwards: they run paid ads on a **newer** ad account; the restricted
+one is the **older** one, which also carried spend. Two accounts, one restricted.
+
+⛔ **The lesson is the one D-463 already taught in another costume:** a sentence heard once in a
+second language, in a call, is not a verified fact. It read as clean permission to delete something
+in a client's account. **Before deleting anything in a client's account, read `createdByUser` and
+confirm out of band** (D-375). Removal is Robinder's to do, on the old account only.
+
+## D-469 | s56 auto-reply is a DRAFT, never a send
+**12 Sep 2026.** Robinder asked that when an s56 letter arrives, the client gets a reply the same
+day listing what is still outstanding. Confirmed 13 Sep: **draft only — nothing reaches a client
+until a human has read it.**
+
+This is not a compromise, it is the professional rule this project has had since day one: only the
+Registered Migration Agent advises. An s56 reply names documents a visa decision turns on; an AI
+sending one unattended is exactly the failure this rule exists to prevent. M4 already uses Gmail
+`ActionCreateDraft` for the same reason — the pattern is proven and reused, not invented.
+
+## D-470 | Sign-in email moves to Resend on the Yale domain (closes I-30)
+**12 Sep 2026.** Supabase's built-in mailer is capped at **2 messages/hour** and only reaches
+pre-authorised team addresses — so client sign-in could not work at all. Agreed with Robinder: use
+**Resend**, sending from Yale's own domain.
+
+Vendor facts verified 13 Sep: host `smtp.resend.com`, port `587`, username the literal string
+`resend`, password a Resend API key. Supabase with custom SMTP **starts at 30/hour** and is raised
+on the Rate Limits page — *not* unlimited, which matters when inviting 38 clients.
+
+🔴 **The DNS trap, written down before anyone touches a registrar:** Yale's mail is Google Workspace
+(D-301). Resend offers an **MX** record for bounce handling. Adding it on the **root** domain and
+dropping Google's would stop all Yale email. **Use `send.yalemigration.com.au`** — a subdomain with
+no mail of its own — so the root MX is never in play. Runbook: `dashboard/RESEND-EMAIL-SETUP.md`.
+
+## D-471 | WhatsApp is the Business APP, not the API — and that is a dead end as it stands
+**13 Sep 2026.** After three attempts to get this answered, it is now clear: Yale's WhatsApp is
+**+61 405 268 738 running the WhatsApp Business *app***, with an established contact history and a
+form they send enquirers to fill in. Robinder also wants **the last month of WhatsApp enquiries
+reviewed**, because he believes several were missed.
+
+⛔ **Two hard facts, and neither is negotiable by us:**
+1. **The Business app cannot be automated.** Only the **Cloud API** can. Migrating the number to the
+   API **removes it from the app** — the phone stops being able to open those chats normally. That
+   is a real operational loss for a team that answers on their phones, and it is **Robinder's
+   decision, not ours**.
+2. **History does not migrate.** Even after moving to the API, prior conversations are **not**
+   retrievable. The last month of missed enquiries cannot be recovered by any automation — they can
+   only be read by a person, in the app, today.
+
+**So the honest answer is two separate things:** a manual sweep of the last month (theirs, now), and
+a decision about the number's future (his, before any build). Recorded as A-58 and A-59.
+
+## D-472 | Priyanka → Pooja; Gayatri on leave, and her route deliberately stays
+**12 Sep 2026, Robinder call.** Three roster changes, not one:
+- **Inder → Anmol** (already applied, D-462). Email **and phone** reassigned.
+- **Priyanka → Pooja.** Email and phone reassigned. `Pooja` was **already** present in all three
+  dropdowns (`setup_master_sheet.gs`, `setup_s56_tracker_tab.gs`, `setup_call_log_tab.gs`) — checked,
+  not assumed. Priyanka was never in `M6_ROSTER`, so no routing change was needed; she is added to
+  the departed-staff guard in `test_roster_sync.js` so any future route to her fails loudly. **29
+  checks.**
+- **Gayatri → maternity leave**, replaced by a man he did not name (A-58).
+
+🔑 **Gayatri's INDIAN-500 route is LEFT IN PLACE, on purpose.** Her email and phone are already
+redirected to the replacement, so enquiries routed to "Gayatri" reach the person doing the work.
+Removing the route would send Indian 500 enquiries to **nobody** — strictly worse. A block comment
+in `m6_enquiry_triage.gs` says so, because the next person to read that line will otherwise "fix" it.
+
+⚠️ **Spelling, unresolved and worth one question:** he said **"Puja"**; our dropdowns say
+**"Pooja"**. Same person, two transliterations — but `setAllowInvalid(false)` means a sheet value
+that does not match the list **is rejected in silence**. Do not normalise on a guess; ask which
+spelling their own records use, then make all three lists match it.

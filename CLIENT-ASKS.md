@@ -171,3 +171,23 @@ survives in MASTER v2 — the concepts were right, the file was stale.
 | Auto-send vs prepare-and-review | *"prepare and check first before sending"* — **M4b must never auto-send** | D-234 |
 | `visa.lodgement@` owner · mail platform · roster (Nisha = former staff) | All resolved | D-80 / D-76 / D-124 |
 | s56 cadence + client notification template | 7/14/21/26, template supplied | D-58 / D-117 |
+
+---
+
+## Raised 12–13 Sep 2026 (Robinder call)
+
+| id | ask | why it matters | owner |
+|---|---|---|---|
+| **A-57** | 🔴 **Authorise the Make↔Gmail connection AS `info@`** — he signs in, on his own screen | Delegation is invisible to the Gmail API (D-78/79/80). Without this, `info@` is unreadable by the automation — and he refused forwarding (D-467), so **87% of s56 letters stay invisible.** Highest-value open item. | **Robinder** |
+| **A-58** | **The name of Gayatri's replacement** | He said only *"ladka hai"* — a man — and moved on. Gayatri is on maternity leave and her email + phone are already reassigned to him. Until we have the name, **Indian 500 routing points at someone who is not there.** | **Robinder** |
+| **A-59** | **WhatsApp: app or API — and is he willing to lose the app?** | Migrating +61 405 268 738 to the Cloud API **removes it from the Business app**. His team answers on their phones. This is an operational decision only he can make (D-471). | **Robinder** |
+| **A-60** | **Confirm the old ad account has been removed** | The restricted one is the OLDER account; the newer one runs live ads (D-468). WhatsApp stays blocked until the restricted one leaves the business portfolio. ⛔ His to remove — never ours. | **Robinder** |
+| **A-61** | **Who registers `yalemigration.com.au` DNS, and can we get the records added?** | Resend needs TXT records to verify. 🔴 Use the `send.` subdomain — touching the root MX would stop all Yale email (D-470). | **Robinder** |
+
+### ✅ Closed by the same call
+- **s56 day count** — *"hota agle din se hai"*, from the next day; for short timelines count from the same day as a buffer. **Our code already did this** (`s56_deadline_verifier.gs:146`).
+- **Staff** — Inder → **Anmol**; Priyanka → **Puja**; Gayatri (maternity) → name pending, A-58.
+- **Anthropic account** — Robinder agreed to carry it. Unblocks M9.
+- **Make Core** — paid. Verified live: 5,000 ops, 1-minute interval.
+- **Meta access** — granted to `project1@`, full assets.
+- **Go-live date** — his words: whenever we are ready.

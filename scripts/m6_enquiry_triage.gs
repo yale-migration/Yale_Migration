@@ -117,6 +117,19 @@ var M6_ROSTER = [
   { office: 'TOWNSVILLE', team: null,       visas: null,                                   who: 'Cristelle' },
   { office: null,         team: 'FILIPINO', visas: ['500','485','820/801'],                who: 'Star' },
   { office: null,         team: 'FILIPINO', visas: ['189','190','491','482','494','186'],  who: 'RJ' },
+  /* ⚠️ GAYATRI IS ON MATERNITY LEAVE — AND THE ROUTE STAYS.  (D-472, 12 Sep)
+   * Robinder: "Gayatri jo hai, maternity leave pe; uski jagah pe ladka hai —
+   * phone number aur email usko assign ho gaya." He named the replacement only
+   * as "a man" and moved on, so we do not have the name (A-58).
+   *
+   * 🔑 LEAVING THIS ROUTE POINTING AT GAYATRI IS THE CORRECT INTERIM STATE, and
+   * this comment exists so nobody "fixes" it. Her email and phone have ALREADY
+   * been redirected to the replacement — so mail routed to Gayatri reaches the
+   * person actually doing the work. Removing the route would send Indian 500
+   * enquiries to nobody, which is strictly worse than sending them to a mailbox
+   * a real person is reading.
+   *
+   * ⛔ Rename this the moment A-58 is answered. Do not guess the name. */
   { office: null,         team: 'INDIAN',   visas: ['500'],                                who: 'Gayatri' },
   { office: null,         team: 'INDIAN',   visas: ['820/801','485','600'],                who: 'Fiza' },
   /* ✅ ANMOL TAKES INDER'S LINE — RJ, 6 Sep: "for Indian, it will be Anmol."  (D-462)

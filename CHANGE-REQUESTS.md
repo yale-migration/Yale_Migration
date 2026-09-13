@@ -218,3 +218,56 @@ sender registration, send module, opt-out handling, and the per-message running 
 
 **Position:** (a) absorbed deliberately and openly — it is minutes, it makes M8 useful, and refusing
 it on a family referral would be penny-wise. (b) `LOGGED`, quoted before a keystroke.
+
+## CR-016 — Enquiry follow-up: six touches instead of two (client, 12 Sep 2026)
+**Contracted:** SOP-CI-001 10D — *"within 7 days and again after 30 days"*. **Two** touches.
+**Asked for:** days **1, 2, 3, 7, 15, 30**, where day 1 is the arrival day, plus a same-day check at
+~5pm on whether anyone responded.
+
+**Status: BUILT 13 Sep, NOT YET QUOTED.** ⚠️ This is the pattern `HOURS-LEDGER.md` warns about —
+the code was small (a constants change and one helper) so it got built in the moment. **It is still
+out of scope and it still gets quoted.** Six touches is three times the chase volume we costed.
+
+| | h |
+|---|---|
+| Ladder + `m8NextTouch_` + 8 new tests | 1.0 |
+| A second daily trigger for the ~5pm same-day check | 0.5 |
+| **Total** | **1.5 h · USD 53** |
+
+⛔ **Also raises running cost**, which must be said with the price: three times the chase emails on
+the same leads. At 38 clients it is immaterial; at 600 enquiries it is not.
+
+## CR-017 — info@ as a second watched mailbox, with drafted replies (client, 12 Sep 2026)
+Robinder **declined the forwarding rule** (D-467) and asked instead that `info@` be read in its own
+right — client correspondence sorted, assigned to the right consultant, and **replies drafted for
+human review**.
+
+**This is a second M9, not a setting.** It needs its own Gmail OAuth (delegation is invisible to the
+API), its own classifier prompt — `info@` carries general correspondence, not just Department mail —
+and a drafting step that never sends.
+
+| | h |
+|---|---|
+| Second Gmail connection + mailbox routing | 1.5 |
+| Classifier for general correspondence | 3.0 |
+| Draft-reply generation, review-gated | 3.0 |
+| Assignment to consultant + tests | 2.5 |
+| **Total** | **10 h · USD 350** |
+
+⛔ **Blocked** on Robinder authorising the Make↔Gmail connection **as `info@`** (A-57).
+
+## CR-018 — WhatsApp: the last month of missed enquiries (client, 12 Sep 2026)
+Robinder believes enquiries were missed on WhatsApp over the past month and wants them reviewed.
+
+🔴 **This cannot be automated, at any price, and saying so is the deliverable.** Their number runs
+the WhatsApp Business **app**; only the Cloud API can be automated, migrating **removes the number
+from the app**, and **prior conversations do not migrate** (D-471). The last month is recoverable
+only by a person reading the app.
+
+**Quote nothing for the history.** What *is* quotable is the forward-looking build, and only once he
+has decided about the number:
+
+| | h |
+|---|---|
+| Cloud API onboarding + webhook into the enquiry pipeline | 6 |
+| **Total** | **6 h · USD 210** — *after* the app-vs-API decision, not before |

@@ -1375,3 +1375,49 @@ card. Bar animation added and proven to rest at full length under forced reduced
 ### Standing position
 340 Apps Script · 287 dashboard unit · 165 e2e · 18 access-control · all gates green · 0 dirty,
 0 unpushed. **Still zero real clients processed.**
+
+---
+
+## 12 Sep 2026 (Fri) — Robinder call, ~90 min, screen-shared. Transcribed.
+
+**Done together, on his screen:**
+- **Gmail delegation** on `info@` → `project1@yalemigration.com.au`. Needed the admin switch first
+  (Admin console → Gmail → User settings → **Mail delegation**), which was off. Two false starts on
+  *"Send mail as"* — which only sends, never reads — before finding **Grant access to your account**.
+- **Meta** — `project1@` assigned on the Yale page with full asset access, via Accounts → Pages →
+  Assign people. Security Centre checked; business verification shows verified.
+- **Make Core purchased.** Verified live 13 Sep: **5,000 ops, 1-minute interval** — Free is 1,000
+  and 15 minutes, so the upgrade is real, not just paid for.
+- **WhatsApp blocked** — *"Business has invalid ad accounts."* An ad account is **Restricted**;
+  review already requested and not moving.
+
+**Answered:**
+- **s56 day count** — *"hota agle din se hai"*, from the day after; for short timelines count from
+  the same day as a safety buffer. ✅ **Our code already did exactly this** — no change needed.
+- **Staff** — Inder → Anmol · Priyanka → Pooja · Gayatri on maternity leave, replacement **unnamed**.
+- **Anthropic account** — he will carry it. Unblocks M9.
+- **Go-live** — *"whenever you are ready."*
+- **Microsoft 365 Business Basic** — agreed.
+
+**New, and all of it out of scope:**
+- 🔴 **Forwarding REFUSED.** `info@` and `visa.lodgement@` stay separate — `info@` carries general
+  client correspondence and he does not want it pushed into the lodgement mailbox. → CR-017, D-467.
+- **Enquiry ladder → days 1, 2, 3, 7, 15, 30** (day 1 = arrival day), vs the contracted 7/30. → CR-016.
+- **s56 SLA** — within 1–2 hours: forward, create the tracker entry, and draft a client reply listing
+  what is outstanding. **Draft only, never sent unreviewed.** → D-469.
+- **WhatsApp** — `+61 405 268 738`, on the Business **app**; wants the last month's missed enquiries
+  reviewed. ⛔ Not automatable, and history does not migrate. → D-471, CR-018.
+- **Resend** for sign-in email, on the Yale domain. → D-470.
+
+**What we did on 13 Sep, off the back of it:**
+- Built the six-rung ladder (`M8_LADDER`), tests 37 → **45**
+- Annotated Gayatri's route so nobody "fixes" it; Priyanka added to the departed guard, **29 checks**
+- Rescheduled **M9 to 15-min, Mon–Fri 08:00–18:00** — 3 polls/day could never meet a 2-hour SLA.
+  ~880 ops/month against the new 5,000 budget. Read back to confirm; still inactive.
+- Wrote `dashboard/RESEND-EMAIL-SETUP.md` against vendor docs checked the same day
+- Recorded D-466…D-472, CR-016…018, A-57…A-61
+
+**Mistake caught and reversed:** on the call Robinder said they were not using the restricted ad
+account, which read as permission to delete it. **Wrong** — it is the *older* of two, and it carried
+spend. Corrected before anything was removed (D-468). Same shape as D-463: one sentence heard in a
+call is not a verified fact.

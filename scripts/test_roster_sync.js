@@ -106,7 +106,7 @@ const refuse = (n) => () => { throw new Error(n + ' must not be called in a unit
 global.SpreadsheetApp = { getActive: refuse('SpreadsheetApp'), openById: refuse('SpreadsheetApp') };
 (0, eval)(m6);
 
-const DEPARTED = ['Inder', 'Mershe', 'Gopi'];
+const DEPARTED = ['Inder', 'Mershe', 'Gopi', 'Priyanka'];
 DEPARTED.forEach((name) => {
   check(
     `departed: ${name} receives no NEW work via M6`,

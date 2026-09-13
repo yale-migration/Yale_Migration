@@ -82,18 +82,55 @@ const stat = s => { const m = LOG; return m; };
 
 const BASE = '2026-08-18';
 
-console.log('=== SOP-CI-001 10D — the 7 then 30 day cadence ===');
+console.log('=== CR-016 — the six-rung ladder: days 1, 2, 3, 7, 15, 30 ===');
 {
   // enquiry on 1 Sep (after baseline) -> live cadence
   const mk = () => [blankRow(), enq('A', '2026-09-01')];
   let r = run({ today: '2026-09-03T10:00:00', baseline: BASE, rows: mk() });
-  check('day 2: next touch is the day-7 date', due(r.grid, 1) === '2026-09-08', due(r.grid, 1));
+  check('on day 3 the day-3 rung is DUE TODAY, not skipped',
+        due(r.grid, 1) === '2026-09-03', due(r.grid, 1));
   r = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk() });
-  check('day 9: day-7 passed, next touch is the day-30 date',
-        due(r.grid, 1) === '2026-10-01', due(r.grid, 1));
+  check('day 10: rungs 1-7 passed, next is day 15',
+        due(r.grid, 1) === '2026-09-15', due(r.grid, 1));
   r = run({ today: '2026-10-05T10:00:00', baseline: BASE, rows: mk() });
-  check('day 34: both windows past -> no date, asks for a Status',
+  check('past day 30: no date, asks for a Status',
         due(r.grid, 1) === '' && note(r.grid, 1).indexOf('set a Status') > -1, note(r.grid, 1));
+  check('...and the nag names all six rungs',
+        note(r.grid, 1).indexOf('1, 2, 3, 7, 15, 30') > -1, note(r.grid, 1));
+
+  /* 🔑 THE RUNG THE CLIENT ACTUALLY ASKED FOR.  (D-466)
+   * "First, okay, that will be day one, right? Same day of inquiry." An enquiry
+   * that arrives today must be chased TODAY. Under the old 7/30 cadence this
+   * returned 8 Sep — a week of silence on a live lead. */
+  r = run({ today: '2026-09-01T10:00:00', baseline: BASE, rows: mk() });
+  check('🔑 day 1 IS the arrival day — same-day touch, not +1',
+        due(r.grid, 1) === '2026-09-01', due(r.grid, 1));
+
+  r = run({ today: '2026-09-02T10:00:00', baseline: BASE, rows: mk() });
+  check('day 2 rung lands on the day after arrival',
+        due(r.grid, 1) === '2026-09-02', due(r.grid, 1));
+
+  r = run({ today: '2026-09-04T10:00:00', baseline: BASE, rows: mk() });
+  check('between rungs (day 4): skips to day 7, never backwards',
+        due(r.grid, 1) === '2026-09-07', due(r.grid, 1));
+
+  r = run({ today: '2026-09-30T10:00:00', baseline: BASE, rows: mk() });
+  check('the final rung is offered on its own day',
+        due(r.grid, 1) === '2026-09-30', due(r.grid, 1));
+
+  r = run({ today: '2026-10-01T10:00:00', baseline: BASE, rows: mk() });
+  check('one day past the last rung -> lapsed, not day 30 again',
+        due(r.grid, 1) === '', due(r.grid, 1));
+
+  /* ⛔ REGRESSION GUARD. If anyone reverts the ladder to the contracted 7/30,
+   * these two dates come back. They are the OLD answers and must never be the
+   * new ones — the whole point of CR-016 is that a lead is touched inside a week. */
+  r = run({ today: '2026-09-03T10:00:00', baseline: BASE, rows: mk() });
+  check('⛔ day 3 no longer answers 8 Sep (the old day-7 date)',
+        due(r.grid, 1) !== '2026-09-08', due(r.grid, 1));
+  r = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk() });
+  check('⛔ day 10 no longer answers 1 Oct (the old day-30 date)',
+        due(r.grid, 1) !== '2026-10-01', due(r.grid, 1));
 }
 
 console.log('\n=== THE FLOOD THE BASELINE PREVENTS ===');
@@ -155,7 +192,7 @@ console.log('\n=== a row with a phone and no name is still an enquiry ===');
 {
   const r0 = blankRow(); r0[2] = '0400000000'; r0[0] = '2026-09-01';
   const r = run({ today: '2026-09-03T10:00:00', baseline: BASE, rows: [blankRow(), r0] });
-  check('phone-only row is scheduled', due(r.grid, 1) === '2026-09-08', due(r.grid, 1));
+  check('phone-only row is scheduled', due(r.grid, 1) === '2026-09-03', due(r.grid, 1));
   const r1 = blankRow();
   const r2 = run({ today: '2026-09-03T10:00:00', baseline: BASE, rows: [blankRow(), r1] });
   check('truly blank row is skipped', due(r2.grid, 1) === '' && note(r2.grid, 1) === '');
@@ -207,8 +244,8 @@ console.log('\n=== STOP-ON-REPLY (D-339) — the other half of M8 ===');
     return [hdrRow(true), r];
   };
   let a = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk(false) });
-  check('no reply logged -> still scheduled (day-30 next)',
-        due(a.grid, 1) === '2026-10-01', due(a.grid, 1));
+  check('no reply logged -> still scheduled (day-15 next)',
+        due(a.grid, 1) === '2026-09-15', due(a.grid, 1));
 
   let b = run({ today: '2026-09-10T10:00:00', baseline: BASE, rows: mk(true) });
   check('reply logged -> follow-up date CLEARED', due(b.grid, 1) === '', JSON.stringify(due(b.grid, 1)));
@@ -241,7 +278,7 @@ console.log('\n=== STOP-ON-REPLY (D-339) — the other half of M8 ===');
   // column L absent -> exactly the old behaviour, and the log says so
   const r = run({ today: '2026-09-10T10:00:00', baseline: BASE,
                   rows: [hdrRow(false), enq('A', '2026-09-01')] });
-  check('L absent -> cadence unchanged', due(r.grid, 1) === '2026-10-01', due(r.grid, 1));
+  check('L absent -> cadence unchanged', due(r.grid, 1) === '2026-09-15', due(r.grid, 1));
   check('L absent -> the log says stop-on-reply is OFF',
         r.log.indexOf('stop-on-reply is OFF') > -1,
         r.log.split('\n').find(l => l.indexOf('replied') > -1));

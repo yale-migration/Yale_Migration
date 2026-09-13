@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 696K /     9857 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 704K /     9972 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:27
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 16:29
 
 | # | Decision |
 |---|---|
@@ -460,3 +460,10 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-11 23:2
 | **D-463** | Demo data quoted to the client as their own — and two asks that were already answered |
 | **D-464** | Second-pass audit of the team asks — two arguments of mine died on contact with the files |
 | **D-465** | RJ had already answered the checklist question — caught by opening a file, not by thinking |
+| **D-466** | The enquiry ladder is six touches, not two (CR-016) |
+| **D-467** | info@ and visa.lodgement@ stay SEPARATE; forwarding is refused |
+| **D-468** | Reversed: the restricted ad account IS live, and there are two |
+| **D-469** | s56 auto-reply is a DRAFT, never a send |
+| **D-470** | Sign-in email moves to Resend on the Yale domain (closes I-30) |
+| **D-471** | WhatsApp is the Business APP, not the API — and that is a dead end as it stands |
+| **D-472** | Priyanka → Pooja; Gayatri on leave, and her route deliberately stays |
