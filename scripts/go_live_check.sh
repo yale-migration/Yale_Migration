@@ -58,6 +58,14 @@ PY
 done
 
 hdr "4 · Does Netlify hold the Google credentials?  ← the big unknown"
+# ⛔ Catch the placeholder being pasted literally. It returns 401 and reads as
+#    "the secret is wrong" when in fact the test never ran. Happened once.
+case "${SYNC_SECRET:-}" in
+  "paste-it-here"|"<paste>"|"<SYNC_SECRET>"|"your-secret"|"...")
+    no "SYNC_SECRET is still the PLACEHOLDER — this test did not run"
+    echo "      Copy the real value: Netlify -> Site configuration -> Environment variables"
+    SYNC_SECRET="" ;;
+esac
 if [ -z "${SYNC_SECRET:-}" ]; then
   warn "skipped — no SYNC_SECRET in the environment"
   echo "      Fetch it: Netlify -> Site configuration -> Environment variables"
