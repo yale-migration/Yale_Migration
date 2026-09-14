@@ -64,6 +64,75 @@ var M6_BLOCK_PATTERNS = [
   { re: /\bban\b|exclusion period|\bpic\s?4020\b/i, why: 'an exclusion or PIC 4020 matter' }
 ];
 
+/* ============================ ABUSE — READ THIS FIRST ============================
+ * 🔴 WHY THIS EXISTS, AND WHY IT RUNS BEFORE EVERYTHING ELSE.  (D-481)
+ *
+ * On 14 Sep, inside Meta Business Suite, the Yale page was carrying this from one
+ * account, repeatedly, over 17 hours:
+ *
+ *     "Go home slumdog."   "Fuck off we are full."   "No thanks fuck off."
+ *
+ * Facebook and Instagram comments are two of the six enquiry channels. Without
+ * this guard, the moment M6 transport goes live those become ENQUIRIES: routed to
+ * a consultant as leads, counted in the numbers — and, worst of all, given the
+ * acknowledgement reply.
+ *
+ * ⛔ THE UNACCEPTABLE OUTCOME IS THE AUTO-REPLY. A public "Thanks for getting in
+ * touch! A consultant will be with you shortly" posted underneath racist abuse,
+ * under a Registered Migration Agent's name, in front of 7,100 followers. That is
+ * not a bug, it is a reputational event — and it is what happens by default.
+ *
+ * So abuse returns NO reply at all. Not the holding reply, not the acknowledgement.
+ * Silence, plus a flag for a human to hide and ban.
+ *
+ * 🔑 THE BIAS IS DELIBERATE AND ASYMMETRIC. A false positive discards a real
+ * client's enquiry — Yale loses a customer and never knows. A false negative costs
+ * a consultant five seconds to read and delete. So the test is deliberately hard
+ * to trip: profanity ALONE is never enough (a frustrated genuine client swears),
+ * and any message carrying a real enquiry signal survives unless it also carries a
+ * slur.
+ */
+var M6_ABUSE_SLUR = /\bslumdog|\bcurry\s?muncher|\bpaki\b|\bchink\b|\bgook\b|\braghead|\bterrorist\b.{0,20}\b(?:go|get)\b/i;
+
+/* Rejection aimed at the business — "fuck off", "piss off", "get lost". */
+var M6_ABUSE_REJECT = /\b(?:fuck|piss|bugger|sod)\s*off\b|\bget\s+(?:lost|stuffed)\b|\bshut\s+up\b/i;
+
+/* Xenophobic constructions. ⚠️ "go home" is NOT here on its own — a genuine client
+ * asks "can I go home while my visa is processing?". It only counts alongside a
+ * slur or a rejection. */
+var M6_ABUSE_XENO = /\bwe(?:'re| are)\s+full\b|\bgo\s+back\s+to\s+your\s+own\b|\bget\s+out\s+of\s+(?:our|this)\s+country\b|\bstop\s+letting\s+them\s+in\b|\bno\s+more\s+(?:immigrants|migrants)\b/i;
+
+/* A real enquiry signal — a question, or a visa subclass. Used as a SAFETY VALVE. */
+var M6_GENUINE_HINT = /\?|\b(?:visa|subclass|apply|application|fee|cost|eligib|sponsor|nomination|assessment)\b/i;
+
+/**
+ * Is this abuse rather than an enquiry?
+ *
+ * A slur is decisive on its own. Everything else must clear a higher bar, and a
+ * message that looks like a genuine enquiry is spared unless it carries a slur.
+ * Returns the reason, or null.
+ */
+function m6IsAbuse_(text) {
+  var t = String(text == null ? '' : text);
+
+  // 1 · A slur ends the question. Nothing rescues it, not even a visa number —
+  //     we do not reply to someone who opens with a racial slur.
+  if (M6_ABUSE_SLUR.test(t)) return 'a racial slur';
+
+  var reject = M6_ABUSE_REJECT.test(t);
+  var xeno   = M6_ABUSE_XENO.test(t);
+  if (!reject && !xeno) return null;
+
+  // 2 · SAFETY VALVE. Hostile wording inside something that reads like a real
+  //     enquiry goes to a human as an enquiry, not to the bin. An angry client is
+  //     still a client; losing one silently is the expensive error.
+  if (M6_GENUINE_HINT.test(t)) return null;
+
+  if (reject && xeno) return 'hostile rejection';
+  if (xeno)           return 'a xenophobic comment';
+  return 'told us to go away';
+}
+
 // Their form and their SOPs use these. Digits win over words when both appear.
 var M6_SUBCLASS_WORDS = [
   { re: /\b(?:subclass\s*)?500\b|student visa/i,          code: '500' },
@@ -202,6 +271,26 @@ function m6Triage_(text, opts) {
   opts = opts || {};
   var t = String(text == null ? '' : text);
 
+  /* ⛔ ABUSE IS CHECKED FIRST AND RETURNS EARLY. (D-481)
+   * It must never reach the reply logic below — see the block comment above. */
+  var abuse = m6IsAbuse_(t);
+  if (abuse) {
+    return {
+      abusive:      true,
+      abuseReason:  abuse,
+      blocked:      true,
+      blockReason:  abuse,
+      reply:        '',        // 🔴 NO public reply. Ever. Not even the holding one.
+      questions:    [],
+      subclass:     '',
+      location:     '',
+      daysToExpiry: null,
+      assignTo:     '',        // never lands in a consultant's queue as a lead
+      needsHuman:   true,      // a person hides it and bans the account
+      moderation:   true       // ...as MODERATION, not as an enquiry
+    };
+  }
+
   var blocked = null;
   for (var i = 0; i < M6_BLOCK_PATTERNS.length; i++) {
     if (M6_BLOCK_PATTERNS[i].re.test(t)) { blocked = M6_BLOCK_PATTERNS[i].why; break; }
@@ -224,6 +313,9 @@ function m6Triage_(text, opts) {
   else if (M6_ONSHORE.test(t)) location = 'Onshore';
 
   return {
+    abusive:      false,
+    abuseReason:  null,
+    moderation:   false,
     blocked:      blocked !== null,
     blockReason:  blocked,
     // ⛔ A blocked message gets the holding reply and NOTHING else — no questions, because
@@ -387,6 +479,45 @@ function runM6SelfTest() {
   var rb = m6ToEnquiryRow_('my visa was cancelled', { channel: 'Facebook' }, TODAY);
   check('a blocked lead is marked HOLD in Notes', rb.row[10].indexOf('⛔ HOLD') === 0, rb.row[10]);
   check('...and is still logged, not dropped', rb.row.length === 11);
+  /* ================= ABUSE — the public auto-reply that must never happen ==========
+   * (D-481) Facebook and Instagram comments are enquiry channels. Without the guard
+   * these three become leads AND get a public acknowledgement under an RMA's name. */
+  var _ab = function (txt) { return m6Triage_(txt, { today: new Date('2026-09-14') }); };
+
+  // The three real comments on the Yale page, 14 Sep 2026 — verbatim, because a
+  // sanitised version would not exercise the patterns that must catch them.
+  var REAL = ['Go home slumdog.', 'Fuck off we are full.', 'No thanks fuck off.'];
+  for (var ai = 0; ai < REAL.length; ai++) {
+    var ra = _ab(REAL[ai]);
+    check('abuse ' + (ai + 1) + ': classified as abuse', ra.abusive === true);
+    check('abuse ' + (ai + 1) + ': 🔴 NO public reply', ra.reply === '');
+    check('abuse ' + (ai + 1) + ': never assigned to a consultant', !ra.assignTo);
+    check('abuse ' + (ai + 1) + ': routed as MODERATION, not an enquiry',
+          ra.moderation === true && ra.needsHuman === true);
+  }
+
+  /* 🔑 SAFETY VALVE — these must all SURVIVE. A false positive silently loses Yale a
+   * paying client; a false negative costs a consultant five seconds. */
+  check('not abuse: "go home" inside a real question',
+        _ab('can I go home to the Philippines while my 485 is processing?').abusive === false);
+  check('not abuse: an angry client is still a client',
+        _ab('this is bloody ridiculous, my visa has taken 8 months').abusive === false);
+  check('not abuse: profanity inside a genuine enquiry',
+        _ab('what the hell is the fee for a 500 visa?').abusive === false);
+  check('not abuse: "go back" said innocently',
+        _ab('I want to go back to your website but the form is broken').abusive === false);
+  check('not abuse: "full" said innocently',
+        _ab('Do you handle 482 sponsorship? Our team is full at the moment.').abusive === false);
+
+  // A slur is decisive even wrapped in a plausible enquiry.
+  var slur = _ab('what is the fee for a 500 visa you slumdog');
+  check('a slur beats the safety valve', slur.abusive === true && slur.reply === '');
+
+  // And the guard must not have changed ordinary enquiries.
+  var ok = _ab('Hi, I want to apply for a 500 student visa, I am in Australia');
+  check('a normal enquiry still gets the acknowledgement',
+        ok.abusive === false && ok.reply.length > 0 && ok.subclass === '500');
+
 
   Logger.log('\n' + pass + '/' + (pass + fail) + ' checks passed');
   if (fail) throw new Error('M6 self-test FAILED: ' + fail);

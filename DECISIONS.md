@@ -10189,3 +10189,38 @@ Rather than another long message, the ask is a **filtered workbook**: `YALE - ST
 RJ).xlsx` — only the **31 clients** with something missing, only the three columns, already-answered
 cells greyed out and the missing ones highlighted. Nothing he has already given is asked for twice
 (G2).
+
+## D-481 | Abuse must never receive the auto-reply — found in their own comments, hours before it mattered
+**14 Sep 2026.** While confirming Meta access, the Business Suite inbox showed one account posting to
+the Yale page repeatedly over 17 hours: *"Go home slumdog." · "Fuck off we are full." · "No thanks
+fuck off."*
+
+**Facebook and Instagram comments are two of the six enquiry channels.** The moment M6 transport
+goes live — which the same day's Meta authorisation unblocked — those become enquiries: routed to a
+consultant as leads, counted in the figures, and **given the acknowledgement reply**.
+
+🔴 **The auto-reply is the unacceptable part, not the routing.** *"Thanks for getting in touch, a
+consultant will be with you shortly"* posted publicly beneath racist abuse, under a Registered
+Migration Agent's name, in front of 7,100 followers. That is not a defect to fix later; it is the
+**default behaviour** of what we were about to switch on.
+
+**Guard added — `m6IsAbuse_()`, checked FIRST and returning early**, before any reply logic can see
+the text. Abuse returns `reply: ''` — no acknowledgement, no holding reply, nothing public — plus
+`moderation: true` so a human hides it and bans the account rather than a consultant working it as a
+lead.
+
+🔑 **The bias is deliberately asymmetric, and that shaped every pattern.** A false positive silently
+discards a real client's enquiry and Yale never learns it existed. A false negative costs a
+consultant five seconds. So:
+- **profanity alone is never enough** — a frustrated genuine client swears
+- **"go home" alone is not abuse** — *"can I go home while my 485 is processing?"* is a real question
+  we have almost certainly received
+- a **safety valve** spares anything carrying a question mark or a visa word…
+- …except a **slur**, which is decisive on its own. We do not reply to someone who opens with one.
+
+**Tested against the real comments verbatim**, not sanitised versions — a cleaned-up string would
+not exercise the patterns that have to catch these. Plus five genuine messages that must survive.
+M6 46 → **65 checks**; suite 353 → **372**.
+
+⚠️ **Robinder should still be told about the comments themselves.** Hiding and banning is his to do,
+and it is worth more to him today than the filter is.

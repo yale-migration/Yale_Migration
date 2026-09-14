@@ -13,3 +13,4 @@ console.log(LOG.join('\n'));
 const last = (LOG[LOG.length - 1] || '').trim();
 const m = last.match(/(\d+)\/(\d+) checks passed$/);
 if (!m || m[1] !== m[2]) { console.error('\n❌ ' + last); process.exit(1); }
+

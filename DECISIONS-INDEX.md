@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 716K /    10191 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 720K /    10226 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:40
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 13:31
 
 | # | Decision |
 |---|---|
@@ -475,3 +475,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:4
 | **D-478** | Beant covers Gayatri — and RJ answered in the wrong column |
 | **D-479** | RJ's 482 letter closed two open asks without being asked |
 | **D-480** | The real data gaps, counted rather than remembered |
+| **D-481** | Abuse must never receive the auto-reply — found in their own comments, hours before it mattered |
