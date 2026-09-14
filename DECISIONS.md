@@ -10224,3 +10224,29 @@ M6 46 → **65 checks**; suite 353 → **372**.
 
 ⚠️ **Robinder should still be told about the comments themselves.** Hiding and banning is his to do,
 and it is worth more to him today than the filter is.
+
+## D-482 | I-22 closed by drafting the template from his own email, not by asking for one
+**14 Sep 2026.** I-22 — Yale's s56 client-reply wording — has been open since July. The file sent
+under that name (`EMAIL TEMPLATE FOR S56 REQUEST AND FOLLOW UP.docx`) was **opened today and
+contains only WhatsApp screenshots**. No template, no wording. The register suspected it; it is now
+confirmed by opening the file rather than trusting the filename (G8).
+
+**Rather than ask a busy RMA to write one, the template is built from the reply he actually sent a
+client on 14 Sep.** His structure, his order, his phrasing. The ask changes from *"please write
+this"* to *"is this right?"* — which is the difference between an answer today and an answer next
+week.
+
+`docs/S56-CLIENT-REPLY-TEMPLATE.md`. Every filled field is sourced explicitly, and two of those
+sourcings are themselves recent findings: the requirement list comes from the **Request Checklist**
+attachment rather than the letter (D-479), and the deadline uses the **corrected** arithmetic
+(D-477).
+
+🔴 **One genuine question is left for him, and only one:** does the client get told the **legal**
+deadline or our **internal** one (legal − 2, D-58)? His own email used the legal date. Both are
+defensible and it is a professional-practice call, not a technical one — a written date that differs
+from the Department's, under an RMA's name, is not ours to decide. Recommended the legal date
+because it is what he already does.
+
+⛔ **Two things the draft deliberately does not do**, each because doing them would smuggle a second
+decision into an approval: it does not paraphrase the Department's "how to obtain this document"
+guidance (that is advice), and it does not chase (a separate cadence, not yet built, not yet agreed).
