@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 728K /    10323 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 728K /    10369 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 16:31
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 16:43
 
 | # | Decision |
 |---|---|
@@ -479,3 +479,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 16:3
 | **D-482** | I-22 closed by drafting the template from his own email, not by asking for one |
 | **D-483** | The abuse guard stopped the reply and nothing else — three files, not one |
 | **D-484** | The Meta connections are NOT read-only — I told the client they were |
+| **D-485** | 🔴 The off-by-one was in TWO places — the AI prompt had it too |
+| **D-486** | M9b built — `info@` is finally readable, 87% of s56 letters |

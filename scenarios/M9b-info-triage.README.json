@@ -1,0 +1,30 @@
+{
+  "note": "YM-M9b-info-triage (7406808). Clone of M9 reading info@ instead of visa.lodgement@. Connection 10881931 by ID \u2014 three Gmail connections share a display name (D-486). Prompt carries the CORRECTED deadline formula (D-485).",
+  "scenarioId": 7406808,
+  "gmailConnectionId": 10881931,
+  "mailbox": "info@yalemigration.com.au",
+  "scheduling": {
+    "type": "indefinitely",
+    "interval": 900,
+    "restrict": [
+      {
+        "days": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "time": [
+          "08:00",
+          "18:00"
+        ]
+      }
+    ]
+  },
+  "modules": [
+    "google-email:triggerWatchNewEmails v4",
+    "anthropic-claude:createAMessage v1",
+    "google-sheets:addRow v2"
+  ]
+}

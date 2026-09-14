@@ -10321,3 +10321,49 @@ that permission with reading — but nothing we build uses it, and I'd rather yo
 **after** the ad account was restricted, and one carries `ads_management`. **The restriction does not
 block Page or Instagram access** — the only thing it ever blocked was a *Create messaging ad* flow.
 Four of five Meta channels are connected and none depends on that ad account.
+
+## D-485 | 🔴 The off-by-one was in TWO places — the AI prompt had it too
+**14 Sep 2026.** Fetching M9's blueprint in order to clone it for `info@`, the classifier's tool
+schema read:
+
+```
+"due_date": "yyyy-MM-dd = letter_date + 1 + days_allowed."
+```
+
+**The same wrong formula I fixed in `s56_deadline_verifier.gs` this morning (D-477) — instructing the
+AI to produce a deadline one day late.** I fixed the Apps Script, committed, wrote a decision record
+about verification, and left the identical bug live in the Make scenario. It was found by accident,
+while doing something else.
+
+⛔ **This is D-483 for the third time in one day: the behaviour lives in more than one place and I
+changed one of them.** The verifier was never the only thing computing that date — the classifier
+computes it first, and the verifier merely *checks* it. Fixing the checker while the producer stayed
+wrong would have produced agreeing wrong answers, which is worse than a visible disagreement.
+
+**Fixed in both scenarios**, and the prompt now teaches the rule rather than stating a formula:
+- `due_date = letter_date + days_allowed`, with **why** — the period starts the day after, so that day
+  is day 1, not day 0
+- the **real worked example**: 12 Sep 2026 + 28 → 10 Oct 2026
+- the sanity check: *one day starting tomorrow is due tomorrow*
+- and **why the direction matters**: a day late is a deadline already passed in law
+
+## D-486 | M9b built — `info@` is finally readable, 87% of s56 letters
+**14 Sep 2026.** `YM-M9b-info-triage` (7406808), created after Robinder authorised the `info@`
+connection. Same three modules as M9, same classifier, same S56 TRACKER target; the only differences
+are the mailbox and two deliberate changes:
+
+- the system prompt now opens by telling the model that **`info@` carries ordinary client
+  correspondence as well as Department letters**, so most of what it sees will NOT be a request —
+  *"say so plainly rather than forcing a match."* M9's mailbox is lodgement-only; this one is not.
+- rows carry `"source_mailbox":"info@"` so a row's origin is visible in the tracker
+
+🔑 **The naming collision never touched this build.** Three Gmail connections share the name *"Yale's
+Gmail connection"*, which makes the Make UI ambiguous — but the blueprint references
+`__IMTCONN__: 10881931` by **id**. Verified after creation from the other direction: connection
+10881931 now lists `scenarioUsages: [7406808]`. **Proven by linkage, not by assertion.**
+
+⚠️ **Still to do by hand, no API exists:** rename `9452213` → *Yale visa.lodgement@*, `10881931` →
+*Yale info@*, and delete the unused duplicate `10881827`. Until then any human editing these in the
+UI is choosing between three identical names.
+
+⛔ **Inactive, like everything else.** Switch on at go-live, not before.
