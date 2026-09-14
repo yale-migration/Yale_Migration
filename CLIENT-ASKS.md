@@ -191,3 +191,7 @@ survives in MASTER v2 — the concepts were right, the file was stale.
 - **Make Core** — paid. Verified live: 5,000 ops, 1-minute interval.
 - **Meta access** — granted to `project1@`, full assets.
 - **Go-live date** — his words: whenever we are ready.
+
+| **A-62** | **Beant — full name, correct spelling, and is the cover permanent or until Gayatri returns?** Now live in routing for Indian 500 (D-478). | 14 Sep | RJ/Robinder |
+| **A-63** | **Pooja's visa types** — still blank after RJ's reply. Without them she is in the roster but routable to nothing. | 14 Sep | RJ |
+| **A-64** | **"Skills assessment"** — RJ listed it as a visa type. It is a service, not a subclass. How should it route? | 14 Sep | RJ |

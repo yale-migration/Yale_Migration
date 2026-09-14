@@ -97,16 +97,64 @@ const note   = (r, i) => String(r.notes[i] || '');
 
 const TODAY = '2026-08-19T09:00:00';
 
-console.log('=== the arithmetic itself: letter + 1 + days_allowed ===');
+console.log('=== the arithmetic itself: letter + days_allowed (D-477) ===');
 {
-  // 14 Aug + 1 day + 28 days = 12 Sep. Internal (D-58) = 10 Sep.
+  // 28 days starting 15 Aug -> day 28 is 11 Sep. Internal (D-58) = 9 Sep.
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-08-14', days: 28, due: '2026-09-12', internal: '2026-09-10',
+    letter: '2026-08-14', days: 28, due: '2026-09-11', internal: '2026-09-09',
     sentence: 'You have 28 days starting on the day after we emailed this request.' })] });
   check('correct date agrees, no flag', note(r, 1) === '' && review(r.grid, 1) === '',
         note(r, 1) || '(clean)');
   check('log reports 1 agreement', /agree \.+ 1/.test(r.log.replace(/\./g, m => m)),
         r.log.split('\n').find(l => l.indexOf('agree') > -1));
+}
+
+console.log('\n=== 🔒 THE REAL LETTER — the one that caught the off-by-one (D-477) ===');
+{
+  /* ⛔ DO NOT "TIDY" THESE DATES. They are not invented.
+   *
+   * A genuine Department of Home Affairs s56 request, subclass 482, forwarded to
+   * us on 14 Sep 2026:
+   *
+   *   Letter date : 12 September 2026
+   *   Wording     : "You have 28 days starting on the day after we emailed
+   *                  this request to give us the information we have asked for."
+   *   Deadline    : 10 October 2026
+   *
+   * The deadline is not our arithmetic — the RMA's own email to the applicant
+   * says "We need to submit these documents before 10 October 2026". Two
+   * independent sources, same date.
+   *
+   * Until this letter arrived the code computed 11 October, and every test in
+   * this file agreed with it, because the tests were written from the same
+   * wrong formula. This case exists so that can never be true again: it is
+   * anchored to a real document, not to our own reasoning.
+   *
+   * 🔑 No client details appear here, deliberately. The dates are the evidence;
+   * the person is not ours to put in a repository.
+   */
+  const r = run({ today: '2026-09-14T09:00:00', rows: [row({
+    letter: '2026-09-12', days: 28, due: '2026-10-10', internal: '2026-10-08',
+    sentence: 'You have 28 days starting on the day after we emailed this request.' })] });
+  check('🔒 real 482 letter: 12 Sep + 28 days = 10 Oct, agrees with no flag',
+        note(r, 1) === '' && review(r.grid, 1) === '', note(r, 1) || '(clean)');
+
+  // The old, wrong answer must now be REJECTED — this is the regression guard.
+  const bad = run({ today: '2026-09-14T09:00:00', rows: [row({
+    letter: '2026-09-12', days: 28, due: '2026-10-11', internal: '2026-10-09',
+    sentence: 'You have 28 days starting on the day after we emailed this request.' })] });
+  check('⛔ 11 Oct — the old formula\'s answer — is now FLAGGED as wrong',
+        note(bad, 1).indexOf('DEADLINE DISAGREEMENT') > -1, note(bad, 1));
+  check('...and it names 10 Oct as the correct date',
+        note(bad, 1).indexOf('2026-10-10') > -1, note(bad, 1));
+
+  /* The generic form of the bug, in one assertion: one day starting tomorrow is
+   * due TOMORROW. The old formula made it the day after tomorrow. */
+  const one = run({ today: '2026-09-14T09:00:00', rows: [row({
+    letter: '2026-09-12', days: 1, due: '2026-09-13', internal: '2026-09-11',
+    sentence: 'You have 1 day starting on the day after we emailed this request.' })] });
+  check('🔑 one day starting tomorrow is due TOMORROW, not the day after',
+        note(one, 1).indexOf('DEADLINE DISAGREEMENT') === -1, note(one, 1) || '(clean)');
 }
 
 console.log('\n=== 🔴 the case this exists for: model arithmetic is WRONG ===');
@@ -116,7 +164,7 @@ console.log('\n=== 🔴 the case this exists for: model arithmetic is WRONG ==='
     sentence: 'You have 28 days starting on the day after we emailed this request.' })] });
   check('disagreement is FLAGGED', note(r, 1).indexOf('DEADLINE DISAGREEMENT') > -1, note(r, 1));
   check('...names both dates', note(r, 1).indexOf('2026-09-16') > -1
-        && note(r, 1).indexOf('2026-09-12') > -1);
+        && note(r, 1).indexOf('2026-09-11') > -1);
   check('⛔ the date is NOT overwritten', due(r.grid, 1) === '2026-09-16', due(r.grid, 1));
   check('Needs Review set to YES', review(r.grid, 1) === 'YES');
 }
@@ -124,7 +172,7 @@ console.log('\n=== 🔴 the case this exists for: model arithmetic is WRONG ==='
 console.log('\n=== 🔴 the model misquotes its own source: sentence vs days ===');
 {
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-08-14', days: 30, due: '2026-09-14', internal: '2026-09-12',
+    letter: '2026-08-14', days: 30, due: '2026-09-13', internal: '2026-09-11',
     sentence: 'You have 28 days starting on the day after we emailed this request.' })] });
   check('caught: sentence says 28, field says 30',
         note(r, 1).indexOf('PARSE MISMATCH') > -1, note(r, 1));
@@ -134,25 +182,25 @@ console.log('\n=== 🔴 the model misquotes its own source: sentence vs days ===
 console.log('\n=== never assume 28 — a 14-day letter must compute correctly ===');
 {
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-08-14', days: 14, due: '2026-08-29', internal: '2026-08-27',
+    letter: '2026-08-14', days: 14, due: '2026-08-28', internal: '2026-08-26',
     sentence: 'You have 14 days starting on the day after we emailed this request.' })] });
-  check('14-day deadline agrees (14 Aug + 1 + 14 = 29 Aug)',
+  check('14-day deadline agrees (14 Aug + 14 = 28 Aug)',
         note(r, 1) === '', note(r, 1) || '(clean)');
 }
 
 console.log('\n=== internal due (legal − 2, D-58) ===');
 {
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-08-14', days: 28, due: '2026-09-12', internal: '2026-09-12',
+    letter: '2026-08-14', days: 28, due: '2026-09-11', internal: '2026-09-11',
     sentence: '28 days' })] });
   check('wrong internal date is flagged with the right one',
-        note(r, 1).indexOf('2026-09-10') > -1, note(r, 1));
+        note(r, 1).indexOf('2026-09-09') > -1, note(r, 1));
 }
 
 console.log('\n=== a passed deadline is REPORTED, never actioned ===');
 {
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-06-01', days: 28, due: '2026-06-30', internal: '2026-06-28',
+    letter: '2026-06-01', days: 28, due: '2026-06-29', internal: '2026-06-27',
     sentence: '28 days', status: 'New' })] });
   check('overdue is flagged', note(r, 1).indexOf('PAST THE LEGAL DEADLINE') > -1, note(r, 1));
   check('says extendable / not auto-closed', note(r, 1).indexOf('extendable') > -1);
@@ -160,7 +208,7 @@ console.log('\n=== a passed deadline is REPORTED, never actioned ===');
 }
 {
   const r = run({ today: TODAY, rows: [row({
-    letter: '2026-06-01', days: 28, due: '2026-06-30', internal: '2026-06-28',
+    letter: '2026-06-01', days: 28, due: '2026-06-29', internal: '2026-06-27',
     sentence: '28 days', status: 'Closed' })] });
   check('a Closed row is not chased as overdue',
         note(r, 1).indexOf('PAST THE LEGAL') === -1, note(r, 1) || '(clean)');
@@ -183,7 +231,7 @@ console.log('\n=== a missing due date is a finding, not a blank ===');
   const r = run({ today: TODAY, rows: [row({
     letter: '2026-08-14', days: 28, due: '', sentence: '28 days' })] });
   check('no due date set -> flagged with the computed one',
-        note(r, 1).indexOf('NO DUE DATE SET') > -1 && note(r, 1).indexOf('2026-09-12') > -1,
+        note(r, 1).indexOf('NO DUE DATE SET') > -1 && note(r, 1).indexOf('2026-09-11') > -1,
         note(r, 1));
   check('⛔ still not written for us', due(r.grid, 1) === '');
 }
@@ -203,7 +251,7 @@ console.log('\n=== idempotency: notes replace, never stack ===');
     due: '2026-09-16', internal: '2026-09-14', sentence: '28 days' })] });
   check('flagged first', note(r, 1).indexOf('DISAGREEMENT') > -1);
   const fixed = r.grid.slice(1);
-  fixed[0][3] = '2026-09-12'; fixed[0][4] = '2026-09-10';
+  fixed[0][3] = '2026-09-11'; fixed[0][4] = '2026-09-09';
   r = run({ today: TODAY, rows: fixed });
   check('note cleared once corrected', note(r, 1) === '', note(r, 1));
 }
@@ -241,14 +289,14 @@ console.log('\n=== 🔴 zero checks passing is NOT verification ===');
 
   // A genuine all-clear must still read as an all-clear.
   const good = run({ today: TODAY, rows: [row({ name: 'B CLIENT', letter: '2026-08-14',
-                     days: 28, due: '2026-09-12', internal: '2026-09-10' })] });
+                     days: 28, due: '2026-09-11', internal: '2026-09-09' })] });
   check('a real agreement still reports as agreement',
         /agree with an independent recomputation/.test(good.log),
         good.log.split('\n').filter(l => l.trim()).pop());
 
   // Mixed: some verified, some not. The unverified ones must not hide behind the pass.
   const mixed = run({ today: TODAY, rows: [
-    row({ name: 'C', letter: '2026-08-14', days: 28, due: '2026-09-12', internal: '2026-09-10' }),
+    row({ name: 'C', letter: '2026-08-14', days: 28, due: '2026-09-11', internal: '2026-09-09' }),
     row({ name: 'D' })] });
   check('🔴 mixed run -> the unchecked rows are called out beside the pass',
         /COULD NOT BE CHECKED AT ALL/.test(mixed.log), mixed.log);

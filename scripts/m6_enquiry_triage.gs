@@ -117,20 +117,26 @@ var M6_ROSTER = [
   { office: 'TOWNSVILLE', team: null,       visas: null,                                   who: 'Cristelle' },
   { office: null,         team: 'FILIPINO', visas: ['500','485','820/801'],                who: 'Star' },
   { office: null,         team: 'FILIPINO', visas: ['189','190','491','482','494','186'],  who: 'RJ' },
-  /* ⚠️ GAYATRI IS ON MATERNITY LEAVE — AND THE ROUTE STAYS.  (D-472, 12 Sep)
-   * Robinder: "Gayatri jo hai, maternity leave pe; uski jagah pe ladka hai —
-   * phone number aur email usko assign ho gaya." He named the replacement only
-   * as "a man" and moved on, so we do not have the name (A-58).
+  /* ✅ BEANT COVERS GAYATRI'S LINE — RJ, 14 Sep 2026.  (D-478)
    *
-   * 🔑 LEAVING THIS ROUTE POINTING AT GAYATRI IS THE CORRECT INTERIM STATE, and
-   * this comment exists so nobody "fixes" it. Her email and phone have ALREADY
-   * been redirected to the replacement — so mail routed to Gayatri reaches the
-   * person actually doing the work. Removing the route would send Indian 500
-   * enquiries to nobody, which is strictly worse than sending them to a mailbox
-   * a real person is reading.
+   * Gayatri is on maternity leave. D-472 deliberately LEFT this route pointing at
+   * her, because her mailbox was already redirected and a route to a read mailbox
+   * beats a route to nobody. That was the right call for two days; it is not the
+   * right call now that we have the name.
    *
-   * ⛔ Rename this the moment A-58 is answered. Do not guess the name. */
-  { office: null,         team: 'INDIAN',   visas: ['500'],                                who: 'Gayatri' },
+   * 🔑 RJ answered it in the sheet's NOTES column, not in `Covered By` — the field
+   * the automation reads. The answer was present and the machine could not see it.
+   * That is a UX finding as much as a data one, and it is exactly why CR-019
+   * (routing reads the sheet) must treat a blank structured field as a REFUSAL,
+   * never fall back to free text.
+   *
+   * ⚠️ Gayatri stays in the MASTER dropdowns — existing client files carry her
+   * name, and `setAllowInvalid(false)` would silently refuse those rows if she
+   * were removed (the D-439 rule: a leaver loses ROUTING, never the dropdown).
+   *
+   * ⛔ This reverses when she returns. No end date was given — that is A-62.
+   */
+  { office: null,         team: 'INDIAN',   visas: ['500'],                                who: 'Beant' },
   { office: null,         team: 'INDIAN',   visas: ['820/801','485','600'],                who: 'Fiza' },
   /* ✅ ANMOL TAKES INDER'S LINE — RJ, 6 Sep: "for Indian, it will be Anmol."  (D-462)
    *
@@ -360,7 +366,7 @@ function runM6SelfTest() {
         m6AssignTo_('TOWNSVILLE', 'INDIAN', '500') === 'Cristelle');
   check('Filipino + 485 -> Star', m6AssignTo_('BRISBANE', 'FILIPINO', '485') === 'Star');
   check('Filipino + 482 -> RJ', m6AssignTo_('BRISBANE', 'FILIPINO', '482') === 'RJ');
-  check('Indian + 500 -> Gayatri', m6AssignTo_('BRISBANE', 'INDIAN', '500') === 'Gayatri');
+  check('Indian + 500 -> Beant (covers Gayatri, D-478)', m6AssignTo_('BRISBANE', 'INDIAN', '500') === 'Beant');
   check('🔴 no team known -> Unassigned, never a guess',
         m6AssignTo_('BRISBANE', '', '500') === 'Unassigned');
   check('🔴 no subclass known -> Unassigned', m6AssignTo_('BRISBANE', 'INDIAN', '') === 'Unassigned');

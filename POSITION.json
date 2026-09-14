@@ -1,6 +1,6 @@
 {
   "_comment": "🔑 THE SINGLE SOURCE for the project's position numbers (G6). Every LIVE document must agree with this file; scripts/docs_hygiene.py enforces it. Append-only archives (DECISIONS.md, CLIENT-LOG.md, STATUS.md) are exempt — an old number in a dated entry is history, not drift. UPDATE THIS FILE FIRST, then the prose.",
-  "as_at": "2026-09-13",
+  "as_at": "2026-09-14",
   "built_pct": 78,
   "built_hours": 38.0,
   "contracted_hours": 49,
@@ -9,7 +9,7 @@
   "hours_blocked_on_rj": 0.0,
   "hours_blocked_on_us": 0.0,
   "real_clients_processed": 0,
-  "apps_script_checks": 349,
+  "apps_script_checks": 353,
   "blueprint_checks": 79,
   "_ours_note": "hours_blocked_on_us counts CONTRACTED MODULE HOURS ONLY and is not an answer to 'is anything left on our side?' (D-383). hours_actionable_by_us is work we CAN now do: M10.",
   "hours_actionable_by_us": 2.0,
@@ -19,5 +19,6 @@
   "_robinder_side": "REDUCED 12 Sep. Meta granted, Make Core PAID (verified live: 5000 ops, 1-min interval), Anthropic account agreed, s56 day-count answered, go-live date = whenever we are ready. STILL HIS: A-57 authorise the Make-Gmail connection AS info@ (highest value - 87% of s56 letters), A-58 the name of Gayatri's maternity replacement, A-59 WhatsApp app-vs-API decision, A-60 remove the old restricted ad account, A-61 DNS records for Resend.",
   "_dashboard_note": "Phase-3 dashboard is OUT OF SCOPE and unquoted: ~21 h built 20 Aug (QUOTE-P3-DASHBOARD.md option C = USD 735), plus further unbilled hours since - deployment, Google Sheets sync, auth, RLS hardening, identifier-first sign-in and 165 e2e checks. It is LIVE at yalemigration.netlify.app on demo data only.",
   "_ours_still_open": "Rotate the Supabase service-role key. Re-run 06-enquiries.sql. Resend account + domain + Supabase SMTP (runbook written: dashboard/RESEND-EMAIL-SETUP.md). Share MASTER DATABASE with the service account. The 2 GitHub Actions secrets need an org owner (admin=false).",
-  "_scope_note": "12 Sep call raised THREE unquoted change requests: CR-016 six-rung enquiry ladder (BUILT 13 Sep, 1.5h, NOT yet quoted), CR-017 info@ as a second watched mailbox with drafted replies (10h, blocked on A-57), CR-018 WhatsApp history (NOT automatable - see D-471). Quote before more work."
+  "_scope_note": "12 Sep call raised THREE unquoted change requests: CR-016 six-rung enquiry ladder (BUILT 13 Sep, 1.5h, NOT yet quoted), CR-017 info@ as a second watched mailbox with drafted replies (10h, blocked on A-57), CR-018 WhatsApp history (NOT automatable - see D-471). Quote before more work.",
+  "_critical_note": "D-477 14 Sep: the s56 legal deadline was computed ONE DAY LATE for the entire project - addDays_(letter, days+1) instead of days. Caught by the first REAL Department letter, not by 27 green tests, which had all been written from the same wrong formula. Direction of error was toward MISSING the deadline. No client was affected only because the tracker has never held a real row."
 }

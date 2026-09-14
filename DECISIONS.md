@@ -10050,3 +10050,101 @@ be raised with the client (D-355). A sheet that goes to Yale is exactly where th
 **Kept blank on purpose**, now highlighted yellow by a `??` conditional-format rule so the questions
 are visible rather than buried: Gayatri's replacement's name, the Pooja/Puja spelling, and visa
 types for Pooja and Rey.
+
+## D-476 | Make credential requests — the client never touches the Make UI
+**13 Sep 2026.** I had written a seven-step walkthrough for Robinder: sign into Make, find
+Connections, Add, search Gmail, pick the right Google account, approve, name it. Sharjeel asked
+whether he could create the connection and just send a request instead.
+
+**He can. Make has a first-class feature for exactly this, and I should have looked before writing
+the walkthrough.** `credential-requests_create` builds a request against a named app and a named
+set of modules, and returns a **public URL**. The person who opens it sees only *"sign in to
+authorise these permissions"* — no Make navigation, no exposure to the rest of the org, no chance of
+clicking into a scenario.
+
+Created for team 2210317, status **pending**:
+`https://eu1.make.com/2210317/credentials-requests/inbox?requestId=ca61f3f6-9a38-446c-b4a3-586945730162`
+
+🔑 **The permissions requested are deliberately narrow, and this is the important part.**
+`google-email` was requested with exactly two modules:
+- `triggerWatchNewEmails` — read the inbox
+- `createADraft` — prepare a reply
+
+⛔ **`sendAnEmail`, `replyToAnEmail` and `sendADraftEmail` were deliberately NOT requested.** Our
+rule since day one is that AI never sends migration advice — only the RMA advises (D-469). Until
+now that rule lived in our discipline. **Requesting a token that has no send scope moves it into the
+permission itself:** even a bug, a bad prompt, or a future edit cannot email a client, because the
+credential physically cannot. That is the difference between a policy and a control.
+
+⚠️ **The URL is bearer-authority — whoever opens it can authorise.** It goes to Robinder directly,
+one-to-one, and nowhere else. Verify with `credential-requests_list` that it moved off `pending`
+rather than asking him whether he did it.
+
+**The general lesson, and it is LESSONS.md pattern 5 again:** *before writing instructions for a
+human, check whether the platform already has a mechanism.* The walkthrough was correct and it was
+still the wrong answer.
+
+## D-477 | 🔴 THE S56 DEADLINE WAS ONE DAY LATE — every deadline the system ever produced
+**14 Sep 2026.** RJ forwarded a genuine Department of Home Affairs s56 request (subclass 482). It is
+the first REAL letter this project has ever computed against, and it broke the arithmetic
+immediately.
+
+```
+Letter date : 12 September 2026
+Wording     : "You have 28 days starting on the day after we emailed this request."
+Correct due : 10 October 2026   ← the RMA's own email to the applicant says exactly this
+Our code    : 11 October 2026   ← ONE DAY LATE
+```
+
+**The bug:** `addDays_(letter, days + 1)`. The comment above it reasoned correctly from the
+Department's wording — *"starting on the day AFTER"* — and then **counted that day twice**. If the
+period starts on `letter+1`, that day is **day 1, not day 0**, so day N is `letter+N` and day 28 is
+`letter+28`. Fixed to `addDays_(letter, days)`.
+
+🔑 **The one-line check that settles it, and should have been applied years of code ago:** *if a
+letter gave you ONE day starting tomorrow, the deadline is tomorrow.* `letter+1`. The old formula
+said the day after tomorrow.
+
+🔴 **The direction of the error is the worst possible one.** A day LATE means the tracker shows a
+deadline that has already passed in law. s56 says the Department "can decide the application with
+the information we have at that time" — a refusal. **Every deadline this system has ever produced
+was wrong, toward missing it.** Nothing has reached a client only because the S56 TRACKER has never
+held a real row.
+
+⛔ **AND ALL 27 TESTS AGREED WITH IT.** Every asserted date in `test_s56_deadlines.js` was computed
+from the same wrong formula, so the suite was green while the answer was wrong. This is D-449
+exactly — *a test written from the implementation pins the defect in place instead of catching it.*
+Ten test dates corrected.
+
+**Guard added, anchored to the document rather than to our reasoning:** a regression block built from
+the real letter (12 Sep + 28 → 10 Oct), a case asserting the OLD answer (11 Oct) is now flagged as
+wrong, and the one-day case above. 27 → **31 checks**. No client details are in it — the dates are
+the evidence; the person is not ours to put in a repository.
+
+⚠️ **We had real s56 letters in `assets/samples/` since July and never computed against one.** The
+samples were read for their *wording* — how many days, which mailbox — and never for their
+*arithmetic*. A primary source in the repo that nobody checks the maths against is not verification.
+
+## D-478 | Beant covers Gayatri — and RJ answered in the wrong column
+**14 Sep 2026.** RJ returned the staff sheet. Gayatri's maternity cover is **Beant**, using her
+reassigned mailbox `student2@`. `M6_ROSTER` INDIAN/500 now routes to him, reversing D-472's
+deliberate interim.
+
+🔑 **He wrote the answer in `Notes`, not in `Covered By` — the field the automation reads.** The
+answer was present in the file and the machine could not see it. The red conditional format fired
+correctly on the empty `Covered By` cell and he routed around it by typing in the free-text column
+next door.
+
+⛔ **That is a design finding for CR-019, not a complaint about RJ.** When routing reads this sheet,
+a blank structured field must be a **REFUSAL that says so** — never a silent skip, and never a
+fallback to parsing `Notes`. People will always write in the box with no rules in it.
+
+**The dropdown guard did its job.** Adding Beant to `M6_ROSTER` immediately failed
+`test_roster_sync.js` with *"🔴 Beant would be REFUSED by the cell"* — he was not in the MASTER,
+S56 or CALL LOG lists, and `setAllowInvalid(false)` refuses unknown values **in silence**. Added to
+all three. 353 checks green.
+
+**Also answered by RJ:** Pooja's spelling is **"Pooja"** (not Puja) · Rey handles **500, 485,
+820/801**. **Still open:** Pooja's visa types, Beant's full name and whether the cover is permanent,
+Jasmeet's email, all phone numbers, and RJ listing *"skills assessment"* as a visa type — it is a
+service, not a subclass, and is not on the VISA TYPES tab.

@@ -154,7 +154,7 @@ check(
  * worthless if EVERYTHING became Unassigned — that is a check passing for the
  * wrong reason. Two routes that must still work. */
 check('routing still works: Filipino 500 -> Star',  m6AssignTo_('', 'FILIPINO', '500') === 'Star');
-check('routing still works: Indian 500 -> Gayatri', m6AssignTo_('', 'INDIAN',   '500') === 'Gayatri');
+check('routing still works: Indian 500 -> Beant', m6AssignTo_('', 'INDIAN',   '500') === 'Beant');
 
 console.log(`\n${pass}/${pass + fail} checks passed`);
 process.exit(fail === 0 ? 0 : 1);

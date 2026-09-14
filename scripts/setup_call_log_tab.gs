@@ -109,7 +109,7 @@ var CL_ID_VERIFIED  = ['Yes', 'No — could not confirm', 'N/A — general enqui
 var CL_CB_STATUS    = ['Not required', 'Pending', 'Done', 'Missed'];
 var CL_STAFF        = ['Robinder', 'Inder', 'Gayatri', 'Priyanka', 'Fiza', 'RJ',
                        'Star', 'Rey', 'Cristelle',
-                     'Pooja', 'Anmol', 'Jasmeet', 'Unassigned'];
+                     'Pooja', 'Anmol', 'Jasmeet', 'Beant', 'Unassigned'];
 var CL_YES_NO       = ['Yes', 'No', 'Already a client'];
 
 

@@ -76,7 +76,7 @@ var S56_HEADERS = [
 
 var S56_ASSIGNEES = ['Robinder', 'Inder', 'Gayatri', 'Priyanka', 'Fiza', 'RJ',
                      'Star', 'Rey', 'Cristelle',
-                     'Pooja', 'Anmol', 'Jasmeet', 'Unassigned'];
+                     'Pooja', 'Anmol', 'Jasmeet', 'Beant', 'Unassigned'];
 var S56_STATUSES  = ['New', 'Acknowledged', 'Documents Requested',
                      'Documents Sent', 'Extension Requested', 'Closed'];
 

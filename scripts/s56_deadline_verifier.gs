@@ -143,16 +143,40 @@ function s56vRun_() {
 
     checked++;
     // ---- CHECK 1 · the legal deadline -------------------------------------
-    // Spec: due = letter_date + 1 day + days_allowed. The "+1" is the
-    // Department's own wording: "starting on the day AFTER we emailed this".
-    var recomputed = addDays_(letter, days + 1);
+    /* 🔴 FIXED 14 Sep 2026 — THIS WAS ONE DAY LATE FOR THE WHOLE PROJECT. (D-477)
+     *
+     * It used to be `addDays_(letter, days + 1)`. The comment reasoned correctly
+     * from the Department's wording and then double-counted the same day:
+     *
+     *   "You have 28 days starting on the day after we emailed this request."
+     *
+     * The period STARTS on letter+1. That day is day 1 — not day 0. So day N
+     * falls on letter+N, and day 28 is letter+28. The old formula made the day
+     * after the letter into day 0, pushing every deadline one day out.
+     *
+     * The one-line sanity check that settles it: if a letter gave you ONE day
+     * starting tomorrow, the deadline is tomorrow — letter+1. The old formula
+     * said letter+2.
+     *
+     * ⛔ PROVEN AGAINST A REAL LETTER, not reasoning. The 482 request of
+     * 12 Sep 2026 (28 days) is due 10 October 2026 — the RMA's own email to the
+     * applicant says "before 10 October 2026". Old formula: 11 October.
+     *
+     * 🔴 THE DIRECTION OF THE ERROR IS THE WORST ONE. A day LATE on a s56 means
+     * the tracker shows a deadline that has already passed in law, and s56 says
+     * the Department "can decide the application with the information we have at
+     * that time" — i.e. refuse. Every deadline this system has ever produced was
+     * wrong, and wrong toward missing it. Nothing has gone out yet only because
+     * the S56 TRACKER has never held a real row.
+     */
+    var recomputed = addDays_(letter, days);
 
     if (!stated) {
       note.push('🔴 NO DUE DATE SET. Arithmetic gives ' + fmt_(recomputed));
       mismatch++;
     } else if (fmt_(stated) !== fmt_(recomputed)) {
       note.push('🔴 DEADLINE DISAGREEMENT — sheet says ' + fmt_(stated) +
-                ', arithmetic on (' + fmt_(letter) + ' + 1 + ' + days + ') gives ' +
+                ', arithmetic on (' + fmt_(letter) + ' + ' + days + ' days) gives ' +
                 fmt_(recomputed) + '. OPEN THE LETTER. Not auto-corrected.');
       mismatch++;
     } else {

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 708K /    10052 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 716K /    10150 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 20:04
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:28
 
 | # | Decision |
 |---|---|
@@ -470,3 +470,6 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-13 20:0
 | **D-473** | The staff roster becomes a sheet Yale owns, not a constant we edit |
 | **D-474** | Two mailboxes, two connections, two scenarios — and it is the right answer, not a workaround |
 | **D-475** | Auditing the staff sheet found four gaps — and one was a hole in my own spec |
+| **D-476** | Make credential requests — the client never touches the Make UI |
+| **D-477** | 🔴 THE S56 DEADLINE WAS ONE DAY LATE — every deadline the system ever produced |
+| **D-478** | Beant covers Gayatri — and RJ answered in the wrong column |
