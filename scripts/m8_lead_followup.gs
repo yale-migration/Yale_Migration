@@ -118,7 +118,10 @@ var M8_COL = { DATE:1, NAME:2, PHONE:3, STATUS:9, DUE:10, NOTES:11, LAST_CONTACT
 // From the ENQUIRIES Status dropdown. These three mean the conversation is over —
 // 'Not Proceeding' is also how "the client requests no further contact" is recorded,
 // which is the exception SOP-CI-001 10D names explicitly.
-var M8_CLOSED = ['Not Proceeding', 'Lost Lead', 'Converted'];
+/* 🔴 'Abuse — Blocked' added 14 Sep (D-483). Without it the six-rung ladder chases an
+ * abusive commenter on days 1, 2, 3, 7, 15 and 30. The abuse guard stopped the public
+ * REPLY; it did not stop the CHASING, because that lives here, not there. */
+var M8_CLOSED = ['Not Proceeding', 'Lost Lead', 'Converted', 'Abuse — Blocked'];
 
 // Every note this script writes starts with this. It is how the script finds and
 // replaces its OWN line without touching a word a consultant typed.

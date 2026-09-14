@@ -10250,3 +10250,40 @@ because it is what he already does.
 ⛔ **Two things the draft deliberately does not do**, each because doing them would smuggle a second
 decision into an approval: it does not paraphrase the Department's "how to obtain this document"
 guidance (that is advice), and it does not chase (a separate cadence, not yet built, not yet agreed).
+
+## D-483 | The abuse guard stopped the reply and nothing else — three files, not one
+**14 Sep 2026, hours after D-481.** Auditing before building M6 transport, I probed what an abusive
+comment would actually WRITE, rather than what `m6Triage_` returned. The decision was right and the
+row was wrong:
+
+```
+assignTo  "Unassigned"      -> sits in the enquiry queue as a lead
+status    ""                -> OPEN, so M8's ladder owns it
+notes     "⛔ HOLD — a racial slur. RMA only; no advice given."
+```
+
+🔴 **The consequence I had not followed through: M8 would have chased the abuser on days 1, 2, 3, 7,
+15 and 30.** The guard stopped one public reply and left six scheduled follow-ups behind it — a
+worse outcome than the thing it was written to prevent.
+
+And the note used the **HOLD / "RMA only; no advice given"** wording, which exists for legally
+delicate *client* matters. On racist abuse it reads as though the harassment is a case awaiting the
+Registered Migration Agent.
+
+⛔ **This is LESSONS.md pattern 5 in my own work, the same day I wrote about it.** Every fact was
+right — abuse detected, reply suppressed, flagged for a human — and I assumed the row builder
+honoured a field I had just added. **It did not read it.** The behaviour lived in three files and I
+changed one.
+
+**Fixed where each thing actually lives:**
+- `m6_enquiry_triage.gs` — the row builder returns early: no assignee (**not even "Unassigned"**), no
+  subclass, no location, and abuse-specific wording that says *hide the comment and ban the account*
+- `setup_master_sheet.gs` — `'Abuse — Blocked'` added to the ENQUIRIES Status dropdown **first**,
+  because `setAllowInvalid(false)` refuses an unknown value in silence (the Beant lesson, D-478)
+- `m8_lead_followup.gs` — added to `M8_CLOSED` so the ladder skips it
+
+**It is still written to the sheet, deliberately.** Yale needs to see it to hide the comment and ban
+the account. It is written **closed** so nothing works it and nothing chases it.
+
+Seven new assertions cover the row rather than the decision — assignee, status, follow-up, wording,
+and that the status is a value the sheet will actually accept. M6 65 → **72**; suite 372 → **379**.

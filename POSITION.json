@@ -9,7 +9,7 @@
   "hours_blocked_on_rj": 0.0,
   "hours_blocked_on_us": 0.0,
   "real_clients_processed": 0,
-  "apps_script_checks": 372,
+  "apps_script_checks": 379,
   "blueprint_checks": 79,
   "_ours_note": "hours_blocked_on_us counts CONTRACTED MODULE HOURS ONLY and is not an answer to 'is anything left on our side?' (D-383). hours_actionable_by_us is work we CAN now do: M10.",
   "hours_actionable_by_us": 2.0,

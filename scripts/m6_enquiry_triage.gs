@@ -368,6 +368,39 @@ function m6ToEnquiryRow_(msg, meta, today) {
   meta = meta || {};
   var d = m6Triage_(msg, { today: today });
   var notes = [];
+
+  /* 🔴 ABUSE IS NOT AN ENQUIRY — AND THE GUARD ALONE DID NOT ACHIEVE THAT. (D-483)
+   *
+   * m6Triage_ returned abusive:true and reply:'' from the first version of this work,
+   * and this function ignored it: the row was still built as a lead, assigned
+   * "Unassigned", and labelled with the HOLD/"RMA only" wording meant for legally
+   * delicate CLIENT matters. Worse, with a blank Status, M8's ladder would then have
+   * chased the abuser on days 1, 2, 3, 7, 15 and 30.
+   *
+   * ⛔ Stopping the public reply was necessary and not sufficient. The row, the
+   * assignment, the wording and the follow-up each had to be handled where they
+   * actually live — three files, not one.
+   *
+   * It is still WRITTEN, deliberately: Yale needs to see it to hide the comment and
+   * ban the account. It is written CLOSED so nothing works it and nothing chases it.
+   */
+  if (d.abusive) {
+    return {
+      row: [
+        meta.date || '', meta.name || '', meta.phone || '', meta.email || '',
+        meta.channel || '',
+        '', '',                     // no subclass, no location — it is not an enquiry
+        '',                         // ⛔ NOT "Unassigned" — no consultant owns this
+        'Abuse — Blocked',          // closes it to M8 (M8_CLOSED)
+        '',                         // no follow-up date, ever
+        '🚫 ABUSIVE — ' + d.abuseReason + '. No reply was sent. '
+          + 'Hide the comment and ban the account. Not a lead; do not contact.'
+          + (msg ? ' | Content: ' + String(msg).replace(/\s+/g, ' ').slice(0, 200) : '')
+      ],
+      decision: d
+    };
+  }
+
   if (d.blocked) notes.push('⛔ HOLD — ' + d.blockReason + '. RMA only; no advice given.');
   if (d.daysToExpiry !== null) notes.push('visa expiry in ' + d.daysToExpiry + ' day(s) per the message');
   if (msg) notes.push('Enquiry: ' + String(msg).replace(/\s+/g, ' ').slice(0, 300));
@@ -517,6 +550,34 @@ function runM6SelfTest() {
   var ok = _ab('Hi, I want to apply for a 500 student visa, I am in Australia');
   check('a normal enquiry still gets the acknowledgement',
         ok.abusive === false && ok.reply.length > 0 && ok.subclass === '500');
+  /* ===== THE ROW, not just the decision (D-483) =========================
+   * The guard returned abusive:true from the start and the row builder ignored it.
+   * These assert the four things that were actually wrong, so no future edit can
+   * stop the reply and leave the lead, the assignment or the chasing in place. */
+  var _row = m6ToEnquiryRow_('Go home slumdog.',
+    { channel: 'Facebook comment', name: 'James Andrews', date: '2026-09-14' },
+    new Date('2026-09-14')).row;
+  check('abuse row: 🔴 NOT assigned to anyone, not even "Unassigned"', _row[7] === '');
+  check('abuse row: Status closes it so M8 never chases', _row[8] === 'Abuse — Blocked');
+  check('abuse row: no follow-up date', _row[9] === '');
+  check('abuse row: says ban the account, not "RMA only"',
+        _row[10].indexOf('ban the account') > -1 && _row[10].indexOf('RMA only') === -1);
+  check('abuse row: no subclass or location invented', _row[5] === '' && _row[6] === '');
+
+  // ⛔ The status MUST be one the sheet will accept — setAllowInvalid(false) refuses
+  //    an unknown value in silence, which is how Beant was caught (D-478).
+  var _enqStatus = ['New','Assigned','Contacted','Pending Decision','Not Proceeding',
+                    'Lost Lead','Converted','Abuse — Blocked'];
+  check('abuse status exists in the ENQUIRIES dropdown',
+        _enqStatus.indexOf(_row[8]) > -1);
+
+  // A normal enquiry must still be assigned and still be chaseable.
+  var _ok = m6ToEnquiryRow_('I want to apply for a 500 student visa',
+    { channel: 'Facebook comment', team: 'INDIAN', date: '2026-09-14' },
+    new Date('2026-09-14')).row;
+  check('normal enquiry is still assigned and still open',
+        _ok[7] !== '' && _ok[8] === '');
+
 
 
   Logger.log('\n' + pass + '/' + (pass + fail) + ' checks passed');

@@ -88,7 +88,12 @@ var ENQUIRY_DROPDOWNS = {
        'Pooja','Anmol','Jasmeet','Beant',
       'Unassigned'],                                                                      // Assigned To
   9: ['New','Assigned','Contacted','Pending Decision','Not Proceeding','Lost Lead',
-      'Converted']                                                                        // Status
+      'Converted',
+      // 🔴 D-483. Abuse is not a lead and must never be chased. It is written with this
+      // status so M8's ladder skips it (M8_CLOSED) while it stays VISIBLE, so somebody
+      // can hide the comment and ban the account. ⛔ Adding it here is not optional:
+      // setAllowInvalid(false) refuses an unknown value IN SILENCE.
+      'Abuse — Blocked']                                                                  // Status
 };
 
 var VALIDATION_ROWS = 999;   // apply dropdowns to rows 2..1000
