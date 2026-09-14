@@ -195,3 +195,9 @@ survives in MASTER v2 — the concepts were right, the file was stale.
 | **A-62** | **Beant — full name, correct spelling, and is the cover permanent or until Gayatri returns?** Now live in routing for Indian 500 (D-478). | 14 Sep | RJ/Robinder |
 | **A-63** | **Pooja's visa types** — still blank after RJ's reply. Without them she is in the roster but routable to nothing. | 14 Sep | RJ |
 | **A-64** | **"Skills assessment"** — RJ listed it as a visa type. It is a service, not a subclass. How should it route? | 14 Sep | RJ |
+
+| **A-65** | **31 clients still missing email / phone / last-spoken date** — sent as `YALE - STILL NEEDED (for RJ).xlsx`, filtered to only what is missing. 🔴 **Last-spoken is 0/40** and M5 dormancy cannot run on a single real client without it (D-480). | 14 Sep | RJ |
+
+### ✅ Closed 14 Sep by RJ's 482 letter, unprompted
+- **A-51 — PROVEN.** The letter is a 482 and its header reads `Sent to: info@yalemigration.com.au`. The 87% now rests on a Department document, not a recollection (D-479).
+- **A-34(c) — partly.** 28 days confirmed for **482** as well as 485. 500 and 820/801 still unseen, but `days_allowed` is parsed from the letter, not hardcoded.

@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 716K /    10150 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 716K /    10191 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:28
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:40
 
 | # | Decision |
 |---|---|
@@ -473,3 +473,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-14 12:2
 | **D-476** | Make credential requests — the client never touches the Make UI |
 | **D-477** | 🔴 THE S56 DEADLINE WAS ONE DAY LATE — every deadline the system ever produced |
 | **D-478** | Beant covers Gayatri — and RJ answered in the wrong column |
+| **D-479** | RJ's 482 letter closed two open asks without being asked |
+| **D-480** | The real data gaps, counted rather than remembered |

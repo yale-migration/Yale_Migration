@@ -10148,3 +10148,44 @@ all three. 353 checks green.
 820/801**. **Still open:** Pooja's visa types, Beant's full name and whether the cover is permanent,
 Jasmeet's email, all phone numbers, and RJ listing *"skills assessment"* as a visa type — it is a
 service, not a subclass, and is not on the VISA TYPES tab.
+
+## D-479 | RJ's 482 letter closed two open asks without being asked
+**14 Sep 2026.** The s56 RJ forwarded was sent to answer nothing — he just passed on a client letter.
+It closed two questions that had been open for two weeks, and it did so with **evidence rather than
+recollection**.
+
+**A-51 is now PROVEN, not merely reported.** RJ told us on 3 Sep that only 485 and 600 letters go to
+`visa.lodgement@` and everything else lands in `info@`. This letter is a **subclass 482**, and its
+own header reads `Sent to: info@yalemigration.com.au`. The 87% figure now rests on a Department
+document, not on a consultant's memory.
+
+**A-34(c) is partly closed.** The open question was whether the 28-day period holds outside 485 —
+both prior samples were 485. This is a **482 at 28 days**, so the pattern now spans two subclasses.
+⚠️ It is NOT fully closed: 500 and 820/801 remain unverified. That matters less than it looks,
+because `days_allowed` is read from the letter by the classifier rather than hardcoded (D-464) — the
+risk is a *parse* failure, not a wrong constant.
+
+🔑 **Also learned, and it changes M9:** the request arrives as **two attachments**, not one. The
+*letter* carries the date and the day count; the *Request Checklist and Details* carries what the
+client must actually produce. A build that reads only the first attachment gets the deadline right
+and cannot tell the client what to send.
+
+## D-480 | The real data gaps, counted rather than remembered
+**14 Sep 2026.** Audited `2026-09-06_CLIENT-LIST-TO-UPDATE_returned-v3.xlsx` — the most recent sheet
+RJ returned — column by column instead of trusting the last summary.
+
+| field | filled | what the gap actually blocks |
+|---|---|---|
+| Email address | **28/40** | M4 cannot send the checklist; no portal invite |
+| Contact number | **10/40** | M7 has nothing to match a phone enquiry against |
+| Date last spoken | **0/40** | 🔴 **M5 dormancy has no baseline on any real client** |
+
+🔴 **The last row is the finding.** M5 is 100% built and fully tested, and on real data it currently
+cannot run — not because of a defect, but because the column it reads is empty for every client. A
+module can be finished and useless at the same time, and the hours table shows it as done either way
+(the LESSONS.md pattern-5 shape again).
+
+Rather than another long message, the ask is a **filtered workbook**: `YALE - STILL NEEDED (for
+RJ).xlsx` — only the **31 clients** with something missing, only the three columns, already-answered
+cells greyed out and the missing ones highlighted. Nothing he has already given is asked for twice
+(G2).
