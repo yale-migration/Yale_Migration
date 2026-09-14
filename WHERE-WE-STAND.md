@@ -1,15 +1,81 @@
-# WHERE WE STAND — 11 Sep 2026
-**The one file to read after a context reset.** Position, gaps, resume point.
-🗣 Talking to the client? `MVP-STATUS-simple.md`. `STATUS.md` is history. `DECISIONS-INDEX.md` is why.
+# Where we stand — 14 September 2026
+
+**MVP 78% · 38 of 49 hours · 379 Apps Script + 287 dashboard checks green · ZERO real clients processed.**
+
+⛔ **Read that last number first.** Everything is built and tested; almost nothing is switched on.
+All 12 Make scenarios are `isActive: false`. The dashboard runs on sample people. 78% is what has
+been *written*, not what is *running*.
 
 ---
 
-# 0 · RESUME HERE (11 Sep 2026)
+## 🔴 The week's biggest find — and it was ours, not theirs
 
-**MVP 78% · 38 of 49 h · 340 Apps Script + 287 dashboard unit + 165 e2e + 18 RLS checks, all green ·
-0 dirty, 0 unpushed · highest decision D-464.**
-⛔ **Still ZERO real clients processed.** MASTER holds 14 invented people; ENQUIRIES and S56 TRACKER
-are empty. Built is not running.
+**The s56 legal deadline was computed ONE DAY LATE, for the whole project** (D-477). Caught on 14 Sep
+by the first REAL Department letter we ever ran the arithmetic against — not by 27 green tests, every
+one of which had been written from the same wrong formula.
+
+The error ran toward **missing** the deadline. No client was affected only because the tracker has
+never held a real row. Fixed, and now guarded by a regression case anchored to the real letter.
+
+**The lesson, written down because it will recur:** we had real s56 letters in `assets/samples/`
+since July. We read them for *wording* and never once for *arithmetic*. A primary source nobody
+checks the maths against is not verification.
+
+---
+
+## What changed 12–14 September
+
+| | |
+|---|---|
+| **Make Core paid** | verified live — 5,000 ops, 1-min interval. The 2-active-scenario cap is gone |
+| **Meta access granted** | ⚠️ **expires ~29 Sep** — Robinder set it temporary |
+| **Facebook + Instagram connected** | read-only, by us, 14 Sep. Tokens expire 13 Nov |
+| **Gmail delegation on `info@`** | to `project1@` — ⛔ useless to the API (D-467). Make still needs its own OAuth |
+| **s56 day count answered** | *"hota agle din se hai"* — and our code already did it right |
+| **Staff** | Inder→Anmol · Priyanka→Pooja · Gayatri on leave, covered by **Beant** |
+| **Anthropic** | Robinder has provided a key. Not yet entered into Make |
+
+---
+
+## Where each module actually is
+
+| ✅ 100% | M1 M2 M3 M4 M5 M7 M8 · C-3 C-4 |
+|---|---|
+| 🟡 partial | **M6 45%** — brain done (72 checks), **transport not built** · M9 90% · C-1 90% · C-5 50% · M11 30% |
+| ⬜ 0% | M10 (needs M3/M4 running) · C-2 (needs OneDrive on a Yale account) |
+
+**M6 is the only module with nothing blocking it.** Spec: `scenarios/M6-social-capture.md`.
+
+---
+
+## The two finish lines, and they are independent
+
+**🟢 The dashboard — needs nobody but us.**
+Rotate the Supabase key · GitHub Actions secrets (as `project1-yale`, who IS the org owner) ·
+test whether Netlify holds the Google credentials (503 vs 200) · share MASTER DATABASE with the
+service account · run the sync. **Then 38 real clients appear.**
+
+**🔵 The automation — needs Robinder.**
+The `info@` Make link (still pending) · the Meta expiry · his Anthropic key entered · approval of the
+s56 reply wording (`docs/S56-CLIENT-REPLY-TEMPLATE.md` — drafted from his own email, so it is a
+yes/no).
+
+---
+
+## Never re-ask these
+
+- **s56 day count** — answered 12 Sep, and our code was already right
+- **Checklists current** — RJ, 21 Aug: *"all the checklists are currently in used"*
+- **Department email structure** — in the s56 samples read-me since 31 Aug
+- **A-51 (87% to info@)** — now PROVEN by a real 482 letter addressed to `info@`
+- **Jasmeet** — drafting stage only, never an enquiry destination (A-50)
+
+## Three lessons this week keeps re-teaching
+
+1. **Green tests written from the implementation pin the defect in place.** Twice: the s56 formula, and the M8 ladder.
+2. **A fact in one file does not travel.** The abuse guard set a field the row builder never read — three files, one changed (D-483).
+3. **Open the file.** The "s56 email template" was WhatsApp screenshots. The register suspected it for six weeks; opening it took ten seconds.
+
 
 ## The live estate
 | | |
