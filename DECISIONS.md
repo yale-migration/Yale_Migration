@@ -10287,3 +10287,37 @@ the account. It is written **closed** so nothing works it and nothing chases it.
 
 Seven new assertions cover the row rather than the decision — assignee, status, follow-up, wording,
 and that the status is a value the sheet will actually accept. M6 65 → **72**; suite 372 → **379**.
+
+## D-484 | The Meta connections are NOT read-only — I told the client they were
+**14 Sep 2026.** I requested the Facebook and Instagram credentials with read-only modules
+(`WatchComments`, `ListComments`, `GetPageInfo`, `listMediaComments`), wrote *"READ ONLY — it cannot
+post, comment, reply or delete anything on your pages"* into the request description **that Robinder
+can read**, and repeated it to Sharjeel. Reading the granted scopes back shows that is **false**:
+
+```
+Facebook  (7)   pages_manage_engagement    ← create / delete comments and reactions
+Instagram (11)  instagram_manage_comments  ← reply to comments
+                ads_management             ← broad, never wanted
+```
+
+**Why:** Make requests the **union of the scopes its modules declare**, and its own definition of
+`WatchComments` declares `pages_manage_engagement`. Choosing read-only *modules* does not produce a
+read-only *token*. I assumed it did, and asserted it to a client without reading the scopes back.
+
+⛔ **This is the same failure as D-477 and D-483, three times in one day: a mechanism asserted rather
+than verified.** The Gmail claim was checked — `gmail.send` is genuinely absent, and that guarantee
+holds. The Meta claim was not checked, and does not.
+
+**What remains true:** the M6 scenario will use no write module, so nothing will post. **But that is
+enforced by our design, not by the credential** — a materially weaker promise than the one made, and
+one that a future edit could undo silently.
+
+🔑 **Correct it with Robinder before it becomes a discovered inaccuracy rather than a disclosed one.**
+An RMA who later finds the token can comment on his page has been misinformed by us, however
+unintentionally. The honest line: *"the connection can technically comment, because Meta bundles
+that permission with reading — but nothing we build uses it, and I'd rather you hear that from me."*
+
+⚠️ **Also verified in the same pass, and it settles a live question:** both connections were created
+**after** the ad account was restricted, and one carries `ads_management`. **The restriction does not
+block Page or Instagram access** — the only thing it ever blocked was a *Create messaging ad* flow.
+Four of five Meta channels are connected and none depends on that ad account.
