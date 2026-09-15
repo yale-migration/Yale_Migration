@@ -203,3 +203,6 @@ survives in MASTER v2 — the concepts were right, the file was stale.
 - **A-34(c) — partly.** 28 days confirmed for **482** as well as 485. 500 and 820/801 still unseen, but `days_allowed` is parsed from the letter, not hardcoded.
 
 | **A-66** | 🔴 **65 clients are in their live lodgement tab but were never in the enrichment exercise** — so they cannot be imported. Needs the same three columns (consultant · email · team) for those 65. Their live tab lists **97** named clients; we can load **38** (D-487). | 15 Sep | RJ |
+
+| **A-67** | **Pooja's visa types — still needed.** RJ answered *"same with Beant"*, which reads as 500 but is two inferences deep on a field that routes live client enquiries. One line closes it (D-489). | 15 Sep | RJ |
+| **A-68** | **Beant's full name**, and preferred pronoun — RJ wrote both "she" and "he" in one reply. Not blocking; it affects anything we write about them. | 15 Sep | RJ |

@@ -1,6 +1,6 @@
 {
   "_comment": "🔑 THE SINGLE SOURCE for the project's position numbers (G6). Every LIVE document must agree with this file; scripts/docs_hygiene.py enforces it. Append-only archives (DECISIONS.md, CLIENT-LOG.md, STATUS.md) are exempt — an old number in a dated entry is history, not drift. UPDATE THIS FILE FIRST, then the prose.",
-  "as_at": "2026-09-14",
+  "as_at": "2026-09-15",
   "built_pct": 78,
   "built_hours": 38.0,
   "contracted_hours": 49,
@@ -9,7 +9,7 @@
   "hours_blocked_on_rj": 0.0,
   "hours_blocked_on_us": 0.0,
   "real_clients_processed": 0,
-  "apps_script_checks": 379,
+  "apps_script_checks": 393,
   "blueprint_checks": 79,
   "_ours_note": "hours_blocked_on_us counts CONTRACTED MODULE HOURS ONLY and is not an answer to 'is anything left on our side?' (D-383). hours_actionable_by_us is work we CAN now do: M10.",
   "hours_actionable_by_us": 2.0,

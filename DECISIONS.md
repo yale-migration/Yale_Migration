@@ -10401,3 +10401,43 @@ RJ's to fill. Raised as A-66.
 11 with no email (no checklist or chase possible) · 8 with no matching lodgement row · 6 visas with
 no checklist → NEEDS REVIEW · 2 held back as no longer clients. The locked-column check passed on
 all ten dropdowns, so nothing will be silently refused by the sheet on write.
+
+## D-488 | Skills assessment routes on its own axis — it is a service, not a subclass
+**15 Sep 2026.** RJ, asked whether skills-assessment enquiries should come to him:
+*"it can come to me and fiza for indian"*. So **Filipino → RJ, Indian → Fiza**.
+
+⛔ **It was tempting to add "skills assessment" to `M6_SUBCLASS_WORDS` and it would have been
+wrong.** A subclass is what somebody applies *for*; a skills assessment is a step taken *before*
+several different applications. Listed as a subclass it would collide with whatever visa the same
+message mentions, and the existing digits-win rule would then **silently discard one of them**.
+
+**So it is detected independently and only decides the assignment when no subclass was found.** A
+message naming both is a visa enquiry that happens to mention an assessment — the subclass wins, and
+a 500 stays with Beant instead of being handed to Fiza.
+
+⚠️ **Townsville still outranks it.** Cristelle owns that office's work whatever it is, so the
+assessment branch is checked *after* the office rule, never before.
+
+Detection covers their actual vocabulary, not just the phrase: `skills assessment`, `skill
+assessment`, `skills recognition`, and the assessing authorities themselves — **TRA, VETASSESS,
+ACECQA, AITSL** — because a client asking *"do you do VETASSESS?"* has asked the same question
+without using the word. M6 72 → **86 checks**.
+
+## D-489 | "Same with Beant" is not an answer we can route on
+**15 Sep 2026.** Asked which visa types Pooja handles, RJ replied *"same with Beant"*.
+
+That most likely means 500. It is still **not being filled in**, because the chain is
+`Pooja = Beant = (covers Gayatri) = 500` — **two inferences deep, on a field that decides where a
+real client's enquiry lands.** The cost of being wrong is a misrouted file; the cost of asking again
+is one line in a message.
+
+⛔ The pattern this project keeps paying for is a plausible reading treated as a fact. Re-asked as
+A-67, and the sheet carries a `??` note rather than a value.
+
+**Also unresolved, and recorded rather than smoothed over:** RJ wrote both *"she is taking over
+Gayatri's work"* and *"he will stay"* about Beant in the same reply. Gender is genuinely unclear, so
+anything we write uses **they/them** until someone states it. Beant's **full name** was asked for and
+not given.
+
+**Answered and applied:** spelling is **Beant** ✅, and the cover should be treated as **permanent** —
+*"pretty sure he will stay even [when] Gayatri is back."*

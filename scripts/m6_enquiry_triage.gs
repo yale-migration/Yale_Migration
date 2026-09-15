@@ -150,6 +150,28 @@ var M6_SUBCLASS_WORDS = [
 ];
 
 // ENQUIRIES G is a LOCKED dropdown: Onshore / Offshore. Nothing else may be written.
+/* ================== SKILLS ASSESSMENT — a SERVICE, not a subclass ==============
+ * RJ, 15 Sep 2026, asked whether skills-assessment enquiries should come to him:
+ * *"it can come to me and fiza for indian"*.  (D-488)
+ *
+ * ⛔ IT IS NOT A VISA TYPE, and it must not be smuggled into the subclass list. A
+ * subclass is what someone applies FOR; a skills assessment is a step done BEFORE
+ * several different applications. Putting "skills assessment" in M6_SUBCLASS_WORDS
+ * would have it collide with whatever visa the same message mentions, and the
+ * digits-win rule would then silently discard one of them.
+ *
+ * So it routes on its own axis: Filipino -> RJ, Indian -> Fiza, and it only
+ * decides the assignment when NO visa subclass was found. A message naming both a
+ * subclass and an assessment is a visa enquiry that mentions an assessment — the
+ * subclass wins, which is the existing behaviour and the right one.
+ *
+ * ⚠️ TOWNSVILLE still wins over everything: Cristelle takes that office's work
+ * regardless of type, and that rule sits above this one in the roster.
+ */
+var M6_SKILLS_ASSESSMENT = /\bskills?\s*assessment\b|\bskill\s*assessment\b|\bTRA\b|\bVETASSESS\b|\bACECQA\b|\bAITSL\b|\bskills?\s*recognition\b/i;
+
+var M6_ASSESSMENT_OWNER = { FILIPINO: 'RJ', INDIAN: 'Fiza' };
+
 var M6_ONSHORE  = /\bin australia\b|\bonshore\b|currently in (?:aus|australia)|here in australia/i;
 var M6_OFFSHORE = /\boffshore\b|\boverseas\b|outside australia|in (?:the )?philippines|in india|back home/i;
 
@@ -308,6 +330,9 @@ function m6Triage_(text, opts) {
     if (M6_SUBCLASS_WORDS[j].re.test(t)) { subclass = M6_SUBCLASS_WORDS[j].code; break; }
   }
 
+  // A service enquiry, detected independently of the subclass (D-488).
+  var skillsAssessment = M6_SKILLS_ASSESSMENT.test(t);
+
   var location = '';
   if (M6_OFFSHORE.test(t)) location = 'Offshore';
   else if (M6_ONSHORE.test(t)) location = 'Onshore';
@@ -323,10 +348,11 @@ function m6Triage_(text, opts) {
     reply:        blocked !== null ? M6_REPLY_BLOCKED : M6_REPLY_ACK,
     questions:    blocked !== null ? [] : M6_REPLY_QUESTIONS.slice(),
     subclass:     subclass,
+    skillsAssessment: skillsAssessment,
     location:     location,
     daysToExpiry: days,
     // Every blocked message needs a human. So does anything we could not read.
-    needsHuman:   blocked !== null || (!subclass && !location)
+    needsHuman:   blocked !== null || (!subclass && !location && !skillsAssessment)
   };
 }
 
@@ -350,8 +376,17 @@ function m6DaysToExpiry_(text, today) {
  * Who should own this lead? Returns 'Unassigned' unless the match is unambiguous.
  * ⛔ Unassigned is a RESULT, not a failure. A lead on the wrong consultant looks handled.
  */
-function m6AssignTo_(office, team, subclass) {
+function m6AssignTo_(office, team, subclass, skillsAssessment) {
   var o = String(office || '').toUpperCase(), tm = String(team || '').toUpperCase();
+
+  /* Skills assessment with no subclass — RJ (Filipino) or Fiza (Indian).  (D-488)
+   * ⛔ Checked AFTER Townsville, never before: Cristelle owns that office's work
+   * whatever it is, and an assessment enquiry from Townsville is still hers. */
+  if (skillsAssessment && !subclass && o !== 'TOWNSVILLE') {
+    var owner = M6_ASSESSMENT_OWNER[tm];
+    if (owner) return owner;
+  }
+
   for (var i = 0; i < M6_ROSTER.length; i++) {
     var r = M6_ROSTER[i];
     if (r.office && r.office !== o) continue;
@@ -411,7 +446,7 @@ function m6ToEnquiryRow_(msg, meta, today) {
       // Channel is passed in by whatever caught the message. ⛔ Never inferred — D-330.
       meta.channel || '',
       d.subclass, d.location,
-      m6AssignTo_(meta.office, meta.team, d.subclass),
+      m6AssignTo_(meta.office, meta.team, d.subclass, d.skillsAssessment),
       '',   // Status — the consultant's judgement, never ours (SOP-CI-001 10B)
       '',   // Follow-up Due — M8 owns the whole cadence, exclusively
       notes.join(' | ')
@@ -577,6 +612,42 @@ function runM6SelfTest() {
     new Date('2026-09-14')).row;
   check('normal enquiry is still assigned and still open',
         _ok[7] !== '' && _ok[8] === '');
+  /* ===== SKILLS ASSESSMENT — RJ (Filipino) / Fiza (Indian), D-488 ============== */
+  check('Filipino skills assessment -> RJ',
+        m6AssignTo_(null, 'FILIPINO', '', true) === 'RJ');
+  check('Indian skills assessment -> Fiza',
+        m6AssignTo_(null, 'INDIAN', '', true) === 'Fiza');
+
+  /* 🔑 A SUBCLASS ALWAYS WINS. A message naming both is a visa enquiry that happens
+   * to mention an assessment — routing it to the assessment owner would take a 500
+   * off Beant and hand it to Fiza. */
+  check('500 + assessment still routes on the SUBCLASS, not the assessment',
+        m6AssignTo_(null, 'INDIAN', '500', true) === 'Beant');
+  check('Filipino 485 + assessment still goes to Star',
+        m6AssignTo_(null, 'FILIPINO', '485', true) === 'Star');
+
+  /* ⛔ Townsville outranks everything — Cristelle owns that office whatever it is. */
+  check('Townsville assessment still goes to Cristelle',
+        m6AssignTo_('TOWNSVILLE', 'FILIPINO', '', true) === 'Cristelle');
+
+  // No team means no confident routing, assessment or not.
+  check('assessment with no team is NOT guessed',
+        m6AssignTo_(null, '', '', true) === 'Unassigned');
+
+  // Detection, on their actual vocabulary.
+  var _sa = function (txt) { return m6Triage_(txt, { today: new Date('2026-09-15') }); };
+  ['I need a skills assessment', 'how much for skill assessment?',
+   'Do you do TRA applications?', 'VETASSESS for my trade',
+   'ACECQA assessment help', 'AITSL teaching assessment'].forEach(function (x) {
+    check('detected: "' + x.slice(0, 32) + '"', _sa(x).skillsAssessment === true);
+  });
+  check('an ordinary visa enquiry is NOT flagged as an assessment',
+        _sa('I want to apply for a 500 student visa').skillsAssessment === false);
+
+  // A bare assessment enquiry is routable, so it must not be marked unreadable.
+  check('a bare assessment enquiry does not need a human just for being unreadable',
+        _sa('I need a skills assessment').needsHuman === false);
+
 
 
 
