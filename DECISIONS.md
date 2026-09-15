@@ -10524,3 +10524,40 @@ by reading the schema rather than by a scenario silently receiving nothing three
 go-live. **It goes to Robinder as a re-scope conversation, not into a quiet corner** — and the
 honest framing is that three of six channels are delivered, one is close, and three depend on Meta's
 own gates rather than on our build.
+
+## D-492 | C-5 closed — and the honest scope of it, written into the code
+**15 Sep 2026.** C-5 ("Referral + SMS enquiry channels", 1 h) has read *part blocked* since August.
+Opening the file rather than the tracker: **`Referral` was already in the Source dropdown.** Only
+`SMS` was missing. Added to both lists — MASTER column U and the ENQUIRIES Channel column.
+
+⛔ **And the comment that goes with it matters more than the value.** `SMS` here records where a lead
+**came from**. It does not mean the system can text anybody. Sending needs a paid gateway, sender-ID
+registration and opt-out handling — none of which is in any plan or quote (CR-015).
+
+**The failure mode this comment exists to prevent** is somebody — us included — seeing `SMS` in a
+dropdown six months from now and concluding the feature is nearly there. A value in a list is not a
+capability, and the difference is invisible from the outside.
+
+**C-5 is now complete to the extent the contract describes it.** Both sources are recordable. Neither
+is a send path, and neither was ever quoted as one.
+
+## D-493 | The Page dropdown question was answerable from here all along
+**15 Sep 2026.** For three days I ended messages asking Sharjeel to open Make, add a Facebook module
+and read a dropdown, to find out whether Meta's asset assignment had actually worked.
+
+**It was answerable by API the whole time.** `app-module_get` on `facebook-pages@6` returns the
+module's input schema, and the schema *names the RPC its own dropdown calls* —
+`rpcName: "Pages"`. One call:
+```
+Yale Migration and Education Consultants (Brisbane) -> 1695697263975147
+Zap It Pest & Termite Control (Melbourne)           -> 339252835945162
+```
+
+🔑 **What blocked me was not the API, it was giving up on it too early.** `app-module_get` failed on
+versions 1, 2 and 3, I concluded the app "won't resolve for this org", and asked a human instead.
+The version was **6**, and `apps_list` would have told me — it took one paginated call to find.
+**Three failed guesses became a conclusion when it should have become a lookup.**
+
+⚠️ The same shape as D-477, D-483, D-485 and D-491, one level up: not asserting a mechanism this
+time, but *asserting an absence*. "I checked and it isn't there" needs the same standard of evidence
+as "I checked and it is."

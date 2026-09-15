@@ -71,7 +71,12 @@ var MASTER_DROPDOWNS = {
   13: ['Enquiry','Engaged','Documents Pending','Documents Complete','Ready for Lodgement',
        'Lodged','Awaiting Outcome','Closed'],                                           // M Stage
   14: ['Pending','Granted','Refused','Withdrawn'],                                      // N Outcome
-  21: ['Facebook','Instagram','WhatsApp','Phone','Walk-in','Email','Website','Referral'] // U Source
+  /* ⛔ 'SMS' HERE IS A SOURCE, NOT A SEND PATH.  (D-492, closes C-5)
+   * It records where a lead CAME FROM. It does not mean the system can text anyone.
+   * Sending needs a paid gateway, sender-ID registration and opt-out handling — none
+   * of which is in any plan or quote (CR-015). ⛔ Never let "SMS is in the dropdown"
+   * be read as "SMS nearly works." */
+  21: ['Facebook','Instagram','WhatsApp','Phone','Walk-in','Email','Website','Referral','SMS'] // U Source
 };
 
 var MASTER_DATE_COLS  = [15, 16, 18, 19, 20];   // O P R S T
@@ -82,7 +87,7 @@ var MASTER_WIDTHS = { 1:130, 2:110, 3:230, 4:190, 5:130, 6:230, 7:100, 8:110, 9:
 var ENQUIRY_HEADERS = ['Date','Name','Phone','Email','Channel','Visa Interest','Location',
                        'Assigned To','Status','Follow-up Due','Notes'];
 var ENQUIRY_DROPDOWNS = {
-  5: ['Facebook','Instagram','WhatsApp','Phone','Walk-in','Email','Website','Referral'],  // Channel
+  5: ['Facebook','Instagram','WhatsApp','Phone','Walk-in','Email','Website','Referral','SMS'],  // Channel
   7: ['Onshore','Offshore'],                                                              // Location
   8: ['Robinder','Inder','Gayatri','Priyanka','Fiza','RJ','Star','Rey','Cristelle',
        'Pooja','Anmol','Jasmeet','Beant',

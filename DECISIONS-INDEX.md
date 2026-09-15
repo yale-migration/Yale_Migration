@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 740K /    10526 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 740K /    10563 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 11:55
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 12:01
 
 | # | Decision |
 |---|---|
@@ -486,3 +486,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 11:5
 | **D-489** | "Same with Beant" is not an answer we can route on |
 | **D-490** | Pre-import audit: the CSV is safe to paste, and deleting the demo rows is safe |
 | **D-491** | 🔴 M6's social channels are not deliverable through Make as scoped |
+| **D-492** | C-5 closed — and the honest scope of it, written into the code |
+| **D-493** | The Page dropdown question was answerable from here all along |
