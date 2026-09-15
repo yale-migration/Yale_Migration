@@ -10561,3 +10561,35 @@ The version was **6**, and `apps_list` would have told me — it took one pagina
 ⚠️ The same shape as D-477, D-483, D-485 and D-491, one level up: not asserting a mechanism this
 time, but *asserting an absence*. "I checked and it isn't there" needs the same standard of evidence
 as "I checked and it is."
+
+## D-494 | 🔴 Switching M3 on would create 38 real clients' folders in a PERSONAL Microsoft account
+**15 Sep 2026.** Audited M3's blueprint before activation, because it is the first scenario that
+**writes**. Three findings; the third is a stop.
+
+**1 · ✅ The routing will work.** M3 requires `Office = BRISBANE` and `Team ∈ {FILIPINO, INDIAN}`, in
+capitals. Checked against the actual import: **38/38 BRISBANE, 18 FILIPINO, 20 INDIAN — zero rows hit
+the catch-all.** The locked-column work paid for itself here.
+
+**2 · ⚠️ Throughput: 3 working days, not one run.** `limit: 5` per run × 3 runs/day = 15/day, so 38
+clients take ~8 runs. **Leave it at 5 for the first run anyway** — a fault found on 5 rows is a
+nuisance; the same fault on 38 is a mess in a client's storage. Raise it after one clean cycle; Make
+Core now allows the frequency.
+
+**3 · 🔴 THE STOP. The folders go into a PERSONAL Microsoft account.** The blueprint hardcodes drive
+`A0BABA3C2640082C` with two parent folders, and the connection is
+`Yale's Microsoft connection (Muhammad Sharjeel <sharry00010@gmail.com>)` — **id 9279810, a personal
+Hotmail/Outlook identity**, used by eight scenarios including M3 and M4.
+
+Today that is a governance note about test data. **The moment M3 is switched on with the real import
+it becomes 38 real clients' visa document folders — passports, police checks, financial records —
+created inside a contractor's personal Microsoft account.** For a firm holding this material that is
+not a tidiness issue; it is the exact problem CR-003 was raised about on 25 July and the reason the
+Microsoft 365 purchase was recommended.
+
+⛔ **So M3 and M4 must NOT be activated until OneDrive moves to a Yale-owned account** — or until
+Robinder decides, knowingly and in writing, that he accepts it for the pilot. **It is his data and
+his call, but he cannot make it if nobody tells him.**
+
+🔑 **This does not block go-live, it re-orders it.** M9 and M9b are read-only, touch no storage, and
+carry the legal-deadline value. **Switch those on; hold M3 and M4.** The dashboard also needs neither
+— it reads the sheet directly.
