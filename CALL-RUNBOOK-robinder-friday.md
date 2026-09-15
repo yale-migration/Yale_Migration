@@ -46,7 +46,7 @@ Same words, completely different call.
 > mil gaya, aur jo data chahiye tha woh aa gaya. **Ab jo bhi ruka hua hai, woh sirf aap ke paas hai.**
 > Chaar cheezein — Meta, WhatsApp, OneDrive, aur Make ka plan. Ye chaar mil jayein to kaam khatam."*
 
-⛔ **Never VOLUNTEER a percentage.** "78% built" invites *"so what is the other 22%?"* — and the
+⛔ **Never VOLUNTEER a percentage.** "82% built" invites *"so what is the other 22%?"* — and the
 honest answer is *nothing, it is waiting on you*, which sounds like blame. Say **hours** and say
 **four things**. Hours are a promise; percentages are an argument.
 *(If he asks outright, answer with a rough fraction and move on — see the money question below.)*
@@ -67,7 +67,7 @@ too. Say this to Robinder — it is a compliment to his team and it is true.
 |---|---|
 | Built and test-proven | **10 modules** — M1 M2 M3 M4a M4b M5a M5b M7 M8 M9, plus M6's decision layer |
 | Proven by | **298 automated checks + 79 blueprint checks**, all passing 23 Aug |
-| Contracted work remaining | **11 hours of 49** — 78% built |
+| Contracted work remaining | **11 hours of 49** — 82% built |
 | Waiting on **Robinder** | **8.8 hours** |
 | Waiting on **his team** | **2.2 hours** — asked, 2 items promised for Monday |
 | Waiting on **us** | **zero contracted module hours** |
@@ -122,7 +122,7 @@ becomes a promise we did not agree to.
 
 Answer the work, not the money, and move on: *"Contracted kaam ka taqreeban char-panjum ban chuka hai —
 gyara ghante baqi hain, aur woh chaar cheezon ka intezaar kar rahe hain."*
-⛔ **Do not open the hours conversation on this call.** We are **38 of 49 contracted hours, 78%** —
+⛔ **Do not open the hours conversation on this call.** We are **40.4 of 49 contracted hours, 78%** —
 **under**-delivered on contract, not over — and roughly 21 further hours went into the Phase-3
 dashboard that has never been quoted. Raising any of that here turns a good call into a billing
 argument. (`HOURS-LEDGER.md` · `QUOTE-P3-DASHBOARD.md`)

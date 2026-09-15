@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 744K /    10595 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 744K /    10638 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 12:23
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 12:28
 
 | # | Decision |
 |---|---|
@@ -489,3 +489,5 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 12:2
 | **D-492** | C-5 closed — and the honest scope of it, written into the code |
 | **D-493** | The Page dropdown question was answerable from here all along |
 | **D-494** | 🔴 Switching M3 on would create 38 real clients' folders in a PERSONAL Microsoft account |
+| **D-495** | Recount: 82%, not 78 — and the fixes moved nothing, deliberately |
+| **D-496** | The handover guide, written in their language |

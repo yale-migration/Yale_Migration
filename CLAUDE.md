@@ -8,14 +8,16 @@ referral inside a family network — mistakes travel beyond this engagement.
 
 ---
 
-## 📍 POSITION AS AT 23 AUG 2026 — read this before anything else
+## 📍 POSITION AS AT 15 SEP 2026 — read this before anything else
 
-**MVP BUILD: 78% — 38.0 of 49 contracted hours written and tested.**
-Modules 31.7/40 (79%) · C-items 6.3/9 (70%). Recomputed from evidence 23 Aug, not carried forward.
+**MVP BUILD: 82% — 40.4 of 49 contracted hours written and tested.**
+Modules 33.6/40 (84%) · C-items 6.8/9 (76%). Recomputed module-by-module 15 Sep, not carried forward.
+⛔ Defect fixes moved NOTHING — the s56 off-by-one and the M8 ladder are corrections and change
+requests, not contracted progress. That distinction is what this number exists to protect.
 
-| ✅ 100% | M1 M2 M3 M4 M5 M7 M8 · C-3 C-4 |
+| ✅ 100% | M1 M2 M3 M4 M5 M7 M8 **M9** · C-3 C-4 **C-5** |
 |---|---|
-| 🟡 partial | M9 90% (needs a Make slot) · C-1 90% (dry-run only) · M6 **45%** · C-5 50% · M11 30% |
+| 🟡 partial | **M6 63%** (decision layer done; social transport gated by Meta, D-491) · C-1 90% · M11 30% |
 | ⬜ 0% | M10 (blocked) · C-2 (blocked) |
 
 **Green as at 23 Aug:** 298 Apps Script checks · 79/79 blueprint · hygiene PASS · working tree clean.

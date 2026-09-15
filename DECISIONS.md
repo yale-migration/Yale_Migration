@@ -10593,3 +10593,46 @@ his call, but he cannot make it if nobody tells him.**
 🔑 **This does not block go-live, it re-orders it.** M9 and M9b are read-only, touch no storage, and
 carry the legal-deadline value. **Switch those on; hold M3 and M4.** The dashboard also needs neither
 — it reads the sheet directly.
+
+## D-495 | Recount: 82%, not 78 — and the fixes moved nothing, deliberately
+**15 Sep 2026.** Recomputed module by module rather than carrying 78% forward. **40.4 of 49 = 82%.**
+
+| moved | by | why |
+|---|---|---|
+| **M6** 3.6 → 5.0 | +1.4 | abuse guard (D-481/483) and skills-assessment routing (D-488) |
+| **M9** 4.5 → 5.0 | +0.5 | M9b — `info@` readable, both mailboxes covered (D-486) |
+| **C-5** 0.5 → 1.0 | +0.5 | closed (D-492) |
+
+⛔ **The week's biggest pieces of work moved the number by ZERO, and that is correct.** The s56
+off-by-one (D-477/485) was a **defect fix** — correcting something already counted as built. The
+six-rung ladder (CR-016) is a **change request** — out of contracted scope. Counting either as
+progress is exactly the drift `POSITION.json` exists to prevent, and it would have shown ~85% while
+delivering nothing more of what was actually sold.
+
+🔑 **The gate earned its place.** Changing `POSITION.json` immediately produced **seven** hygiene
+warnings across `CLAUDE.md`, `WHERE-WE-STAND.md`, `HOURS-LEDGER.md` and the call runbook — every
+document still carrying 78% and 38.0. G6 in action: **one authority per fact, and copies caught
+within seconds rather than quoted to a client weeks later.** All four corrected.
+
+**Also refreshed:** `CLAUDE.md`'s position block still carried a **23 August** heading over numbers
+being edited in September — the stalest thing in the repo, and the first file anyone reads.
+
+## D-496 | The handover guide, written in their language
+**15 Sep 2026.** `docs/HANDOVER-GUIDE.md` — part of M11, written for Yale rather than for us. No
+module numbers, no scenario ids.
+
+Built around what somebody actually needs to know: the four things that run unattended and when; the
+Section 56 arithmetic **explained rather than asserted** (the Department writes a sentence, not a
+date, and the number is never assumed); who sees what on the dashboard and why clients are matched
+on **client code rather than email** (families share addresses); and what to do when something looks
+wrong.
+
+🔑 **The section that will save the most support time is "two things that look like faults and are
+not"** — a sync reporting *"0 rows, refusing to sync an empty set"*, and a blank Client Code on a
+new row. Both are correct behaviour, both look broken, and both would otherwise arrive as an urgent
+message.
+
+**And a section on what it deliberately will not do** — never sends to a client unread, never gives
+advice, never edits their client data, and never reads a column whose heading looks like a
+credential. For a practice holding ~1,200 plaintext passwords in its own workbooks, that last line
+is worth more than any feature list.
