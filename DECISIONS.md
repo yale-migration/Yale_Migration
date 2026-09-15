@@ -10441,3 +10441,38 @@ not given.
 
 **Answered and applied:** spelling is **Beant** ✅, and the cover should be treated as **permanent** —
 *"pretty sure he will stay even [when] Gayatri is back."*
+
+## D-490 | Pre-import audit: the CSV is safe to paste, and deleting the demo rows is safe
+**15 Sep 2026.** Full audit of the MASTER DATABASE against the built import, before writing anything
+to a client's live record.
+
+**Export (3) is a no-op.** Byte-different from the one stored this morning, identical in substance:
+same 97 named clients, same 37 emails, same 40 phone numbers, **zero added, zero removed, zero
+changed**. Excel re-serialised it. `YALE - STILL NEEDED (for RJ).xlsx` therefore does **not** need
+rebuilding — checked rather than assumed, and the check cost less than the rebuild would have.
+
+**The workbook, tab by tab:**
+```
+MASTER          14 rows   31 cols   ← demo people (ANJALI SHARMA, MARIA SANTOS …)
+CHECKLIST MAP   38 rows             ← real, and M4 depends on it
+CALL LOG        14 rows             ← demo
+DASHBOARD       83 rows             ← views
+S56 TRACKER      0 rows             ← explains this morning's sync ABORT
+ENQUIRIES        0 rows             ← explains the other ABORT
+```
+**Both ABORTs were correct.** The tabs really are empty; the guard refused rather than reporting a
+successful sync of nothing.
+
+**Column alignment — verified, not assumed:** all **25** CSV columns match the sheet's first 25
+**exactly and in order**. Columns 26–31 (`Docs Received`, `Docs Outstanding`, `Third Party`,
+`Third Party Status`, `Upload Link`, `Chase Flag`) are deliberately absent — C-3/C-4 are *populated
+by staff, not derived* (D-352), so leaving them untouched is the specified behaviour.
+
+**Collisions: none.** 0 client-code clashes, 0 name clashes. All 38 import rows carry a **blank**
+Client Code by design — `assignMissingCodes` fills them on its 5-minute trigger.
+
+🔑 **And the question that actually decides whether we can clear the demo rows:** `nextNumber_` takes
+`max(highest code in the sheet, a HIGH-WATER MARK held in DocumentProperties) + 1`. So **deleting the
+14 demo rows cannot cause a code to be reused** — numbering continues from 15 even with an empty
+sheet. **Deleting them is safe**, and it removes the D-463 hazard of invented people sitting
+indistinguishably beside 38 real ones.

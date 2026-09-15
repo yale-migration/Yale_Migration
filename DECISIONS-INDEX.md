@@ -1,9 +1,9 @@
 # DECISIONS INDEX — one line per decision
 
-`DECISIONS.md` is 732K /    10443 lines. **Do not read it whole — it will eat the session.**
+`DECISIONS.md` is 736K /    10478 lines. **Do not read it whole — it will eat the session.**
 Find the D-number here, then `grep -A 25 "^D-NNN" DECISIONS.md` (or `^## D-NNN`) for that entry only.
 
-Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 10:55
+Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 11:04
 
 | # | Decision |
 |---|---|
@@ -484,3 +484,4 @@ Regenerate: `bash scripts/gen_decisions_index.sh`  ·  Generated 2026-09-15 10:5
 | **D-487** | The import covers 38 of 97 live clients — it is bounded by an August exercise |
 | **D-488** | Skills assessment routes on its own axis — it is a service, not a subclass |
 | **D-489** | "Same with Beant" is not an answer we can route on |
+| **D-490** | Pre-import audit: the CSV is safe to paste, and deleting the demo rows is safe |
