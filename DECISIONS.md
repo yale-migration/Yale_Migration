@@ -10476,3 +10476,51 @@ Client Code by design — `assignMissingCodes` fills them on its 5-minute trigge
 14 demo rows cannot cause a code to be reused** — numbering continues from 15 even with an empty
 sheet. **Deleting them is safe**, and it removes the D-463 hazard of invented people sitting
 indistinguishably beside 38 real ones.
+
+## D-491 | 🔴 M6's social channels are not deliverable through Make as scoped
+**15 Sep 2026.** Before writing the M6 transport blueprint I read the module schemas instead of
+assuming them. Three findings, and together they change what M6 can be.
+
+**1 · Page access is CONFIRMED — and I answered it myself.** The `WatchComments` schema names the
+RPC its own dropdown uses (`Pages`), so the question I had been asking Sharjeel to check by hand was
+answerable from here:
+```
+Yale Migration and Education Consultants (Brisbane) -> 1695697263975147
+Zap It Pest & Termite Control (Melbourne)           -> 339252835945162
+```
+Meta layer 2 is done. ⚠️ The token also spans a different client's page; nothing we build touches it.
+
+**2 · ❌ Facebook comments are PER-POST.** `facebook-pages:WatchComments` v6 requires `page_id` **and
+a specific Post ID**. It watches one post, not the page. For a page that publishes regularly that is
+not enquiry capture — it is a scenario per post, forever.
+
+**3 · ❌ Facebook Messenger is SEND-ONLY.** `facebook-messenger` v2 exposes exactly four modules —
+`uploadAttachment`, `sendMessage`, `sendAction`, `getSender`. **There is no trigger.** DMs cannot be
+received through it. (Instagram's `NewComment` *is* `hook:true`, so hooks do appear in this listing
+when they exist — their absence here is evidence, not an artefact.)
+
+🔑 **The underlying reason, and it is not a Make defect:** Make's Facebook apps are built for
+*publishing and advertising*, not for *inbox automation*. Receiving Messenger or Instagram DMs needs
+a **Meta App, webhook subscriptions, and App Review for `pages_messaging`** — Meta gates messaging
+permissions behind review for production use. **That is weeks of Meta's process, not hours of ours,
+and it is not an 8-hour MVP module.**
+
+⛔ **THE SCOPE CONSEQUENCE, SAID PLAINLY.** M6 was quoted as an 8-hour "enquiry capture hub" across
+six channels. The **decision layer is genuinely done** (86 checks — triage, routing, blocked matters,
+abuse). What is not deliverable as scoped is the **transport for the social channels**:
+
+| channel | state |
+|---|---|
+| Email (M9 + M9b) | ✅ built |
+| Phone (M7) | ✅ built |
+| Web form (C-1) | 🟡 90%, blocked on form access |
+| Instagram comments | ⚠️ possibly, via the webhook trigger — unverified |
+| Facebook comments | ❌ per-post only |
+| Messenger / IG DMs | ❌ Meta App + App Review |
+| WhatsApp | ❌ app-vs-API decision unmade |
+
+**This is not a failure to disclose later.** It is a genuine constraint of the platform, discovered
+by reading the schema rather than by a scenario silently receiving nothing three weeks after
+go-live. **It goes to Robinder as a re-scope conversation, not into a quiet corner** — and the
+honest framing is that three of six channels are delivered, one is close, and three depend on Meta's
+own gates rather than on our build.

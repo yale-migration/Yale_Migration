@@ -1,5 +1,12 @@
 # M6 transport — Facebook & Instagram comments into ENQUIRIES
 
+> 🔴 **SUPERSEDED 15 Sep 2026 — see D-491.** The design below assumed Make could watch a Page's
+> comments and receive DMs. Reading the schemas shows it cannot: `WatchComments` is **per-post**,
+> and `facebook-messenger` v2 is **send-only with no trigger**. Receiving DMs needs a Meta App and
+> App Review for `pages_messaging`. The page access question this document called an unknown **is
+> now closed** — the page is `1695697263975147`, confirmed via the `Pages` RPC. Keep this file for
+> the row mapping and the hard rules, which still stand; ignore the transport shape.
+
 **Status: designed, not built.** Spec-first, the same way M3 and M4 were done — the blueprint is
 mechanical once the two unknowns below are closed.
 
