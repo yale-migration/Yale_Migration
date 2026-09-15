@@ -10367,3 +10367,37 @@ Gmail connection"*, which makes the Make UI ambiguous — but the blueprint refe
 UI is choosing between three identical names.
 
 ⛔ **Inactive, like everything else.** Switch on at go-live, not before.
+
+## D-487 | The import covers 38 of 97 live clients — it is bounded by an August exercise
+**15 Sep 2026.** Fresh `YALE BRISBANE OFFICE WORK` export received, stored in `client-data/`, and the
+7-day staleness guard now passes (0 days old vs 9). `eca password` was identified and **excluded
+before anything was read** — 31 tabs, one of them a credential tab, and the guard names it rather
+than trusting us to remember.
+
+The importer still produces **38 rows**, unchanged. That is not a bug, and the reason matters:
+
+```
+named clients in the LIVE lodgement tab : 97
+names on the team's RETURNED list       : 40
+in both — what actually imports         : 32  (38 after the builder's own joins)
+🔴 live but NOT on the returned list     : 65
+```
+
+🔑 **The import is bounded by the enrichment exercise we ran in August, not by the current
+caseload.** We sent the team ~40 clients to fill in — consultant, email, team, office — and they
+returned those. The other **65 people in their live tab were never part of that exercise**, so the
+importer has no consultant, email or team for them and correctly declines to invent any.
+
+⛔ **THIS MUST BE SAID BEFORE THE DEMO, NOT ASKED ABOUT DURING IT.** Robinder knows roughly how many
+clients he has. Showing him a dashboard with 38 while his own sheet lists 97 invites exactly one
+question, and the honest answer is much better delivered first. It is not a defect — it is the
+scope of the data the team gave us — but discovered rather than disclosed it looks like one.
+
+**Not a reason to delay go-live.** 38 real clients is the difference between a demo and a working
+system. The remaining 65 need a second enrichment round: same sheet, same three columns, and it is
+RJ's to fill. Raised as A-66.
+
+⚠️ **Also, from the same run — the flags are the honest state of their data, not defects:**
+11 with no email (no checklist or chase possible) · 8 with no matching lodgement row · 6 visas with
+no checklist → NEEDS REVIEW · 2 held back as no longer clients. The locked-column check passed on
+all ten dropdowns, so nothing will be silently refused by the sheet on write.

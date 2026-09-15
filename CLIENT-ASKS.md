@@ -201,3 +201,5 @@ survives in MASTER v2 — the concepts were right, the file was stale.
 ### ✅ Closed 14 Sep by RJ's 482 letter, unprompted
 - **A-51 — PROVEN.** The letter is a 482 and its header reads `Sent to: info@yalemigration.com.au`. The 87% now rests on a Department document, not a recollection (D-479).
 - **A-34(c) — partly.** 28 days confirmed for **482** as well as 485. 500 and 820/801 still unseen, but `days_allowed` is parsed from the letter, not hardcoded.
+
+| **A-66** | 🔴 **65 clients are in their live lodgement tab but were never in the enrichment exercise** — so they cannot be imported. Needs the same three columns (consultant · email · team) for those 65. Their live tab lists **97** named clients; we can load **38** (D-487). | 15 Sep | RJ |
